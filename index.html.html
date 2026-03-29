@@ -247,7 +247,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mg-check-mark{display:none;width:10px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
 .mg-goal-item.done .mg-check-mark{display:block}
 .mg-goal-text{font-size:13px;color:var(--text2);flex:1;line-height:1.4}
-.mg-goal-del{background:none;border:none;cursor:pointer;font-size:14px;color:var(--text4);padding:2px 4px;border-radius:4px;transition:all .15s;flex-shrink:0}
+.mg-goal-del{background:none;border:none;cursor:pointer;font-size:14px;color:var(--text4);padding:2px 4px;border-radius:4px;transition:all .15px;flex-shrink:0}
 .mg-goal-del:hover{color:var(--clay);background:var(--clay-p)}
 .mg-add-row{display:flex;gap:8px}
 .mg-add-inp{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
@@ -971,8 +971,11 @@ function renderMeals(){
 async function askNaraMeal(food,cal,total){
   const el=document.getElementById('nara-meal'),txt=document.getElementById('nara-meal-txt');
   el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
+  const budget = P.budget || '';
+  const act = P.act || '';
+  const cook = P.cook || '';
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:250,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP dalam INARTE. Profil user: nama ${P.name||'teman'}, ${P.act||''}, ${P.cook||''}, budget ${P.budget||''}.\n\nGaya: seperti sahabat yang peduli, bukan dokter. Bahasa Indonesia natural, boleh 1-2 kata Inggris tapi tidak berlebihan. Pakai emoticon garis seperti :-) atau :-D sesekali. Tidak menghakimi. Kalau makannya sudah bagus, apresiasi! Kalau kurang ideal, kasih saran ringan tanpa menggurui. Di akhir boleh suggest olahraga ringan untuk membakar kalori. Maksimal 3 kalimat.`,messages:[{role:'user',content:`Baru makan: ${food} (~${cal} kkal). Total hari ini: ~${total} kkal.`}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:250,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP dalam INARTE. Profil user: nama ${P.name||'teman'}, ${act}, ${cook}, budget ${budget}.\n\nGaya: seperti sahabat yang peduli, bukan dokter. Bahasa Indonesia natural, boleh 1-2 kata Inggris tapi tidak berlebihan. Pakai emoticon garis seperti :-) atau :-D sesekali. Tidak menghakimi. Kalau makannya sudah bagus, apresiasi! Kalau kurang ideal, kasih saran ringan tanpa menggurui. Di akhir boleh suggest olahraga ringan untuk membakar kalori. Maksimal 3 kalimat.`,messages:[{role:'user',content:`Baru makan: ${food} (~${cal} kkal). Total hari ini: ~${total} kkal.`}]})});
     const d=await r.json();
     txt.innerHTML=`<p>${d.content?.[0]?.text||'Makanannya tercatat ya! :-)'}</p>`;
   }catch{txt.innerHTML='<p>Makanannya sudah tercatat ya! :-)</p>';}
@@ -1003,9 +1006,12 @@ async function askNaraToday(){
   el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
   const conds=D.conditions?.join(', ')||'tidak ada kondisi khusus';
   const summary=`Air: ${D.water}/8 gelas. Mood: ${D.mood||'belum diisi'}. Makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'} (total ~${D.totalCal||0} kkal). Gerak: ${D.move||'belum diisi'}. Kondisi: ${conds}.`;
+  // FIX: Extracted variables to avoid broken template literal with empty fallback
+  const userName = P.name || 'teman';
+  const userAct = P.act || '';
+  const userBudget = P.budget || '';
   try{
-    // FIX: was ${P.budget||} — missing fallback, caused SyntaxError
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:280,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP. Profil: nama ${P.name||'teman'}, ${P.act||''}, budget ${P.budget||}.\n\nGaya bicara:\n- Seperti sahabat dekat yang benar-benar peduli\n- Bahasa Indonesia yang natural dan hangat\n- Boleh pakai emoticon garis :-) atau :-D sesekali\n- Tidak menghakimi, tidak menggurui sama sekali\n- Kalau ada kondisi haid/sakit, acknowledge dengan empati dulu\n- Validasi perasaan sebelum saran\n- Maksimal 3 kalimat pendek\n- Tiap response harus BERBEDA dari sebelumnya`.replace('budget ${P.budget||}',`budget ${P.budget||''}`),messages:[{role:'user',content:summary}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:280,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP. Profil: nama ${userName}, ${userAct}, budget ${userBudget}.\n\nGaya bicara:\n- Seperti sahabat dekat yang benar-benar peduli\n- Bahasa Indonesia yang natural dan hangat\n- Boleh pakai emoticon garis :-) atau :-D sesekali\n- Tidak menghakimi, tidak menggurui sama sekali\n- Kalau ada kondisi haid/sakit, acknowledge dengan empati dulu\n- Validasi perasaan sebelum saran\n- Maksimal 3 kalimat pendek\n- Tiap response harus BERBEDA dari sebelumnya`,messages:[{role:'user',content:summary}]})});
     const d=await r.json();
     txt.innerHTML=`<p>${d.content?.[0]?.text||'Kamu sudah melakukan yang terbaik hari ini :-)'}</p>`;
   }catch{txt.innerHTML='<p>Kamu sudah mulai hari ini dengan baik. Lanjutkan saja pelan-pelan :-)</p>';}
@@ -1042,8 +1048,6 @@ function buildMonthlyGoals() {
   const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   const d = new Date();
   document.getElementById('mg-month-label').textContent = `${months[d.getMonth()]} ${d.getFullYear()}`;
-
-  // Build presets (only show ones not yet added)
   renderGoalPresets();
   renderGoalList();
 }
@@ -1176,8 +1180,9 @@ async function saveWellness(){
   saveDay();
   const el=document.getElementById('nara-w'), txt=document.getElementById('nara-w-txt');
   el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
+  const userName = P.name || 'teman';
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:350,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP dalam INARTE. Nama user: ${P.name||'teman'}.\n\nGaya bicara:\n- Sahabat yang benar-benar mendengarkan, bukan AI yang menjawab\n- Bahasa Indonesia yang hangat dan natural\n- Boleh 1-2 kata Inggris yang natural\n- Pakai emoticon garis :-) sesekali\n- Validasi perasaan DULU sebelum apapun\n- Tidak selalu harus kasih saran\n- Kalau ada hal yang berat, tunjukkan empati yang tulus\n- Kalau kelihatan butuh bantuan profesional, arahkan dengan hangat (bukan menghakimi)\n- Maksimal 4 kalimat\n- Akhiri dengan sesuatu yang menguatkan tapi tidak klise`,messages:[{role:'user',content:`Tidur: ${sleepStart} - ${sleepEnd}. Perasaan: ${broad}. Emosi spesifik: ${emos.join(', ')||'tidak dipilih'}. Kenapa: ${why||'-'}. Catatan: ${journal||'-'}. Hal baik: ${grat||'-'}. Harapan besok: ${hope||'-'}.`}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:350,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP dalam INARTE. Nama user: ${userName}.\n\nGaya bicara:\n- Sahabat yang benar-benar mendengarkan, bukan AI yang menjawab\n- Bahasa Indonesia yang hangat dan natural\n- Boleh 1-2 kata Inggris yang natural\n- Pakai emoticon garis :-) sesekali\n- Validasi perasaan DULU sebelum apapun\n- Tidak selalu harus kasih saran\n- Kalau ada hal yang berat, tunjukkan empati yang tulus\n- Kalau kelihatan butuh bantuan profesional, arahkan dengan hangat (bukan menghakimi)\n- Maksimal 4 kalimat\n- Akhiri dengan sesuatu yang menguatkan tapi tidak klise`,messages:[{role:'user',content:`Tidur: ${sleepStart} - ${sleepEnd}. Perasaan: ${broad}. Emosi spesifik: ${emos.join(', ')||'tidak dipilih'}. Kenapa: ${why||'-'}. Catatan: ${journal||'-'}. Hal baik: ${grat||'-'}. Harapan besok: ${hope||'-'}.`}]})});
     const d=await r.json();
     txt.innerHTML=`<p>${d.content?.[0]?.text||'Terima kasih sudah meluangkan waktu untuk dirimu sendiri hari ini :-)'}</p>`;
   }catch{txt.innerHTML='<p>Terima kasih sudah mau nulis hari ini. Itu tanda kamu peduli pada dirimu sendiri, dan itu sudah lebih dari cukup :-)</p>';}
@@ -1304,8 +1309,9 @@ async function buildNaraRecap(){
   const moods=recent.map(d=>d.mood).filter(Boolean);
   const moodFreq={};moods.forEach(m=>{moodFreq[m]=(moodFreq[m]||0)+1;});
   const topMood=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
+  const userName = P.name || 'teman';
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE. Nama user: ${P.name||'teman'}.\n\nTulis rekap mingguan yang terasa seperti surat pendek dari sahabat, bukan laporan. Bahasa Indonesia yang hangat, jujur, dan menguatkan. Pakai emoticon garis sesekali. Maksimal 3-4 kalimat. Tidak perlu sebut semua angka, pilih yang paling bermakna.`,messages:[{role:'user',content:`Data 7 hari terakhir: total ${keys.length} hari diisi, rata-rata minum ${avgW} gelas/hari, mood yang paling sering muncul: ${topMood}, konsistensi minggu ini: ${recent.length}/7 hari.`}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE. Nama user: ${userName}.\n\nTulis rekap mingguan yang terasa seperti surat pendek dari sahabat, bukan laporan. Bahasa Indonesia yang hangat, jujur, dan menguatkan. Pakai emoticon garis sesekali. Maksimal 3-4 kalimat. Tidak perlu sebut semua angka, pilih yang paling bermakna.`,messages:[{role:'user',content:`Data 7 hari terakhir: total ${keys.length} hari diisi, rata-rata minum ${avgW} gelas/hari, mood yang paling sering muncul: ${topMood}, konsistensi minggu ini: ${recent.length}/7 hari.`}]})});
     const d=await r.json();
     txt.innerHTML=`<p>${d.content?.[0]?.text||'Kamu sudah konsisten ya! Lanjutkan :-)'}</p>`;
   }catch{txt.innerHTML='<p>Setiap hari yang kamu isi adalah langkah nyata. Terus lanjutkan ya, Nara bangga sama kamu :-)</p>';}
@@ -1339,9 +1345,13 @@ async function sendNara(){
   chatHistory.push({role:'user',content:txt});
   addNaraMsg('...','nara');
   const msgs=document.getElementById('nc-msgs'), loadEl=msgs.lastChild;
+  // FIX: Extracted variables to avoid broken template literal with empty fallback
+  const userName = P.name || 'teman';
+  const userAct = P.act || '';
+  const userHome = P.home || '';
+  const userBudget = P.budget || '';
   try{
-    // FIX: was ${P.budget||} — missing fallback, caused SyntaxError
-    const ctx=`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE.\nProfil user: nama ${P.name||'teman'}, ${P.act||''}, ${P.home||''}, budget ${P.budget||''}.\nData hari ini: air ${D.water}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}.\n\nGaya bicara:\n- Seperti sahabat ENFP yang energik, empatik, dan tulus\n- Bahasa Indonesia yang natural dan hangat\n- Boleh 1-2 kata Inggris yang natural\n- Emoticon garis :-) sesekali\n- Tidak menggurui, tidak sok tahu\n- Kalau user butuh bantuan profesional (psikolog, dokter, ahli gizi), arahkan dengan hangat dan jelas\n- Tidak pura-pura bisa gantikan profesional\n- Kalau tidak ada jawaban di luar kemampuan, akui dengan jujur\n- Respons pendek dan natural, seperti chat WhatsApp`;
+    const ctx=`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE.\nProfil user: nama ${userName}, ${userAct}, ${userHome}, budget ${userBudget}.\nData hari ini: air ${D.water}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}.\n\nGaya bicara:\n- Seperti sahabat ENFP yang energik, empatik, dan tulus\n- Bahasa Indonesia yang natural dan hangat\n- Boleh 1-2 kata Inggris yang natural\n- Emoticon garis :-) sesekali\n- Tidak menggurui, tidak sok tahu\n- Kalau user butuh bantuan profesional (psikolog, dokter, ahli gizi), arahkan dengan hangat dan jelas\n- Tidak pura-pura bisa gantikan profesional\n- Kalau tidak ada jawaban di luar kemampuan, akui dengan jujur\n- Respons pendek dan natural, seperti chat WhatsApp`;
     const history=chatHistory.slice(-6).map(h=>({role:h.role,content:h.content}));
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:ctx,messages:history})});
     const d=await r.json();
