@@ -228,6 +228,35 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .w-save{width:100%;padding:13px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:1rem}
 .w-save:hover{background:#3D5842}
 
+/* ── MONTHLY GOALS ── */
+.mg-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.mg-month{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em}
+.mg-progress-wrap{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.mg-bar-track{flex:1;height:6px;background:var(--border);border-radius:20px;overflow:hidden}
+.mg-bar-fill{height:100%;border-radius:20px;background:var(--moss);transition:width .4s ease}
+.mg-pct{font-size:12px;font-weight:600;color:var(--moss);min-width:36px;text-align:right}
+.mg-presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.mg-preset{padding:6px 13px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s}
+.mg-preset:hover{background:var(--bg2);border-color:var(--moss-l)}
+.mg-goals-list{list-style:none;margin-bottom:12px}
+.mg-goal-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rsm);border:1px solid var(--border-l);background:var(--bg);margin-bottom:6px;transition:all .2s;cursor:pointer;user-select:none}
+.mg-goal-item.done{background:var(--moss-p);border-color:var(--moss-l)}
+.mg-goal-item.done .mg-goal-text{color:var(--moss);text-decoration:line-through;opacity:.7}
+.mg-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:var(--surface)}
+.mg-goal-item.done .mg-check{background:var(--moss);border-color:var(--moss)}
+.mg-check-mark{display:none;width:10px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.mg-goal-item.done .mg-check-mark{display:block}
+.mg-goal-text{font-size:13px;color:var(--text2);flex:1;line-height:1.4}
+.mg-goal-del{background:none;border:none;cursor:pointer;font-size:14px;color:var(--text4);padding:2px 4px;border-radius:4px;transition:all .15s;flex-shrink:0}
+.mg-goal-del:hover{color:var(--clay);background:var(--clay-p)}
+.mg-add-row{display:flex;gap:8px}
+.mg-add-inp{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.mg-add-inp:focus{border-color:var(--amber)}
+.mg-add-inp::placeholder{color:var(--text4);font-style:italic}
+.mg-add-btn{padding:10px 16px;background:var(--amber);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s}
+.mg-add-btn:hover{background:#8A6420}
+.mg-empty{text-align:center;padding:1.5rem;color:var(--text4);font-size:13px;font-style:italic}
+
 /* ── TIPS ── */
 .tips-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
 .tip-chip{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s}
@@ -358,7 +387,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <div class="ob-dot" id="d4"></div>
   </div>
 
-  <!-- 0: nama -->
   <div class="ob-step active" id="ob0">
     <div class="ob-logo">IN<span>arte</span></div>
     <div class="ob-tag">perjalananmu, caramu</div>
@@ -368,7 +396,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <button class="ob-btn" onclick="goOb(1)">Lanjut →</button>
   </div>
 
-  <!-- 1: tujuan -->
   <div class="ob-step" id="ob1">
     <div class="ob-q">Apa yang paling ingin kamu jaga?</div>
     <div class="ob-hint">Boleh pilih lebih dari satu. Kalau pilih "semuanya", yang lain otomatis ikut terpilih ya.</div>
@@ -385,7 +412,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <button class="ob-ghost" onclick="goOb(2)">Lewati dulu</button>
   </div>
 
-  <!-- 2: keseharian -->
   <div class="ob-step" id="ob2">
     <div class="ob-q">Bagaimana keseharianmu?</div>
     <div class="ob-hint">Ini membantu Nara kasih saran yang relevan buat kamu.</div>
@@ -405,7 +431,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <button class="ob-btn" onclick="goOb(3)">Lanjut →</button>
   </div>
 
-  <!-- 3: konteks -->
   <div class="ob-step" id="ob3">
     <div class="ob-q">Situasi di rumah?</div>
     <div class="ob-hint">Ini berpengaruh ke rekomendasi menu dan cara makannya.</div>
@@ -426,7 +451,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <button class="ob-ghost" onclick="goOb(4)">Lewati dulu</button>
   </div>
 
-  <!-- 4: welcome -->
   <div class="ob-step" id="ob4">
     <div style="text-align:center;padding:1rem 0">
       <div style="font-size:48px;margin-bottom:1rem">🌿</div>
@@ -462,13 +486,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
     </div>
 
-    <!-- REKOMENDASI MENU -->
     <div class="menu-suggest" id="menu-suggest-box">
       <div class="menu-suggest-head">:-) Rekomendasi menu hari ini</div>
       <div class="menu-day-grid" id="menu-grid"></div>
     </div>
 
-    <!-- KONDISI -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">🩺</span><span class="tc-title">Kondisi hari ini</span></div>
       <div class="cond-row">
@@ -479,14 +501,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
     </div>
 
-    <!-- MINUM -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">💧</span><span class="tc-title">Air minum</span><span class="tc-status" id="w-status">0 dari 8 gelas</span></div>
       <div class="glasses" id="glasses"></div>
       <div class="water-msg" id="w-msg">Tap satu-satu setiap kali minum segelas, ya!</div>
     </div>
 
-    <!-- MOOD -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">🌤</span><span class="tc-title">Mood sekarang</span></div>
       <div class="mood-row">
@@ -498,7 +518,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
     </div>
 
-    <!-- MAKAN -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">🍽</span><span class="tc-title">Makan hari ini</span><span class="tc-status" id="cal-status">0 kkal</span></div>
       <ul class="meal-list" id="meal-list"></ul>
@@ -516,7 +535,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
     </div>
 
-    <!-- GERAK -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">🏃</span><span class="tc-title">Gerak hari ini</span></div>
       <div class="move-grid">
@@ -530,7 +548,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="move-suggest on" id="move-suggest" style="display:none"></div>
     </div>
 
-    <!-- NARA TODAY -->
     <div class="nara-reply" id="nara-today">
       <div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div>
       <div class="nara-rbody" id="nara-today-txt"><div class="ld"><span></span><span></span><span></span></div></div>
@@ -541,6 +558,26 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="page" id="pg-wellness">
     <div class="pg-title">Ruang <em>dalam</em></div>
     <p class="pg-sub">Tidak ada yang harus diisi semuanya. Tulis sebisanya, sekenyamanannya.</p>
+
+    <!-- MONTHLY GOALS -->
+    <div class="tc w-section">
+      <div class="tc-head"><span class="tc-icon">🎯</span><span class="tc-title">Target bulan ini</span></div>
+      <div class="mg-header">
+        <span class="mg-month" id="mg-month-label"></span>
+        <span style="font-size:11px;color:var(--text3)" id="mg-count-label">0 selesai</span>
+      </div>
+      <div class="mg-progress-wrap">
+        <div class="mg-bar-track"><div class="mg-bar-fill" id="mg-bar" style="width:0%"></div></div>
+        <span class="mg-pct" id="mg-pct">0%</span>
+      </div>
+      <div class="w-label">Pilih target yang sesuai atau buat sendiri</div>
+      <div class="mg-presets" id="mg-presets"></div>
+      <ul class="mg-goals-list" id="mg-goals-list"></ul>
+      <div class="mg-add-row">
+        <input class="mg-add-inp" id="mg-add-inp" placeholder="Tulis target lainnya..." maxlength="80" onkeydown="if(event.key==='Enter')addGoal()"/>
+        <button class="mg-add-btn" onclick="addGoal()">+ Tambah</button>
+      </div>
+    </div>
 
     <div class="tc w-section">
       <div class="tc-head"><span class="tc-icon">🌙</span><span class="tc-title">Tidur semalam</span></div>
@@ -630,10 +667,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="stat-card"><div class="stat-num" id="st-total">0</div><div class="stat-lbl">Total hari</div></div>
       <div class="stat-card"><div class="stat-num" id="st-water">0</div><div class="stat-lbl">Rata-rata gelas</div></div>
     </div>
-
     <div class="prog-sec-title">Bulan ini</div>
     <div class="cal-grid" id="cal-grid"></div>
-
     <div class="prog-sec-title">Aktivitas 12 minggu terakhir</div>
     <div class="heatmap" id="heatmap"></div>
     <div style="display:flex;gap:6px;align-items:center;margin-bottom:1.25rem">
@@ -645,15 +680,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div style="width:10px;height:10px;border-radius:2px;background:var(--moss);margin-left:4px"></div>
       <span style="font-size:10px;color:var(--text3)">Lengkap</span>
     </div>
-
     <div class="prog-sec-title">Rekap minggu ini</div>
     <div class="recap-card" id="weekly-recap"></div>
-
     <div class="prog-sec-title">Distribusi mood bulan ini</div>
     <div class="recap-card">
       <div class="mood-chart" id="mood-chart"></div>
     </div>
-
     <div class="prog-sec-title">Catatan dari Nara</div>
     <div class="nara-reply on" id="nara-recap">
       <div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div>
@@ -661,7 +693,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
   <nav class="bnav">
     <button class="bnav-btn active" onclick="showPg('today',this)"><span class="bnav-icon">☀️</span><span class="bnav-label">Hari Ini</span></button>
     <button class="bnav-btn" onclick="showPg('wellness',this)"><span class="bnav-icon">🌿</span><span class="bnav-label">Wellness</span></button>
@@ -733,14 +764,12 @@ function goOb(n) {
     else if(i===n) d.classList.add('active');
   }
 }
-
 function chipGoal(btn) {
   btn.classList.toggle('sel');
   const v = btn.textContent.trim();
   if (btn.classList.contains('sel')) { if(!obData.goals.includes(v)) obData.goals.push(v); }
   else obData.goals = obData.goals.filter(x=>x!==v);
 }
-
 function chipGoalAll(btn) {
   const isAll = btn.classList.toggle('sel');
   document.querySelectorAll('#chips-goal .ob-chip:not(#chip-all)').forEach(c => {
@@ -750,13 +779,11 @@ function chipGoalAll(btn) {
   if (isAll) obData.goals.push('Semuanya');
   else obData.goals = [];
 }
-
 function solo(btn, key) {
   btn.closest('.ob-chips').querySelectorAll('.ob-chip').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
   obData[key] = btn.textContent.trim();
 }
-
 function doneOb() {
   P = { ...obData, created: Date.now() };
   save('inarte_profile', P);
@@ -779,16 +806,15 @@ function initApp() {
   buildWeeklyRecap();
   buildMoodChart();
   buildNaraRecap();
+  buildMonthlyGoals();
   restoreToday();
   document.getElementById('nara-float').style.display = 'block';
   initNaraChat();
 }
-
 function loadDay() {
   const s = load('inarte_day_'+TODAY);
   D = s || { water:0, mood:null, meals:[], move:null, conditions:[], totalCal:0 };
 }
-
 function saveDay() {
   save('inarte_day_'+TODAY, D);
   const logs = load('inarte_logs') || {};
@@ -813,11 +839,11 @@ function buildGreeting() {
   document.getElementById('g-msg').textContent = msgs[new Date().getDate()%msgs.length];
   const nmsgs = [
     'Butuh rekomendasi makan hari ini? Tap ikon Nara di bawah ya!',
-    'Hari ini gimana? Cerita ke Nara kapanpun kamu mau :-)','Nara ada di sini kapanpun kamu butuh.',
+    'Hari ini gimana? Cerita ke Nara kapanpun kamu mau :-)',
+    'Nara ada di sini kapanpun kamu butuh.',
   ];
   document.getElementById('g-nara').textContent = nmsgs[new Date().getDay()%nmsgs.length];
 }
-
 function buildTopbar() {
   const days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
@@ -839,12 +865,7 @@ function buildTopbar() {
 
 // ── MENU SUGGEST ──
 function buildMenuSuggest() {
-  const home = P.home||'';
-  const budget = P.budget||'';
-  const cook = P.cook||'';
-  const cond = D.conditions||[];
-
-  // Build contextual menu based on profile
+  const home=P.home||'', budget=P.budget||'', cook=P.cook||'', cond=D.conditions||[];
   let menus = getMenuSuggestions(home, budget, cook, cond);
   const grid = document.getElementById('menu-grid');
   grid.innerHTML = '';
@@ -855,108 +876,35 @@ function buildMenuSuggest() {
     grid.appendChild(cell);
   });
 }
-
 function getMenuSuggestions(home, budget, cook, cond) {
-  const isMenyusui = cond.includes('menyusui');
-  const isHamil = cond.includes('hamil');
-  const isKos = home.includes('Sendiri');
-  const isOrangtua = home.includes('orang tua');
-  const isAnak = home.includes('anak kecil');
-  const isPasangan = home.includes('pasangan') && !isAnak;
-  const isHemat = budget.includes('50rb') || budget.includes('50–100');
-  const isMasak = cook.includes('masak sendiri');
-  const isBeli = cook.includes('beli') || cook.includes('jajan');
-
-  const day = new Date().getDay(); // rotasi harian
-
-  const menus = [
-    // Kos + hemat + beli
-    [
-      [
-        {time:'Sarapan',name:'Roti gandum + telur ceplok',cal:280,tip:'Beli di warteg atau buat sendiri 10 menit'},
-        {time:'Siang',name:'Nasi + ayam bakar + sayur',cal:420,tip:'Warteg: minta nasi setengah porsi'},
-        {time:'Malam',name:'Mie instan + telur + sayur',cal:350,tip:'Kurangi bumbu setengah, tambah sayur beku'},
-      ],
-      [
-        {time:'Sarapan',name:'Oatmeal instant + susu kedelai',cal:250,tip:'Rebus 3 menit, hemat dan mengenyangkan'},
-        {time:'Siang',name:'Pecel + tahu tempe',cal:380,tip:'Beli di warteg, skip lontong'},
-        {time:'Malam',name:'Soto ayam bening + nasi sedikit',cal:300,tip:'Pilih kuah bening, no bihun'},
-      ],
-    ],
-    // Kos + hemat + masak
-    [
-      [
-        {time:'Sarapan',name:'Telur dadar sayur + roti',cal:300,tip:'10 menit prep, protein bagus'},
-        {time:'Siang',name:'Nasi + tempe orek + tumis bayam',cal:400,tip:'Masak sekali untuk 2 hari'},
-        {time:'Malam',name:'Sup tahu bening',cal:200,tip:'Ringan untuk malam'},
-      ],
-    ],
-    // Dengan orang tua
-    [
-      [
-        {time:'Sarapan',name:'Ikut sarapan rumah + kurangi nasi',cal:350,tip:'Ambil lebih banyak sayur dan lauk'},
-        {time:'Siang',name:'Makan siang rumah + piring ideal',cal:450,tip:'1/2 sayur, 1/4 protein, 1/4 nasi'},
-        {time:'Malam',name:'Makan malam rumah, skip nasi',cal:280,tip:'Minta porsi protein lebih, nasi dikurangi'},
-      ],
-    ],
-    // Pasangan + masak
-    [
-      [
-        {time:'Sarapan',name:'Telur poach + avokad toast',cal:320,tip:'Weekend brunch yang sehat dan enak'},
-        {time:'Siang',name:'Ayam bakar bumbu merah + lalapan',cal:420,tip:'Satu resep untuk berdua'},
-        {time:'Malam',name:'Sup ikan tomat + nasi merah sedikit',cal:350,tip:'Ringan dan bergizi'},
-      ],
-      [
-        {time:'Sarapan',name:'Smoothie pisang + telur rebus',cal:290,tip:'Cepat sebelum kerja'},
-        {time:'Siang',name:'Gado-gado protein',cal:380,tip:'Saus kacang no gula'},
-        {time:'Malam',name:'Ikan bumbu kuning + tumis brokoli',cal:360,tip:'Favorit semua orang'},
-      ],
-    ],
-    // Dengan anak kecil
-    [
-      [
-        {time:'Sarapan',name:'Telur dadar + nasi tim (anak) / oatmeal (kamu)',cal:300,tip:'Masak sekaligus, saji berbeda'},
-        {time:'Siang',name:'Soto ayam keluarga',cal:400,tip:'Anak: pakai bihun. Kamu: skip bihun'},
-        {time:'Malam',name:'Ayam kukus bumbu + sayur bening',cal:350,tip:'Satu masak, semua suka'},
-      ],
-    ],
-    // Menyusui
-    [
-      [
-        {time:'Sarapan',name:'Oatmeal + telur + susu kedelai',cal:380,tip:'Booster ASI: oatmeal dan kedelai :-)',},
-        {time:'Siang',name:'Sayur bening katuk + ikan',cal:350,tip:'Katuk adalah booster ASI terbaik!'},
-        {time:'Snack',name:'Kurma 3 biji + kacang almond',cal:200,tip:'Zat besi dan energi untuk nyusu'},
-        {time:'Malam',name:'Tempe + tumis bayam',cal:280,tip:'Bayam tinggi zat besi untuk busui'},
-      ],
-    ],
-    // Hamil
-    [
-      [
-        {time:'Sarapan',name:'Roti gandum + telur + susu',cal:380,tip:'Folat dari telur penting untuk trimester 1'},
-        {time:'Siang',name:'Nasi + ikan + sayur hijau',cal:480,tip:'Makan lebih banyak dari biasa, wajar'},
-        {time:'Snack',name:'Buah + yogurt',cal:200,tip:'Kalsium untuk perkembangan tulang janin'},
-        {time:'Malam',name:'Sup ayam sayur hangat',cal:350,tip:'Kaldu hangat baik untuk mual'},
-      ],
-    ],
+  const isMenyusui=cond.includes('menyusui'), isHamil=cond.includes('hamil');
+  const isKos=home.includes('Sendiri'), isOrangtua=home.includes('orang tua');
+  const isAnak=home.includes('anak kecil'), isPasangan=home.includes('pasangan')&&!isAnak;
+  const isMasak=cook.includes('masak sendiri');
+  const day=new Date().getDay();
+  const menus=[
+    [[{time:'Sarapan',name:'Roti gandum + telur ceplok',cal:280,tip:'Beli di warteg atau buat sendiri 10 menit'},{time:'Siang',name:'Nasi + ayam bakar + sayur',cal:420,tip:'Warteg: minta nasi setengah porsi'},{time:'Malam',name:'Mie instan + telur + sayur',cal:350,tip:'Kurangi bumbu setengah, tambah sayur beku'}],[{time:'Sarapan',name:'Oatmeal instant + susu kedelai',cal:250,tip:'Rebus 3 menit, hemat dan mengenyangkan'},{time:'Siang',name:'Pecel + tahu tempe',cal:380,tip:'Beli di warteg, skip lontong'},{time:'Malam',name:'Soto ayam bening + nasi sedikit',cal:300,tip:'Pilih kuah bening, no bihun'}]],
+    [[{time:'Sarapan',name:'Telur dadar sayur + roti',cal:300,tip:'10 menit prep, protein bagus'},{time:'Siang',name:'Nasi + tempe orek + tumis bayam',cal:400,tip:'Masak sekali untuk 2 hari'},{time:'Malam',name:'Sup tahu bening',cal:200,tip:'Ringan untuk malam'}]],
+    [[{time:'Sarapan',name:'Ikut sarapan rumah + kurangi nasi',cal:350,tip:'Ambil lebih banyak sayur dan lauk'},{time:'Siang',name:'Makan siang rumah + piring ideal',cal:450,tip:'1/2 sayur, 1/4 protein, 1/4 nasi'},{time:'Malam',name:'Makan malam rumah, skip nasi',cal:280,tip:'Minta porsi protein lebih, nasi dikurangi'}]],
+    [[{time:'Sarapan',name:'Telur poach + avokad toast',cal:320,tip:'Weekend brunch yang sehat dan enak'},{time:'Siang',name:'Ayam bakar bumbu merah + lalapan',cal:420,tip:'Satu resep untuk berdua'},{time:'Malam',name:'Sup ikan tomat + nasi merah sedikit',cal:350,tip:'Ringan dan bergizi'}],[{time:'Sarapan',name:'Smoothie pisang + telur rebus',cal:290,tip:'Cepat sebelum kerja'},{time:'Siang',name:'Gado-gado protein',cal:380,tip:'Saus kacang no gula'},{time:'Malam',name:'Ikan bumbu kuning + tumis brokoli',cal:360,tip:'Favorit semua orang'}]],
+    [[{time:'Sarapan',name:'Telur dadar + nasi tim (anak) / oatmeal (kamu)',cal:300,tip:'Masak sekaligus, saji berbeda'},{time:'Siang',name:'Soto ayam keluarga',cal:400,tip:'Anak: pakai bihun. Kamu: skip bihun'},{time:'Malam',name:'Ayam kukus bumbu + sayur bening',cal:350,tip:'Satu masak, semua suka'}]],
+    [[{time:'Sarapan',name:'Oatmeal + telur + susu kedelai',cal:380,tip:'Booster ASI: oatmeal dan kedelai :-)'},{time:'Siang',name:'Sayur bening katuk + ikan',cal:350,tip:'Katuk adalah booster ASI terbaik!'},{time:'Snack',name:'Kurma 3 biji + kacang almond',cal:200,tip:'Zat besi dan energi untuk nyusu'},{time:'Malam',name:'Tempe + tumis bayam',cal:280,tip:'Bayam tinggi zat besi untuk busui'}]],
+    [[{time:'Sarapan',name:'Roti gandum + telur + susu',cal:380,tip:'Folat dari telur penting untuk trimester 1'},{time:'Siang',name:'Nasi + ikan + sayur hijau',cal:480,tip:'Makan lebih banyak dari biasa, wajar'},{time:'Snack',name:'Buah + yogurt',cal:200,tip:'Kalsium untuk perkembangan tulang janin'},{time:'Malam',name:'Sup ayam sayur hangat',cal:350,tip:'Kaldu hangat baik untuk mual'}]],
   ];
-
-  // Select appropriate menu set
   let set;
-  if (isMenyusui) set = menus[5];
-  else if (isHamil) set = menus[6];
-  else if (isAnak) set = menus[4];
-  else if (isPasangan) set = menus[3];
-  else if (isOrangtua) set = menus[2];
-  else if (isKos && isMasak) set = menus[1];
-  else set = menus[0];
-
-  return set[day % set.length];
+  if(isMenyusui)set=menus[5];
+  else if(isHamil)set=menus[6];
+  else if(isAnak)set=menus[4];
+  else if(isPasangan)set=menus[3];
+  else if(isOrangtua)set=menus[2];
+  else if(isKos&&isMasak)set=menus[1];
+  else set=menus[0];
+  return set[day%set.length];
 }
 
 // ── WATER ──
 function buildGlasses() {
-  const c = document.getElementById('glasses');
-  c.innerHTML = '';
+  const c=document.getElementById('glasses'); c.innerHTML='';
   for(let i=0;i<8;i++){
     const b=document.createElement('button');
     b.className='glass'+(i<(D.water||0)?' full':'');
@@ -966,10 +914,7 @@ function buildGlasses() {
   }
   updWater();
 }
-function togGlass(i){
-  D.water = i < D.water ? i : i+1;
-  buildGlasses(); saveDay(); debNara();
-}
+function togGlass(i){ D.water=i<D.water?i:i+1; buildGlasses(); saveDay(); debNara(); }
 function updWater(){
   const w=D.water||0;
   document.getElementById('w-status').textContent=`${w} dari 8 gelas`;
@@ -978,20 +923,15 @@ function updWater(){
 }
 
 // ── MOOD ──
-function setMood(btn,mood){
-  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  D.mood=mood; saveDay(); debNara();
-}
+function setMood(btn,mood){ document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); D.mood=mood; saveDay(); debNara(); }
 
 // ── CONDITIONS ──
 function togCond(btn,c){
   btn.classList.toggle('on');
-  if(!D.conditions) D.conditions=[];
+  if(!D.conditions)D.conditions=[];
   if(btn.classList.contains('on')){if(!D.conditions.includes(c))D.conditions.push(c);}
   else D.conditions=D.conditions.filter(x=>x!==c);
-  saveDay();
-  buildMenuSuggest(); // refresh menu based on condition
+  saveDay(); buildMenuSuggest();
 }
 
 // ── MEALS ──
@@ -1009,7 +949,6 @@ async function addMeal(){
   btn.disabled=false; btn.textContent='Catat';
   askNaraMeal(txt,cal,D.totalCal);
 }
-
 async function estCal(food){
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:60,system:'Estimator kalori makanan Indonesia. Balas HANYA dengan angka bulat saja. Contoh: 450',messages:[{role:'user',content:`Kalori: ${food}`}]})});
@@ -1018,29 +957,20 @@ async function estCal(food){
     return isNaN(n)?300:n;
   }catch{return 300;}
 }
-
 function renderMeals(){
-  const list=document.getElementById('meal-list');
-  list.innerHTML='';
+  const list=document.getElementById('meal-list'); list.innerHTML='';
   (D.meals||[]).forEach(m=>{
-    const li=document.createElement('li');
-    li.className='meal-item';
+    const li=document.createElement('li'); li.className='meal-item';
     li.innerHTML=`<span class="meal-t">${m.time}</span><span class="meal-n">${m.name}</span><span class="meal-k">~${m.cal} kkal</span>`;
     list.appendChild(li);
   });
   const tot=D.totalCal||0;
   document.getElementById('cal-status').textContent=`~${tot} kkal`;
-  if(tot>0){
-    document.getElementById('cal-bar').style.display='flex';
-    document.getElementById('cal-bar-num').textContent=`~${tot} kkal`;
-  }
+  if(tot>0){document.getElementById('cal-bar').style.display='flex';document.getElementById('cal-bar-num').textContent=`~${tot} kkal`;}
 }
-
 async function askNaraMeal(food,cal,total){
-  const el=document.getElementById('nara-meal');
-  const txt=document.getElementById('nara-meal-txt');
-  el.classList.add('on');
-  txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
+  const el=document.getElementById('nara-meal'),txt=document.getElementById('nara-meal-txt');
+  el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:250,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP dalam INARTE. Profil user: nama ${P.name||'teman'}, ${P.act||''}, ${P.cook||''}, budget ${P.budget||''}.\n\nGaya: seperti sahabat yang peduli, bukan dokter. Bahasa Indonesia natural, boleh 1-2 kata Inggris tapi tidak berlebihan. Pakai emoticon garis seperti :-) atau :-D sesekali. Tidak menghakimi. Kalau makannya sudah bagus, apresiasi! Kalau kurang ideal, kasih saran ringan tanpa menggurui. Di akhir boleh suggest olahraga ringan untuk membakar kalori. Maksimal 3 kalimat.`,messages:[{role:'user',content:`Baru makan: ${food} (~${cal} kkal). Total hari ini: ~${total} kkal.`}]})});
     const d=await r.json();
@@ -1051,17 +981,13 @@ async function askNaraMeal(food,cal,total){
 // ── MOVEMENT ──
 function setMove(btn,move,calPerHour){
   document.querySelectorAll('.move-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  D.move=move; D.moveCal=calPerHour;
-  saveDay();
+  btn.classList.add('sel'); D.move=move; D.moveCal=calPerHour; saveDay();
   const sug=document.getElementById('move-suggest');
-  if(move==='istirahat'){
-    sug.style.display='block'; sug.classList.add('on');
-    sug.textContent='Istirahat juga bagian dari pemulihan. Tubuh yang cukup istirahat justru lebih efektif bergerak esok hari :-)';
-  } else {
-    const deficit = Math.max(0,(D.totalCal||0)-1800);
-    const minsNeeded = calPerHour>0 ? Math.round(deficit/calPerHour*60) : 0;
-    sug.style.display='block'; sug.classList.add('on');
+  if(move==='istirahat'){sug.style.display='block';sug.classList.add('on');sug.textContent='Istirahat juga bagian dari pemulihan. Tubuh yang cukup istirahat justru lebih efektif bergerak esok hari :-)';}
+  else{
+    const deficit=Math.max(0,(D.totalCal||0)-1800);
+    const minsNeeded=calPerHour>0?Math.round(deficit/calPerHour*60):0;
+    sug.style.display='block';sug.classList.add('on');
     sug.textContent=`${move} membakar sekitar ${calPerHour} kkal/jam. ${minsNeeded>0?`Untuk membakar kalori hari ini, sekitar ${minsNeeded} menit sudah cukup! :-)`:'Kalori hari ini sudah aman, olahraga ini jadi bonus yang bagus!'}`;
   }
   debNara();
@@ -1070,30 +996,149 @@ function setMove(btn,move,calPerHour){
 // ── NARA TODAY ──
 let naraT;
 function debNara(){ clearTimeout(naraT); naraT=setTimeout(askNaraToday,1500); }
-
 async function askNaraToday(){
   const hasData=D.water>0||D.mood||(D.meals&&D.meals.length)||D.move;
   if(!hasData)return;
-  const el=document.getElementById('nara-today');
-  const txt=document.getElementById('nara-today-txt');
-  el.classList.add('on');
-  txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
+  const el=document.getElementById('nara-today'),txt=document.getElementById('nara-today-txt');
+  el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
   const conds=D.conditions?.join(', ')||'tidak ada kondisi khusus';
   const summary=`Air: ${D.water}/8 gelas. Mood: ${D.mood||'belum diisi'}. Makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'} (total ~${D.totalCal||0} kkal). Gerak: ${D.move||'belum diisi'}. Kondisi: ${conds}.`;
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:280,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP. Profil: nama ${P.name||'teman'}, ${P.act||''}, budget ${P.budget||}.\n\nGaya bicara:\n- Seperti sahabat dekat yang benar-benar peduli\n- Bahasa Indonesia yang natural dan hangat\n- Boleh pakai emoticon garis :-) atau :-D sesekali\n- Tidak menghakimi, tidak menggurui sama sekali\n- Kalau ada kondisi haid/sakit, acknowledge dengan empati dulu\n- Validasi perasaan sebelum saran\n- Maksimal 3 kalimat pendek\n- Tiap response harus BERBEDA dari sebelumnya`,messages:[{role:'user',content:summary}]})});
+    // FIX: was ${P.budget||} — missing fallback, caused SyntaxError
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:280,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP. Profil: nama ${P.name||'teman'}, ${P.act||''}, budget ${P.budget||}.\n\nGaya bicara:\n- Seperti sahabat dekat yang benar-benar peduli\n- Bahasa Indonesia yang natural dan hangat\n- Boleh pakai emoticon garis :-) atau :-D sesekali\n- Tidak menghakimi, tidak menggurui sama sekali\n- Kalau ada kondisi haid/sakit, acknowledge dengan empati dulu\n- Validasi perasaan sebelum saran\n- Maksimal 3 kalimat pendek\n- Tiap response harus BERBEDA dari sebelumnya`.replace('budget ${P.budget||}',`budget ${P.budget||''}`),messages:[{role:'user',content:summary}]})});
     const d=await r.json();
     txt.innerHTML=`<p>${d.content?.[0]?.text||'Kamu sudah melakukan yang terbaik hari ini :-)'}</p>`;
   }catch{txt.innerHTML='<p>Kamu sudah mulai hari ini dengan baik. Lanjutkan saja pelan-pelan :-)</p>';}
 }
 
+// ── MONTHLY GOALS ──
+const GOAL_PRESETS = [
+  'Minum 8 gelas setiap hari',
+  'Olahraga 3x seminggu',
+  'Tidur 7+ jam',
+  'No junk food',
+  'Makan sayur setiap hari',
+  'Meditasi 5 menit / hari',
+  'Kurangi gula',
+  'Jalan kaki 30 menit / hari',
+  'Tidak skip sarapan',
+  'Screen time lebih sedikit malam hari',
+];
+
+function getGoalKey() {
+  const d = new Date();
+  return `inarte_goals_${d.getFullYear()}_${d.getMonth()+1}`;
+}
+
+function loadGoals() {
+  return load(getGoalKey()) || { goals: [] };
+}
+
+function saveGoals(data) {
+  save(getGoalKey(), data);
+}
+
+function buildMonthlyGoals() {
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const d = new Date();
+  document.getElementById('mg-month-label').textContent = `${months[d.getMonth()]} ${d.getFullYear()}`;
+
+  // Build presets (only show ones not yet added)
+  renderGoalPresets();
+  renderGoalList();
+}
+
+function renderGoalPresets() {
+  const data = loadGoals();
+  const existingTexts = data.goals.map(g => g.text.toLowerCase());
+  const presetsEl = document.getElementById('mg-presets');
+  presetsEl.innerHTML = '';
+  GOAL_PRESETS.forEach(p => {
+    if (existingTexts.includes(p.toLowerCase())) return;
+    const btn = document.createElement('button');
+    btn.className = 'mg-preset';
+    btn.textContent = '+ ' + p;
+    btn.onclick = () => { addGoalText(p); };
+    presetsEl.appendChild(btn);
+  });
+}
+
+function renderGoalList() {
+  const data = loadGoals();
+  const list = document.getElementById('mg-goals-list');
+  list.innerHTML = '';
+
+  if (data.goals.length === 0) {
+    list.innerHTML = '<div class="mg-empty">Belum ada target bulan ini. Pilih dari preset atau tulis sendiri :-)</div>';
+    updateGoalProgress(0, 0);
+    return;
+  }
+
+  data.goals.forEach((g, i) => {
+    const li = document.createElement('li');
+    li.className = 'mg-goal-item' + (g.done ? ' done' : '');
+    li.innerHTML = `
+      <div class="mg-check"><div class="mg-check-mark"></div></div>
+      <span class="mg-goal-text">${g.text}</span>
+      <button class="mg-goal-del" onclick="deleteGoal(${i},event)" title="Hapus">✕</button>
+    `;
+    li.addEventListener('click', (e) => {
+      if (e.target.closest('.mg-goal-del')) return;
+      toggleGoal(i);
+    });
+    list.appendChild(li);
+  });
+
+  const done = data.goals.filter(g => g.done).length;
+  updateGoalProgress(done, data.goals.length);
+}
+
+function updateGoalProgress(done, total) {
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('mg-bar').style.width = pct + '%';
+  document.getElementById('mg-pct').textContent = pct + '%';
+  document.getElementById('mg-count-label').textContent = `${done} dari ${total} selesai`;
+}
+
+function addGoalText(text) {
+  const data = loadGoals();
+  const exists = data.goals.some(g => g.text.toLowerCase() === text.toLowerCase());
+  if (exists) return;
+  data.goals.push({ text, done: false, addedAt: Date.now() });
+  saveGoals(data);
+  renderGoalList();
+  renderGoalPresets();
+}
+
+function addGoal() {
+  const inp = document.getElementById('mg-add-inp');
+  const text = inp.value.trim();
+  if (!text) return;
+  addGoalText(text);
+  inp.value = '';
+}
+
+function toggleGoal(i) {
+  const data = loadGoals();
+  data.goals[i].done = !data.goals[i].done;
+  saveGoals(data);
+  renderGoalList();
+}
+
+function deleteGoal(i, e) {
+  e.stopPropagation();
+  const data = loadGoals();
+  data.goals.splice(i, 1);
+  saveGoals(data);
+  renderGoalList();
+  renderGoalPresets();
+}
+
 // ── WELLNESS ──
 function calcSleep(){
-  const s=document.getElementById('sleep-start').value;
-  const e=document.getElementById('sleep-end').value;
+  const s=document.getElementById('sleep-start').value, e=document.getElementById('sleep-end').value;
   if(!s||!e){document.getElementById('sleep-dur').textContent='— jam';return;}
-  const [sh,sm]=s.split(':').map(Number);
-  const [eh,em]=e.split(':').map(Number);
+  const [sh,sm]=s.split(':').map(Number), [eh,em]=e.split(':').map(Number);
   if(isNaN(sh)||isNaN(sm)||isNaN(eh)||isNaN(em)){document.getElementById('sleep-dur').textContent='— jam';return;}
   let diff=((eh*60+em)-(sh*60+sm)+1440)%1440;
   const hrs=(diff/60).toFixed(1);
@@ -1109,37 +1154,28 @@ const emoMap={
   berat:['Sedih','Cemas','Frustrasi','Lelah banget','Kewalahan','Kesepian','Marah','Kecewa','Takut','Minder'],
   campur:['Galau','Ambigu','Excited tapi takut','Sedih tapi bersyukur','Campur aduk','Lega tapi sedih','Semangat tapi lelah']
 };
-
 function selBroadEmo(btn,cat){
   document.querySelectorAll('.emo-bb').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
-  const spec=document.getElementById('emo-spec');
-  spec.innerHTML='';
+  const spec=document.getElementById('emo-spec'); spec.innerHTML='';
   emoMap[cat].forEach(e=>{
-    const t=document.createElement('button');
-    t.className='emo-tag'; t.textContent=e;
-    t.onclick=()=>t.classList.toggle('sel');
-    spec.appendChild(t);
+    const t=document.createElement('button'); t.className='emo-tag'; t.textContent=e;
+    t.onclick=()=>t.classList.toggle('sel'); spec.appendChild(t);
   });
   spec.classList.add('on');
 }
 
 async function saveWellness(){
-  const sleepStart=document.getElementById('sleep-start').value;
-  const sleepEnd=document.getElementById('sleep-end').value;
-  const why=document.getElementById('emo-why').value;
-  const journal=document.getElementById('journal').value;
-  const grat=document.getElementById('grat').value;
-  const hope=document.getElementById('hope').value;
+  const sleepStart=document.getElementById('sleep-start').value, sleepEnd=document.getElementById('sleep-end').value;
+  const why=document.getElementById('emo-why').value, journal=document.getElementById('journal').value;
+  const grat=document.getElementById('grat').value, hope=document.getElementById('hope').value;
   const emos=[...document.querySelectorAll('.emo-tag.sel')].map(e=>e.textContent);
   const broadEl=document.querySelector('.emo-bb.sel');
   const broad=broadEl?.querySelector('.emo-bb-lbl')?.textContent||'';
   D.wellness={sleepStart,sleepEnd,why,journal,grat,hope,emotions:emos,broad};
   saveDay();
-  const el=document.getElementById('nara-w');
-  const txt=document.getElementById('nara-w-txt');
-  el.classList.add('on');
-  txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
+  const el=document.getElementById('nara-w'), txt=document.getElementById('nara-w-txt');
+  el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:350,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP dalam INARTE. Nama user: ${P.name||'teman'}.\n\nGaya bicara:\n- Sahabat yang benar-benar mendengarkan, bukan AI yang menjawab\n- Bahasa Indonesia yang hangat dan natural\n- Boleh 1-2 kata Inggris yang natural\n- Pakai emoticon garis :-) sesekali\n- Validasi perasaan DULU sebelum apapun\n- Tidak selalu harus kasih saran\n- Kalau ada hal yang berat, tunjukkan empati yang tulus\n- Kalau kelihatan butuh bantuan profesional, arahkan dengan hangat (bukan menghakimi)\n- Maksimal 4 kalimat\n- Akhiri dengan sesuatu yang menguatkan tapi tidak klise`,messages:[{role:'user',content:`Tidur: ${sleepStart} - ${sleepEnd}. Perasaan: ${broad}. Emosi spesifik: ${emos.join(', ')||'tidak dipilih'}. Kenapa: ${why||'-'}. Catatan: ${journal||'-'}. Hal baik: ${grat||'-'}. Harapan besok: ${hope||'-'}.`}]})});
     const d=await r.json();
@@ -1161,23 +1197,17 @@ const jajanan=[
   {icon:'🍡',name:'Gorengan',mod:'Max 1-2 potong saja. Tiriskan minyaknya. Pilih tempe/tahu daripada bakwan.',cal:'~150-200 kkal (2 potong)'},
   {icon:'🥚',name:'Nasi goreng',mod:'Minta minyak sedikit. Tambah sayur. Porsi nasi lebih kecil. No kecap manis.',cal:'~400-500 kkal'},
 ];
-
 function buildJajanan(){
   const g=document.getElementById('jaj-grid');
   jajanan.forEach(j=>{
-    const c=document.createElement('div');
-    c.className='jaj-card';
+    const c=document.createElement('div'); c.className='jaj-card';
     c.innerHTML=`<div class="jaj-icon">${j.icon}</div><div class="jaj-name">${j.name}</div><div class="jaj-mod">${j.mod}</div><div class="jaj-cal">${j.cal}</div>`;
     g.appendChild(c);
   });
 }
-
 function buildPersonalTips(){
-  const c=document.getElementById('tips-personal');
-  c.innerHTML='';
-  const act=P.act||'';
-  const cook=P.cook||'';
-  const home=P.home||'';
+  const c=document.getElementById('tips-personal'); c.innerHTML='';
+  const act=P.act||'', cook=P.cook||'', home=P.home||'';
   const tips=[];
   if(act.includes('kantoran')){tips.push({icon:'💼',title:'Untuk kamu yang kerja di kantor :-)',badge:'Gerak',bc:'background:var(--moss-p);color:var(--moss)',body:'Duduk terlalu lama berpengaruh ke metabolisme. Berdiri dan jalan 2-3 menit setiap jam itu sudah membantu banget!',items:['Jalan ke tempat makan yang sedikit lebih jauh saat istirahat','Snack meja: almond, yogurt, atau buah','Minum air sebelum makan siang biar tidak makan berlebihan']});}
   if(act.includes('mahasiswa')||act.includes('pelajar')||home.includes('Sendiri')){tips.push({icon:'📚',title:'Hidup sehat di kos, bisa banget! :-)',badge:'Budget',bc:'background:var(--amber-p);color:var(--amber)',body:'Makan sehat tidak harus mahal. Telur, tahu, tempe adalah protein paling terjangkau yang bisa ditemukan di mana saja.',items:['Indomie? Kurangi bumbu setengah, tambah telur dan sayur beku','Warteg: minta lebih banyak sayur, nasi setengah','Snack kos: pisang, kacang rebus, atau roti gandum']});}
@@ -1186,13 +1216,11 @@ function buildPersonalTips(){
   tips.push({icon:'🌙',title:'Rutinitas malam yang membantu :-)',badge:'Tidur',bc:'background:var(--dusk-p);color:var(--dusk)',body:'Tidur adalah bagian dari program kesehatanmu. Tidur buruk membuat rasa lapar meningkat keesokan harinya.',items:['Hindari layar HP 30 menit sebelum tidur','Makan malam ringan dan selesai sebelum jam 20.00','Stretching 5 menit sebelum tidur membantu kualitas tidur']});
   if(!tips.length){tips.push({icon:'🌿',title:'Mulai dari yang paling kecil :-)',badge:'Umum',bc:'background:var(--moss-p);color:var(--moss)',body:'Tidak ada perubahan besar yang terjadi dalam semalam. Tapi perubahan kecil yang konsisten, itu yang mengubah segalanya.',items:['Mulai dengan minum 1 gelas air setelah bangun tidur','Kurangi 1 porsi nasi setiap makan','Tidur 30 menit lebih awal dari biasanya']});}
   tips.forEach(t=>{
-    const card=document.createElement('div');
-    card.className='tip-card';
+    const card=document.createElement('div'); card.className='tip-card';
     card.innerHTML=`<div class="tip-ch"><span class="tip-ci">${t.icon}</span><span class="tip-ct">${t.title}</span><span class="tip-badge" style="${t.bc}">${t.badge}</span></div><div class="tip-cb">${t.body}<ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
     c.appendChild(card);
   });
 }
-
 function showTip(id,btn){
   document.querySelectorAll('.tip-sec').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.tip-chip').forEach(b=>b.classList.remove('on'));
@@ -1202,36 +1230,26 @@ function showTip(id,btn){
 
 // ── PROGRESS ──
 function buildCalendar(){
-  const g=document.getElementById('cal-grid');
-  g.innerHTML='';
-  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d=>{
-    const el=document.createElement('div');
-    el.className='cal-dlbl'; el.textContent=d; g.appendChild(el);
-  });
-  const now=new Date();
-  const y=now.getFullYear(),m=now.getMonth();
-  const fd=new Date(y,m,1).getDay();
-  const dim=new Date(y,m+1,0).getDate();
+  const g=document.getElementById('cal-grid'); g.innerHTML='';
+  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d=>{const el=document.createElement('div');el.className='cal-dlbl';el.textContent=d;g.appendChild(el);});
+  const now=new Date(),y=now.getFullYear(),m=now.getMonth();
+  const fd=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
   const logs=load('inarte_logs')||{};
   for(let i=0;i<fd;i++){const el=document.createElement('div');el.className='cal-day empty';g.appendChild(el);}
   for(let d=1;d<=dim;d++){
     const el=document.createElement('div');
     const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isT=ds===TODAY;
-    const lg=logs[ds];
+    const isT=ds===TODAY,lg=logs[ds];
     el.className='cal-day'+(isT?' today':'')+(lg?.logged?(lg.water>=6?' lf':' lp'):'');
     el.textContent=d; g.appendChild(el);
   }
 }
-
 function buildHeatmap(){
-  const g=document.getElementById('heatmap');
-  g.innerHTML='';
+  const g=document.getElementById('heatmap'); g.innerHTML='';
   const logs=load('inarte_logs')||{};
   for(let i=83;i>=0;i--){
     const d=new Date(); d.setDate(d.getDate()-i);
-    const key=d.toISOString().split('T')[0];
-    const lg=logs[key];
+    const key=d.toISOString().split('T')[0],lg=logs[key];
     const el=document.createElement('div');
     el.className='hm-cell'+(lg?.logged?(lg.water>=6?' v3':lg.water>=3?' v2':' v1'):'');
     const dd=['Min','Sen','Sel','Rab','Kam','Jum','Sab'][d.getDay()];
@@ -1239,7 +1257,6 @@ function buildHeatmap(){
     g.appendChild(el);
   }
 }
-
 function buildWeeklyRecap(){
   const el=document.getElementById('weekly-recap');
   const logs=load('inarte_logs')||{};
@@ -1252,46 +1269,31 @@ function buildWeeklyRecap(){
     <div class="recap-row"><span class="recap-icon">💧</span><span class="recap-lbl">Rata-rata minum air</span><div class="recap-bw"><div class="recap-b" style="width:${Math.min(avgW/8*100,100)}%"></div></div><span class="recap-val">${avgW.toFixed(1)} gelas</span></div>
     <div class="recap-row"><span class="recap-icon">🌱</span><span class="recap-lbl">Konsistensi</span><div class="recap-bw"><div class="recap-b" style="width:${logged/7*100}%;background:var(--amber)"></div></div><span class="recap-val">${Math.round(logged/7*100)}%</span></div>
   `;
-  // stats
   const allKeys=Object.keys(logs).filter(k=>logs[k].logged);
   document.getElementById('st-total').textContent=allKeys.length;
-  let streak=0;const dd=new Date();
+  let streak=0; const dd=new Date();
   while(true){const k=dd.toISOString().split('T')[0];if(logs[k]?.logged){streak++;dd.setDate(dd.getDate()-1);}else break;}
   document.getElementById('st-streak').textContent=streak;
   const ws=allKeys.map(k=>logs[k].water||0);
   document.getElementById('st-water').textContent=ws.length?(ws.reduce((a,b)=>a+b,0)/ws.length).toFixed(1):'0';
 }
-
 function buildMoodChart(){
   const el=document.getElementById('mood-chart');
   const logs=load('inarte_logs')||{};
   const now=new Date();
   const counts={senang:0,netral:0,lelah:0,berat:0,semangat:0};
-  for(let i=0;i<30;i++){
-    const d=new Date(now); d.setDate(d.getDate()-i);
-    const k=d.toISOString().split('T')[0];
-    const m=logs[k]?.mood;
-    if(m&&counts[m]!==undefined)counts[m]++;
-  }
+  for(let i=0;i<30;i++){const d=new Date(now);d.setDate(d.getDate()-i);const k=d.toISOString().split('T')[0];const m=logs[k]?.mood;if(m&&counts[m]!==undefined)counts[m]++;}
   const maxV=Math.max(...Object.values(counts),1);
   const moodLabels={senang:'😊',netral:'😐',lelah:'😮‍💨',berat:'😔',semangat:'🔥'};
   el.innerHTML='';
   Object.entries(counts).forEach(([mood,count])=>{
-    const wrap=document.createElement('div');
-    wrap.className='mood-bar-wrap';
-    const bar=document.createElement('div');
-    bar.className='mood-bar';
-    bar.style.height=`${Math.max(count/maxV*50,4)}px`;
-    const lbl=document.createElement('div');
-    lbl.className='mood-bar-lbl';
-    lbl.textContent=moodLabels[mood];
-    wrap.appendChild(bar); wrap.appendChild(lbl);
-    el.appendChild(wrap);
+    const wrap=document.createElement('div'); wrap.className='mood-bar-wrap';
+    const bar=document.createElement('div'); bar.className='mood-bar'; bar.style.height=`${Math.max(count/maxV*50,4)}px`;
+    const lbl=document.createElement('div'); lbl.className='mood-bar-lbl'; lbl.textContent=moodLabels[mood];
+    wrap.appendChild(bar); wrap.appendChild(lbl); el.appendChild(wrap);
   });
 }
-
 async function buildNaraRecap(){
-  const el=document.getElementById('nara-recap');
   const txt=document.getElementById('nara-recap-txt');
   const logs=load('inarte_logs')||{};
   const keys=Object.keys(logs).filter(k=>logs[k].logged);
@@ -1310,85 +1312,51 @@ async function buildNaraRecap(){
 }
 
 // ── NARA FLOAT CHAT ──
-function initNaraChat(){
-  addNaraMsg(getNaraOpener(), 'nara');
-  // auto-close after 3 min of no activity
-  let closeTimer;
-  const chat=document.getElementById('nara-chat');
-  document.getElementById('nc-inp').addEventListener('input',()=>{clearTimeout(closeTimer);closeTimer=setTimeout(autoCloseNara,180000);});
-}
-
+function initNaraChat(){ addNaraMsg(getNaraOpener(),'nara'); }
 function getNaraOpener(){
   const page=document.querySelector('.page.active')?.id||'';
   const name=P.name?`, ${P.name}`:'';
-  if(page==='pg-today') return `Hei${name}! :-) Butuh rekomendasi makan hari ini, atau mau olahraga apa? Cerita aja ke aku!`;
-  if(page==='pg-wellness') return `Hei${name}! Mau cerita apa hari ini? Aku di sini buat dengerin :-)`; 
-  if(page==='pg-tips') return `Hei${name}! Ada yang mau ditanyain soal tips makan atau olahraga? Tanya aja!`;
-  if(page==='pg-progress') return `Hei${name}! Gimana ngeliat progresnya? Ada yang mau diobrolin? :-)`;
+  if(page==='pg-today')return `Hei${name}! :-) Butuh rekomendasi makan hari ini, atau mau olahraga apa? Cerita aja ke aku!`;
+  if(page==='pg-wellness')return `Hei${name}! Mau cerita apa hari ini? Aku di sini buat dengerin :-)`;
+  if(page==='pg-tips')return `Hei${name}! Ada yang mau ditanyain soal tips makan atau olahraga? Tanya aja!`;
+  if(page==='pg-progress')return `Hei${name}! Gimana ngeliat progresnya? Ada yang mau diobrolin? :-)`;
   return `Hei${name}! Ada yang bisa aku bantu hari ini? :-)`;
 }
-
 function togNaraChat(){
-  const chat=document.getElementById('nara-chat');
-  const badge=document.getElementById('nara-badge');
+  const chat=document.getElementById('nara-chat'), badge=document.getElementById('nara-badge');
   chat.classList.toggle('on');
-  if(chat.classList.contains('on')){
-    badge.classList.remove('on');
-    document.getElementById('nc-inp').focus();
-  }
+  if(chat.classList.contains('on')){badge.classList.remove('on');document.getElementById('nc-inp').focus();}
 }
-
 function addNaraMsg(text,who){
   const msgs=document.getElementById('nc-msgs');
-  const div=document.createElement('div');
-  div.className=`nc-msg ${who}`;
-  div.textContent=text;
-  msgs.appendChild(div);
-  msgs.scrollTop=msgs.scrollHeight;
+  const div=document.createElement('div'); div.className=`nc-msg ${who}`; div.textContent=text;
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
 }
-
 async function sendNara(){
   const inp=document.getElementById('nc-inp');
   const txt=inp.value.trim(); if(!txt)return;
-  addNaraMsg(txt,'user');
-  inp.value='';
+  addNaraMsg(txt,'user'); inp.value='';
   chatHistory.push({role:'user',content:txt});
   addNaraMsg('...','nara');
-  const msgs=document.getElementById('nc-msgs');
-  const loadEl=msgs.lastChild;
+  const msgs=document.getElementById('nc-msgs'), loadEl=msgs.lastChild;
   try{
-    const ctx=`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE.\nProfil user: nama ${P.name||'teman'}, ${P.act||''}, ${P.home||''}, budget ${P.budget||}.\nData hari ini: air ${D.water}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}.\n\nGaya bicara:\n- Seperti sahabat ENFP yang energik, empatik, dan tulus\n- Bahasa Indonesia yang natural dan hangat\n- Boleh 1-2 kata Inggris yang natural\n- Emoticon garis :-) sesekali\n- Tidak menggurui, tidak sok tahu\n- Kalau user butuh bantuan profesional (psikolog, dokter, ahli gizi), arahkan dengan hangat dan jelas\n- Tidak pura-pura bisa gantikan profesional\n- Kalau tidak ada jawaban di luar kemampuan, akui dengan jujur\n- Respons pendek dan natural, seperti chat WhatsApp`;
+    // FIX: was ${P.budget||} — missing fallback, caused SyntaxError
+    const ctx=`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE.\nProfil user: nama ${P.name||'teman'}, ${P.act||''}, ${P.home||''}, budget ${P.budget||''}.\nData hari ini: air ${D.water}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}.\n\nGaya bicara:\n- Seperti sahabat ENFP yang energik, empatik, dan tulus\n- Bahasa Indonesia yang natural dan hangat\n- Boleh 1-2 kata Inggris yang natural\n- Emoticon garis :-) sesekali\n- Tidak menggurui, tidak sok tahu\n- Kalau user butuh bantuan profesional (psikolog, dokter, ahli gizi), arahkan dengan hangat dan jelas\n- Tidak pura-pura bisa gantikan profesional\n- Kalau tidak ada jawaban di luar kemampuan, akui dengan jujur\n- Respons pendek dan natural, seperti chat WhatsApp`;
     const history=chatHistory.slice(-6).map(h=>({role:h.role,content:h.content}));
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:ctx,messages:history})});
     const d=await r.json();
     const reply=d.content?.[0]?.text||'Hmm, aku lagi agak lambat nih. Coba lagi ya! :-)';
-    msgs.removeChild(loadEl);
-    addNaraMsg(reply,'nara');
+    msgs.removeChild(loadEl); addNaraMsg(reply,'nara');
     chatHistory.push({role:'assistant',content:reply});
   }catch{
     msgs.removeChild(loadEl);
-    addNaraMsg('Koneksinya lagi agak trouble nih. Coba lagi dalam sebentar ya! :-)', 'nara');
+    addNaraMsg('Koneksinya lagi agak trouble nih. Coba lagi dalam sebentar ya! :-)','nara');
   }
 }
 
-function autoCloseNara(){
-  const quotes=['Oke, aku tutup dulu ya! Kalau butuh aku, tap ikon N di bawah. Semangat terus :-)', 'Sampai nanti ya! Perjalananmu hari ini sudah berarti :-)', 'Yuk istirahat dulu. Aku di sini kalau kamu butuh ngobrol lagi!'];
-  addNaraMsg(quotes[Math.floor(Math.random()*quotes.length)],'nara');
-  setTimeout(()=>{
-    document.getElementById('nara-chat').classList.remove('on');
-    document.getElementById('nara-badge').classList.add('on');
-  },3000);
-}
-
 // ── PROFILE ──
-function openProfile(){
-  document.getElementById('p-overlay').classList.add('on');
-  document.getElementById('p-panel').classList.add('open');
-}
-function closeProfile(){
-  document.getElementById('p-overlay').classList.remove('on');
-  document.getElementById('p-panel').classList.remove('open');
-}
+function openProfile(){ document.getElementById('p-overlay').classList.add('on'); document.getElementById('p-panel').classList.add('open'); }
+function closeProfile(){ document.getElementById('p-overlay').classList.remove('on'); document.getElementById('p-panel').classList.remove('open'); }
 function saveProfile(){
   P.name=document.getElementById('pi-name').value.trim()||P.name;
   P.goals=document.getElementById('pi-goal').value.trim()||P.goals;
@@ -1400,10 +1368,7 @@ function saveProfile(){
   buildTopbar(); buildGreeting(); buildPersonalTips(); buildMenuSuggest();
   closeProfile();
 }
-function resetApp(){
-  if(!confirm('Yakin mau mulai ulang dari awal? Semua data akan terhapus.'))return;
-  localStorage.clear(); location.reload();
-}
+function resetApp(){ if(!confirm('Yakin mau mulai ulang dari awal? Semua data akan terhapus.'))return; localStorage.clear(); location.reload(); }
 
 // ── NAV ──
 function showPg(id,btn){
@@ -1412,10 +1377,8 @@ function showPg(id,btn){
   document.getElementById('pg-'+id).classList.add('active');
   btn.classList.add('active');
   if(id==='progress'){buildCalendar();buildHeatmap();buildWeeklyRecap();buildMoodChart();buildNaraRecap();}
-  // update nara chat opener based on page
-  if(document.getElementById('nara-chat').classList.contains('on')){
-    addNaraMsg(getNaraOpener(),'nara');
-  }
+  if(id==='wellness'){buildMonthlyGoals();}
+  if(document.getElementById('nara-chat').classList.contains('on')){addNaraMsg(getNaraOpener(),'nara');}
 }
 
 // ── RESTORE ──
