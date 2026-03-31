@@ -5,102 +5,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="theme-color" content="#4D6B52"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="INARTE"/>
 <link rel="manifest" id="pwa-manifest"/>
 <title>INARTE — Perjalananmu, Caramu</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --bg:       #F7F4EF;
-  --bg2:      #EFE9DF;
-  --bg3:      #E5DDD0;
-  --surface:  #FFFFFF;
-  --surface2: #FAF8F4;
-  --border:   #DDD6C8;
-  --border-l: #EAE5DC;
-  --text:     #1E1A14;
-  --text2:    #5C5448;
-  --text3:    #9C9080;
-  --text4:    #C4BAB0;
-  --moss:     #4D6B52;
-  --moss-l:   #C4D9C8;
-  --moss-p:   #EBF3EC;
-  --clay:     #8B4E38;
-  --clay-l:   #E8C4B8;
-  --clay-p:   #FAF0EC;
-  --amber:    #A67C3A;
-  --amber-l:  #E8D4A8;
-  --amber-p:  #FAF5E8;
-  --dusk:     #5C5080;
-  --dusk-l:   #C8C0E0;
-  --dusk-p:   #F0EEF8;
-  --sky:      #3A6B8B;
-  --sky-l:    #B8D4E8;
-  --sky-p:    #EBF3F8;
-  --rose:     #8B4A5C;
-  --rose-l:   #E8C0CC;
-  --rose-p:   #F8EDEF;
-  --r:        16px;
-  --rsm:      10px;
-  --rxs:      6px;
-  --sh:       0 2px 16px rgba(30,26,20,.07);
-  --shsm:     0 1px 6px rgba(30,26,20,.06);
+:root{
+  --bg:#F7F4EF;--bg2:#EFE9DF;--surface:#FFFFFF;
+  --border:#DDD6C8;--border-l:#EAE5DC;
+  --text:#1E1A14;--text2:#5C5448;--text3:#9C9080;--text4:#C4BAB0;
+  --moss:#4D6B52;--moss-l:#C4D9C8;--moss-p:#EBF3EC;
+  --clay:#8B4E38;--clay-l:#E8C4B8;--clay-p:#FAF0EC;
+  --amber:#A67C3A;--amber-l:#E8D4A8;--amber-p:#FAF5E8;
+  --dusk:#5C5080;--dusk-l:#C8C0E0;--dusk-p:#F0EEF8;
+  --sky:#3A6B8B;--sky-l:#B8D4E8;--sky-p:#EBF3F8;
+  --rose:#8B4A5C;--rose-l:#E8C0CC;--rose-p:#F8EDEF;
+  --r:16px;--rsm:10px;--rxs:6px;
+  --sh:0 2px 16px rgba(30,26,20,.07);--shsm:0 1px 6px rgba(30,26,20,.06);
+  --avc:#4D6B52;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;overflow-x:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes bounce{0%,80%,100%{transform:scale(.8);opacity:.5}40%{transform:scale(1.2);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
 
 /* ── ONBOARDING ── */
 #onboarding{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow-y:auto}
-.ob-wrap{background:var(--surface);border-radius:24px;padding:2.5rem 2rem;max-width:500px;width:100%;box-shadow:var(--sh);animation:fadeUp .4s ease}
-.ob-step{display:none}.ob-step.active{display:block}
+.ob-wrap{background:var(--surface);border-radius:24px;padding:2.5rem 2rem;max-width:480px;width:100%;box-shadow:var(--sh)}
+.ob-step{display:none}.ob-step.active{display:block;animation:fadeUp .3s ease}
 .ob-logo{font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;color:var(--moss);letter-spacing:.08em;margin-bottom:4px}
 .ob-logo span{font-style:italic;color:var(--clay)}
-.ob-tag{font-size:11px;color:var(--text3);letter-spacing:.08em;margin-bottom:1.75rem}
-.ob-dots{display:flex;gap:6px;justify-content:center;margin-bottom:2rem}
-.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all .2s}
+.ob-tag{font-size:11px;color:var(--text3);letter-spacing:.08em;margin-bottom:2rem}
+.ob-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.ob-back{background:none;border:1.5px solid var(--border);border-radius:20px;padding:6px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text3);cursor:pointer;transition:all .15s}
+.ob-back:hover{border-color:var(--moss-l);color:var(--moss)}
+.ob-dots{display:flex;gap:6px}
+.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all .25s}
 .ob-dot.active{background:var(--moss);width:20px;border-radius:3px}
 .ob-dot.done{background:var(--moss-l)}
-.ob-q{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:400;color:var(--text);margin-bottom:5px;line-height:1.4}
+.ob-step-num{font-size:11px;color:var(--text4)}
+.ob-q{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:var(--text);margin-bottom:5px;line-height:1.4}
 .ob-hint{font-size:12px;color:var(--text3);margin-bottom:1.25rem;line-height:1.65}
 .ob-inp{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;margin-bottom:8px}
 .ob-inp:focus{border-color:var(--moss)}
+.ob-inp-num{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--moss);background:var(--bg);outline:none;transition:border-color .2s;text-align:center;margin-bottom:8px}
+.ob-inp-num:focus{border-color:var(--moss)}
 .ob-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .ob-chip{padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text2);cursor:pointer;transition:all .15s}
 .ob-chip:hover{background:var(--bg2)}
 .ob-chip.sel{background:var(--moss);color:#fff;border-color:var(--moss)}
-.ob-chip.disabled{opacity:.35;pointer-events:none}
 .ob-btn{width:100%;padding:13px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:8px}
 .ob-btn:hover{background:#3D5842}
 .ob-ghost{width:100%;padding:10px;background:transparent;color:var(--text3);border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;margin-top:4px}
 
-/* ── APP ── */
+/* ── APP SHELL ── */
 #app{display:none;min-height:100vh;padding-bottom:72px}
 #app.on{display:block}
-
-/* ── TOPBAR ── */
 .topbar{position:sticky;top:0;z-index:100;background:rgba(247,244,239,.93);backdrop-filter:blur(12px);padding:.875rem 1.25rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-l)}
 .topbar-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:400;color:var(--moss);letter-spacing:.06em}
 .topbar-logo span{font-style:italic;color:var(--clay)}
 .topbar-r{display:flex;align-items:center;gap:10px}
 .topbar-date{font-size:11px;color:var(--text3)}
-.av-btn{width:34px;height:34px;border-radius:50%;background:var(--moss);color:#fff;border:none;cursor:pointer;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
-.av-btn:hover{background:#3D5842}
-
-/* ── BOTTOM NAV ── */
+.av-btn{width:34px;height:34px;border-radius:50%;background:var(--avc);color:#fff;border:none;cursor:pointer;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(247,244,239,.96);backdrop-filter:blur(12px);border-top:1px solid var(--border-l);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
 .bnav-btn{flex:1;padding:11px 8px 9px;background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .2s}
 .bnav-icon{font-size:19px;line-height:1}
-.bnav-label{font-size:10px;font-weight:500;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.02em}
+.bnav-label{font-size:10px;font-weight:500;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif}
 .bnav-btn.active .bnav-label{color:var(--moss);font-weight:600}
 
 /* ── PAGES ── */
 .page{display:none;max-width:680px;margin:0 auto;padding:1.5rem 1.25rem}
 .page.active{display:block;animation:fadeUp .3s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-/* ── PAGE TITLE ── */
 .pg-title{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:400;color:var(--text);margin-bottom:4px;line-height:1.3}
 .pg-title em{font-style:italic;color:var(--moss)}
 .pg-sub{font-size:13px;color:var(--text2);margin-bottom:1.5rem;line-height:1.7}
@@ -114,7 +92,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .greet-msg{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6}
 .greet-nara{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15)}
 .nara-pulse{width:8px;height:8px;border-radius:50%;background:#A8D8B0;flex-shrink:0;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .greet-nara-msg{font-size:12px;color:rgba(255,255,255,.65);font-style:italic}
 
 /* ── TRACKER CARD ── */
@@ -124,12 +101,47 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tc-title{font-size:13px;font-weight:600;flex:1}
 .tc-status{font-size:11px;color:var(--text3)}
 
-/* CONDITION */
+/* ── DAILY HABITS ── */
+.habit-section-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text4);margin-bottom:10px}
+.habit-theme-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.habit-theme-btn{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
+.habit-theme-btn:hover{background:var(--bg2)}
+.habit-theme-btn.active{border-color:var(--moss);background:var(--moss-p);color:var(--moss);font-weight:600}
+.habit-suggestions{display:none;background:var(--bg2);border:1px solid var(--border-l);border-radius:var(--rsm);padding:10px 12px;margin-bottom:12px;animation:fadeUp .2s ease}
+.habit-suggestions.on{display:block}
+.habit-sug-head{font-size:10px;font-weight:600;color:var(--text3);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase}
+.habit-sug-grid{display:flex;flex-wrap:wrap;gap:6px}
+.habit-sug-chip{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
+.habit-sug-chip:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
+.habit-list{list-style:none;margin-bottom:10px}
+.habit-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-l);cursor:pointer;user-select:none;transition:all .15s}
+.habit-item:last-child{border-bottom:none}
+.habit-check{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;background:var(--surface)}
+.habit-item.done .habit-check{background:var(--moss);border-color:var(--moss);animation:pop .25s ease}
+.habit-check-mark{opacity:0;font-size:11px;color:#fff;transition:opacity .15s}
+.habit-item.done .habit-check-mark{opacity:1}
+.habit-item-text{flex:1;font-size:13px;color:var(--text2);transition:all .2s}
+.habit-item.done .habit-item-text{color:var(--text4);text-decoration:line-through}
+.habit-item-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text4);padding:3px 5px;border-radius:3px;opacity:0;transition:all .15s;flex-shrink:0}
+.habit-item:hover .habit-item-del{opacity:1}
+.habit-item-del:hover{color:var(--clay);background:var(--clay-p);opacity:1}
+.habit-add-row{display:flex;gap:8px}
+.habit-add-inp{flex:1;padding:9px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.habit-add-inp:focus{border-color:var(--moss)}
+.habit-add-inp::placeholder{color:var(--text4);font-style:italic}
+.habit-add-btn{padding:9px 16px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.habit-add-btn:hover{background:#3D5842}
+.habit-progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:10px}
+.habit-progress-fill{height:100%;background:var(--moss);border-radius:2px;transition:width .4s ease}
+.habit-progress-txt{font-size:10px;color:var(--text3);margin-top:5px;text-align:right}
+.habit-empty{font-size:12px;color:var(--text4);font-style:italic;padding:8px 0}
+
+/* ── CONDITION ── */
 .cond-row{display:flex;gap:8px;flex-wrap:wrap}
 .cond-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s}
 .cond-btn.on{border-color:var(--rose);background:var(--rose-p);color:var(--rose)}
 
-/* WATER */
+/* ── WATER ── */
 .glasses{display:flex;gap:6px;flex-wrap:wrap}
 .glass{width:36px;height:44px;border-radius:var(--rxs);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-size:15px;transition:all .2s;position:relative;overflow:hidden}
 .glass::before{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:var(--sky-l);transition:height .3s ease}
@@ -138,7 +150,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .glass span{position:relative;z-index:1}
 .water-msg{font-size:11px;color:var(--text3);margin-top:8px;font-style:italic}
 
-/* MOOD */
+/* ── MOOD ── */
 .mood-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .mood-btn{padding:10px 6px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;text-align:center;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
 .mood-btn:hover{background:var(--bg2)}
@@ -146,50 +158,81 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mood-em{font-size:20px;display:block;margin-bottom:3px}
 .mood-lbl{font-size:10px;color:var(--text2);font-weight:500;white-space:nowrap}
 
-/* MEAL */
+/* ── MEAL ── */
 .meal-list{list-style:none;margin-bottom:10px}
-.meal-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-l);font-size:12px}
+.meal-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border-l);font-size:12px}
 .meal-item:last-child{border-bottom:none}
-.meal-t{font-size:10px;color:var(--text4);min-width:46px;padding-top:1px}
+.meal-t{font-size:10px;color:var(--text4);min-width:38px;padding-top:1px}
 .meal-n{flex:1;color:var(--text2)}
+.meal-n small{font-size:10px;color:var(--text4);display:block}
 .meal-k{font-size:11px;font-weight:600;color:var(--amber);white-space:nowrap}
-.meal-inp-row{display:flex;gap:8px}
+.meal-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text4);padding:2px 4px;border-radius:3px;transition:all .15s;flex-shrink:0}
+.meal-del:hover{color:var(--clay);background:var(--clay-p)}
+.meal-inp-row{display:flex;gap:8px;margin-bottom:6px}
 .meal-inp{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
 .meal-inp:focus{border-color:var(--moss)}
 .meal-inp::placeholder{color:var(--text4)}
+.meal-portion-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.meal-portion-lbl{font-size:11px;color:var(--text3);white-space:nowrap}
+.meal-portion-inp{width:58px;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rxs);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;text-align:center;transition:border-color .2s}
+.meal-portion-inp:focus{border-color:var(--moss)}
+.meal-unit-sel{flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rxs);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text2);background:var(--bg);outline:none;cursor:pointer}
 .add-btn{padding:10px 16px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s}
 .add-btn:hover{background:#3D5842}
 .add-btn:disabled{background:var(--border);cursor:not-allowed}
+.food-sug-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;min-height:22px}
+.food-sug-chip{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--bg2);font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
+.food-sug-chip:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
 .cal-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--amber-p);border-radius:var(--rxs);margin-top:8px;border:1px solid var(--amber-l)}
 .cal-bar-lbl{font-size:11px;color:var(--text2)}
 .cal-bar-num{font-size:14px;font-weight:700;color:var(--amber)}
+.cal-breakdown{display:flex;gap:10px;margin-top:5px;flex-wrap:wrap}
+.cal-bd-item{font-size:10px;color:var(--text3)}
+.cal-bd-item strong{color:var(--text2);font-weight:600}
 
-/* MENU SUGGEST */
+/* ── MENU SUGGEST ── */
 .menu-suggest{background:var(--moss-p);border:1px solid var(--moss-l);border-radius:var(--rsm);padding:12px 14px;margin-bottom:12px}
 .menu-suggest-head{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--moss);margin-bottom:8px}
 .menu-day-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
 .menu-cell{background:var(--surface);border:1px solid var(--border);border-radius:var(--rxs);padding:9px 11px;cursor:pointer;transition:all .15s}
-.menu-cell:hover{border-color:var(--moss-l)}
+.menu-cell:hover{border-color:var(--moss-l);background:var(--moss-p)}
 .menu-cell-time{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text4)}
 .menu-cell-name{font-size:12px;font-weight:600;margin:2px 0}
 .menu-cell-cal{font-size:10px;color:var(--amber)}
 .menu-cell-tip{font-size:10px;color:var(--text3);margin-top:2px;line-height:1.4}
 
-/* MOVE */
-.move-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+/* ── MOVE ── */
+.move-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
 .move-btn{padding:10px 8px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s}
-.move-btn.sel{border-color:var(--moss);background:var(--moss-p)}
+.move-btn:hover{background:var(--bg2)}
 .move-icon{font-size:20px;display:block;margin-bottom:3px}
 .move-lbl{font-size:10px;color:var(--text2);font-weight:500}
-.move-cal{font-size:9px;color:var(--amber);margin-top:2px}
-.move-suggest{background:var(--sky-p);border:1px solid var(--sky-l);border-radius:var(--rxs);padding:10px 12px;margin-top:8px;font-size:12px;color:var(--sky);display:none}
-.move-suggest.on{display:block}
+.move-cal-lbl{font-size:9px;color:var(--amber);margin-top:2px}
+.move-custom-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.move-custom-inp{flex:1;min-width:100px;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.move-custom-inp:focus{border-color:var(--moss)}
+.move-custom-inp::placeholder{color:var(--text4)}
+.move-dur-inp{width:60px;padding:9px 8px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;text-align:center;transition:border-color .2s}
+.move-dur-inp:focus{border-color:var(--moss)}
+.move-dur-lbl{font-size:11px;color:var(--text3);align-self:center;white-space:nowrap}
+.move-add-btn{padding:9px 14px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.move-add-btn:hover{background:#3D5842}
+.move-list{list-style:none;margin-top:8px}
+.move-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-l);font-size:12px}
+.move-item:last-child{border-bottom:none}
+.move-item-icon{font-size:16px;flex-shrink:0}
+.move-item-name{flex:1;color:var(--text2)}
+.move-item-dur{font-size:10px;color:var(--text4)}
+.move-item-cal{font-size:11px;font-weight:600;color:var(--amber);white-space:nowrap}
+.move-item-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text4);padding:2px 4px;border-radius:3px;transition:all .15s;flex-shrink:0}
+.move-item-del:hover{color:var(--clay);background:var(--clay-p)}
+.move-summary{background:var(--sky-p);border:1px solid var(--sky-l);border-radius:var(--rxs);padding:10px 12px;margin-top:8px;font-size:12px;color:var(--sky);line-height:1.65}
 
-/* NARA REPLY */
+/* ── NARA REPLY ── */
 .nara-reply{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-top:1.25rem;display:none;box-shadow:var(--shsm)}
 .nara-reply.on{display:block;animation:fadeUp .4s ease}
 .nara-rhead{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.nara-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--moss),#3D5842);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Playfair Display',serif;font-style:italic}
+.nara-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--moss),#3D5842);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Playfair Display',serif;font-style:italic;font-weight:700}
 .nara-rname{font-size:12px;font-weight:600;color:var(--moss)}
 .nara-rbody{font-size:13px;color:var(--text2);line-height:1.8}
 .nara-rbody p{margin-bottom:8px}
@@ -198,7 +241,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .ld span{width:6px;height:6px;border-radius:50%;background:var(--moss-l);animation:bounce 1.2s infinite}
 .ld span:nth-child(2){animation-delay:.2s}
 .ld span:nth-child(3){animation-delay:.4s}
-@keyframes bounce{0%,80%,100%{transform:scale(.8);opacity:.5}40%{transform:scale(1.2);opacity:1}}
 
 /* ── WELLNESS ── */
 .w-section{margin-bottom:1.5rem}
@@ -206,10 +248,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sleep-row{display:flex;align-items:center;gap:12px}
 .sleep-inp{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;text-align:center}
 .sleep-inp:focus{border-color:var(--moss)}
-.sleep-sep{font-size:18px;color:var(--text3);font-weight:300}
-.sleep-dur{font-size:13px;color:var(--moss);font-weight:600;min-width:70px;text-align:right}
+.sleep-sep{font-size:18px;color:var(--text3)}
+.sleep-dur{font-size:13px;color:var(--moss);font-weight:600;min-width:60px;text-align:right}
 .sleep-note{font-size:11px;color:var(--text3);margin-top:6px;font-style:italic}
-
+.sleep-fb{margin-top:8px;padding:9px 12px;border-radius:var(--rxs);font-size:12px;line-height:1.65;display:none}
+.sleep-fb.on{display:block}
+.sleep-fb.good{background:var(--moss-p);color:#2D5238;border:1px solid var(--moss-l)}
+.sleep-fb.ok{background:var(--amber-p);color:#6B4A10;border:1px solid var(--amber-l)}
+.sleep-fb.bad{background:var(--rose-p);color:#6B2C3C;border:1px solid var(--rose-l)}
 .emo-broad{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
 .emo-bb{padding:10px 6px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;text-align:center;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
 .emo-bb.sel{border-color:var(--dusk);background:var(--dusk-p)}
@@ -228,7 +274,49 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .w-save{width:100%;padding:13px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:1rem}
 .w-save:hover{background:#3D5842}
 
-/* ── MONTHLY GOALS ── */
+/* ── MONTHLY ACHIEVEMENT ── */
+.ach-section{margin-bottom:1.5rem}
+.ach-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ach-month{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em}
+.ach-theme-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.ach-theme-btn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
+.ach-theme-btn:hover{background:var(--bg2)}
+.ach-theme-btn.active{border-color:var(--amber);background:var(--amber-p);color:var(--amber);font-weight:600}
+.ach-suggestions{display:none;background:var(--amber-p);border:1px solid var(--amber-l);border-radius:var(--rsm);padding:10px 12px;margin-bottom:10px;animation:fadeUp .2s ease}
+.ach-suggestions.on{display:block}
+.ach-sug-head{font-size:10px;font-weight:600;color:var(--amber);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase}
+.ach-sug-grid{display:flex;flex-wrap:wrap;gap:6px}
+.ach-sug-chip{padding:5px 12px;border-radius:20px;border:1px solid var(--amber-l);background:var(--surface);font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
+.ach-sug-chip:hover{border-color:var(--amber);background:var(--amber-p);color:var(--amber)}
+.ach-list{list-style:none;margin-bottom:10px}
+.ach-item{padding:10px 12px;border-radius:var(--rsm);border:1px solid var(--border-l);background:var(--bg);margin-bottom:6px;transition:all .2s}
+.ach-item.done{background:var(--amber-p);border-color:var(--amber-l)}
+.ach-item-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.ach-item-icon{font-size:14px;flex-shrink:0}
+.ach-item-text{flex:1;font-size:13px;color:var(--text2)}
+.ach-item.done .ach-item-text{color:var(--amber)}
+.ach-item-del{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text4);padding:2px 4px;border-radius:3px;transition:all .15s}
+.ach-item-del:hover{color:var(--clay);background:var(--clay-p)}
+.ach-progress-row{display:flex;align-items:center;gap:8px}
+.ach-bar-track{flex:1;height:5px;background:var(--border);border-radius:2px;overflow:hidden}
+.ach-bar-fill{height:100%;border-radius:2px;background:var(--amber);transition:width .4s ease}
+.ach-counter{display:flex;align-items:center;gap:4px}
+.ach-cnt-btn{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;color:var(--text2)}
+.ach-cnt-btn:hover{border-color:var(--amber);background:var(--amber-p);color:var(--amber)}
+.ach-cnt-val{font-size:12px;font-weight:600;color:var(--amber);min-width:40px;text-align:center}
+.ach-cnt-target{font-size:11px;color:var(--text3)}
+.ach-add-row{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}
+.ach-add-inp{flex:2;min-width:140px;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.ach-add-inp:focus{border-color:var(--amber)}
+.ach-add-inp::placeholder{color:var(--text4);font-style:italic}
+.ach-target-inp{width:70px;padding:10px 10px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;text-align:center;transition:border-color .2s}
+.ach-target-inp:focus{border-color:var(--amber)}
+.ach-add-btn{padding:10px 16px;background:var(--amber);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.ach-add-btn:hover{background:#8A6420}
+.ach-add-hint{font-size:10px;color:var(--text4);width:100%;margin-top:-4px;font-style:italic}
+.ach-empty{text-align:center;padding:1.5rem;color:var(--text4);font-size:13px;font-style:italic}
+
+/* ── MONTHLY GOALS (old, kept for compat) ── */
 .mg-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .mg-month{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em}
 .mg-progress-wrap{display:flex;align-items:center;gap:8px;margin-bottom:14px}
@@ -239,21 +327,21 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mg-preset{padding:6px 13px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s}
 .mg-preset:hover{background:var(--bg2);border-color:var(--moss-l)}
 .mg-goals-list{list-style:none;margin-bottom:12px}
-.mg-goal-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rsm);border:1px solid var(--border-l);background:var(--bg);margin-bottom:6px;transition:all .2s;cursor:pointer;user-select:none}
+.mg-goal-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rsm);border:1px solid var(--border-l);background:var(--bg);margin-bottom:6px;cursor:pointer;user-select:none;transition:all .2s}
 .mg-goal-item.done{background:var(--moss-p);border-color:var(--moss-l)}
 .mg-goal-item.done .mg-goal-text{color:var(--moss);text-decoration:line-through;opacity:.7}
-.mg-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:var(--surface)}
+.mg-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--surface);transition:all .15s}
 .mg-goal-item.done .mg-check{background:var(--moss);border-color:var(--moss)}
 .mg-check-mark{display:none;width:10px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
 .mg-goal-item.done .mg-check-mark{display:block}
 .mg-goal-text{font-size:13px;color:var(--text2);flex:1;line-height:1.4}
-.mg-goal-del{background:none;border:none;cursor:pointer;font-size:14px;color:var(--text4);padding:2px 4px;border-radius:4px;transition:all .15px;flex-shrink:0}
+.mg-goal-del{background:none;border:none;cursor:pointer;font-size:14px;color:var(--text4);padding:2px 4px;border-radius:4px;transition:all .15s;flex-shrink:0}
 .mg-goal-del:hover{color:var(--clay);background:var(--clay-p)}
 .mg-add-row{display:flex;gap:8px}
 .mg-add-inp{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
 .mg-add-inp:focus{border-color:var(--amber)}
 .mg-add-inp::placeholder{color:var(--text4);font-style:italic}
-.mg-add-btn{padding:10px 16px;background:var(--amber);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s}
+.mg-add-btn{padding:10px 16px;background:var(--amber);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
 .mg-add-btn:hover{background:#8A6420}
 .mg-empty{text-align:center;padding:1.5rem;color:var(--text4);font-size:13px;font-style:italic}
 
@@ -285,19 +373,27 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .stat-lbl{font-size:10px;color:var(--text3);letter-spacing:.04em}
 .prog-sec-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;color:var(--text);margin-bottom:10px;margin-top:1.5rem}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1.25rem}
-.cal-dlbl{text-align:center;font-size:9px;font-weight:600;color:var(--text4);letter-spacing:.06em;padding:4px 0}
-.cal-day{aspect-ratio:1;border-radius:var(--rxs);border:1px solid var(--border-l);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3);cursor:default;transition:all .15s}
+.cal-dlbl{text-align:center;font-size:9px;font-weight:600;color:var(--text4);padding:4px 0}
+.cal-day{aspect-ratio:1;border-radius:var(--rxs);border:1px solid var(--border-l);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3)}
 .cal-day.today{border-color:var(--moss);color:var(--moss);font-weight:700}
 .cal-day.lf{background:var(--moss);border-color:var(--moss);color:#fff}
 .cal-day.lp{background:var(--moss-l);border-color:var(--moss-l);color:var(--moss)}
 .cal-day.empty{background:transparent;border-color:transparent}
-.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:10px}
-.hm-cell{aspect-ratio:1;border-radius:3px;background:var(--border-l);transition:all .2s;cursor:pointer;position:relative}
-.hm-cell:hover .hm-tip{display:block}
-.hm-cell.v1{background:var(--moss-p)}
-.hm-cell.v2{background:var(--moss-l)}
-.hm-cell.v3{background:var(--moss)}
-.hm-tip{display:none;position:absolute;bottom:calc(100%+4px);left:50%;transform:translateX(-50%);background:var(--text);color:#fff;font-size:10px;padding:4px 8px;border-radius:4px;white-space:nowrap;z-index:10;pointer-events:none}
+.month-recap-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.mr-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rsm);padding:12px;text-align:center;box-shadow:var(--shsm)}
+.mr-num{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--moss);line-height:1;margin-bottom:4px}
+.mr-lbl{font-size:10px;color:var(--text3)}
+.mr-sub{font-size:10px;color:var(--text2);margin-top:2px}
+.week-chart{display:flex;gap:5px;align-items:flex-end;height:80px;margin-bottom:6px}
+.week-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.week-bar-track{flex:1;width:100%;background:var(--border-l);border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;min-height:56px}
+.week-bar-fill{width:100%;border-radius:4px;background:var(--moss-l);transition:height .5s ease}
+.week-bar-fill.hi{background:var(--moss)}
+.week-bar-lbl{font-size:9px;color:var(--text3)}
+.week-bar-val{font-size:9px;color:var(--moss);font-weight:600;min-height:12px}
+.week-legend{display:flex;gap:12px;margin-bottom:1.25rem;flex-wrap:wrap}
+.wl-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text3)}
+.wl-dot{width:8px;height:8px;border-radius:2px}
 .recap-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;box-shadow:var(--shsm);margin-bottom:10px}
 .recap-row{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-l);gap:10px}
 .recap-row:last-child{border-bottom:none}
@@ -306,9 +402,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .recap-val{font-size:13px;font-weight:600;color:var(--text)}
 .recap-bw{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
 .recap-b{height:100%;border-radius:2px;background:var(--moss);transition:width .5s ease}
-.mood-chart{display:flex;gap:4px;align-items:flex-end;height:60px;margin-top:8px}
-.mood-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.mood-bar{width:100%;border-radius:3px 3px 0 0;background:var(--moss-l);transition:height .5s ease;min-height:4px}
+.mood-chart{display:flex;gap:4px;align-items:flex-end;height:64px;margin-top:8px}
+.mood-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.mood-bar{width:100%;border-radius:3px 3px 0 0;background:var(--moss-l);min-height:4px;transition:height .5s ease}
 .mood-bar-lbl{font-size:9px;color:var(--text3)}
 
 /* ── NARA FLOAT ── */
@@ -317,16 +413,20 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .nara-fab:hover{transform:scale(1.08)}
 .nara-badge{position:absolute;top:-3px;right:-3px;width:14px;height:14px;border-radius:50%;background:var(--clay);border:2px solid var(--bg);animation:pulse 2s infinite;display:none}
 .nara-badge.on{display:block}
-.nara-chat{position:fixed;bottom:140px;right:16px;width:300px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 8px 32px rgba(30,26,20,.15);z-index:99;display:none;flex-direction:column;max-height:420px;animation:fadeUp .3s ease}
-.nara-chat.on{display:flex}
-.nc-head{padding:14px 16px 10px;border-bottom:1px solid var(--border-l);display:flex;align-items:center;gap:8px}
+.nara-chat{position:fixed;bottom:140px;right:16px;width:300px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 8px 32px rgba(30,26,20,.15);z-index:99;display:none;flex-direction:column;max-height:440px}
+.nara-chat.on{display:flex;animation:fadeUp .3s ease}
+.nc-head{padding:12px 16px 10px;border-bottom:1px solid var(--border-l);display:flex;align-items:center;gap:8px}
 .nc-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--moss),#3D5842);color:#fff;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nc-name{font-size:13px;font-weight:600;color:var(--moss);flex:1}
-.nc-close{background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:2px}
+.nc-name{font-size:13px;font-weight:600;color:var(--moss)}
+.nc-status{font-size:10px;color:var(--text3)}
+.nc-close{background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:2px;margin-left:auto}
 .nc-msgs{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px;max-height:260px}
-.nc-msg{max-width:85%;font-size:12px;line-height:1.7;padding:8px 12px;border-radius:12px}
+.nc-msg{max-width:88%;font-size:12px;line-height:1.7;padding:8px 12px;border-radius:12px}
 .nc-msg.nara{background:var(--moss-p);color:var(--text2);align-self:flex-start;border-radius:4px 12px 12px 12px}
 .nc-msg.user{background:var(--moss);color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px}
+.nc-quick{display:flex;gap:5px;flex-wrap:wrap;padding:6px 12px;border-top:1px solid var(--border-l)}
+.nc-qbtn{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;color:var(--text2);cursor:pointer;transition:all .12s;white-space:nowrap}
+.nc-qbtn:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
 .nc-inp-row{padding:10px 12px;border-top:1px solid var(--border-l);display:flex;gap:8px}
 .nc-inp{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
 .nc-inp:focus{border-color:var(--moss)}
@@ -336,127 +436,149 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 /* ── PROFILE PANEL ── */
 .p-overlay{position:fixed;inset:0;background:rgba(30,26,20,.4);z-index:200;display:none;backdrop-filter:blur(4px)}
 .p-overlay.on{display:block;animation:fadeIn .2s ease}
-.p-panel{position:fixed;top:0;right:-360px;bottom:0;width:320px;background:var(--surface);z-index:201;overflow-y:auto;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 24px rgba(30,26,20,.12);padding:2rem 1.5rem}
+.p-panel{position:fixed;top:0;right:-380px;bottom:0;width:340px;background:var(--surface);z-index:201;overflow-y:auto;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 24px rgba(30,26,20,.12);padding:2rem 1.5rem}
 .p-panel.open{right:0}
-.p-close{position:absolute;top:1.25rem;left:1.25rem;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all .15s}
+.p-close{position:absolute;top:1.25rem;left:1.25rem;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text2)}
 .p-close:hover{background:var(--bg)}
-.p-av-big{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--moss),#3D5842);color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:2rem auto 1rem;font-family:'Playfair Display',serif;font-style:italic}
-.p-name-d{font-family:'Playfair Display',serif;font-size:1.2rem;text-align:center;margin-bottom:2px}
-.p-goal-d{font-size:12px;color:var(--text3);text-align:center;margin-bottom:1.5rem}
+.p-av-wrap{display:flex;flex-direction:column;align-items:center;margin:2.5rem 0 1rem}
+.p-av-big{width:64px;height:64px;border-radius:50%;background:var(--avc);color:#fff;font-size:24px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;margin-bottom:12px;transition:background .3s}
+.p-av-colors{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.p-av-color{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s}
+.p-av-color.active{border-color:var(--text);transform:scale(1.2)}
+.p-name-d{font-family:'Playfair Display',serif;font-size:1.1rem;text-align:center;margin-bottom:2px}
+.p-meta-d{font-size:11px;color:var(--text3);text-align:center;margin-bottom:1.25rem}
 .p-divider{height:1px;background:var(--border-l);margin:1rem 0}
 .p-sec-title{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text4);margin-bottom:10px}
 .p-field{margin-bottom:12px}
 .p-lbl{font-size:11px;font-weight:500;color:var(--text3);margin-bottom:4px}
 .p-inp{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
 .p-inp:focus{border-color:var(--moss)}
+.p-sel{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239C9080' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.p-sel:focus{border-color:var(--moss)}
+.p-goals-edit{width:100%;min-height:80px;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;resize:none;line-height:1.6;transition:border-color .2s}
+.p-goals-edit:focus{border-color:var(--amber)}
 .p-save{width:100%;padding:12px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;transition:all .2s}
 .p-save:hover{background:#3D5842}
-.p-email{font-size:12px;color:var(--text3);text-align:center;margin-top:1.25rem;line-height:1.6}
-.p-email a{color:var(--moss);text-decoration:none}
 .p-reset{display:block;text-align:center;font-size:12px;color:var(--text4);margin-top:.875rem;cursor:pointer;text-decoration:underline}
 .p-reset:hover{color:var(--clay)}
 
-/* CALLOUT */
-.callout{padding:10px 14px;border-radius:var(--rsm);font-size:12px;line-height:1.75;margin-bottom:10px}
-.callout strong{font-weight:600}
-.c-moss{background:var(--moss-p);color:#2D5238;border:1px solid var(--moss-l)}
-.c-amber{background:var(--amber-p);color:#6B4A10;border:1px solid var(--amber-l)}
-.c-rose{background:var(--rose-p);color:#6B2C3C;border:1px solid var(--rose-l)}
-.c-dusk{background:var(--dusk-p);color:#3C3060;border:1px solid var(--dusk-l)}
-
 @media(max-width:480px){
   .ob-wrap{padding:2rem 1.5rem}
-  .emo-broad{grid-template-columns:repeat(4,1fr)}
-  .move-grid{grid-template-columns:repeat(3,1fr)}
-  .mood-row{grid-template-columns:repeat(5,1fr)}
   .nara-chat{width:calc(100vw - 32px);right:16px}
   .p-panel{width:100%}
 }
 </style>
 </head>
 <body>
-
-<!-- ══════ ONBOARDING ══════ -->
+<!-- ONBOARDING -->
 <div id="onboarding">
 <div class="ob-wrap">
-  <div class="ob-dots">
-    <div class="ob-dot active" id="d0"></div>
-    <div class="ob-dot" id="d1"></div>
-    <div class="ob-dot" id="d2"></div>
-    <div class="ob-dot" id="d3"></div>
-    <div class="ob-dot" id="d4"></div>
-  </div>
-
-  <div class="ob-step active" id="ob0">
+  <div id="ob0" class="ob-step active">
     <div class="ob-logo">IN<span>arte</span></div>
     <div class="ob-tag">perjalananmu, caramu</div>
-    <div class="ob-q">Hei! Siapa namamu? :-)</div>
-    <div class="ob-hint">Nama ini yang akan Nara pakai untuk menyapamu setiap hari.</div>
-    <input class="ob-inp" id="ob-name" placeholder="Nama panggilanmu..." maxlength="30" onkeydown="if(event.key==='Enter')goOb(1)"/>
-    <button class="ob-btn" onclick="goOb(1)">Lanjut →</button>
+    <div class="ob-q">Hei! Siapa namamu? (◕ᴗ◕✿)</div>
+    <div class="ob-hint">Nara akan pakai nama ini untuk menyapamu setiap hari.</div>
+    <input class="ob-inp" id="ob-name" placeholder="Nama panggilanmu..." maxlength="30" onkeydown="if(event.key==='Enter')obNext()"/>
+    <button class="ob-btn" onclick="obNext()">Lanjut →</button>
   </div>
 
-  <div class="ob-step" id="ob1">
+  <div id="ob1" class="ob-step">
+    <div class="ob-nav">
+      <button class="ob-back" onclick="obBack()">← Kembali</button>
+      <div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <span class="ob-step-num">2/6</span>
+    </div>
+    <div class="ob-q">Berapa umurmu sekarang?</div>
+    <div class="ob-hint">Membantu Nara kasih rekomendasi yang sesuai kondisimu.</div>
+    <input class="ob-inp-num" id="ob-age" type="number" min="7" max="99" placeholder="—" onkeydown="if(event.key==='Enter')obNext()"/>
+    <button class="ob-btn" onclick="obNext()">Lanjut →</button>
+    <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
+  </div>
+
+  <div id="ob2" class="ob-step">
+    <div class="ob-nav">
+      <button class="ob-back" onclick="obBack()">← Kembali</button>
+      <div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <span class="ob-step-num">3/6</span>
+    </div>
     <div class="ob-q">Apa yang paling ingin kamu jaga?</div>
-    <div class="ob-hint">Boleh pilih lebih dari satu. Kalau pilih "semuanya", yang lain otomatis ikut terpilih ya.</div>
+    <div class="ob-hint">Boleh pilih lebih dari satu.</div>
     <div class="ob-chips" id="chips-goal">
-      <button class="ob-chip" onclick="chipGoal(this)">Berat badan yang stabil</button>
-      <button class="ob-chip" onclick="chipGoal(this)">Pola makan lebih sehat</button>
-      <button class="ob-chip" onclick="chipGoal(this)">Energi lebih stabil</button>
-      <button class="ob-chip" onclick="chipGoal(this)">Tidur lebih baik</button>
-      <button class="ob-chip" onclick="chipGoal(this)">Lebih aktif bergerak</button>
-      <button class="ob-chip" onclick="chipGoal(this)">Kesehatan mental</button>
-      <button class="ob-chip" id="chip-all" onclick="chipGoalAll(this)">Semuanya :-)</button>
+      <button class="ob-chip" onclick="chipToggle(this)">Berat badan stabil</button>
+      <button class="ob-chip" onclick="chipToggle(this)">Pola makan lebih sehat</button>
+      <button class="ob-chip" onclick="chipToggle(this)">Energi lebih stabil</button>
+      <button class="ob-chip" onclick="chipToggle(this)">Tidur lebih baik</button>
+      <button class="ob-chip" onclick="chipToggle(this)">Lebih aktif bergerak</button>
+      <button class="ob-chip" onclick="chipToggle(this)">Kesehatan mental</button>
     </div>
-    <button class="ob-btn" onclick="goOb(2)">Lanjut →</button>
-    <button class="ob-ghost" onclick="goOb(2)">Lewati dulu</button>
+    <button class="ob-btn" onclick="obNext()">Lanjut →</button>
+    <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
   </div>
 
-  <div class="ob-step" id="ob2">
-    <div class="ob-q">Bagaimana keseharianmu?</div>
-    <div class="ob-hint">Ini membantu Nara kasih saran yang relevan buat kamu.</div>
+  <div id="ob3" class="ob-step">
+    <div class="ob-nav">
+      <button class="ob-back" onclick="obBack()">← Kembali</button>
+      <div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <span class="ob-step-num">4/6</span>
+    </div>
+    <div class="ob-q">Keseharian kamu seperti apa?</div>
+    <div class="ob-hint">Pilih yang paling mendekati.</div>
     <div class="ob-chips" id="chips-act">
-      <button class="ob-chip" onclick="solo(this,'act')">Pekerja kantoran</button>
-      <button class="ob-chip" onclick="solo(this,'act')">Pekerja lapangan</button>
-      <button class="ob-chip" onclick="solo(this,'act')">Mahasiswa / pelajar</button>
-      <button class="ob-chip" onclick="solo(this,'act')">Kerja dari rumah</button>
-      <button class="ob-chip" onclick="solo(this,'act')">Lainnya</button>
+      <button class="ob-chip" onclick="chipSolo(this,'act')">Pekerja kantoran</button>
+      <button class="ob-chip" onclick="chipSolo(this,'act')">Pekerja lapangan</button>
+      <button class="ob-chip" onclick="chipSolo(this,'act')">Mahasiswa / pelajar</button>
+      <button class="ob-chip" onclick="chipSolo(this,'act')">Kerja dari rumah</button>
+      <button class="ob-chip" onclick="chipSolo(this,'act')">Ibu rumah tangga</button>
+      <button class="ob-chip" onclick="chipSolo(this,'act')">Lainnya</button>
     </div>
-    <div class="ob-q" style="font-size:1rem;margin-top:1rem">Soal makan sehari-hari?</div>
-    <div class="ob-chips" id="chips-cook">
-      <button class="ob-chip" onclick="solo(this,'cook')">Lebih sering masak sendiri</button>
-      <button class="ob-chip" onclick="solo(this,'cook')">Lebih sering beli atau jajan</button>
-      <button class="ob-chip" onclick="solo(this,'cook')">Tergantung hari</button>
-    </div>
-    <button class="ob-btn" onclick="goOb(3)">Lanjut →</button>
+    <button class="ob-btn" onclick="obNext()">Lanjut →</button>
+    <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
   </div>
 
-  <div class="ob-step" id="ob3">
+  <div id="ob4" class="ob-step">
+    <div class="ob-nav">
+      <button class="ob-back" onclick="obBack()">← Kembali</button>
+      <div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div></div>
+      <span class="ob-step-num">5/6</span>
+    </div>
     <div class="ob-q">Situasi di rumah?</div>
-    <div class="ob-hint">Ini berpengaruh ke rekomendasi menu dan cara makannya.</div>
+    <div class="ob-hint">Berpengaruh ke rekomendasi menu harianmu.</div>
     <div class="ob-chips" id="chips-home">
-      <button class="ob-chip" onclick="solo(this,'home')">Sendiri (kos atau kontrakan)</button>
-      <button class="ob-chip" onclick="solo(this,'home')">Bersama orang tua (makan ikut masakan rumah)</button>
-      <button class="ob-chip" onclick="solo(this,'home')">Bersama pasangan, belum ada anak</button>
-      <button class="ob-chip" onclick="solo(this,'home')">Bersama pasangan dan anak kecil</button>
+      <button class="ob-chip" onclick="chipSolo(this,'home')">Sendiri (kos / kontrakan)</button>
+      <button class="ob-chip" onclick="chipSolo(this,'home')">Bersama orang tua</button>
+      <button class="ob-chip" onclick="chipSolo(this,'home')">Bersama pasangan</button>
+      <button class="ob-chip" onclick="chipSolo(this,'home')">Bersama pasangan + anak kecil</button>
+      <button class="ob-chip" onclick="chipSolo(this,'home')">Bersama pasangan + anak remaja</button>
+      <button class="ob-chip" onclick="chipSolo(this,'home')">Ada lansia di rumah</button>
     </div>
-    <div class="ob-q" style="font-size:1rem;margin-top:1rem">Budget makan per hari?</div>
+    <div class="ob-q" style="font-size:1rem;margin-top:1.25rem">Soal makan sehari-hari?</div>
+    <div class="ob-chips" id="chips-cook">
+      <button class="ob-chip" onclick="chipSolo(this,'cook')">Lebih sering masak sendiri</button>
+      <button class="ob-chip" onclick="chipSolo(this,'cook')">Lebih sering beli / jajan</button>
+      <button class="ob-chip" onclick="chipSolo(this,'cook')">Tergantung hari</button>
+    </div>
+    <div class="ob-q" style="font-size:1rem;margin-top:1.25rem">Budget makan per hari?</div>
     <div class="ob-chips" id="chips-budget">
-      <button class="ob-chip" onclick="solo(this,'budget')">Di bawah Rp 50rb</button>
-      <button class="ob-chip" onclick="solo(this,'budget')">Rp 50–100rb</button>
-      <button class="ob-chip" onclick="solo(this,'budget')">Rp 100–200rb</button>
-      <button class="ob-chip" onclick="solo(this,'budget')">Di atas Rp 200rb</button>
+      <button class="ob-chip" onclick="chipSolo(this,'budget')">Di bawah Rp 50rb</button>
+      <button class="ob-chip" onclick="chipSolo(this,'budget')">Rp 50–100rb</button>
+      <button class="ob-chip" onclick="chipSolo(this,'budget')">Rp 100–200rb</button>
+      <button class="ob-chip" onclick="chipSolo(this,'budget')">Di atas Rp 200rb</button>
     </div>
-    <button class="ob-btn" onclick="goOb(4)">Lanjut →</button>
-    <button class="ob-ghost" onclick="goOb(4)">Lewati dulu</button>
+    <button class="ob-btn" onclick="obNext()">Lanjut →</button>
+    <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
   </div>
 
-  <div class="ob-step" id="ob4">
-    <div style="text-align:center;padding:1rem 0">
+  <div id="ob5" class="ob-step">
+    <div class="ob-nav">
+      <button class="ob-back" onclick="obBack()">← Kembali</button>
+      <div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div></div>
+      <span class="ob-step-num">6/6</span>
+    </div>
+    <div style="text-align:center;padding:.5rem 0">
       <div style="font-size:48px;margin-bottom:1rem">🌿</div>
-      <div class="ob-q" style="text-align:center">Hai, <span id="ob-preview">kamu</span>!</div>
-      <div style="font-size:14px;color:var(--text2);margin:10px 0 1.5rem;line-height:1.8">
-        Aku Nara. Aku akan menemani perjalananmu di sini — tanpa menghakimi sama sekali. Kita berproses sama-sama, ya! :-)
+      <div class="ob-q" style="text-align:center">Hai, <span id="ob-preview">kamu</span>! (≧▽≦)</div>
+      <div style="font-size:13px;color:var(--text2);margin:10px 0 1.5rem;line-height:1.9">
+        Aku <strong>Nara</strong>. Aku akan menemani perjalananmu di sini — tanpa menghakimi, tanpa menggurui. Kita berproses pelan-pelan sama-sama ya ʕ ꈍᥴꈍʔ
       </div>
       <button class="ob-btn" onclick="doneOb()">Mulai perjalanan →</button>
     </div>
@@ -464,7 +586,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 </div>
 </div>
 
-<!-- ══════ APP ══════ -->
+<!-- APP -->
 <div id="app">
   <div class="topbar">
     <div class="topbar-logo">IN<span>arte</span></div>
@@ -474,11 +596,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     </div>
   </div>
 
-  <!-- HARI INI -->
+  <!-- TAB: HARI INI -->
   <div class="page active" id="pg-today">
     <div class="greet-card">
       <div class="greet-time" id="g-time">Selamat pagi</div>
-      <div class="greet-name">Hai, <em id="g-name">kamu</em>! :-)</div>
+      <div class="greet-name">Hai, <em id="g-name">kamu</em>!</div>
       <div class="greet-msg" id="g-msg">Semoga hari ini baik untukmu.</div>
       <div class="greet-nara">
         <div class="nara-pulse"></div>
@@ -486,11 +608,32 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
     </div>
 
-    <div class="menu-suggest" id="menu-suggest-box">
-      <div class="menu-suggest-head">:-) Rekomendasi menu hari ini</div>
+    <!-- DAILY HABITS -->
+    <div class="tc">
+      <div class="tc-head"><span class="tc-icon">✅</span><span class="tc-title">Kebiasaan hari ini</span><span class="tc-status" id="habit-status">0/0</span></div>
+      <div class="habit-section-lbl">Tambah dari tema</div>
+      <div class="habit-theme-row" id="habit-theme-row"></div>
+      <div class="habit-suggestions" id="habit-suggestions">
+        <div class="habit-sug-head" id="habit-sug-head">Pilih kebiasaan</div>
+        <div class="habit-sug-grid" id="habit-sug-grid"></div>
+      </div>
+      <ul class="habit-list" id="habit-list"></ul>
+      <div class="habit-progress-bar"><div class="habit-progress-fill" id="habit-prog-fill" style="width:0%"></div></div>
+      <div class="habit-progress-txt" id="habit-prog-txt"></div>
+      <div style="margin-top:10px"></div>
+      <div class="habit-add-row">
+        <input class="habit-add-inp" id="habit-add-inp" placeholder="Atau tulis kebiasaanmu sendiri..." maxlength="80" onkeydown="if(event.key==='Enter')addHabit()"/>
+        <button class="habit-add-btn" onclick="addHabit()">+ Tambah</button>
+      </div>
+    </div>
+
+    <!-- MENU SUGGEST -->
+    <div class="menu-suggest">
+      <div class="menu-suggest-head">(◕ᴗ◕✿) Rekomendasi menu hari ini</div>
       <div class="menu-day-grid" id="menu-grid"></div>
     </div>
 
+    <!-- CONDITIONS -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">🩺</span><span class="tc-title">Kondisi hari ini</span></div>
       <div class="cond-row">
@@ -501,96 +644,122 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
     </div>
 
+    <!-- WATER -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">💧</span><span class="tc-title">Air minum</span><span class="tc-status" id="w-status">0 dari 8 gelas</span></div>
       <div class="glasses" id="glasses"></div>
-      <div class="water-msg" id="w-msg">Tap satu-satu setiap kali minum segelas, ya!</div>
+      <div class="water-msg" id="w-msg">Tap satu-satu setiap kali minum segelas ya!</div>
     </div>
 
+    <!-- MOOD -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">🌤</span><span class="tc-title">Mood sekarang</span></div>
       <div class="mood-row">
-        <button class="mood-btn" onclick="setMood(this,'senang','😊')"><span class="mood-em">😊</span><span class="mood-lbl">Senang</span></button>
-        <button class="mood-btn" onclick="setMood(this,'netral','😐')"><span class="mood-em">😐</span><span class="mood-lbl">Biasa</span></button>
-        <button class="mood-btn" onclick="setMood(this,'lelah','😮‍💨')"><span class="mood-em">😮‍💨</span><span class="mood-lbl">Lelah</span></button>
-        <button class="mood-btn" onclick="setMood(this,'berat','😔')"><span class="mood-em">😔</span><span class="mood-lbl">Berat</span></button>
-        <button class="mood-btn" onclick="setMood(this,'semangat','🔥')"><span class="mood-em">🔥</span><span class="mood-lbl">Semangat</span></button>
+        <button class="mood-btn" onclick="setMood(this,'senang')"><span class="mood-em">😊</span><span class="mood-lbl">Senang</span></button>
+        <button class="mood-btn" onclick="setMood(this,'netral')"><span class="mood-em">😐</span><span class="mood-lbl">Biasa</span></button>
+        <button class="mood-btn" onclick="setMood(this,'lelah')"><span class="mood-em">😮‍💨</span><span class="mood-lbl">Lelah</span></button>
+        <button class="mood-btn" onclick="setMood(this,'berat')"><span class="mood-em">😔</span><span class="mood-lbl">Berat</span></button>
+        <button class="mood-btn" onclick="setMood(this,'semangat')"><span class="mood-em">🔥</span><span class="mood-lbl">Semangat</span></button>
       </div>
     </div>
 
+    <!-- MEAL -->
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">🍽</span><span class="tc-title">Makan hari ini</span><span class="tc-status" id="cal-status">0 kkal</span></div>
       <ul class="meal-list" id="meal-list"></ul>
       <div class="meal-inp-row">
-        <input class="meal-inp" id="meal-inp" placeholder="Contoh: nasi goreng telur, es teh manis..." onkeydown="if(event.key==='Enter')addMeal()"/>
+        <input class="meal-inp" id="meal-inp" placeholder="Contoh: nasi goreng, telur dadar..." onkeydown="if(event.key==='Enter')addMeal()"/>
         <button class="add-btn" id="add-btn" onclick="addMeal()">Catat</button>
       </div>
+      <div class="meal-portion-row">
+        <span class="meal-portion-lbl">Porsi:</span>
+        <input class="meal-portion-inp" id="meal-portion" type="number" value="1" min="0.5" max="20" step="0.5"/>
+        <select class="meal-unit-sel" id="meal-unit">
+          <option>porsi</option><option>piring</option><option>mangkok</option>
+          <option>potong</option><option>butir</option><option>gelas</option><option>bungkus</option>
+        </select>
+      </div>
+      <div class="food-sug-wrap" id="food-sug-wrap"></div>
       <div class="cal-bar" id="cal-bar" style="display:none">
         <span class="cal-bar-lbl">Total estimasi hari ini</span>
         <span class="cal-bar-num" id="cal-bar-num">0 kkal</span>
       </div>
+      <div class="cal-breakdown" id="cal-breakdown"></div>
       <div class="nara-reply" id="nara-meal">
         <div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div>
-        <div class="nara-rbody" id="nara-meal-txt"><div class="ld"><span></span><span></span><span></span></div></div>
+        <div class="nara-rbody" id="nara-meal-txt"></div>
       </div>
     </div>
 
+    <!-- MOVE -->
     <div class="tc">
-      <div class="tc-head"><span class="tc-icon">🏃</span><span class="tc-title">Gerak hari ini</span></div>
+      <div class="tc-head"><span class="tc-icon">🏃</span><span class="tc-title">Gerak hari ini</span><span class="tc-status" id="move-cal-status"></span></div>
       <div class="move-grid">
-        <button class="move-btn" onclick="setMove(this,'jalan',200)"><span class="move-icon">🚶</span><span class="move-lbl">Jalan kaki</span><span class="move-cal">~200 kkal/jam</span></button>
-        <button class="move-btn" onclick="setMove(this,'jogging',400)"><span class="move-icon">🏃</span><span class="move-lbl">Jogging</span><span class="move-cal">~400 kkal/jam</span></button>
-        <button class="move-btn" onclick="setMove(this,'gym',350)"><span class="move-icon">💪</span><span class="move-lbl">Gym / latihan</span><span class="move-cal">~350 kkal/jam</span></button>
-        <button class="move-btn" onclick="setMove(this,'bersepeda',300)"><span class="move-icon">🚴</span><span class="move-lbl">Bersepeda</span><span class="move-cal">~300 kkal/jam</span></button>
-        <button class="move-btn" onclick="setMove(this,'renang',450)"><span class="move-icon">🏊</span><span class="move-lbl">Renang</span><span class="move-cal">~450 kkal/jam</span></button>
-        <button class="move-btn" onclick="setMove(this,'istirahat',0)"><span class="move-icon">😴</span><span class="move-lbl">Istirahat</span><span class="move-cal">dan itu oke!</span></button>
+        <button class="move-btn" onclick="quickMove('Jalan kaki',200,'🚶',30)"><span class="move-icon">🚶</span><span class="move-lbl">Jalan kaki</span><span class="move-cal-lbl">~200 kkal/jam</span></button>
+        <button class="move-btn" onclick="quickMove('Jogging',400,'🏃',30)"><span class="move-icon">🏃</span><span class="move-lbl">Jogging</span><span class="move-cal-lbl">~400 kkal/jam</span></button>
+        <button class="move-btn" onclick="quickMove('Gym',350,'💪',45)"><span class="move-icon">💪</span><span class="move-lbl">Gym</span><span class="move-cal-lbl">~350 kkal/jam</span></button>
+        <button class="move-btn" onclick="quickMove('Bersepeda',300,'🚴',30)"><span class="move-icon">🚴</span><span class="move-lbl">Bersepeda</span><span class="move-cal-lbl">~300 kkal/jam</span></button>
+        <button class="move-btn" onclick="quickMove('Renang',450,'🏊',30)"><span class="move-icon">🏊</span><span class="move-lbl">Renang</span><span class="move-cal-lbl">~450 kkal/jam</span></button>
+        <button class="move-btn" onclick="quickMove('Yoga',180,'🧘',30)"><span class="move-icon">🧘</span><span class="move-lbl">Yoga</span><span class="move-cal-lbl">~180 kkal/jam</span></button>
       </div>
-      <div class="move-suggest on" id="move-suggest" style="display:none"></div>
+      <div class="move-custom-row">
+        <input class="move-custom-inp" id="move-custom-name" placeholder="Olahraga lain... (futsal, badminton, dll)"/>
+        <input class="move-dur-inp" id="move-custom-dur" type="number" placeholder="30" min="5" max="300"/>
+        <span class="move-dur-lbl">mnt</span>
+        <button class="move-add-btn" onclick="addCustomMove()">+ Tambah</button>
+      </div>
+      <ul class="move-list" id="move-list"></ul>
+      <div class="move-summary" id="move-summary" style="display:none"></div>
     </div>
 
     <div class="nara-reply" id="nara-today">
       <div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div>
-      <div class="nara-rbody" id="nara-today-txt"><div class="ld"><span></span><span></span><span></span></div></div>
+      <div class="nara-rbody" id="nara-today-txt"></div>
     </div>
   </div>
 
-  <!-- WELLNESS -->
+  <!-- TAB: WELLNESS -->
   <div class="page" id="pg-wellness">
     <div class="pg-title">Ruang <em>dalam</em></div>
     <p class="pg-sub">Tidak ada yang harus diisi semuanya. Tulis sebisanya, sekenyamanannya.</p>
 
-    <!-- MONTHLY GOALS -->
+    <!-- MONTHLY ACHIEVEMENT -->
     <div class="tc w-section">
-      <div class="tc-head"><span class="tc-icon">🎯</span><span class="tc-title">Target bulan ini</span></div>
-      <div class="mg-header">
-        <span class="mg-month" id="mg-month-label"></span>
-        <span style="font-size:11px;color:var(--text3)" id="mg-count-label">0 selesai</span>
+      <div class="tc-head"><span class="tc-icon">🏆</span><span class="tc-title">Achievement bulan ini</span></div>
+      <div class="ach-header">
+        <span class="ach-month" id="ach-month-label"></span>
+        <span style="font-size:11px;color:var(--text3)" id="ach-count-label">0 tercapai</span>
       </div>
-      <div class="mg-progress-wrap">
-        <div class="mg-bar-track"><div class="mg-bar-fill" id="mg-bar" style="width:0%"></div></div>
-        <span class="mg-pct" id="mg-pct">0%</span>
+      <div class="habit-section-lbl">Tambah dari tema</div>
+      <div class="ach-theme-row" id="ach-theme-row"></div>
+      <div class="ach-suggestions" id="ach-suggestions">
+        <div class="ach-sug-head" id="ach-sug-head">Pilih achievement</div>
+        <div class="ach-sug-grid" id="ach-sug-grid"></div>
       </div>
-      <div class="w-label">Pilih target yang sesuai atau buat sendiri</div>
-      <div class="mg-presets" id="mg-presets"></div>
-      <ul class="mg-goals-list" id="mg-goals-list"></ul>
-      <div class="mg-add-row">
-        <input class="mg-add-inp" id="mg-add-inp" placeholder="Tulis target lainnya..." maxlength="80" onkeydown="if(event.key==='Enter')addGoal()"/>
-        <button class="mg-add-btn" onclick="addGoal()">+ Tambah</button>
+      <ul class="ach-list" id="ach-list"></ul>
+      <div class="ach-add-row">
+        <input class="ach-add-inp" id="ach-add-inp" placeholder="Tulis achievementmu... (misal: baca 2 buku)" maxlength="80" onkeydown="if(event.key==='Enter')addAchievement()"/>
+        <input class="ach-target-inp" id="ach-target-inp" type="number" placeholder="target" min="1" max="999" value="1"/>
+        <button class="ach-add-btn" onclick="addAchievement()">+ Tambah</button>
       </div>
+      <div class="ach-add-hint">Kolom angka = target (misal: 2 untuk "baca 2 buku")</div>
     </div>
 
+    <!-- SLEEP -->
     <div class="tc w-section">
       <div class="tc-head"><span class="tc-icon">🌙</span><span class="tc-title">Tidur semalam</span></div>
       <div class="w-label">Jam berapa tidur dan bangun?</div>
       <div class="sleep-row">
-        <input class="sleep-inp" id="sleep-start" placeholder="Tidur (22:30)" maxlength="5" oninput="calcSleep()"/>
+        <input class="sleep-inp" id="sleep-start" type="time" oninput="calcSleep()"/>
         <span class="sleep-sep">→</span>
-        <input class="sleep-inp" id="sleep-end" placeholder="Bangun (06:00)" maxlength="5" oninput="calcSleep()"/>
+        <input class="sleep-inp" id="sleep-end" type="time" oninput="calcSleep()"/>
         <span class="sleep-dur" id="sleep-dur">— jam</span>
       </div>
-      <div class="sleep-note" id="sleep-note">Isi jam tidur dan bangunmu ya.</div>
+      <div class="sleep-note" id="sleep-note"></div>
+      <div class="sleep-fb" id="sleep-fb"></div>
     </div>
 
+    <!-- EMOTIONS -->
     <div class="tc w-section">
       <div class="tc-head"><span class="tc-icon">🎨</span><span class="tc-title">Hari ini rasanya...</span></div>
       <div class="emo-broad" id="emo-broad">
@@ -619,15 +788,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <input class="grat-inp" id="hope" placeholder="Satu hal kecil yang ingin kamu bawa ke hari esok..."/>
     </div>
 
-    <button class="w-save" onclick="saveWellness()">Simpan dan minta pendapat Nara</button>
-
+    <button class="w-save" onclick="saveWellness()">Simpan catatan hari ini</button>
     <div class="nara-reply" id="nara-w" style="margin-top:1rem">
       <div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div>
-      <div class="nara-rbody" id="nara-w-txt"><div class="ld"><span></span><span></span><span></span></div></div>
+      <div class="nara-rbody" id="nara-w-txt"></div>
     </div>
   </div>
 
-  <!-- TIPS -->
+  <!-- TAB: TIPS -->
   <div class="page" id="pg-tips">
     <div class="pg-title">Tips <em>untukmu</em></div>
     <p class="pg-sub" id="tips-sub">Disesuaikan dengan kondisi dan gaya hidupmu.</p>
@@ -640,25 +808,25 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     </div>
     <div class="tip-sec on" id="ts-all"><div id="tips-personal"></div></div>
     <div class="tip-sec" id="ts-makan">
-      <div class="tip-card"><div class="tip-ch"><span class="tip-ci">🍽</span><span class="tip-ct">Protein dulu, baru yang lain</span></div><div class="tip-cb">Setiap makan, ambil protein dulu — ayam, telur, tahu, tempe, ikan. Cara sederhana ini otomatis mengurangi porsi karbohidrat tanpa harus ngerasa lapar.<ul><li>Piring ideal: 1/2 sayur, 1/4 protein, 1/4 karbohidrat</li><li>Minum 1 gelas air sebelum makan</li><li>Makan pelan, nikmati tiap suapan :-)</li></ul></div></div>
+      <div class="tip-card"><div class="tip-ch"><span class="tip-ci">🍽</span><span class="tip-ct">Protein dulu, baru yang lain</span></div><div class="tip-cb">Setiap makan, ambil protein dulu — ayam, telur, tahu, tempe, ikan. Cara sederhana ini otomatis mengurangi porsi karbohidrat tanpa harus ngerasa lapar.<ul><li>Piring ideal: ½ sayur, ¼ protein, ¼ karbohidrat</li><li>Minum 1 gelas air sebelum makan</li><li>Makan pelan, nikmati tiap suapan</li></ul></div></div>
       <div class="tip-card"><div class="tip-ch"><span class="tip-ci">🌙</span><span class="tip-ct">Makan malam yang lebih ringan</span></div><div class="tip-cb">Setelah sore, aktivitas tubuh mulai melambat. Makan malam berat membebani sistem pencernaan saat istirahat.<ul><li>Coba selesai makan sebelum jam 20.00</li><li>Protein dan sayur tanpa nasi sudah cukup untuk malam</li><li>Kalau lapar malam: segelas susu hangat atau buah kecil</li></ul></div></div>
     </div>
     <div class="tip-sec" id="ts-gerak">
       <div class="tip-card"><div class="tip-ch"><span class="tip-ci">🚶</span><span class="tip-ct">10 menit lebih baik dari tidak sama sekali</span></div><div class="tip-cb">Tidak selalu harus 1 jam olahraga. Bahkan 10 menit gerak sehari bisa membuat perbedaan besar dalam jangka panjang.<ul><li>Jalan kaki saat istirahat siang</li><li>Naik tangga daripada lift</li><li>Stretching 5 menit sebelum tidur</li></ul></div></div>
-      <div class="tip-card"><div class="tip-ch"><span class="tip-ci">💪</span><span class="tip-ct">Latihan rumah tanpa alat</span></div><div class="tip-cb">Squat, plank, push-up dinding, glute bridge. Empat gerakan ini sudah cukup untuk pemula yang mulai dari nol.<ul><li>Mulai 10 menit, 3-4x seminggu</li><li>Konsistensi lebih penting dari intensitas</li><li>Progress foto tiap 2 minggu lebih jujur dari timbangan :-)</li></ul></div></div>
+      <div class="tip-card"><div class="tip-ch"><span class="tip-ci">💪</span><span class="tip-ct">Latihan rumah tanpa alat</span></div><div class="tip-cb">Squat, plank, push-up dinding, glute bridge — empat gerakan ini sudah cukup untuk pemula.<ul><li>Mulai 10 menit, 3-4x seminggu</li><li>Konsistensi lebih penting dari intensitas</li><li>Progress foto tiap 2 minggu lebih jujur dari timbangan</li></ul></div></div>
     </div>
     <div class="tip-sec" id="ts-jajanan">
-      <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.7">Jajan tetap bisa, asal tahu cara pesannya. Ini panduan modifikasi jajanan Indonesia yang umum.</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.7">Jajan tetap bisa, asal tahu cara pesannya.</p>
       <div class="jaj-grid" id="jaj-grid"></div>
     </div>
     <div class="tip-sec" id="ts-mindset">
       <div class="tip-card"><div class="tip-ch"><span class="tip-ci">🧘</span><span class="tip-ct">Satu hari buruk bukan kegagalan</span></div><div class="tip-cb">Makan tidak sehat satu hari tidak menghapus seminggu usahamu. Yang penting adalah apa yang kamu lakukan setelahnya.</div></div>
-      <div class="tip-card"><div class="tip-ch"><span class="tip-ci">💬</span><span class="tip-ct">Berbicara baik pada diri sendiri</span></div><div class="tip-cb">Cara kamu berbicara pada dirimu sendiri itu penting. "Aku malas" berbeda dengan "Aku butuh istirahat hari ini." Yang pertama menyerang, yang kedua memahami.</div></div>
-      <div class="tip-card"><div class="tip-ch"><span class="tip-ci">📊</span><span class="tip-ct">Ukur progress dengan cara yang tepat</span></div><div class="tip-cb">Timbangan itu fluktuatif. Ukuran yang lebih jujur: bagaimana pakaianmu terasa, bagaimana energimu, bagaimana tidurmu.<ul><li>Foto tiap 2 minggu di kondisi yang sama</li><li>Catat perasaanmu, bukan hanya angkanya</li><li>Rayakan hal kecil :-)</li></ul></div></div>
+      <div class="tip-card"><div class="tip-ch"><span class="tip-ci">💬</span><span class="tip-ct">Berbicara baik pada diri sendiri</span></div><div class="tip-cb">"Aku malas" berbeda dengan "Aku butuh istirahat hari ini." Yang pertama menyerang, yang kedua memahami. Pilih yang memahami.</div></div>
+      <div class="tip-card"><div class="tip-ch"><span class="tip-ci">📊</span><span class="tip-ct">Ukur progress dengan cara yang tepat</span></div><div class="tip-cb">Timbangan itu fluktuatif. Ukuran yang lebih jujur: bagaimana energimu, bagaimana tidurmu, bagaimana pakaianmu terasa.<ul><li>Foto tiap 2 minggu di kondisi yang sama</li><li>Catat perasaanmu, bukan hanya angkanya</li><li>Rayakan hal kecil (≧▽≦)</li></ul></div></div>
     </div>
   </div>
 
-  <!-- PROGRESS -->
+  <!-- TAB: PROGRES -->
   <div class="page" id="pg-progress">
     <div class="pg-title">Progres <em>kamu</em></div>
     <p class="pg-sub">Setiap hari yang kamu isi adalah bukti kamu peduli pada dirimu sendiri.</p>
@@ -669,27 +837,23 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     </div>
     <div class="prog-sec-title">Bulan ini</div>
     <div class="cal-grid" id="cal-grid"></div>
-    <div class="prog-sec-title">Aktivitas 12 minggu terakhir</div>
-    <div class="heatmap" id="heatmap"></div>
-    <div style="display:flex;gap:6px;align-items:center;margin-bottom:1.25rem">
-      <div style="width:10px;height:10px;border-radius:2px;background:var(--border-l)"></div>
-      <span style="font-size:10px;color:var(--text3)">Belum diisi</span>
-      <div style="width:10px;height:10px;border-radius:2px;background:var(--moss-p);margin-left:8px"></div>
-      <span style="font-size:10px;color:var(--text3)">Mulai</span>
-      <div style="width:10px;height:10px;border-radius:2px;background:var(--moss-l);margin-left:8px"></div>
-      <div style="width:10px;height:10px;border-radius:2px;background:var(--moss);margin-left:4px"></div>
-      <span style="font-size:10px;color:var(--text3)">Lengkap</span>
+    <div class="prog-sec-title">Rekap makan & gerak bulan ini</div>
+    <div class="month-recap-grid" id="month-recap-grid"></div>
+    <div class="prog-sec-title">Konsistensi 8 minggu terakhir</div>
+    <div class="week-chart" id="week-chart"></div>
+    <div class="week-legend">
+      <div class="wl-item"><div class="wl-dot" style="background:var(--border-l)"></div>Belum diisi</div>
+      <div class="wl-item"><div class="wl-dot" style="background:var(--moss-l)"></div>Sebagian</div>
+      <div class="wl-item"><div class="wl-dot" style="background:var(--moss)"></div>Lengkap</div>
     </div>
     <div class="prog-sec-title">Rekap minggu ini</div>
     <div class="recap-card" id="weekly-recap"></div>
     <div class="prog-sec-title">Distribusi mood bulan ini</div>
-    <div class="recap-card">
-      <div class="mood-chart" id="mood-chart"></div>
-    </div>
+    <div class="recap-card"><div class="mood-chart" id="mood-chart"></div></div>
     <div class="prog-sec-title">Catatan dari Nara</div>
     <div class="nara-reply on" id="nara-recap">
       <div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div>
-      <div class="nara-rbody" id="nara-recap-txt"><div class="ld"><span></span><span></span><span></span></div></div>
+      <div class="nara-rbody" id="nara-recap-txt"></div>
     </div>
   </div>
 
@@ -703,15 +867,20 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 <!-- NARA FLOAT -->
 <div class="nara-float" id="nara-float" style="display:none">
-  <div class="nara-badge on" id="nara-badge"></div>
+  <div class="nara-badge" id="nara-badge"></div>
   <button class="nara-fab" onclick="togNaraChat()" title="Chat dengan Nara">N</button>
   <div class="nara-chat" id="nara-chat">
     <div class="nc-head">
       <div class="nc-av">N</div>
-      <span class="nc-name">Nara</span>
+      <div><div class="nc-name">Nara</div><div class="nc-status">(◕ᴗ◕✿) siap menemani</div></div>
       <button class="nc-close" onclick="togNaraChat()">✕</button>
     </div>
     <div class="nc-msgs" id="nc-msgs"></div>
+    <div class="nc-quick" id="nc-quick">
+      <button class="nc-qbtn" onclick="quickChat('Makan apa ya yang enak sekarang?')">Makan apa?</button>
+      <button class="nc-qbtn" onclick="quickChat('Aku lagi capek banget nih...')">Lagi capek</button>
+      <button class="nc-qbtn" onclick="quickChat('Olahraga apa yang cocok buat aku?')">Olahraga apa?</button>
+    </div>
     <div class="nc-inp-row">
       <input class="nc-inp" id="nc-inp" placeholder="Ketik sesuatu..." onkeydown="if(event.key==='Enter')sendNara()"/>
       <button class="nc-send" onclick="sendNara()">Kirim</button>
@@ -723,519 +892,785 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="p-overlay" id="p-overlay" onclick="closeProfile()"></div>
 <div class="p-panel" id="p-panel">
   <button class="p-close" onclick="closeProfile()">←</button>
-  <div class="p-av-big" id="p-av-big">?</div>
+  <div class="p-av-wrap">
+    <div class="p-av-big" id="p-av-big">?</div>
+    <div class="p-av-colors" id="p-av-colors"></div>
+  </div>
   <div class="p-name-d" id="p-name-d">—</div>
-  <div class="p-goal-d" id="p-goal-d">—</div>
+  <div class="p-meta-d" id="p-meta-d">—</div>
   <div class="p-divider"></div>
   <div class="p-sec-title">Edit profil</div>
   <div class="p-field"><div class="p-lbl">Nama panggilan</div><input class="p-inp" id="pi-name"/></div>
-  <div class="p-field"><div class="p-lbl">Tujuan utama</div><input class="p-inp" id="pi-goal"/></div>
-  <div class="p-field"><div class="p-lbl">Keseharian</div><input class="p-inp" id="pi-act"/></div>
-  <div class="p-field"><div class="p-lbl">Preferensi makan</div><input class="p-inp" id="pi-cook"/></div>
-  <div class="p-field"><div class="p-lbl">Situasi di rumah</div><input class="p-inp" id="pi-home"/></div>
-  <div class="p-field"><div class="p-lbl">Budget makan per hari</div><input class="p-inp" id="pi-budget"/></div>
+  <div class="p-field"><div class="p-lbl">Usia</div><input class="p-inp" id="pi-age" type="number" min="7" max="99" placeholder="Umur kamu..."/></div>
+  <div class="p-field"><div class="p-lbl">Keseharian</div>
+    <select class="p-sel" id="pi-act">
+      <option value="">— pilih —</option>
+      <option>Pekerja kantoran</option><option>Pekerja lapangan</option>
+      <option>Mahasiswa / pelajar</option><option>Kerja dari rumah</option>
+      <option>Ibu rumah tangga</option><option>Lainnya</option>
+    </select></div>
+  <div class="p-field"><div class="p-lbl">Situasi di rumah</div>
+    <select class="p-sel" id="pi-home">
+      <option value="">— pilih —</option>
+      <option>Sendiri (kos / kontrakan)</option><option>Bersama orang tua</option>
+      <option>Bersama pasangan</option><option>Bersama pasangan + anak kecil</option>
+      <option>Bersama pasangan + anak remaja</option><option>Ada lansia di rumah</option>
+    </select></div>
+  <div class="p-field"><div class="p-lbl">Preferensi makan</div>
+    <select class="p-sel" id="pi-cook">
+      <option value="">— pilih —</option>
+      <option>Lebih sering masak sendiri</option><option>Lebih sering beli / jajan</option><option>Tergantung hari</option>
+    </select></div>
+  <div class="p-field"><div class="p-lbl">Budget makan per hari</div>
+    <select class="p-sel" id="pi-budget">
+      <option value="">— pilih —</option>
+      <option>Di bawah Rp 50rb</option><option>Rp 50–100rb</option>
+      <option>Rp 100–200rb</option><option>Di atas Rp 200rb</option>
+    </select></div>
+  <div class="p-field"><div class="p-lbl">Goals & target (edit bebas)</div>
+    <textarea class="p-goals-edit" id="pi-goals" placeholder="Tulis tujuanmu di sini..."></textarea></div>
   <button class="p-save" onclick="saveProfile()">Simpan perubahan</button>
-  <div class="p-email">Ada pertanyaan atau masukan? Hubungi kami di <a href="mailto:hello@inarte.id">hello@inarte.id</a></div>
   <span class="p-reset" onclick="resetApp()">Mulai ulang dari awal</span>
 </div>
-
 <script>
-// ── STATE ──
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
 let P = {}, D = {}, chatHistory = [];
 const TODAY = new Date().toISOString().split('T')[0];
-const obData = { name:'', goals:[], act:'', cook:'', home:'', budget:'' };
+const obData = { name:'', age:'', goals:[], act:'', home:'', cook:'', budget:'' };
+const AV_COLORS = [
+  {hex:'#4D6B52',name:'moss'},{hex:'#8B4E38',name:'clay'},
+  {hex:'#5C5080',name:'dusk'},{hex:'#3A6B8B',name:'ocean'},
+  {hex:'#A05070',name:'blush'},{hex:'#A67C3A',name:'amber'}
+];
 
-// ── ONBOARDING ──
+// ═══════════════════════════════════════════════════════
+// HABIT THEMES & SUGGESTIONS
+// ═══════════════════════════════════════════════════════
+const HABIT_THEMES = [
+  { id:'makan', icon:'🍽', label:'Makan & nutrisi', color:'var(--amber)', suggestions:[
+    'Sarapan sebelum jam 9 pagi','Makan sayur minimal sekali','Tidak skip makan siang',
+    'Minum 8 gelas air','Tidak makan gorengan hari ini','Makan buah satu porsi',
+    'Kurangi gula di minuman','Tidak makan setelah jam 8 malam','Protein di setiap makan'
+  ]},
+  { id:'gerak', icon:'🏃', label:'Gerak & olahraga', color:'var(--moss)', suggestions:[
+    'Jalan kaki minimal 20 menit','Stretching pagi hari','Naik tangga bukan lift',
+    'Olahraga minimal 30 menit','Plank 1 menit','10 menit yoga atau meditasi gerak',
+    'Berdiri dan bergerak tiap jam','Squat 20x','Push-up 10x'
+  ]},
+  { id:'tidur', icon:'🌙', label:'Tidur & istirahat', color:'var(--dusk)', suggestions:[
+    'Tidur sebelum jam 11 malam','Tidak pakai HP 30 menit sebelum tidur',
+    'Bangun tanpa snooze','Tidur minimal 7 jam','Bersihkan badan sebelum tidur',
+    'Baca buku sebelum tidur','Tidak kopi setelah jam 3 sore','Kamar gelap saat tidur'
+  ]},
+  { id:'mental', icon:'🧘', label:'Mental & mindfulness', color:'var(--dusk)', suggestions:[
+    'Meditasi 5 menit','Tulis jurnal singkat','Tidak scroll media sosial lebih dari 30 menit',
+    'Praktikkan satu hal yang disyukuri','Napas dalam 3x saat stres','Screen time kurang dari 3 jam',
+    'Waktu tanpa HP minimal 1 jam','Dengarkan perasaan sendiri hari ini'
+  ]},
+  { id:'produktif', icon:'📚', label:'Produktivitas', color:'var(--sky)', suggestions:[
+    'Baca minimal 10 halaman','Selesaikan satu task penting','Tidak prokrastinasi lebih dari 10 menit',
+    'Buat to-do list hari ini','Istirahat 5 menit tiap 45 menit kerja',
+    'Rapikan meja kerja','Review progres hari ini','Belajar satu hal baru'
+  ]},
+  { id:'sosial', icon:'💬', label:'Sosial & relasi', color:'var(--rose)', suggestions:[
+    'Hubungi satu orang yang lama tidak disapa','Ucapkan terima kasih ke seseorang',
+    'Dengarkan seseorang sepenuh hati','Kirim pesan positif ke seseorang',
+    'Habiskan waktu berkualitas dengan keluarga','Senyum ke minimal tiga orang hari ini'
+  ]},
+  { id:'ibadah', icon:'🤲', label:'Spiritual / ibadah', color:'var(--moss)', suggestions:[
+    'Sholat tepat waktu','Baca Al-Quran minimal 1 halaman','Dzikir pagi dan petang',
+    'Sholat sunnah minimal 2 rakaat','Bersedekah hari ini','Berdoa sebelum makan',
+    'Membaca doa harian','Istighfar 100x'
+  ]}
+];
+
+// ═══════════════════════════════════════════════════════
+// ACHIEVEMENT THEMES & SUGGESTIONS
+// ═══════════════════════════════════════════════════════
+const ACH_THEMES = [
+  { id:'baca', icon:'📖', label:'Literasi', suggestions:[
+    {text:'Baca buku', target:2, unit:'buku'},
+    {text:'Baca artikel / berita informatif', target:20, unit:'artikel'},
+    {text:'Dengarkan podcast edukasi', target:8, unit:'episode'},
+    {text:'Beli buku baru', target:1, unit:'buku'}
+  ]},
+  { id:'gerak', icon:'🏃', label:'Olahraga', suggestions:[
+    {text:'Olahraga minimal 30 menit', target:12, unit:'sesi'},
+    {text:'Jalan kaki 10.000 langkah', target:10, unit:'hari'},
+    {text:'Ikut kelas fitness / yoga', target:4, unit:'kelas'},
+    {text:'Lari 5 km', target:4, unit:'kali'}
+  ]},
+  { id:'makan', icon:'🥗', label:'Pola makan', suggestions:[
+    {text:'Masak sendiri di rumah', target:15, unit:'kali'},
+    {text:'Tidak jajan minuman manis', target:20, unit:'hari'},
+    {text:'Makan sayur setiap hari', target:28, unit:'hari'},
+    {text:'Tidak skip sarapan', target:25, unit:'hari'}
+  ]},
+  { id:'mental', icon:'🧘', label:'Mental & diri', suggestions:[
+    {text:'Meditasi atau journaling', target:15, unit:'sesi'},
+    {text:'Screen time < 3 jam', target:15, unit:'hari'},
+    {text:'Hari tanpa media sosial', target:4, unit:'hari'},
+    {text:'Belajar skill baru', target:1, unit:'skill'}
+  ]},
+  { id:'sosial', icon:'💛', label:'Sosial', suggestions:[
+    {text:'Janjian atau kumpul dengan teman', target:2, unit:'kali'},
+    {text:'Hubungi anggota keluarga', target:8, unit:'kali'},
+    {text:'Lakukan kebaikan kecil untuk orang lain', target:10, unit:'kali'},
+    {text:'Bersedekah', target:4, unit:'kali'}
+  ]},
+  { id:'kreasi', icon:'🎨', label:'Kreativitas', suggestions:[
+    {text:'Menulis cerita atau puisi', target:2, unit:'karya'},
+    {text:'Menggambar atau melukis', target:4, unit:'karya'},
+    {text:'Belajar resep baru', target:3, unit:'resep'},
+    {text:'Menyelesaikan project pribadi', target:1, unit:'project'}
+  ]}
+];
+
+// ═══════════════════════════════════════════════════════
+// FOOD DATABASE
+// ═══════════════════════════════════════════════════════
+const FOOD_DB = {
+  'nasi putih':{cal:180,unit:'porsi'},'nasi merah':{cal:160,unit:'porsi'},
+  'nasi goreng':{cal:380,unit:'porsi',note:'dengan telur & minyak'},
+  'nasi uduk':{cal:300,unit:'porsi'},'nasi padang':{cal:500,unit:'porsi'},
+  'mie goreng':{cal:350,unit:'porsi'},'mie rebus':{cal:250,unit:'mangkok'},
+  'mie instan':{cal:320,unit:'bungkus',note:'dengan telur'},
+  'roti tawar':{cal:80,unit:'potong'},'roti gandum':{cal:70,unit:'potong'},
+  'oatmeal':{cal:150,unit:'mangkok'},'kentang goreng':{cal:310,unit:'porsi'},
+  'kentang rebus':{cal:130,unit:'porsi'},
+  'telur dadar':{cal:95,unit:'butir',note:'minyak sedikit'},
+  'telur ceplok':{cal:90,unit:'butir'},'telur rebus':{cal:70,unit:'butir'},
+  'telur':{cal:75,unit:'butir'},
+  'ayam goreng':{cal:250,unit:'potong',note:'dengan kulit'},
+  'ayam bakar':{cal:180,unit:'potong'},
+  'dada ayam':{cal:165,unit:'porsi',note:'~100g'},
+  'ikan goreng':{cal:200,unit:'potong'},'ikan bakar':{cal:150,unit:'potong'},
+  'tempe goreng':{cal:160,unit:'potong'},'tempe bacem':{cal:140,unit:'potong'},
+  'tahu goreng':{cal:80,unit:'potong'},'tahu bacem':{cal:70,unit:'potong'},
+  'rendang':{cal:250,unit:'potong'},'bakso':{cal:60,unit:'butir'},
+  'sosis':{cal:90,unit:'potong'},'nugget':{cal:60,unit:'potong'},
+  'tumis kangkung':{cal:50,unit:'porsi'},'tumis bayam':{cal:45,unit:'porsi'},
+  'sayur bening':{cal:40,unit:'mangkok'},'sayur sop':{cal:60,unit:'mangkok'},
+  'capcay':{cal:80,unit:'porsi'},'lalapan':{cal:20,unit:'porsi'},
+  'gado-gado':{cal:300,unit:'porsi'},'soto ayam':{cal:220,unit:'mangkok'},
+  'bakso kuah':{cal:280,unit:'mangkok',note:'5 butir + mie'},
+  'rawon':{cal:300,unit:'mangkok'},'pecel':{cal:250,unit:'porsi'},
+  'ketoprak':{cal:350,unit:'porsi'},'siomay':{cal:280,unit:'porsi'},
+  'batagor':{cal:320,unit:'porsi'},
+  'pisang':{cal:90,unit:'buah'},'apel':{cal:80,unit:'buah'},
+  'jeruk':{cal:60,unit:'buah'},'alpukat':{cal:160,unit:'buah'},
+  'gorengan':{cal:150,unit:'potong'},'risoles':{cal:180,unit:'potong'},
+  'es teh manis':{cal:90,unit:'gelas'},'teh manis':{cal:70,unit:'gelas'},
+  'es teh':{cal:10,unit:'gelas'},'kopi hitam':{cal:5,unit:'gelas'},
+  'kopi susu':{cal:80,unit:'gelas'},'susu putih':{cal:130,unit:'gelas'},
+  'jus jeruk':{cal:110,unit:'gelas'},'air putih':{cal:0,unit:'gelas'},
+  'yogurt':{cal:120,unit:'cup'},'kerupuk':{cal:50,unit:'potong'}
+};
+const FOOD_DEFAULT_SUGS = ['nasi putih','telur dadar','ayam bakar','tempe goreng','tahu goreng','sayur bening','es teh manis','pisang','bakso'];
+
+// ═══════════════════════════════════════════════════════
+// ONBOARDING
+// ═══════════════════════════════════════════════════════
 let obStep = 0;
-function goOb(n) {
-  if (n===1) {
-    const v = document.getElementById('ob-name').value.trim();
-    if (!v) { document.getElementById('ob-name').focus(); return; }
-    obData.name = v;
-    document.getElementById('ob-preview').textContent = v;
+function obNext() {
+  if (obStep===0){const v=document.getElementById('ob-name').value.trim();if(!v){document.getElementById('ob-name').focus();return;}obData.name=v;document.getElementById('ob-preview').textContent=v;}
+  if (obStep===1){const v=document.getElementById('ob-age').value;obData.age=v?parseInt(v):'';}
+  if (obStep===2){obData.goals=[...document.querySelectorAll('#chips-goal .ob-chip.sel')].map(c=>c.textContent.trim());}
+  if (obStep===3){const s=document.querySelector('#chips-act .ob-chip.sel');obData.act=s?s.textContent.trim():'';}
+  if (obStep===4){
+    const h=document.querySelector('#chips-home .ob-chip.sel');obData.home=h?h.textContent.trim():'';
+    const c=document.querySelector('#chips-cook .ob-chip.sel');obData.cook=c?c.textContent.trim():'';
+    const b=document.querySelector('#chips-budget .ob-chip.sel');obData.budget=b?b.textContent.trim():'';
   }
-  document.getElementById('ob'+obStep).classList.remove('active');
-  obStep = n;
-  document.getElementById('ob'+n).classList.add('active');
-  for(let i=0;i<5;i++){
-    const d=document.getElementById('d'+i);
-    d.classList.remove('active','done');
-    if(i<n) d.classList.add('done');
-    else if(i===n) d.classList.add('active');
-  }
+  goObStep(obStep+1);
 }
-function chipGoal(btn) {
-  btn.classList.toggle('sel');
-  const v = btn.textContent.trim();
-  if (btn.classList.contains('sel')) { if(!obData.goals.includes(v)) obData.goals.push(v); }
-  else obData.goals = obData.goals.filter(x=>x!==v);
-}
-function chipGoalAll(btn) {
-  const isAll = btn.classList.toggle('sel');
-  document.querySelectorAll('#chips-goal .ob-chip:not(#chip-all)').forEach(c => {
-    if (isAll) { c.classList.add('sel','disabled'); if(!obData.goals.includes(c.textContent.trim())) obData.goals.push(c.textContent.trim()); }
-    else { c.classList.remove('sel','disabled'); obData.goals=[]; }
-  });
-  if (isAll) obData.goals.push('Semuanya');
-  else obData.goals = [];
-}
-function solo(btn, key) {
-  btn.closest('.ob-chips').querySelectorAll('.ob-chip').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  obData[key] = btn.textContent.trim();
-}
-function doneOb() {
-  P = { ...obData, created: Date.now() };
-  save('inarte_profile', P);
-  document.getElementById('onboarding').style.display = 'none';
-  document.getElementById('app').classList.add('on');
-  initApp();
-}
+function obBack(){if(obStep>0)goObStep(obStep-1);}
+function goObStep(n){document.getElementById('ob'+obStep).classList.remove('active');obStep=n;document.getElementById('ob'+n).classList.add('active');}
+function chipToggle(btn){btn.classList.toggle('sel');}
+function chipSolo(btn,key){btn.closest('.ob-chips').querySelectorAll('.ob-chip').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');obData[key]=btn.textContent.trim();}
+function doneOb(){P={...obData,created:Date.now(),avatarColor:'#4D6B52'};save('inarte_profile',P);document.getElementById('onboarding').style.display='none';document.getElementById('app').classList.add('on');initApp();}
 
-// ── INIT ──
-function initApp() {
-  loadDay();
-  buildGreeting();
-  buildTopbar();
-  buildGlasses();
-  buildMenuSuggest();
-  buildJajanan();
-  buildPersonalTips();
-  buildCalendar();
-  buildHeatmap();
-  buildWeeklyRecap();
-  buildMoodChart();
-  buildNaraRecap();
-  buildMonthlyGoals();
-  restoreToday();
-  document.getElementById('nara-float').style.display = 'block';
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+function initApp(){
+  loadDay(); buildGreeting(); buildTopbar(); buildGlasses();
+  buildMenuSuggest(); buildFoodSuggestions(); buildHabitThemes(); buildHabitList();
+  buildJajanan(); buildPersonalTips(); buildCalendar(); buildWeekChart();
+  buildWeeklyRecap(); buildMoodChart(); buildMonthRecap(); buildNaraRecap();
+  buildAchievementSection(); buildAvatarColors(); restoreToday();
+  document.getElementById('nara-float').style.display='block';
   initNaraChat();
 }
-function loadDay() {
-  const s = load('inarte_day_'+TODAY);
-  D = s || { water:0, mood:null, meals:[], move:null, conditions:[], totalCal:0 };
-}
-function saveDay() {
-  save('inarte_day_'+TODAY, D);
-  const logs = load('inarte_logs') || {};
-  logs[TODAY] = { logged:true, water:D.water, mood:D.mood, meals:D.meals?.length||0, move:D.move };
-  save('inarte_logs', logs);
+
+function loadDay(){
+  const s=load('inarte_day_'+TODAY);
+  D=s||{water:0,mood:null,meals:[],moves:[],habits:[],conditions:[],totalCal:0,totalMoveCal:0};
+  if(!D.moves)D.moves=[];
+  if(!D.habits)D.habits=[];
 }
 
-// ── GREETING ──
-function buildGreeting() {
-  const h = new Date().getHours();
-  const salam = h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam';
-  document.getElementById('g-time').textContent = salam;
-  document.getElementById('g-name').textContent = P.name||'kamu';
-  const msgs = [
-    'Satu langkah kecil hari ini sudah berarti banyak.',
-    'Tidak perlu sempurna. Yang penting kamu hadir untuk dirimu sendiri.',
-    'Tubuhmu bekerja keras untukmu setiap hari. Yuk balas kebaikannya! :-)',
-    'Hari yang biasa pun bisa jadi hari yang baik.',
-    'Kamu tidak harus merasa luar biasa untuk melakukan hal-hal kecil yang baik.',
-    'Pelan-pelan itu baik-baik saja. Prosesnya yang penting.',
-  ];
-  document.getElementById('g-msg').textContent = msgs[new Date().getDate()%msgs.length];
-  const nmsgs = [
-    'Butuh rekomendasi makan hari ini? Tap ikon Nara di bawah ya!',
-    'Hari ini gimana? Cerita ke Nara kapanpun kamu mau :-)',
-    'Nara ada di sini kapanpun kamu butuh.',
-  ];
-  document.getElementById('g-nara').textContent = nmsgs[new Date().getDay()%nmsgs.length];
+function saveDay(){
+  save('inarte_day_'+TODAY,D);
+  const logs=load('inarte_logs')||{};
+  logs[TODAY]={logged:true,water:D.water,mood:D.mood,meals:D.meals.length,move:D.moves.length,mealCal:D.totalCal,moveCal:D.totalMoveCal};
+  save('inarte_logs',logs);
 }
-function buildTopbar() {
+
+// ═══════════════════════════════════════════════════════
+// GREETING & TOPBAR
+// ═══════════════════════════════════════════════════════
+function buildGreeting(){
+  const h=new Date().getHours();
+  document.getElementById('g-time').textContent=h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam';
+  document.getElementById('g-name').textContent=P.name||'kamu';
+  const age=P.age?parseInt(P.age):0;
+  const msgs=age>=60?['Istirahat yang cukup sama pentingnya dengan makan sehat.','Pelan-pelan itu justru cara yang bijak.','Tubuh yang dirawat dengan kasih akan merespons dengan baik.']:
+    ['Satu langkah kecil hari ini sudah berarti banyak.','Tidak perlu sempurna. Yang penting kamu hadir untuk dirimu sendiri.','Tubuhmu bekerja keras untukmu. Yuk balas kebaikannya!','Hari yang biasa pun bisa jadi hari yang baik.','Pelan-pelan itu baik-baik saja. Prosesnya yang penting.'];
+  document.getElementById('g-msg').textContent=msgs[new Date().getDate()%msgs.length];
+  const nmsgs=['Butuh rekomendasi makan? Chat Nara di pojok kanan bawah ya!','Hari ini gimana? Cerita ke Nara kapanpun kamu mau (◕ᴗ◕✿)','Nara ada di sini kapanpun kamu butuh.'];
+  document.getElementById('g-nara').textContent=nmsgs[new Date().getDay()%nmsgs.length];
+}
+
+function buildTopbar(){
   const days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const d=new Date();
   document.getElementById('tb-date').textContent=`${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
-  const n=(P.name||'?').charAt(0).toUpperCase();
-  document.getElementById('av-btn').textContent=n;
-  document.getElementById('p-av-big').textContent=n;
+  const init=(P.name||'?').charAt(0).toUpperCase();
+  document.getElementById('av-btn').textContent=init;
+  document.getElementById('p-av-big').textContent=init;
   document.getElementById('p-name-d').textContent=P.name||'—';
-  const g=Array.isArray(P.goals)?P.goals.join(', '):(P.goals||'—');
-  document.getElementById('p-goal-d').textContent=g;
+  const age=P.age?`${P.age} tahun`:'';
+  document.getElementById('p-meta-d').textContent=[age,P.act||''].filter(Boolean).join(' · ')||'—';
+  const c=P.avatarColor||'#4D6B52';
+  document.documentElement.style.setProperty('--avc',c);
+  document.getElementById('av-btn').style.background=c;
+  document.getElementById('p-av-big').style.background=c;
   document.getElementById('pi-name').value=P.name||'';
-  document.getElementById('pi-goal').value=Array.isArray(P.goals)?P.goals.join(', '):(P.goals||'');
+  document.getElementById('pi-age').value=P.age||'';
   document.getElementById('pi-act').value=P.act||'';
-  document.getElementById('pi-cook').value=P.cook||'';
   document.getElementById('pi-home').value=P.home||'';
+  document.getElementById('pi-cook').value=P.cook||'';
   document.getElementById('pi-budget').value=P.budget||'';
+  document.getElementById('pi-goals').value=Array.isArray(P.goals)?P.goals.join(', '):(P.goals||'');
 }
 
-// ── MENU SUGGEST ──
-function buildMenuSuggest() {
-  const home=P.home||'', budget=P.budget||'', cook=P.cook||'', cond=D.conditions||[];
-  let menus = getMenuSuggestions(home, budget, cook, cond);
-  const grid = document.getElementById('menu-grid');
-  grid.innerHTML = '';
-  menus.forEach(m => {
-    const cell = document.createElement('div');
-    cell.className = 'menu-cell';
-    cell.innerHTML = `<div class="menu-cell-time">${m.time}</div><div class="menu-cell-name">${m.name}</div><div class="menu-cell-cal">~${m.cal} kkal</div><div class="menu-cell-tip">${m.tip}</div>`;
+// ═══════════════════════════════════════════════════════
+// AVATAR COLORS
+// ═══════════════════════════════════════════════════════
+function buildAvatarColors(){
+  const wrap=document.getElementById('p-av-colors');wrap.innerHTML='';
+  const cur=P.avatarColor||'#4D6B52';
+  AV_COLORS.forEach(c=>{
+    const btn=document.createElement('button');btn.className='p-av-color'+(c.hex===cur?' active':'');
+    btn.style.background=c.hex;btn.title=c.name;
+    btn.onclick=()=>{
+      document.querySelectorAll('.p-av-color').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');P.avatarColor=c.hex;
+      document.documentElement.style.setProperty('--avc',c.hex);
+      document.getElementById('av-btn').style.background=c.hex;
+      document.getElementById('p-av-big').style.background=c.hex;
+    };
+    wrap.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// DAILY HABITS
+// ═══════════════════════════════════════════════════════
+let activeHabitTheme = null;
+
+function getHabitKey(){return 'inarte_habits_template';}
+function loadHabitTemplate(){return load(getHabitKey())||[];}
+function saveHabitTemplate(arr){save(getHabitKey(),arr);}
+
+function buildHabitThemes(){
+  const row=document.getElementById('habit-theme-row');row.innerHTML='';
+  HABIT_THEMES.forEach(t=>{
+    const btn=document.createElement('button');btn.className='habit-theme-btn';
+    btn.innerHTML=`${t.icon} ${t.label}`;
+    btn.onclick=()=>toggleHabitTheme(btn,t);
+    row.appendChild(btn);
+  });
+}
+
+function toggleHabitTheme(btn,theme){
+  const isActive=btn.classList.contains('active');
+  document.querySelectorAll('.habit-theme-btn').forEach(b=>b.classList.remove('active'));
+  const sugEl=document.getElementById('habit-suggestions');
+  if(isActive){sugEl.classList.remove('on');activeHabitTheme=null;return;}
+  btn.classList.add('active');activeHabitTheme=theme.id;
+  const grid=document.getElementById('habit-sug-grid');
+  document.getElementById('habit-sug-head').textContent=`${theme.icon} ${theme.label}`;
+  grid.innerHTML='';
+  const existing=loadHabitTemplate().map(h=>h.text.toLowerCase());
+  theme.suggestions.forEach(s=>{
+    if(existing.includes(s.toLowerCase()))return;
+    const chip=document.createElement('button');chip.className='habit-sug-chip';chip.textContent=s;
+    chip.onclick=()=>{addHabitText(s);chip.style.opacity='.4';chip.style.pointerEvents='none';};
+    grid.appendChild(chip);
+  });
+  sugEl.classList.add('on');
+}
+
+function buildHabitList(){
+  const template=loadHabitTemplate();
+  const todayDone=D.habits||[];
+  const list=document.getElementById('habit-list');list.innerHTML='';
+  if(!template.length){list.innerHTML='<div class="habit-empty">Belum ada kebiasaan. Pilih dari tema atau tulis sendiri (◕ᴗ◕✿)</div>';updateHabitProgress(0,0);return;}
+  template.forEach((h,i)=>{
+    const isDone=todayDone.includes(h.id);
+    const li=document.createElement('li');li.className='habit-item'+(isDone?' done':'');
+    li.innerHTML=`<div class="habit-check"><span class="habit-check-mark">✓</span></div><span class="habit-item-text">${h.text}</span><button class="habit-item-del" onclick="deleteHabit('${h.id}',event)" title="Hapus">✕</button>`;
+    li.addEventListener('click',e=>{if(e.target.closest('.habit-item-del'))return;toggleHabitDone(h.id,li);});
+    list.appendChild(li);
+  });
+  const done=template.filter(h=>todayDone.includes(h.id)).length;
+  updateHabitProgress(done,template.length);
+}
+
+function toggleHabitDone(id,li){
+  if(!D.habits)D.habits=[];
+  if(D.habits.includes(id)){D.habits=D.habits.filter(x=>x!==id);li.classList.remove('done');}
+  else{D.habits.push(id);li.classList.add('done');}
+  saveDay();
+  const t=loadHabitTemplate();
+  updateHabitProgress(t.filter(h=>D.habits.includes(h.id)).length,t.length);
+  document.getElementById('habit-status').textContent=`${D.habits.length}/${t.length}`;
+}
+
+function updateHabitProgress(done,total){
+  const pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('habit-prog-fill').style.width=pct+'%';
+  document.getElementById('habit-prog-txt').textContent=total>0?`${done} dari ${total} kebiasaan selesai (${pct}%)`:'';
+  document.getElementById('habit-status').textContent=total>0?`${done}/${total}`:'';
+}
+
+function addHabitText(text){
+  const arr=loadHabitTemplate();
+  if(arr.some(h=>h.text.toLowerCase()===text.toLowerCase()))return;
+  arr.push({id:'h_'+Date.now(),text,addedAt:Date.now()});
+  saveHabitTemplate(arr);buildHabitList();
+  if(activeHabitTheme)document.querySelectorAll('#habit-sug-grid .habit-sug-chip').forEach(c=>{if(c.textContent===text){c.style.opacity='.4';c.style.pointerEvents='none';}});
+}
+
+function addHabit(){
+  const inp=document.getElementById('habit-add-inp');
+  const text=inp.value.trim();if(!text)return;
+  addHabitText(text);inp.value='';
+}
+
+function deleteHabit(id,e){
+  e.stopPropagation();
+  const arr=loadHabitTemplate().filter(h=>h.id!==id);
+  saveHabitTemplate(arr);
+  D.habits=(D.habits||[]).filter(x=>x!==id);
+  saveDay();buildHabitList();
+}
+
+// ═══════════════════════════════════════════════════════
+// MENU SUGGEST
+// ═══════════════════════════════════════════════════════
+function buildMenuSuggest(){
+  const menus=getMenuSuggestions();
+  const grid=document.getElementById('menu-grid');grid.innerHTML='';
+  menus.forEach(m=>{
+    const cell=document.createElement('div');cell.className='menu-cell';
+    cell.innerHTML=`<div class="menu-cell-time">${m.time}</div><div class="menu-cell-name">${m.name}</div><div class="menu-cell-cal">~${m.cal} kkal</div><div class="menu-cell-tip">${m.tip}</div>`;
+    cell.onclick=()=>{document.getElementById('meal-inp').value=m.name;document.getElementById('meal-inp').focus();};
     grid.appendChild(cell);
   });
 }
-function getMenuSuggestions(home, budget, cook, cond) {
-  const isMenyusui=cond.includes('menyusui'), isHamil=cond.includes('hamil');
-  const isKos=home.includes('Sendiri'), isOrangtua=home.includes('orang tua');
-  const isAnak=home.includes('anak kecil'), isPasangan=home.includes('pasangan')&&!isAnak;
+
+function getMenuSuggestions(){
+  const home=P.home||'',cook=P.cook||'',cond=D.conditions||[];
+  const age=P.age?parseInt(P.age):25;
+  const isLansia=age>=60||home.includes('lansia');
+  const isMenyusui=cond.includes('menyusui'),isHamil=cond.includes('hamil');
+  const isOrangtua=home.includes('orang tua'),isAnak=home.includes('anak');
   const isMasak=cook.includes('masak sendiri');
   const day=new Date().getDay();
-  const menus=[
-    [[{time:'Sarapan',name:'Roti gandum + telur ceplok',cal:280,tip:'Beli di warteg atau buat sendiri 10 menit'},{time:'Siang',name:'Nasi + ayam bakar + sayur',cal:420,tip:'Warteg: minta nasi setengah porsi'},{time:'Malam',name:'Mie instan + telur + sayur',cal:350,tip:'Kurangi bumbu setengah, tambah sayur beku'}],[{time:'Sarapan',name:'Oatmeal instant + susu kedelai',cal:250,tip:'Rebus 3 menit, hemat dan mengenyangkan'},{time:'Siang',name:'Pecel + tahu tempe',cal:380,tip:'Beli di warteg, skip lontong'},{time:'Malam',name:'Soto ayam bening + nasi sedikit',cal:300,tip:'Pilih kuah bening, no bihun'}]],
-    [[{time:'Sarapan',name:'Telur dadar sayur + roti',cal:300,tip:'10 menit prep, protein bagus'},{time:'Siang',name:'Nasi + tempe orek + tumis bayam',cal:400,tip:'Masak sekali untuk 2 hari'},{time:'Malam',name:'Sup tahu bening',cal:200,tip:'Ringan untuk malam'}]],
-    [[{time:'Sarapan',name:'Ikut sarapan rumah + kurangi nasi',cal:350,tip:'Ambil lebih banyak sayur dan lauk'},{time:'Siang',name:'Makan siang rumah + piring ideal',cal:450,tip:'1/2 sayur, 1/4 protein, 1/4 nasi'},{time:'Malam',name:'Makan malam rumah, skip nasi',cal:280,tip:'Minta porsi protein lebih, nasi dikurangi'}]],
-    [[{time:'Sarapan',name:'Telur poach + avokad toast',cal:320,tip:'Weekend brunch yang sehat dan enak'},{time:'Siang',name:'Ayam bakar bumbu merah + lalapan',cal:420,tip:'Satu resep untuk berdua'},{time:'Malam',name:'Sup ikan tomat + nasi merah sedikit',cal:350,tip:'Ringan dan bergizi'}],[{time:'Sarapan',name:'Smoothie pisang + telur rebus',cal:290,tip:'Cepat sebelum kerja'},{time:'Siang',name:'Gado-gado protein',cal:380,tip:'Saus kacang no gula'},{time:'Malam',name:'Ikan bumbu kuning + tumis brokoli',cal:360,tip:'Favorit semua orang'}]],
-    [[{time:'Sarapan',name:'Telur dadar + nasi tim (anak) / oatmeal (kamu)',cal:300,tip:'Masak sekaligus, saji berbeda'},{time:'Siang',name:'Soto ayam keluarga',cal:400,tip:'Anak: pakai bihun. Kamu: skip bihun'},{time:'Malam',name:'Ayam kukus bumbu + sayur bening',cal:350,tip:'Satu masak, semua suka'}]],
-    [[{time:'Sarapan',name:'Oatmeal + telur + susu kedelai',cal:380,tip:'Booster ASI: oatmeal dan kedelai :-)'},{time:'Siang',name:'Sayur bening katuk + ikan',cal:350,tip:'Katuk adalah booster ASI terbaik!'},{time:'Snack',name:'Kurma 3 biji + kacang almond',cal:200,tip:'Zat besi dan energi untuk nyusu'},{time:'Malam',name:'Tempe + tumis bayam',cal:280,tip:'Bayam tinggi zat besi untuk busui'}]],
-    [[{time:'Sarapan',name:'Roti gandum + telur + susu',cal:380,tip:'Folat dari telur penting untuk trimester 1'},{time:'Siang',name:'Nasi + ikan + sayur hijau',cal:480,tip:'Makan lebih banyak dari biasa, wajar'},{time:'Snack',name:'Buah + yogurt',cal:200,tip:'Kalsium untuk perkembangan tulang janin'},{time:'Malam',name:'Sup ayam sayur hangat',cal:350,tip:'Kaldu hangat baik untuk mual'}]],
+  if(isLansia)return [{time:'Sarapan',name:'Bubur ayam lembut',cal:200,tip:'Mudah dicerna, protein dari ayam suwir'},{time:'Siang',name:'Nasi tim + ikan kukus + sayur bening',cal:350,tip:'Lunak, tidak pedas'},{time:'Malam',name:'Sup tahu telur',cal:180,tip:'Ringan untuk lambung malam hari'}];
+  if(isMenyusui)return [{time:'Sarapan',name:'Oatmeal + susu kedelai + telur rebus',cal:380,tip:'Booster ASI: oatmeal & kedelai'},{time:'Siang',name:'Sayur bening katuk + ikan + nasi',cal:420,tip:'Katuk booster ASI terbaik!'},{time:'Snack',name:'Kurma 3 biji + kacang almond',cal:200,tip:'Zat besi untuk produksi ASI'},{time:'Malam',name:'Tempe + tumis bayam',cal:280,tip:'Bayam tinggi zat besi'}];
+  if(isHamil)return [{time:'Sarapan',name:'Roti gandum + telur + susu',cal:380,tip:'Folat dari telur penting di trimester 1'},{time:'Siang',name:'Nasi + ikan + sayur hijau',cal:480,tip:'Makan lebih banyak dari biasa, wajar'},{time:'Snack',name:'Buah + yogurt',cal:200,tip:'Kalsium untuk tulang janin'},{time:'Malam',name:'Sup ayam sayur hangat',cal:350,tip:'Kaldu hangat baik untuk mual'}];
+  if(isOrangtua)return [{time:'Sarapan',name:'Ikut sarapan rumah, kurangi nasi',cal:350,tip:'Ambil lebih banyak sayur dan lauk'},{time:'Siang',name:'Makan siang rumah + piring ideal',cal:420,tip:'½ sayur, ¼ protein, ¼ nasi'},{time:'Malam',name:'Makan rumah, skip nasi',cal:260,tip:'Minta porsi protein lebih'}];
+  const all=[
+    [{time:'Sarapan',name:'Roti gandum + telur ceplok',cal:280,tip:'Beli di warteg atau buat sendiri 10 menit'},{time:'Siang',name:'Nasi + ayam bakar + sayur',cal:400,tip:'Minta nasi setengah porsi'},{time:'Malam',name:'Mie rebus + telur + sayur',cal:280,tip:'Kurangi bumbu, tambah sayur beku'}],
+    [{time:'Sarapan',name:'Oatmeal + telur rebus',cal:250,tip:'Rebus 3 menit, mengenyangkan lama'},{time:'Siang',name:'Pecel + tahu tempe',cal:350,tip:'Skip lontong'},{time:'Malam',name:'Soto ayam bening',cal:220,tip:'Kuah bening, no bihun'}],
+    [{time:'Sarapan',name:'Telur dadar + nasi',cal:280,tip:'Cepat dan padat nutrisi'},{time:'Siang',name:'Nasi + tempe orek + tumis bayam',cal:380,tip:'Masak sekali untuk 2 hari'},{time:'Malam',name:'Sup tahu bening',cal:180,tip:'Ringan untuk malam'}],
+    [{time:'Sarapan',name:'Pisang + kopi/teh tanpa gula',cal:100,tip:'Kalau memang tidak sempat'},{time:'Siang',name:'Gado-gado',cal:300,tip:'Saus kacang sedikit, no lontong'},{time:'Malam',name:'Ayam bakar + lalapan',cal:280,tip:'Praktis, tanpa nasi sudah cukup'}],
   ];
-  let set;
-  if(isMenyusui)set=menus[5];
-  else if(isHamil)set=menus[6];
-  else if(isAnak)set=menus[4];
-  else if(isPasangan)set=menus[3];
-  else if(isOrangtua)set=menus[2];
-  else if(isKos&&isMasak)set=menus[1];
-  else set=menus[0];
-  return set[day%set.length];
+  return all[day%all.length];
 }
 
-// ── WATER ──
-function buildGlasses() {
-  const c=document.getElementById('glasses'); c.innerHTML='';
-  for(let i=0;i<8;i++){
-    const b=document.createElement('button');
-    b.className='glass'+(i<(D.water||0)?' full':'');
-    b.innerHTML='<span>💧</span>';
-    b.onclick=()=>togGlass(i);
-    c.appendChild(b);
-  }
+// ═══════════════════════════════════════════════════════
+// WATER
+// ═══════════════════════════════════════════════════════
+function buildGlasses(){
+  const c=document.getElementById('glasses');c.innerHTML='';
+  for(let i=0;i<8;i++){const b=document.createElement('button');b.className='glass'+(i<(D.water||0)?' full':'');b.innerHTML='<span>💧</span>';b.onclick=()=>togGlass(i);c.appendChild(b);}
   updWater();
 }
-function togGlass(i){ D.water=i<D.water?i:i+1; buildGlasses(); saveDay(); debNara(); }
+function togGlass(i){D.water=i<D.water?i:i+1;buildGlasses();saveDay();schedNaraToday();}
 function updWater(){
-  const w=D.water||0;
-  document.getElementById('w-status').textContent=`${w} dari 8 gelas`;
-  const m=['Yuk mulai minum! Tubuhmu butuh air untuk bekerja dengan baik :-)','Satu sudah! Tujuh lagi ya.','Bagus, terus lanjut!','Hampir setengahnya, kamu bisa!','Setengah jalan sudah bagus banget.','Tiga lagi, hampir sampai!','Dua lagi!','Satu lagi untuk genap delapan!','Target tercapai! Kamu luar biasa hari ini! :-D'];
+  const w=D.water||0;document.getElementById('w-status').textContent=`${w} dari 8 gelas`;
+  const m=['Yuk mulai minum! Tubuhmu butuh air (◕ᴗ◕✿)','Satu sudah! Tujuh lagi ya.','Bagus! Terus lanjut.','Hampir setengah, kamu bisa!','Setengah jalan, bagus banget.','Tiga lagi!','Dua lagi!','Satu lagi untuk genap delapan!','Target tercapai! (≧▽≦)'];
   document.getElementById('w-msg').textContent=m[Math.min(w,8)];
 }
 
-// ── MOOD ──
-function setMood(btn,mood){ document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); D.mood=mood; saveDay(); debNara(); }
-
-// ── CONDITIONS ──
+// ═══════════════════════════════════════════════════════
+// MOOD & CONDITIONS
+// ═══════════════════════════════════════════════════════
+function setMood(btn,mood){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');D.mood=mood;saveDay();schedNaraToday();}
 function togCond(btn,c){
-  btn.classList.toggle('on');
-  if(!D.conditions)D.conditions=[];
+  btn.classList.toggle('on');if(!D.conditions)D.conditions=[];
   if(btn.classList.contains('on')){if(!D.conditions.includes(c))D.conditions.push(c);}
   else D.conditions=D.conditions.filter(x=>x!==c);
-  saveDay(); buildMenuSuggest();
+  saveDay();buildMenuSuggest();
 }
 
-// ── MEALS ──
-async function addMeal(){
+// ═══════════════════════════════════════════════════════
+// MEAL TRACKING
+// ═══════════════════════════════════════════════════════
+function buildFoodSuggestions(){
+  const wrap=document.getElementById('food-sug-wrap');
+  FOOD_DEFAULT_SUGS.forEach(f=>addSugChip(wrap,f));
+  document.getElementById('meal-inp').addEventListener('input',e=>{
+    const q=e.target.value.toLowerCase().trim();
+    wrap.innerHTML='';
+    if(!q){FOOD_DEFAULT_SUGS.forEach(f=>addSugChip(wrap,f));return;}
+    Object.keys(FOOD_DB).filter(k=>k.includes(q)).slice(0,7).forEach(f=>addSugChip(wrap,f));
+  });
+}
+function addSugChip(wrap,f){
+  const db=FOOD_DB[f];if(!db)return;
+  const chip=document.createElement('button');chip.className='food-sug-chip';
+  chip.textContent=`${f} (${db.cal} kkal/${db.unit})`;
+  chip.onclick=()=>{document.getElementById('meal-inp').value=f;document.getElementById('meal-inp').focus();};
+  wrap.appendChild(chip);
+}
+
+function estCal(foodName,portion){
+  const q=foodName.toLowerCase().trim();
+  if(FOOD_DB[q])return Math.round(FOOD_DB[q].cal*portion);
+  const key=Object.keys(FOOD_DB).find(k=>q.includes(k)||k.includes(q));
+  if(key)return Math.round(FOOD_DB[key].cal*portion);
+  if(q.includes('goreng'))return Math.round(200*portion);
+  if(q.includes('bakar')||q.includes('kukus')||q.includes('rebus'))return Math.round(140*portion);
+  if(q.includes('sayur')||q.includes('tumis'))return Math.round(60*portion);
+  if(q.includes('mie')||q.includes('mi '))return Math.round(300*portion);
+  if(q.includes('nasi'))return Math.round(200*portion);
+  if(q.includes('buah')||q.includes('jus'))return Math.round(80*portion);
+  if(q.includes('teh')||q.includes('kopi'))return Math.round(60*portion);
+  if(q.includes('kue')||q.includes('roti'))return Math.round(180*portion);
+  return Math.round(220*portion);
+}
+
+function addMeal(){
   const inp=document.getElementById('meal-inp');
-  const txt=inp.value.trim(); if(!txt)return;
-  const btn=document.getElementById('add-btn');
-  btn.disabled=true; btn.textContent='...'; inp.value='';
-  const cal=await estCal(txt);
-  if(!D.meals)D.meals=[];
+  const txt=inp.value.trim();if(!txt)return;
+  const portion=parseFloat(document.getElementById('meal-portion').value)||1;
+  const unit=document.getElementById('meal-unit').value;
+  const btn=document.getElementById('add-btn');btn.disabled=true;btn.textContent='...';
+  const cal=estCal(txt,portion);
   const t=new Date();
-  D.meals.push({name:txt,cal,time:`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`});
+  D.meals.push({name:txt,cal,portion,unit,time:`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`,note:FOOD_DB[txt.toLowerCase()]?.note||''});
   D.totalCal=D.meals.reduce((s,m)=>s+m.cal,0);
-  renderMeals(); saveDay();
-  btn.disabled=false; btn.textContent='Catat';
-  askNaraMeal(txt,cal,D.totalCal);
+  inp.value='';document.getElementById('meal-portion').value='1';
+  renderMeals();saveDay();showNaraMealFeedback(txt,cal,portion,unit,D.totalCal);schedNaraToday();
+  btn.disabled=false;btn.textContent='Catat';
 }
-async function estCal(food){
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:60,system:'Estimator kalori makanan Indonesia. Balas HANYA dengan angka bulat saja. Contoh: 450',messages:[{role:'user',content:`Kalori: ${food}`}]})});
-    const d=await r.json();
-    const n=parseInt(d.content?.[0]?.text?.replace(/[^0-9]/g,''));
-    return isNaN(n)?300:n;
-  }catch{return 300;}
-}
+
+function deleteMeal(i){D.meals.splice(i,1);D.totalCal=D.meals.reduce((s,m)=>s+m.cal,0);renderMeals();saveDay();}
+
 function renderMeals(){
-  const list=document.getElementById('meal-list'); list.innerHTML='';
-  (D.meals||[]).forEach(m=>{
-    const li=document.createElement('li'); li.className='meal-item';
-    li.innerHTML=`<span class="meal-t">${m.time}</span><span class="meal-n">${m.name}</span><span class="meal-k">~${m.cal} kkal</span>`;
+  const list=document.getElementById('meal-list');list.innerHTML='';
+  (D.meals||[]).forEach((m,i)=>{
+    const li=document.createElement('li');li.className='meal-item';
+    li.innerHTML=`<span class="meal-t">${m.time}</span><span class="meal-n">${m.name}<small>${m.portion} ${m.unit}${m.note?' · '+m.note:''}</small></span><span class="meal-k">~${m.cal} kkal</span><button class="meal-del" onclick="deleteMeal(${i})">✕</button>`;
     list.appendChild(li);
   });
   const tot=D.totalCal||0;
   document.getElementById('cal-status').textContent=`~${tot} kkal`;
-  if(tot>0){document.getElementById('cal-bar').style.display='flex';document.getElementById('cal-bar-num').textContent=`~${tot} kkal`;}
+  if(tot>0){
+    document.getElementById('cal-bar').style.display='flex';
+    document.getElementById('cal-bar-num').textContent=`~${tot} kkal`;
+    const groups={};
+    (D.meals||[]).forEach(m=>{const h=parseInt(m.time.split(':')[0]);const lbl=h<10?'Sarapan':h<14?'Makan siang':h<18?'Snack sore':'Makan malam';groups[lbl]=(groups[lbl]||0)+m.cal;});
+    document.getElementById('cal-breakdown').innerHTML=Object.entries(groups).map(([k,v])=>`<span class="cal-bd-item"><strong>${k}:</strong> ~${v} kkal</span>`).join('');
+  }
 }
-async function askNaraMeal(food,cal,total){
+
+function showNaraMealFeedback(food,cal,portion,unit,total){
   const el=document.getElementById('nara-meal'),txt=document.getElementById('nara-meal-txt');
-  el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
-  const budget = P.budget || '';
-  const act = P.act || '';
-  const cook = P.cook || '';
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:250,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP dalam INARTE. Profil user: nama ${P.name||'teman'}, ${act}, ${cook}, budget ${budget}.\n\nGaya: seperti sahabat yang peduli, bukan dokter. Bahasa Indonesia natural, boleh 1-2 kata Inggris tapi tidak berlebihan. Pakai emoticon garis seperti :-) atau :-D sesekali. Tidak menghakimi. Kalau makannya sudah bagus, apresiasi! Kalau kurang ideal, kasih saran ringan tanpa menggurui. Di akhir boleh suggest olahraga ringan untuk membakar kalori. Maksimal 3 kalimat.`,messages:[{role:'user',content:`Baru makan: ${food} (~${cal} kkal). Total hari ini: ~${total} kkal.`}]})});
-    const d=await r.json();
-    txt.innerHTML=`<p>${d.content?.[0]?.text||'Makanannya tercatat ya! :-)'}</p>`;
-  }catch{txt.innerHTML='<p>Makanannya sudah tercatat ya! :-)</p>';}
+  el.classList.add('on');
+  const age=P.age?parseInt(P.age):25;
+  const target=age>=60?1600:age<=17?2200:2000;
+  const pct=Math.round(total/target*100);
+  const parts=[];
+  if(pct<40)parts.push(`${food} tercatat — ${cal} kkal untuk ${portion} ${unit}. Masih ada ruang ${target-total} kkal lagi hari ini.`);
+  else if(pct<80)parts.push(`Sudah ${pct}% dari target harianmu (~${total}/${target} kkal). Jaga terus keseimbangannya!`);
+  else if(pct<=110)parts.push(`Hampir penuh nih — ${total} kkal dari target ${target} kkal. Kalau makan lagi, pilih yang ringan ya.`);
+  else parts.push(`Total hari ini ${total} kkal sudah melewati target. Tidak apa-apa satu hari — yang penting besok kita mulai fresh lagi (◕ᴗ◕✿)`);
+  const q=food.toLowerCase();
+  if(q.includes('goreng')&&!q.includes('tempe')&&!q.includes('tahu'))parts.push('Tips: tiriskan minyaknya sebelum makan untuk kurangi kalori 10-15%.');
+  if(q.includes('mie instan'))parts.push('Pro tip: kurangi bumbu setengah dan tambah sayur beku — lebih bergizi dengan kalori hampir sama.');
+  if(q.includes('es teh')||q.includes('teh manis'))parts.push('Kalau bisa, minta less sugar untuk hemat 40-80 kkal per gelas.');
+  txt.innerHTML=parts.map(p=>`<p>${p}</p>`).join('');
 }
 
-// ── MOVEMENT ──
-function setMove(btn,move,calPerHour){
-  document.querySelectorAll('.move-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel'); D.move=move; D.moveCal=calPerHour; saveDay();
-  const sug=document.getElementById('move-suggest');
-  if(move==='istirahat'){sug.style.display='block';sug.classList.add('on');sug.textContent='Istirahat juga bagian dari pemulihan. Tubuh yang cukup istirahat justru lebih efektif bergerak esok hari :-)';}
-  else{
-    const deficit=Math.max(0,(D.totalCal||0)-1800);
-    const minsNeeded=calPerHour>0?Math.round(deficit/calPerHour*60):0;
-    sug.style.display='block';sug.classList.add('on');
-    sug.textContent=`${move} membakar sekitar ${calPerHour} kkal/jam. ${minsNeeded>0?`Untuk membakar kalori hari ini, sekitar ${minsNeeded} menit sudah cukup! :-)`:'Kalori hari ini sudah aman, olahraga ini jadi bonus yang bagus!'}`;
-  }
-  debNara();
+// ═══════════════════════════════════════════════════════
+// MOVEMENT
+// ═══════════════════════════════════════════════════════
+const MOVE_CPH={jalan:200,jogging:400,gym:350,bersepeda:300,renang:450,yoga:180};
+function quickMove(name,cph,emoji,dur){addMoveEntry({name,emoji,dur,cal:Math.round(cph*dur/60),cph});}
+function addCustomMove(){
+  const name=document.getElementById('move-custom-name').value.trim();
+  const dur=parseInt(document.getElementById('move-custom-dur').value)||30;
+  if(!name){document.getElementById('move-custom-name').focus();return;}
+  addMoveEntry({name,emoji:'🏅',dur,cal:Math.round(4*dur),cph:240});
+  document.getElementById('move-custom-name').value='';document.getElementById('move-custom-dur').value='';
 }
-
-// ── NARA TODAY ──
-let naraT;
-function debNara(){ clearTimeout(naraT); naraT=setTimeout(askNaraToday,1500); }
-async function askNaraToday(){
-  const hasData=D.water>0||D.mood||(D.meals&&D.meals.length)||D.move;
-  if(!hasData)return;
-  const el=document.getElementById('nara-today'),txt=document.getElementById('nara-today-txt');
-  el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
-  const conds=D.conditions?.join(', ')||'tidak ada kondisi khusus';
-  const summary=`Air: ${D.water}/8 gelas. Mood: ${D.mood||'belum diisi'}. Makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'} (total ~${D.totalCal||0} kkal). Gerak: ${D.move||'belum diisi'}. Kondisi: ${conds}.`;
-  // FIX: Extracted variables to avoid broken template literal with empty fallback
-  const userName = P.name || 'teman';
-  const userAct = P.act || '';
-  const userBudget = P.budget || '';
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:280,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP. Profil: nama ${userName}, ${userAct}, budget ${userBudget}.\n\nGaya bicara:\n- Seperti sahabat dekat yang benar-benar peduli\n- Bahasa Indonesia yang natural dan hangat\n- Boleh pakai emoticon garis :-) atau :-D sesekali\n- Tidak menghakimi, tidak menggurui sama sekali\n- Kalau ada kondisi haid/sakit, acknowledge dengan empati dulu\n- Validasi perasaan sebelum saran\n- Maksimal 3 kalimat pendek\n- Tiap response harus BERBEDA dari sebelumnya`,messages:[{role:'user',content:summary}]})});
-    const d=await r.json();
-    txt.innerHTML=`<p>${d.content?.[0]?.text||'Kamu sudah melakukan yang terbaik hari ini :-)'}</p>`;
-  }catch{txt.innerHTML='<p>Kamu sudah mulai hari ini dengan baik. Lanjutkan saja pelan-pelan :-)</p>';}
+function addMoveEntry(entry){
+  D.moves.push(entry);D.totalMoveCal=D.moves.reduce((s,m)=>s+m.cal,0);
+  renderMoves();saveDay();schedNaraToday();
 }
-
-// ── MONTHLY GOALS ──
-const GOAL_PRESETS = [
-  'Minum 8 gelas setiap hari',
-  'Olahraga 3x seminggu',
-  'Tidur 7+ jam',
-  'No junk food',
-  'Makan sayur setiap hari',
-  'Meditasi 5 menit / hari',
-  'Kurangi gula',
-  'Jalan kaki 30 menit / hari',
-  'Tidak skip sarapan',
-  'Screen time lebih sedikit malam hari',
-];
-
-function getGoalKey() {
-  const d = new Date();
-  return `inarte_goals_${d.getFullYear()}_${d.getMonth()+1}`;
-}
-
-function loadGoals() {
-  return load(getGoalKey()) || { goals: [] };
-}
-
-function saveGoals(data) {
-  save(getGoalKey(), data);
-}
-
-function buildMonthlyGoals() {
-  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  const d = new Date();
-  document.getElementById('mg-month-label').textContent = `${months[d.getMonth()]} ${d.getFullYear()}`;
-  renderGoalPresets();
-  renderGoalList();
-}
-
-function renderGoalPresets() {
-  const data = loadGoals();
-  const existingTexts = data.goals.map(g => g.text.toLowerCase());
-  const presetsEl = document.getElementById('mg-presets');
-  presetsEl.innerHTML = '';
-  GOAL_PRESETS.forEach(p => {
-    if (existingTexts.includes(p.toLowerCase())) return;
-    const btn = document.createElement('button');
-    btn.className = 'mg-preset';
-    btn.textContent = '+ ' + p;
-    btn.onclick = () => { addGoalText(p); };
-    presetsEl.appendChild(btn);
-  });
-}
-
-function renderGoalList() {
-  const data = loadGoals();
-  const list = document.getElementById('mg-goals-list');
-  list.innerHTML = '';
-
-  if (data.goals.length === 0) {
-    list.innerHTML = '<div class="mg-empty">Belum ada target bulan ini. Pilih dari preset atau tulis sendiri :-)</div>';
-    updateGoalProgress(0, 0);
-    return;
-  }
-
-  data.goals.forEach((g, i) => {
-    const li = document.createElement('li');
-    li.className = 'mg-goal-item' + (g.done ? ' done' : '');
-    li.innerHTML = `
-      <div class="mg-check"><div class="mg-check-mark"></div></div>
-      <span class="mg-goal-text">${g.text}</span>
-      <button class="mg-goal-del" onclick="deleteGoal(${i},event)" title="Hapus">✕</button>
-    `;
-    li.addEventListener('click', (e) => {
-      if (e.target.closest('.mg-goal-del')) return;
-      toggleGoal(i);
-    });
+function deleteMove(i){D.moves.splice(i,1);D.totalMoveCal=D.moves.reduce((s,m)=>s+m.cal,0);renderMoves();saveDay();}
+function renderMoves(){
+  const list=document.getElementById('move-list');list.innerHTML='';
+  (D.moves||[]).forEach((m,i)=>{
+    const li=document.createElement('li');li.className='move-item';
+    li.innerHTML=`<span class="move-item-icon">${m.emoji||'🏅'}</span><span class="move-item-name">${m.name} <span class="move-item-dur">${m.dur} mnt</span></span><span class="move-item-cal">~${m.cal} kkal</span><button class="move-item-del" onclick="deleteMove(${i})">✕</button>`;
     list.appendChild(li);
   });
-
-  const done = data.goals.filter(g => g.done).length;
-  updateGoalProgress(done, data.goals.length);
+  const total=D.totalMoveCal||0;
+  document.getElementById('move-cal-status').textContent=total>0?`~${total} kkal terbakar`:'';
+  const sum=document.getElementById('move-summary');
+  if(D.moves.length>0){
+    sum.style.display='block';
+    const net=(D.totalCal||0)-total;
+    sum.textContent=`Total gerak hari ini: ~${total} kkal dari ${D.moves.length} aktivitas. Kalori bersih: ~${net} kkal. ${net<1800?'Defisit yang sehat — bagus! (◕ᴗ◕✿)':net>2500?'Cukup seimbang dengan gerak yang sudah kamu lakukan.':'Keseimbangannya sudah baik!'}`;
+  }else{sum.style.display='none';}
 }
 
-function updateGoalProgress(done, total) {
-  const pct = total > 0 ? Math.round(done / total * 100) : 0;
-  document.getElementById('mg-bar').style.width = pct + '%';
-  document.getElementById('mg-pct').textContent = pct + '%';
-  document.getElementById('mg-count-label').textContent = `${done} dari ${total} selesai`;
+// ═══════════════════════════════════════════════════════
+// NARA TODAY (smart static)
+// ═══════════════════════════════════════════════════════
+let naraTodayTimer;
+function schedNaraToday(){clearTimeout(naraTodayTimer);naraTodayTimer=setTimeout(showNaraToday,1200);}
+function showNaraToday(){
+  const hasData=D.water>0||D.mood||(D.meals&&D.meals.length)||(D.moves&&D.moves.length);
+  if(!hasData)return;
+  const el=document.getElementById('nara-today'),txt=document.getElementById('nara-today-txt');
+  el.classList.add('on');
+  const age=P.age?parseInt(P.age):25;
+  const target=age>=60?1600:age<=17?2200:2000;
+  const parts=[];
+  if((D.conditions||[]).includes('haid'))parts.push('Lagi haid ya — wajar kalau badan lebih berat. Perbanyak minum air dan makan makanan kaya zat besi.');
+  if((D.conditions||[]).includes('sakit'))parts.push('Lagi kurang sehat, jaga diri baik-baik ya (ꈍᴗꈍ) Istirahat cukup dan minum air lebih banyak.');
+  if(D.mood==='berat')parts.push('Mood lagi berat — itu valid banget. Tidak harus produktif di semua hal hari ini.');
+  if(D.mood==='semangat')parts.push('Semangat yang kamu bawa hari ini itu energi yang bagus banget!');
+  if((D.water||0)>=6)parts.push(`Hidrasi hari ini sudah oke — ${D.water} gelas! (≧▽≦)`);
+  else if((D.water||0)>0&&(D.water||0)<4)parts.push(`Baru ${D.water} gelas minum hari ini. Yuk pelan-pelan tambah lagi ya!`);
+  if((D.totalCal||0)>0){const pct=Math.round((D.totalCal||0)/target*100);if(pct>120)parts.push(`Asupan hari ini agak berlebih (~${D.totalCal} kkal). Tidak apa-apa — seimbangkan besok ya.`);}
+  if((D.moves||[]).length>0)parts.push(`Sudah gerak ${D.moves.length} aktivitas hari ini — ${D.totalMoveCal} kkal terbakar. Kamu keren!`);
+  const tmpl=loadHabitTemplate();const done=(D.habits||[]).length;
+  if(tmpl.length>0&&done===tmpl.length)parts.push(`Semua ${done} kebiasaan hari ini selesai! (≧▽≦)`);
+  if(!parts.length)parts.push('Kamu sudah mulai hari ini dengan langkah yang baik. Lanjutkan pelan-pelan ya (◕ᴗ◕✿)');
+  txt.innerHTML=parts.slice(0,2).map(p=>`<p>${p}</p>`).join('');
 }
 
-function addGoalText(text) {
-  const data = loadGoals();
-  const exists = data.goals.some(g => g.text.toLowerCase() === text.toLowerCase());
-  if (exists) return;
-  data.goals.push({ text, done: false, addedAt: Date.now() });
-  saveGoals(data);
-  renderGoalList();
-  renderGoalPresets();
+// ═══════════════════════════════════════════════════════
+// MONTHLY ACHIEVEMENT
+// ═══════════════════════════════════════════════════════
+let activeAchTheme=null;
+function getAchKey(){const d=new Date();return `inarte_ach_${d.getFullYear()}_${d.getMonth()+1}`;}
+function loadAch(){return load(getAchKey())||{items:[]};}
+function saveAch(data){save(getAchKey(),data);}
+
+function buildAchievementSection(){
+  const months=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const d=new Date();
+  document.getElementById('ach-month-label').textContent=`${months[d.getMonth()]} ${d.getFullYear()}`;
+  buildAchThemes();renderAchList();
 }
 
-function addGoal() {
-  const inp = document.getElementById('mg-add-inp');
-  const text = inp.value.trim();
-  if (!text) return;
-  addGoalText(text);
-  inp.value = '';
+function buildAchThemes(){
+  const row=document.getElementById('ach-theme-row');row.innerHTML='';
+  ACH_THEMES.forEach(t=>{
+    const btn=document.createElement('button');btn.className='ach-theme-btn';
+    btn.innerHTML=`${t.icon} ${t.label}`;
+    btn.onclick=()=>toggleAchTheme(btn,t);
+    row.appendChild(btn);
+  });
 }
 
-function toggleGoal(i) {
-  const data = loadGoals();
-  data.goals[i].done = !data.goals[i].done;
-  saveGoals(data);
-  renderGoalList();
+function toggleAchTheme(btn,theme){
+  const isActive=btn.classList.contains('active');
+  document.querySelectorAll('.ach-theme-btn').forEach(b=>b.classList.remove('active'));
+  const sugEl=document.getElementById('ach-suggestions');
+  if(isActive){sugEl.classList.remove('on');activeAchTheme=null;return;}
+  btn.classList.add('active');activeAchTheme=theme.id;
+  document.getElementById('ach-sug-head').textContent=`${theme.icon} ${theme.label}`;
+  const grid=document.getElementById('ach-sug-grid');grid.innerHTML='';
+  const existing=loadAch().items.map(a=>a.text.toLowerCase());
+  theme.suggestions.forEach(s=>{
+    if(existing.includes(s.text.toLowerCase()))return;
+    const chip=document.createElement('button');chip.className='ach-sug-chip';
+    chip.textContent=`${s.text} (target: ${s.target} ${s.unit})`;
+    chip.onclick=()=>{addAchText(s.text,s.target);chip.style.opacity='.4';chip.style.pointerEvents='none';};
+    grid.appendChild(chip);
+  });
+  sugEl.classList.add('on');
 }
 
-function deleteGoal(i, e) {
+function renderAchList(){
+  const data=loadAch();const list=document.getElementById('ach-list');list.innerHTML='';
+  if(!data.items.length){list.innerHTML='<div class="ach-empty">Belum ada achievement. Pilih dari tema atau tulis sendiri (◕ᴗ◕✿)</div>';document.getElementById('ach-count-label').textContent='0 tercapai';return;}
+  data.items.forEach((a,i)=>{
+    const pct=a.target>0?Math.min(Math.round(a.current/a.target*100),100):0;
+    const done=a.current>=a.target;
+    const li=document.createElement('li');li.className='ach-item'+(done?' done':'');
+    li.innerHTML=`
+      <div class="ach-item-top">
+        <span class="ach-item-icon">${done?'🏆':'🎯'}</span>
+        <span class="ach-item-text">${a.text}</span>
+        <button class="ach-item-del" onclick="deleteAch(${i},event)">✕</button>
+      </div>
+      <div class="ach-progress-row">
+        <div class="ach-bar-track"><div class="ach-bar-fill" style="width:${pct}%"></div></div>
+        <div class="ach-counter">
+          <button class="ach-cnt-btn" onclick="updateAch(${i},-1,event)">−</button>
+          <span class="ach-cnt-val">${a.current}/${a.target}</span>
+          <button class="ach-cnt-btn" onclick="updateAch(${i},1,event)">+</button>
+        </div>
+      </div>`;
+    list.appendChild(li);
+  });
+  const done=data.items.filter(a=>a.current>=a.target).length;
+  document.getElementById('ach-count-label').textContent=`${done} dari ${data.items.length} tercapai`;
+}
+
+function updateAch(i,delta,e){
   e.stopPropagation();
-  const data = loadGoals();
-  data.goals.splice(i, 1);
-  saveGoals(data);
-  renderGoalList();
-  renderGoalPresets();
+  const data=loadAch();
+  data.items[i].current=Math.max(0,Math.min((data.items[i].current||0)+delta,data.items[i].target*3));
+  saveAch(data);renderAchList();
 }
 
-// ── WELLNESS ──
+function addAchText(text,target){
+  const data=loadAch();
+  if(data.items.some(a=>a.text.toLowerCase()===text.toLowerCase()))return;
+  data.items.push({text,target:parseInt(target)||1,current:0,addedAt:Date.now()});
+  saveAch(data);renderAchList();
+}
+
+function addAchievement(){
+  const inp=document.getElementById('ach-add-inp');
+  const text=inp.value.trim();if(!text)return;
+  const target=parseInt(document.getElementById('ach-target-inp').value)||1;
+  addAchText(text,target);inp.value='';document.getElementById('ach-target-inp').value='1';
+}
+
+function deleteAch(i,e){
+  e.stopPropagation();const data=loadAch();data.items.splice(i,1);saveAch(data);renderAchList();
+}
+
+// ═══════════════════════════════════════════════════════
+// SLEEP
+// ═══════════════════════════════════════════════════════
 function calcSleep(){
-  const s=document.getElementById('sleep-start').value, e=document.getElementById('sleep-end').value;
+  const s=document.getElementById('sleep-start').value,e=document.getElementById('sleep-end').value;
   if(!s||!e){document.getElementById('sleep-dur').textContent='— jam';return;}
-  const [sh,sm]=s.split(':').map(Number), [eh,em]=e.split(':').map(Number);
-  if(isNaN(sh)||isNaN(sm)||isNaN(eh)||isNaN(em)){document.getElementById('sleep-dur').textContent='— jam';return;}
-  let diff=((eh*60+em)-(sh*60+sm)+1440)%1440;
-  const hrs=(diff/60).toFixed(1);
-  document.getElementById('sleep-dur').textContent=`${hrs} jam`;
-  const notes={2:'Hampir tidak tidur. Wajar kalau berat banget hari ini.',3:'Sangat kurang. Fokus pasti susah nih.',4:'Kurang dari ideal. Coba tidur lebih awal malam ini.',5:'Masih kurang sedikit. Tubuh butuh lebih.',6:'Hampir cukup, sedikit lagi!',7:'Lumayan bagus! 7-8 jam itu zona nyaman :-)',8:'Pas banget! Semoga tidurnya berkualitas juga :-)',9:'Cukup istirahat. Kadang tubuh memang butuh lebih.',10:'Tidur panjang, mungkin sedang recovery.',11:'Tidur sangat lama. Badan lagi kurang enak?',12:'Semoga setelah tidur panjang ini badan jauh lebih segar!'};
+  const [sh,sm]=s.split(':').map(Number),[eh,em]=e.split(':').map(Number);
+  const diff=((eh*60+em)-(sh*60+sm)+1440)%1440;
+  const hrs=(diff/60).toFixed(1);document.getElementById('sleep-dur').textContent=`${hrs} jam`;
+  const notes={2:'Hampir tidak tidur — wajar kalau badan terasa berat.',3:'Sangat kurang.',4:'Kurang dari ideal. Coba tidur lebih awal malam ini ya.',5:'Masih kurang sedikit.',6:'Hampir cukup!',7:'7 jam — zona nyaman!',8:'Pas banget!',9:'Cukup istirahat.',10:'Tidur panjang, mungkin sedang recovery.',11:'Badan lagi butuh istirahat ekstra?',12:'Semoga badan jauh lebih segar setelah ini!'};
   const key=Math.min(Math.max(Math.round(parseFloat(hrs)),2),12);
   document.getElementById('sleep-note').textContent=notes[key]||'';
+  const fbEl=document.getElementById('sleep-fb');const h=parseFloat(hrs);
+  if(h>=7&&h<=9){fbEl.className='sleep-fb on good';fbEl.textContent=`Durasi tidur ${hrs} jam sudah sangat baik! Tidur cukup bantu metabolisme, mood, dan energi seharian (◕ᴗ◕✿)`;}
+  else if(h>=5&&h<7){fbEl.className='sleep-fb on ok';fbEl.textContent=`${hrs} jam masih bisa ditingkatkan. Coba mundurkan waktu tidur 30 menit malam ini — sedikit-sedikit dulu.`;}
+  else if(h<5){fbEl.className='sleep-fb on bad';fbEl.textContent=`${hrs} jam itu kurang banget. Kalau bisa, sempatin tidur siang 20 menit hari ini. Dan malam ini prioritaskan tidur lebih awal ya (ꈍᴗꈍ)`;}
+  else{fbEl.className='sleep-fb on ok';fbEl.textContent=`${hrs} jam — sedikit lebih dari ideal, tapi tidak apa-apa kalau badan memang butuh.`;}
 }
 
+// ═══════════════════════════════════════════════════════
+// EMOTIONS & WELLNESS
+// ═══════════════════════════════════════════════════════
 const emoMap={
   positif:['Bersyukur','Bahagia','Lega','Damai','Bangga','Bersemangat','Antusias','Penasaran','Terharu','Optimis'],
   netral:['Datar','Bosan','Mengantuk','Biasa saja','Kosong','Tidak yakin'],
   berat:['Sedih','Cemas','Frustrasi','Lelah banget','Kewalahan','Kesepian','Marah','Kecewa','Takut','Minder'],
-  campur:['Galau','Ambigu','Excited tapi takut','Sedih tapi bersyukur','Campur aduk','Lega tapi sedih','Semangat tapi lelah']
+  campur:['Galau','Excited tapi takut','Sedih tapi bersyukur','Campur aduk','Lega tapi sedih','Semangat tapi lelah']
 };
 function selBroadEmo(btn,cat){
-  document.querySelectorAll('.emo-bb').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  const spec=document.getElementById('emo-spec'); spec.innerHTML='';
-  emoMap[cat].forEach(e=>{
-    const t=document.createElement('button'); t.className='emo-tag'; t.textContent=e;
-    t.onclick=()=>t.classList.toggle('sel'); spec.appendChild(t);
-  });
+  document.querySelectorAll('.emo-bb').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');
+  const spec=document.getElementById('emo-spec');spec.innerHTML='';
+  emoMap[cat].forEach(e=>{const t=document.createElement('button');t.className='emo-tag';t.textContent=e;t.onclick=()=>t.classList.toggle('sel');spec.appendChild(t);});
   spec.classList.add('on');
 }
 
-async function saveWellness(){
-  const sleepStart=document.getElementById('sleep-start').value, sleepEnd=document.getElementById('sleep-end').value;
-  const why=document.getElementById('emo-why').value, journal=document.getElementById('journal').value;
-  const grat=document.getElementById('grat').value, hope=document.getElementById('hope').value;
+function saveWellness(){
+  const sleepStart=document.getElementById('sleep-start').value,sleepEnd=document.getElementById('sleep-end').value;
+  const why=document.getElementById('emo-why').value,journal=document.getElementById('journal').value;
+  const grat=document.getElementById('grat').value,hope=document.getElementById('hope').value;
   const emos=[...document.querySelectorAll('.emo-tag.sel')].map(e=>e.textContent);
   const broadEl=document.querySelector('.emo-bb.sel');
   const broad=broadEl?.querySelector('.emo-bb-lbl')?.textContent||'';
-  D.wellness={sleepStart,sleepEnd,why,journal,grat,hope,emotions:emos,broad};
-  saveDay();
-  const el=document.getElementById('nara-w'), txt=document.getElementById('nara-w-txt');
-  el.classList.add('on'); txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
-  const userName = P.name || 'teman';
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:350,system:`Kamu adalah Nara, companion wellness yang hangat dan ENFP dalam INARTE. Nama user: ${userName}.\n\nGaya bicara:\n- Sahabat yang benar-benar mendengarkan, bukan AI yang menjawab\n- Bahasa Indonesia yang hangat dan natural\n- Boleh 1-2 kata Inggris yang natural\n- Pakai emoticon garis :-) sesekali\n- Validasi perasaan DULU sebelum apapun\n- Tidak selalu harus kasih saran\n- Kalau ada hal yang berat, tunjukkan empati yang tulus\n- Kalau kelihatan butuh bantuan profesional, arahkan dengan hangat (bukan menghakimi)\n- Maksimal 4 kalimat\n- Akhiri dengan sesuatu yang menguatkan tapi tidak klise`,messages:[{role:'user',content:`Tidur: ${sleepStart} - ${sleepEnd}. Perasaan: ${broad}. Emosi spesifik: ${emos.join(', ')||'tidak dipilih'}. Kenapa: ${why||'-'}. Catatan: ${journal||'-'}. Hal baik: ${grat||'-'}. Harapan besok: ${hope||'-'}.`}]})});
-    const d=await r.json();
-    txt.innerHTML=`<p>${d.content?.[0]?.text||'Terima kasih sudah meluangkan waktu untuk dirimu sendiri hari ini :-)'}</p>`;
-  }catch{txt.innerHTML='<p>Terima kasih sudah mau nulis hari ini. Itu tanda kamu peduli pada dirimu sendiri, dan itu sudah lebih dari cukup :-)</p>';}
+  D.wellness={sleepStart,sleepEnd,why,journal,grat,hope,emotions:emos,broad};saveDay();
+  const el=document.getElementById('nara-w'),txt=document.getElementById('nara-w-txt');el.classList.add('on');
+  const parts=[];
+  if(broad==='Berat')parts.push('Hari yang terasa berat itu valid banget. Terima kasih sudah mau nulis dan tidak menyimpannya sendiri.');
+  else if(broad==='Baik-baik')parts.push('Senang dengernya kamu hari ini baik-baik! (◕ᴗ◕✿)');
+  else if(broad==='Campur aduk')parts.push('Perasaan yang campur aduk itu manusiawi banget — tidak harus resolved hari ini.');
+  else parts.push('Terima kasih sudah meluangkan waktu untuk check in dengan dirimu sendiri hari ini.');
+  if(grat)parts.push(`"${grat}" — sekecil apapun itu, kamu perhatikan. Itu indah.`);
+  if(hope)parts.push(`Harapanmu untuk besok: "${hope}". Nara doain tercapai ya (ꈍᴗꈍ)`);
+  const sleepHrs=sleepStart&&sleepEnd?(()=>{const [sh,sm]=sleepStart.split(':').map(Number),[eh,em]=sleepEnd.split(':').map(Number);return ((eh*60+em-sh*60-sm)+1440)%1440/60;})():0;
+  if(sleepHrs>0&&sleepHrs<6)parts.push(`Tidur ${sleepHrs.toFixed(1)} jam itu kurang — coba prioritaskan tidur lebih awal malam ini ya.`);
+  txt.innerHTML=parts.slice(0,3).map(p=>`<p>${p}</p>`).join('');
   el.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-// ── TIPS ──
+// ═══════════════════════════════════════════════════════
+// TIPS
+// ═══════════════════════════════════════════════════════
 const jajanan=[
   {icon:'🍜',name:'Bakso',mod:'Minta no saus, no kecap manis. Kurangi mie, tambah sayur. Pilih kuah bening.',cal:'~250 kkal'},
   {icon:'🍛',name:'Nasi Padang',mod:'Pilih sayur daun singkong, tahu/tempe, rendang sedikit. Nasi setengah porsi.',cal:'~400-500 kkal'},
   {icon:'🥩',name:'Warteg',mod:'Pilih protein rebus/bakar. Ambil 2 sayuran. Nasi setengah centong.',cal:'~350-450 kkal'},
   {icon:'🐔',name:'Ayam geprek',mod:'Buang kulit sebelum makan. Sambal terpisah. Nasi sedikit.',cal:'~400 kkal tanpa kulit'},
-  {icon:'🥗',name:'Gado-gado',mod:'Skip lontong atau sedikit saja. Saus kacang no gula. Tambah telur.',cal:'~300-400 kkal no lontong'},
-  {icon:'🍢',name:'Sate',mod:'Pilih sate ayam/sapi. Saus kacang terpisah, pakai sedikit. Skip lontong.',cal:'~300 kkal (10 tusuk)'},
+  {icon:'🥗',name:'Gado-gado',mod:'Skip lontong. Saus kacang no gula. Tambah telur.',cal:'~300-400 kkal'},
+  {icon:'🍢',name:'Sate',mod:'Saus kacang terpisah, pakai sedikit. Skip lontong.',cal:'~300 kkal (10 tusuk)'},
   {icon:'🍲',name:'Soto',mod:'Pilih kuah bening bukan santan. Skip bihun. Extra ayam suwir.',cal:'~250 kkal no nasi'},
-  {icon:'🫙',name:'Minuman kekinian',mod:'Selalu minta less sugar atau no sugar. Pilih teh/kopi daripada milky drinks.',cal:'~50-80 kkal less sugar'},
-  {icon:'🍡',name:'Gorengan',mod:'Max 1-2 potong saja. Tiriskan minyaknya. Pilih tempe/tahu daripada bakwan.',cal:'~150-200 kkal (2 potong)'},
-  {icon:'🥚',name:'Nasi goreng',mod:'Minta minyak sedikit. Tambah sayur. Porsi nasi lebih kecil. No kecap manis.',cal:'~400-500 kkal'},
+  {icon:'🫙',name:'Minuman kekinian',mod:'Selalu minta less sugar atau no sugar.',cal:'~50-80 kkal less sugar'},
+  {icon:'🍡',name:'Gorengan',mod:'Max 1-2 potong. Tiriskan minyaknya. Pilih tempe/tahu.',cal:'~150-200 kkal (2 potong)'},
+  {icon:'🥚',name:'Nasi goreng',mod:'Minta minyak sedikit. Tambah sayur. Porsi nasi kecil.',cal:'~400-500 kkal'},
 ];
-function buildJajanan(){
-  const g=document.getElementById('jaj-grid');
-  jajanan.forEach(j=>{
-    const c=document.createElement('div'); c.className='jaj-card';
-    c.innerHTML=`<div class="jaj-icon">${j.icon}</div><div class="jaj-name">${j.name}</div><div class="jaj-mod">${j.mod}</div><div class="jaj-cal">${j.cal}</div>`;
-    g.appendChild(c);
-  });
-}
-function buildPersonalTips(){
-  const c=document.getElementById('tips-personal'); c.innerHTML='';
-  const act=P.act||'', cook=P.cook||'', home=P.home||'';
-  const tips=[];
-  if(act.includes('kantoran')){tips.push({icon:'💼',title:'Untuk kamu yang kerja di kantor :-)',badge:'Gerak',bc:'background:var(--moss-p);color:var(--moss)',body:'Duduk terlalu lama berpengaruh ke metabolisme. Berdiri dan jalan 2-3 menit setiap jam itu sudah membantu banget!',items:['Jalan ke tempat makan yang sedikit lebih jauh saat istirahat','Snack meja: almond, yogurt, atau buah','Minum air sebelum makan siang biar tidak makan berlebihan']});}
-  if(act.includes('mahasiswa')||act.includes('pelajar')||home.includes('Sendiri')){tips.push({icon:'📚',title:'Hidup sehat di kos, bisa banget! :-)',badge:'Budget',bc:'background:var(--amber-p);color:var(--amber)',body:'Makan sehat tidak harus mahal. Telur, tahu, tempe adalah protein paling terjangkau yang bisa ditemukan di mana saja.',items:['Indomie? Kurangi bumbu setengah, tambah telur dan sayur beku','Warteg: minta lebih banyak sayur, nasi setengah','Snack kos: pisang, kacang rebus, atau roti gandum']});}
-  if(home.includes('orang tua')){tips.push({icon:'🏠',title:'Makan di rumah, tetap bisa dijaga :-)',badge:'Keluarga',bc:'background:var(--sky-p);color:var(--sky)',body:'Makan ikut masakan rumah tidak apa-apa! Yang bisa dikontrol adalah porsi dan urutannya.',items:['Ambil sayur lebih banyak setiap makan','Makan protein dulu sebelum nasi','Kurangi nasi pelan-pelan, bukan langsung drastis']});}
-  if(home.includes('anak kecil')){tips.push({icon:'👨‍👩‍👧',title:'Masak sekali untuk semua, bisa! :-)',badge:'Keluarga',bc:'background:var(--rose-p);color:var(--rose)',body:'Tidak harus masak dua kali. Kuncinya ada di cara saji, bukan di masakannya.',items:['Bumbu kuat seperti ayam bakar dan soto disukai semua usia','Untuk anak: tambah nasi dan karbohidrat. Untuk kamu: kurangi nasi','Anak kecil suka rasa gurih dan familiar, bukan hambar']});}
-  tips.push({icon:'🌙',title:'Rutinitas malam yang membantu :-)',badge:'Tidur',bc:'background:var(--dusk-p);color:var(--dusk)',body:'Tidur adalah bagian dari program kesehatanmu. Tidur buruk membuat rasa lapar meningkat keesokan harinya.',items:['Hindari layar HP 30 menit sebelum tidur','Makan malam ringan dan selesai sebelum jam 20.00','Stretching 5 menit sebelum tidur membantu kualitas tidur']});
-  if(!tips.length){tips.push({icon:'🌿',title:'Mulai dari yang paling kecil :-)',badge:'Umum',bc:'background:var(--moss-p);color:var(--moss)',body:'Tidak ada perubahan besar yang terjadi dalam semalam. Tapi perubahan kecil yang konsisten, itu yang mengubah segalanya.',items:['Mulai dengan minum 1 gelas air setelah bangun tidur','Kurangi 1 porsi nasi setiap makan','Tidur 30 menit lebih awal dari biasanya']});}
-  tips.forEach(t=>{
-    const card=document.createElement('div'); card.className='tip-card';
-    card.innerHTML=`<div class="tip-ch"><span class="tip-ci">${t.icon}</span><span class="tip-ct">${t.title}</span><span class="tip-badge" style="${t.bc}">${t.badge}</span></div><div class="tip-cb">${t.body}<ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
-    c.appendChild(card);
-  });
-}
-function showTip(id,btn){
-  document.querySelectorAll('.tip-sec').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAll('.tip-chip').forEach(b=>b.classList.remove('on'));
-  document.getElementById('ts-'+id).classList.add('on');
-  btn.classList.add('on');
-}
+function buildJajanan(){const g=document.getElementById('jaj-grid');jajanan.forEach(j=>{const c=document.createElement('div');c.className='jaj-card';c.innerHTML=`<div class="jaj-icon">${j.icon}</div><div class="jaj-name">${j.name}</div><div class="jaj-mod">${j.mod}</div><div class="jaj-cal">${j.cal}</div>`;g.appendChild(c);});}
 
-// ── PROGRESS ──
+function buildPersonalTips(){
+  const c=document.getElementById('tips-personal');c.innerHTML='';
+  const act=P.act||'',home=P.home||'';const age=P.age?parseInt(P.age):25;const tips=[];
+  if(age>=60)tips.push({icon:'🧓',title:'Tips khusus untuk yang lebih senior',badge:'Usia',bc:'background:var(--sky-p);color:var(--sky)',body:'Kebutuhan nutrisi berubah seiring usia. Protein tetap penting untuk menjaga massa otot.',items:['Pilih makanan yang lunak dan mudah dikunyah','Kurangi yang terlalu pedas, manis, dan asin','Perbanyak sayur dan buah setiap hari','Jalan kaki ringan 20-30 menit sangat bermanfaat']});
+  if(act.includes('kantoran'))tips.push({icon:'💼',title:'Untuk kamu yang kerja di kantor',badge:'Gerak',bc:'background:var(--moss-p);color:var(--moss)',body:'Duduk terlalu lama berpengaruh ke metabolisme. Berdiri dan jalan 2-3 menit setiap jam sudah membantu!',items:['Jalan ke tempat makan sedikit lebih jauh saat istirahat','Snack meja: almond, yogurt, atau buah','Minum air sebelum makan siang']});
+  if(act.includes('mahasiswa')||home.includes('Sendiri'))tips.push({icon:'📚',title:'Hidup sehat di kos, bisa banget!',badge:'Budget',bc:'background:var(--amber-p);color:var(--amber)',body:'Makan sehat tidak harus mahal. Telur, tahu, tempe adalah protein paling terjangkau.',items:['Indomie? Kurangi bumbu setengah, tambah telur dan sayur beku','Warteg: minta lebih banyak sayur, nasi setengah','Snack: pisang, kacang rebus, atau roti gandum']});
+  if(home.includes('orang tua'))tips.push({icon:'🏠',title:'Makan di rumah, tetap bisa dijaga',badge:'Keluarga',bc:'background:var(--sky-p);color:var(--sky)',body:'Makan ikut masakan rumah tidak apa-apa! Yang bisa dikontrol adalah porsi dan urutannya.',items:['Ambil sayur lebih banyak setiap makan','Makan protein dulu sebelum nasi','Kurangi nasi pelan-pelan, bukan langsung drastis']});
+  if(home.includes('anak'))tips.push({icon:'👨‍👩‍👧',title:'Masak sekali untuk semua, bisa!',badge:'Keluarga',bc:'background:var(--rose-p);color:var(--rose)',body:'Tidak harus masak dua kali. Kuncinya ada di cara saji.',items:['Bumbu seperti ayam bakar dan soto disukai semua usia','Untuk anak: tambah nasi. Untuk kamu: kurangi nasi','Sajikan sayur dalam variasi bentuk yang menarik']});
+  tips.push({icon:'🌙',title:'Rutinitas malam yang membantu',badge:'Tidur',bc:'background:var(--dusk-p);color:var(--dusk)',body:'Tidur buruk membuat rasa lapar meningkat keesokan harinya.',items:['Hindari layar HP 30 menit sebelum tidur','Makan malam ringan dan selesai sebelum jam 20.00','Stretching 5 menit sebelum tidur']});
+  tips.forEach(t=>{const card=document.createElement('div');card.className='tip-card';card.innerHTML=`<div class="tip-ch"><span class="tip-ci">${t.icon}</span><span class="tip-ct">${t.title}</span><span class="tip-badge" style="${t.bc}">${t.badge}</span></div><div class="tip-cb">${t.body}<ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;c.appendChild(card);});
+}
+function showTip(id,btn){document.querySelectorAll('.tip-sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.tip-chip').forEach(b=>b.classList.remove('on'));document.getElementById('ts-'+id).classList.add('on');btn.classList.add('on');}
+
+// ═══════════════════════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════════════════════
 function buildCalendar(){
-  const g=document.getElementById('cal-grid'); g.innerHTML='';
+  const g=document.getElementById('cal-grid');g.innerHTML='';
   ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d=>{const el=document.createElement('div');el.className='cal-dlbl';el.textContent=d;g.appendChild(el);});
   const now=new Date(),y=now.getFullYear(),m=now.getMonth();
   const fd=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
@@ -1246,170 +1681,186 @@ function buildCalendar(){
     const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const isT=ds===TODAY,lg=logs[ds];
     el.className='cal-day'+(isT?' today':'')+(lg?.logged?(lg.water>=6?' lf':' lp'):'');
-    el.textContent=d; g.appendChild(el);
-  }
-}
-function buildHeatmap(){
-  const g=document.getElementById('heatmap'); g.innerHTML='';
-  const logs=load('inarte_logs')||{};
-  for(let i=83;i>=0;i--){
-    const d=new Date(); d.setDate(d.getDate()-i);
-    const key=d.toISOString().split('T')[0],lg=logs[key];
-    const el=document.createElement('div');
-    el.className='hm-cell'+(lg?.logged?(lg.water>=6?' v3':lg.water>=3?' v2':' v1'):'');
-    const dd=['Min','Sen','Sel','Rab','Kam','Jum','Sab'][d.getDay()];
-    el.innerHTML=`<span class="hm-tip">${dd} ${d.getDate()}/${d.getMonth()+1}${lg?.logged?` — ${lg.water} gelas, mood: ${lg.mood||'—'}`:' — belum diisi'}</span>`;
+    el.textContent=d;el.title=lg?.logged?`Air: ${lg.water} gelas, ${lg.meals||0} makanan`:'Belum diisi';
     g.appendChild(el);
   }
 }
-function buildWeeklyRecap(){
-  const el=document.getElementById('weekly-recap');
+
+function buildWeekChart(){
+  const g=document.getElementById('week-chart');g.innerHTML='';
   const logs=load('inarte_logs')||{};
-  const days=[];
-  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push({key:d.toISOString().split('T')[0],d});}
+  for(let w=7;w>=0;w--){
+    const days=[];
+    for(let d=6;d>=0;d--){const date=new Date();date.setDate(date.getDate()-w*7-d);days.push(logs[date.toISOString().split('T')[0]]||null);}
+    const filled=days.filter(d=>d?.logged).length;
+    const fullDays=days.filter(d=>d?.water>=6).length;
+    const wrap=document.createElement('div');wrap.className='week-bar-wrap';
+    const track=document.createElement('div');track.className='week-bar-track';
+    const fill=document.createElement('div');fill.className='week-bar-fill'+(fullDays>=5?' hi':'');
+    fill.style.height=filled>0?`${filled/7*100}%`:'4px';
+    track.appendChild(fill);
+    const val=document.createElement('div');val.className='week-bar-val';val.textContent=filled>0?`${filled}/7`:'';
+    const lbl=document.createElement('div');lbl.className='week-bar-lbl';lbl.textContent=w===0?'ini':`${w}w`;
+    wrap.title=`${filled} hari diisi, ${fullDays} hari target air tercapai`;
+    wrap.appendChild(track);wrap.appendChild(val);wrap.appendChild(lbl);g.appendChild(wrap);
+  }
+}
+
+function buildMonthRecap(){
+  const logs=load('inarte_logs')||{};
+  const now=new Date(),y=now.getFullYear(),m=now.getMonth();
+  const dim=new Date(y,m+1,0).getDate();const days=[];
+  for(let d=1;d<=dim;d++){const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(logs[key]?.logged)days.push(logs[key]);}
+  const activeDays=days.filter(d=>d.move>0).length;
+  const avgCal=days.length?Math.round(days.reduce((s,d)=>s+(d.mealCal||0),0)/days.length):0;
+  const totalMoveCal=days.reduce((s,d)=>s+(d.moveCal||0),0);
+  const avgW=days.length?(days.reduce((s,d)=>s+(d.water||0),0)/days.length).toFixed(1):0;
+  document.getElementById('month-recap-grid').innerHTML=`
+    <div class="mr-card"><div class="mr-num">${days.length}</div><div class="mr-lbl">Hari tercatat</div><div class="mr-sub">dari ${dim} hari</div></div>
+    <div class="mr-card"><div class="mr-num">${activeDays}</div><div class="mr-lbl">Hari aktif gerak</div><div class="mr-sub">~${totalMoveCal} kkal total</div></div>
+    <div class="mr-card"><div class="mr-num">${avgCal||'—'}</div><div class="mr-lbl">Rata-rata kkal/hari</div><div class="mr-sub">dari yang tercatat</div></div>
+    <div class="mr-card"><div class="mr-num">${avgW}</div><div class="mr-lbl">Rata-rata minum air</div><div class="mr-sub">gelas per hari</div></div>`;
+}
+
+function buildWeeklyRecap(){
+  const el=document.getElementById('weekly-recap');const logs=load('inarte_logs')||{};const days=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push({key:d.toISOString().split('T')[0]});}
   const logged=days.filter(d=>logs[d.key]?.logged).length;
   const avgW=days.reduce((s,d)=>s+(logs[d.key]?.water||0),0)/7;
+  const activeDays=days.filter(d=>logs[d.key]?.move>0).length;
   el.innerHTML=`
-    <div class="recap-row"><span class="recap-icon">📅</span><span class="recap-lbl">Hari yang diisi minggu ini</span><span class="recap-val">${logged}/7</span></div>
+    <div class="recap-row"><span class="recap-icon">📅</span><span class="recap-lbl">Hari yang diisi</span><span class="recap-val">${logged}/7</span></div>
     <div class="recap-row"><span class="recap-icon">💧</span><span class="recap-lbl">Rata-rata minum air</span><div class="recap-bw"><div class="recap-b" style="width:${Math.min(avgW/8*100,100)}%"></div></div><span class="recap-val">${avgW.toFixed(1)} gelas</span></div>
-    <div class="recap-row"><span class="recap-icon">🌱</span><span class="recap-lbl">Konsistensi</span><div class="recap-bw"><div class="recap-b" style="width:${logged/7*100}%;background:var(--amber)"></div></div><span class="recap-val">${Math.round(logged/7*100)}%</span></div>
-  `;
+    <div class="recap-row"><span class="recap-icon">🏃</span><span class="recap-lbl">Hari aktif gerak</span><div class="recap-bw"><div class="recap-b" style="width:${activeDays/7*100}%;background:var(--amber)"></div></div><span class="recap-val">${activeDays}/7 hari</span></div>
+    <div class="recap-row"><span class="recap-icon">🌱</span><span class="recap-lbl">Konsistensi</span><div class="recap-bw"><div class="recap-b" style="width:${logged/7*100}%;background:var(--dusk)"></div></div><span class="recap-val">${Math.round(logged/7*100)}%</span></div>`;
   const allKeys=Object.keys(logs).filter(k=>logs[k].logged);
   document.getElementById('st-total').textContent=allKeys.length;
-  let streak=0; const dd=new Date();
+  let streak=0;const dd=new Date();
   while(true){const k=dd.toISOString().split('T')[0];if(logs[k]?.logged){streak++;dd.setDate(dd.getDate()-1);}else break;}
   document.getElementById('st-streak').textContent=streak;
   const ws=allKeys.map(k=>logs[k].water||0);
   document.getElementById('st-water').textContent=ws.length?(ws.reduce((a,b)=>a+b,0)/ws.length).toFixed(1):'0';
 }
+
 function buildMoodChart(){
-  const el=document.getElementById('mood-chart');
-  const logs=load('inarte_logs')||{};
-  const now=new Date();
+  const el=document.getElementById('mood-chart');const logs=load('inarte_logs')||{};const now=new Date();
   const counts={senang:0,netral:0,lelah:0,berat:0,semangat:0};
   for(let i=0;i<30;i++){const d=new Date(now);d.setDate(d.getDate()-i);const k=d.toISOString().split('T')[0];const m=logs[k]?.mood;if(m&&counts[m]!==undefined)counts[m]++;}
   const maxV=Math.max(...Object.values(counts),1);
-  const moodLabels={senang:'😊',netral:'😐',lelah:'😮‍💨',berat:'😔',semangat:'🔥'};
-  el.innerHTML='';
+  const moodEmoji={senang:'😊',netral:'😐',lelah:'😮‍💨',berat:'😔',semangat:'🔥'};el.innerHTML='';
   Object.entries(counts).forEach(([mood,count])=>{
-    const wrap=document.createElement('div'); wrap.className='mood-bar-wrap';
-    const bar=document.createElement('div'); bar.className='mood-bar'; bar.style.height=`${Math.max(count/maxV*50,4)}px`;
-    const lbl=document.createElement('div'); lbl.className='mood-bar-lbl'; lbl.textContent=moodLabels[mood];
-    wrap.appendChild(bar); wrap.appendChild(lbl); el.appendChild(wrap);
+    const wrap=document.createElement('div');wrap.className='mood-bar-wrap';
+    const bar=document.createElement('div');bar.className='mood-bar';bar.style.height=`${Math.max(count/maxV*50,4)}px`;
+    const lbl=document.createElement('div');lbl.className='mood-bar-lbl';lbl.textContent=moodEmoji[mood];
+    const val=document.createElement('div');val.className='mood-bar-lbl';val.textContent=count>0?count:'';
+    wrap.appendChild(bar);wrap.appendChild(lbl);wrap.appendChild(val);el.appendChild(wrap);
   });
 }
-async function buildNaraRecap(){
-  const txt=document.getElementById('nara-recap-txt');
-  const logs=load('inarte_logs')||{};
+
+function buildNaraRecap(){
+  const txt=document.getElementById('nara-recap-txt');const logs=load('inarte_logs')||{};
   const keys=Object.keys(logs).filter(k=>logs[k].logged);
-  if(keys.length<3){txt.innerHTML='<p>Isi terus ya harian kamu! Setelah beberapa hari, Nara akan mulai punya gambaran yang lebih utuh tentang perjalananmu :-)</p>';return;}
-  txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
-  const recent=keys.slice(-7).map(k=>({date:k,...logs[k]}));
+  if(keys.length<2){txt.innerHTML='<p>Isi terus ya! Setelah beberapa hari, Nara akan punya gambaran yang lebih utuh tentang perjalananmu (◕ᴗ◕✿)</p>';return;}
+  const recent=keys.slice(-7).map(k=>({...logs[k]}));
   const avgW=(recent.reduce((s,d)=>s+(d.water||0),0)/recent.length).toFixed(1);
+  const activeDays=recent.filter(d=>d.move>0).length;
   const moods=recent.map(d=>d.mood).filter(Boolean);
   const moodFreq={};moods.forEach(m=>{moodFreq[m]=(moodFreq[m]||0)+1;});
-  const topMood=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
-  const userName = P.name || 'teman';
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE. Nama user: ${userName}.\n\nTulis rekap mingguan yang terasa seperti surat pendek dari sahabat, bukan laporan. Bahasa Indonesia yang hangat, jujur, dan menguatkan. Pakai emoticon garis sesekali. Maksimal 3-4 kalimat. Tidak perlu sebut semua angka, pilih yang paling bermakna.`,messages:[{role:'user',content:`Data 7 hari terakhir: total ${keys.length} hari diisi, rata-rata minum ${avgW} gelas/hari, mood yang paling sering muncul: ${topMood}, konsistensi minggu ini: ${recent.length}/7 hari.`}]})});
-    const d=await r.json();
-    txt.innerHTML=`<p>${d.content?.[0]?.text||'Kamu sudah konsisten ya! Lanjutkan :-)'}</p>`;
-  }catch{txt.innerHTML='<p>Setiap hari yang kamu isi adalah langkah nyata. Terus lanjutkan ya, Nara bangga sama kamu :-)</p>';}
+  const topMood=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+  const moodEmoji={senang:'😊',netral:'😐',lelah:'😮‍💨',berat:'😔',semangat:'🔥'};
+  const parts=[];
+  parts.push(`${recent.length} hari terakhir kamu sudah catat perjalananmu — itu konsistensi yang patut diapresiasi (◕ᴗ◕✿)`);
+  if(parseFloat(avgW)>=6)parts.push(`Hidrasi rata-rata ${avgW} gelas/hari — bagus banget!`);
+  else parts.push(`Rata-rata minum air masih ${avgW} gelas/hari. Coba taruh botol air di tempat yang selalu kelihatan.`);
+  if(activeDays>=4)parts.push(`${activeDays} dari 7 hari kamu aktif bergerak — luar biasa!`);
+  else if(activeDays===0)parts.push(`Minggu ini belum ada catatan olahraga. Tidak apa-apa — mulai dari 10 menit jalan kaki pun sudah bagus.`);
+  if(topMood==='berat'||topMood==='lelah')parts.push(`Mood yang sering muncul minggu ini ${moodEmoji[topMood]||''} — semoga minggu depan lebih ringan ya.`);
+  else if(topMood==='semangat'||topMood==='senang')parts.push(`Mood minggu ini dominan positif ${moodEmoji[topMood]||''} — jaga terus energi baiknya!`);
+  txt.innerHTML=parts.slice(0,3).map(p=>`<p>${p}</p>`).join('');
 }
 
-// ── NARA FLOAT CHAT ──
-function initNaraChat(){ addNaraMsg(getNaraOpener(),'nara'); }
-function getNaraOpener(){
-  const page=document.querySelector('.page.active')?.id||'';
-  const name=P.name?`, ${P.name}`:'';
-  if(page==='pg-today')return `Hei${name}! :-) Butuh rekomendasi makan hari ini, atau mau olahraga apa? Cerita aja ke aku!`;
-  if(page==='pg-wellness')return `Hei${name}! Mau cerita apa hari ini? Aku di sini buat dengerin :-)`;
-  if(page==='pg-tips')return `Hei${name}! Ada yang mau ditanyain soal tips makan atau olahraga? Tanya aja!`;
-  if(page==='pg-progress')return `Hei${name}! Gimana ngeliat progresnya? Ada yang mau diobrolin? :-)`;
-  return `Hei${name}! Ada yang bisa aku bantu hari ini? :-)`;
+// ═══════════════════════════════════════════════════════
+// NARA CHAT
+// ═══════════════════════════════════════════════════════
+function initNaraChat(){addNaraMsg(`Hei${P.name?', '+P.name:''}! Aku Nara, teman perjalananmu di sini (◕ᴗ◕✿) Mau ngobrol soal makanan, olahraga, atau curhat aja — aku siap dengerin!`,'nara');}
+function togNaraChat(){const chat=document.getElementById('nara-chat');chat.classList.toggle('on');if(chat.classList.contains('on')){document.getElementById('nara-badge').classList.remove('on');document.getElementById('nc-inp').focus();}}
+function addNaraMsg(text,who){const msgs=document.getElementById('nc-msgs');const div=document.createElement('div');div.className=`nc-msg ${who}`;div.textContent=text;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function quickChat(text){document.getElementById('nc-inp').value=text;sendNara();}
+function sendNara(){
+  const inp=document.getElementById('nc-inp');const txt=inp.value.trim();if(!txt)return;
+  addNaraMsg(txt,'user');inp.value='';chatHistory.push({role:'user',content:txt});
+  setTimeout(()=>{const reply=buildNaraReply(txt);addNaraMsg(reply,'nara');chatHistory.push({role:'assistant',content:reply});},400+Math.random()*400);
 }
-function togNaraChat(){
-  const chat=document.getElementById('nara-chat'), badge=document.getElementById('nara-badge');
-  chat.classList.toggle('on');
-  if(chat.classList.contains('on')){badge.classList.remove('on');document.getElementById('nc-inp').focus();}
-}
-function addNaraMsg(text,who){
-  const msgs=document.getElementById('nc-msgs');
-  const div=document.createElement('div'); div.className=`nc-msg ${who}`; div.textContent=text;
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
-}
-async function sendNara(){
-  const inp=document.getElementById('nc-inp');
-  const txt=inp.value.trim(); if(!txt)return;
-  addNaraMsg(txt,'user'); inp.value='';
-  chatHistory.push({role:'user',content:txt});
-  addNaraMsg('...','nara');
-  const msgs=document.getElementById('nc-msgs'), loadEl=msgs.lastChild;
-  // FIX: Extracted variables to avoid broken template literal with empty fallback
-  const userName = P.name || 'teman';
-  const userAct = P.act || '';
-  const userHome = P.home || '';
-  const userBudget = P.budget || '';
-  try{
-    const ctx=`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE.\nProfil user: nama ${userName}, ${userAct}, ${userHome}, budget ${userBudget}.\nData hari ini: air ${D.water}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}.\n\nGaya bicara:\n- Seperti sahabat ENFP yang energik, empatik, dan tulus\n- Bahasa Indonesia yang natural dan hangat\n- Boleh 1-2 kata Inggris yang natural\n- Emoticon garis :-) sesekali\n- Tidak menggurui, tidak sok tahu\n- Kalau user butuh bantuan profesional (psikolog, dokter, ahli gizi), arahkan dengan hangat dan jelas\n- Tidak pura-pura bisa gantikan profesional\n- Kalau tidak ada jawaban di luar kemampuan, akui dengan jujur\n- Respons pendek dan natural, seperti chat WhatsApp`;
-    const history=chatHistory.slice(-6).map(h=>({role:h.role,content:h.content}));
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,system:ctx,messages:history})});
-    const d=await r.json();
-    const reply=d.content?.[0]?.text||'Hmm, aku lagi agak lambat nih. Coba lagi ya! :-)';
-    msgs.removeChild(loadEl); addNaraMsg(reply,'nara');
-    chatHistory.push({role:'assistant',content:reply});
-  }catch{
-    msgs.removeChild(loadEl);
-    addNaraMsg('Koneksinya lagi agak trouble nih. Coba lagi dalam sebentar ya! :-)','nara');
+function buildNaraReply(msg){
+  const q=msg.toLowerCase();const name=P.name?` ${P.name}`:'';
+  const age=P.age?parseInt(P.age):25;const water=D.water||0;const cal=D.totalCal||0;const budget=P.budget||'';
+  if(q.match(/^(hei|hai|halo|hi|hello)/))return `Hei${name}! Ada yang bisa aku bantu hari ini? (◕ᴗ◕✿)`;
+  if(q.includes('capek')||q.includes('lelah')||q.includes('exhausted'))return `Capek itu wajar${name}. Istirahat itu bukan kelemahan — itu kebutuhan. Kalau bisa, sempatin istirahat 15-20 menit, minum air, dan makan sesuatu yang mengenyangkan. (ꈍᴗꈍ)`;
+  if(q.includes('sedih')||q.includes('nangis')||q.includes('berat')||q.includes('stress'))return `Terima kasih sudah mau cerita${name}. Perasaan itu valid, dan kamu tidak harus sendirian menanggungnya. Kalau mau cerita lebih, aku di sini — tanpa menghakimi (ꈍᴗꈍ)`;
+  if(q.includes('senang')||q.includes('happy')||q.includes('bahagia')||q.includes('semangat'))return `Wah, ikut seneng denger kamu baik-baik hari ini${name}! (≧▽≦) Jaga energi positifnya ya!`;
+  if(q.includes('makan')&&(q.includes('apa')||q.includes('saran')||q.includes('rekomen'))){
+    const menus=getMenuSuggestions();const h=new Date().getHours();
+    const meal=h<10?menus[0]:h<14?menus[1]:menus[menus.length-1];
+    return `Aku rekomendasiin ${meal?.name||'nasi + protein + sayur'} — sekitar ~${meal?.cal||350} kkal. ${meal?.tip||'Jangan lupa makan ya!'} (◕ᴗ◕✿)`;
   }
+  if(q.includes('kalori')||q.includes('kkal')){if(cal>0)return `Hari ini kamu sudah makan ~${cal} kkal. Target ideal sekitar ${age>=60?1600:age<=17?2200:2000} kkal/hari.`;return `Belum ada catatan makan hari ini${name}. Coba catat di tab Hari Ini ya!`;}
+  if(q.includes('air')||q.includes('minum'))return water>=6?`Hidrasi kamu sudah bagus hari ini — ${water} gelas! (≧▽≦)`:`Kamu baru minum ${water} gelas${name}. Targetnya 8 gelas ya — coba minum satu gelas sekarang! (◕ᴗ◕✿)`;
+  if(q.includes('olahraga')||q.includes('gerak')||q.includes('exercise'))return `Konsistensi 3-4x seminggu jauh lebih baik dari intense tapi jarang${name}. Mulai dari yang kamu suka — jalan kaki, yoga di rumah, atau renang (◕ᴗ◕✿)`;
+  if(q.includes('tidur')||q.includes('sleep')||q.includes('insomnia'))return `Untuk tidur lebih nyenyak${name}: hindari HP 30 menit sebelum tidur, jaga suhu kamar sejuk, dan coba tidur di jam yang sama setiap malam. Tubuh suka rutinitas! (ꈍᴗꈍ)`;
+  if(q.includes('lapar')||q.includes('snack')||q.includes('cemilan')){const snacks=budget.includes('50rb')?['pisang (90 kkal)','telur rebus (70 kkal)','tahu goreng (80 kkal)']:['yogurt (120 kkal)','segenggam almond (160 kkal)','apel (80 kkal)'];return `Snack sehat${name}: ${snacks.join(', ')}. Protein dan serat bikin kenyang lebih lama!`;}
+  if(q.includes('berat badan')||q.includes('diet')||q.includes('kurus')||q.includes('gemuk'))return `Soal berat badan${name}, yang lebih penting dari angka timbangan: bagaimana energimu, bagaimana tidurmu, bagaimana kamu merasa. Kita fokus ke perubahan kecil yang konsisten ya (◕ᴗ◕✿)`;
+  if(q.includes('motivasi')||q.includes('nyerah')||q.includes('gagal')||q.includes('males'))return `Satu hari "tidak produktif" bukan kegagalan${name} — itu manusiawi banget. Yang penting kamu kembali besok. Proses itu tidak linear, dan itu normal (ꈍᴗꈍ)`;
+  if(q.includes('habit')||q.includes('kebiasaan'))return `Kebiasaan kecil yang konsisten jauh lebih powerful dari perubahan besar yang sebentar${name}. Kamu bisa tambah habit di tab Hari Ini ya! (◕ᴗ◕✿)`;
+  const defaults=[`Aku dengar${name}! Mau cerita lebih? Atau ada yang bisa aku bantu soal makan, olahraga, atau wellness hari ini? (◕ᴗ◕✿)`,`Terima kasih sudah share${name}. Aku selalu di sini kalau kamu butuh. Ada yang mau ditanyain soal nutrisi atau kesehatanmu?`,`Noted${name}! Kalau ada pertanyaan soal makanan, olahraga, atau kalori, tanya aja ya (◕ᴗ◕✿)`];
+  return defaults[Math.floor(Math.random()*defaults.length)];
 }
 
-// ── PROFILE ──
-function openProfile(){ document.getElementById('p-overlay').classList.add('on'); document.getElementById('p-panel').classList.add('open'); }
-function closeProfile(){ document.getElementById('p-overlay').classList.remove('on'); document.getElementById('p-panel').classList.remove('open'); }
+// ═══════════════════════════════════════════════════════
+// PROFILE
+// ═══════════════════════════════════════════════════════
+function openProfile(){document.getElementById('p-overlay').classList.add('on');document.getElementById('p-panel').classList.add('open');buildAvatarColors();}
+function closeProfile(){document.getElementById('p-overlay').classList.remove('on');document.getElementById('p-panel').classList.remove('open');}
 function saveProfile(){
   P.name=document.getElementById('pi-name').value.trim()||P.name;
-  P.goals=document.getElementById('pi-goal').value.trim()||P.goals;
-  P.act=document.getElementById('pi-act').value.trim()||P.act;
-  P.cook=document.getElementById('pi-cook').value.trim()||P.cook;
-  P.home=document.getElementById('pi-home').value.trim()||P.home;
-  P.budget=document.getElementById('pi-budget').value.trim()||P.budget;
-  save('inarte_profile',P);
-  buildTopbar(); buildGreeting(); buildPersonalTips(); buildMenuSuggest();
-  closeProfile();
+  P.age=document.getElementById('pi-age').value||P.age;
+  P.act=document.getElementById('pi-act').value||P.act;
+  P.home=document.getElementById('pi-home').value||P.home;
+  P.cook=document.getElementById('pi-cook').value||P.cook;
+  P.budget=document.getElementById('pi-budget').value||P.budget;
+  const gr=document.getElementById('pi-goals').value.trim();
+  P.goals=gr?gr.split(',').map(g=>g.trim()).filter(Boolean):P.goals;
+  save('inarte_profile',P);buildTopbar();buildGreeting();buildPersonalTips();buildMenuSuggest();closeProfile();
 }
-function resetApp(){ if(!confirm('Yakin mau mulai ulang dari awal? Semua data akan terhapus.'))return; localStorage.clear(); location.reload(); }
+function resetApp(){if(!confirm('Yakin mau mulai ulang dari awal? Semua data akan terhapus.'))return;localStorage.clear();location.reload();}
 
-// ── NAV ──
+// ═══════════════════════════════════════════════════════
+// NAV & RESTORE
+// ═══════════════════════════════════════════════════════
 function showPg(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('pg-'+id).classList.add('active');
-  btn.classList.add('active');
-  if(id==='progress'){buildCalendar();buildHeatmap();buildWeeklyRecap();buildMoodChart();buildNaraRecap();}
-  if(id==='wellness'){buildMonthlyGoals();}
-  if(document.getElementById('nara-chat').classList.contains('on')){addNaraMsg(getNaraOpener(),'nara');}
+  document.getElementById('pg-'+id).classList.add('active');btn.classList.add('active');
+  if(id==='progress'){buildCalendar();buildWeekChart();buildWeeklyRecap();buildMoodChart();buildMonthRecap();buildNaraRecap();}
+  if(id==='wellness'){buildAchievementSection();}
 }
 
-// ── RESTORE ──
 function restoreToday(){
   if(D.water)buildGlasses();
-  if(D.mood){document.querySelectorAll('.mood-btn').forEach(b=>{if(b.getAttribute('onclick')?.includes(`'${D.mood}'`))b.classList.add('sel');});}
-  if(D.meals?.length){renderMeals();}
-  if(D.move){document.querySelectorAll('.move-btn').forEach(b=>{if(b.getAttribute('onclick')?.includes(`'${D.move}'`))b.classList.add('sel');});}
-  if(D.conditions?.length){D.conditions.forEach(c=>{const btn=document.getElementById('cd-'+c);if(btn)btn.classList.add('on');});}
+  if(D.mood)document.querySelectorAll('.mood-btn').forEach(b=>{if(b.getAttribute('onclick')?.includes(`'${D.mood}'`))b.classList.add('sel');});
+  if(D.meals?.length)renderMeals();
+  if(D.moves?.length)renderMoves();
+  if(D.conditions?.length)D.conditions.forEach(c=>{const btn=document.getElementById('cd-'+c);if(btn)btn.classList.add('on');});
 }
 
-// ── PWA ──
+// ═══════════════════════════════════════════════════════
+// PWA & UTILS
+// ═══════════════════════════════════════════════════════
 const manifest={name:'INARTE',short_name:'INARTE',description:'Perjalananmu, caramu',start_url:'/',display:'standalone',background_color:'#F7F4EF',theme_color:'#4D6B52',icons:[{src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="%234D6B52"/><text y=".9em" font-size="65" x="50%" text-anchor="middle" font-family="serif" fill="white" font-style="italic">N</text></svg>',sizes:'any',type:'image/svg+xml'}]};
 const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
 document.getElementById('pwa-manifest').href=URL.createObjectURL(blob);
-
-// ── UTILS ──
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 function load(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}}
 
-// ── BOOT ──
 window.addEventListener('DOMContentLoaded',()=>{
   const sp=load('inarte_profile');
   if(sp?.name){P=sp;document.getElementById('onboarding').style.display='none';document.getElementById('app').classList.add('on');initApp();}
