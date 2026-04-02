@@ -355,10 +355,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .nc-name{font-size:13px;font-weight:600;color:var(--moss)}
 .nc-status{font-size:10px;color:var(--text3)}
 .nc-close{background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:2px;margin-left:auto}
-.nc-msgs{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px;max-height:260px;justify-content:flex-end}
-.nc-msg{max-width:88%;font-size:12px;line-height:1.7;padding:8px 12px;border-radius:12px}
+.nc-msgs{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px;max-height:260px}
+.nc-msg{max-width:88%;font-size:12px;line-height:1.7;padding:8px 12px;border-radius:12px;word-wrap:break-word;word-break:break-word;white-space:pre-wrap}
 .nc-msg.nara{background:var(--moss-p);color:var(--text2);align-self:flex-start;border-radius:4px 12px 12px 12px}
 .nc-msg.user{background:var(--moss);color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px}
+.nc-inp{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;word-wrap:break-word;resize:none;min-height:36px;max-height:80px;overflow-y:auto}
 .nc-quick{display:flex;gap:5px;flex-wrap:wrap;padding:6px 12px;border-top:1px solid var(--border-l)}
 .nc-qbtn{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;color:var(--text2);cursor:pointer;transition:all .12s;white-space:nowrap}
 .nc-qbtn:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
@@ -864,7 +865,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <button class="nc-qbtn" onclick="quickChat('Olahraga apa yang cocok buat aku?')">Olahraga apa?</button>
     </div>
     <div class="nc-inp-row">
-      <input class="nc-inp" id="nc-inp" placeholder="Ketik sesuatu..." onkeydown="if(event.key==='Enter')sendNara()"/>
+      <input class="nc-inp" id="nc-inp" placeholder="Ketik sesuatu..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendNara()}"/>
       <button class="nc-send" onclick="sendNara()">Kirim</button>
     </div>
   </div>
@@ -923,12 +924,20 @@ async function callNara(system, messages, maxTokens=300) {
         system,
         messages
       }),
-      signal: AbortSignal.timeout(15000) // 15 detik untuk Gemini
+      signal: AbortSignal.timeout(15000)
     });
-    if (!r.ok) return null;
+    if (!r.ok) {
+      console.warn('callNara HTTP error:', r.status);
+      return null;
+    }
     const data = await r.json();
+    if (data.error) {
+      console.warn('callNara API error:', data.error);
+      return null;
+    }
     return data.content?.[0]?.text || null;
   } catch(e) {
+    console.warn('callNara failed:', e.message);
     return null;
   }
 }
@@ -1812,18 +1821,22 @@ async function sendNara(){
   typingDiv.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
   msgs.appendChild(typingDiv);msgs.scrollTop=msgs.scrollHeight;
 
-  const sys=`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE.
-Profil: nama ${P.name||'teman'}, usia ${P.age||'?'} tahun, ${P.act||''}, ${P.home||''}, budget ${P.budget||''}.
-Data hari ini: air ${D.water}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}, gerak: ${D.moves?.map(m=>m.name).join(', ')||'belum ada'}.
-Gaya bicara: sahabat ENFP yang hangat, bahasa Indonesia natural, pakai kaomoji (◕ᴗ◕✿) (≧▽≦) ʕ ꈍᥴꈍʔ sesekali. Tidak menggurui. Kalau butuh profesional, arahkan dengan hangat. Respons pendek dan natural. Maksimal 4 kalimat.`;
+  // Profil sebagai context — prinsip Nara sudah di chat.js
+  const sys=`Profil user: nama ${P.name||'teman'}, usia ${P.age||'?'} tahun, ${P.act||''}, ${P.home||''}, budget makan ${P.budget||''}.
+Data hari ini: air ${D.water||0}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}, gerak: ${D.moves?.map(m=>m.name).join(', ')||'belum ada'}.`;
 
-  let reply=await callNara(sys,chatHistory.slice(-8),300);
-  if(!reply)reply=buildNaraStaticReply(txt);
+  let reply=await callNara(sys,chatHistory.slice(-10),300);
+  if(!reply){
+    console.warn('Nara API gagal → static fallback');
+    reply=buildNaraStaticReply(txt);
+  }
 
   msgs.removeChild(typingDiv);
   addNaraMsg(reply,'nara');
   chatHistory.push({role:'assistant',content:reply});
+  msgs.scrollTop=msgs.scrollHeight;
 }
+
 
 function buildNaraStaticReply(msg){
   const q=msg.toLowerCase();
