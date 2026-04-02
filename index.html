@@ -913,25 +913,22 @@ const AV_COLORS=['#4D6B52','#8B4E38','#5C5080','#3A6B8B','#A05070','#A67C3A'];
 // BUG FIX #1: callNara() — smart static first, API only if available
 // Tidak pernah block UI, tidak buang waktu ke endpoint yang belum ada
 async function callNara(system, messages, maxTokens=300) {
-  // Cek dulu apakah /api/chat tersedia (Vercel Edge Function)
-  // Kalau belum ada, langsung return null → static fallback
   try {
     const r = await fetch('/api/chat', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'gemini-2.0-flash',
         max_tokens: maxTokens,
         system,
         messages
       }),
-      signal: AbortSignal.timeout(8000) // timeout 8 detik, tidak nunggu lama
+      signal: AbortSignal.timeout(15000) // 15 detik untuk Gemini
     });
     if (!r.ok) return null;
     const data = await r.json();
     return data.content?.[0]?.text || null;
   } catch(e) {
-    // Network error, timeout, atau endpoint belum ada → static fallback
     return null;
   }
 }
@@ -1829,20 +1826,98 @@ Gaya bicara: sahabat ENFP yang hangat, bahasa Indonesia natural, pakai kaomoji (
 }
 
 function buildNaraStaticReply(msg){
-  const q=msg.toLowerCase();const name=P.name?` ${P.name}`:'';
-  const water=D.water||0;const cal=D.totalCal||0;
-  if(q.match(/^(hei|hai|halo|hi|hello)/))return `Hei${name}! Ada yang bisa aku bantu hari ini? (◕ᴗ◕✿)`;
-  if(q.includes('capek')||q.includes('lelah'))return `Capek itu wajar${name}. Istirahat itu bukan kelemahan — itu kebutuhan (ꈍᴗꈍ)`;
-  if(q.includes('sedih')||q.includes('berat')||q.includes('stress'))return `Terima kasih sudah mau cerita${name}. Perasaan itu valid, dan kamu tidak harus sendirian menanggungnya (ꈍᴗꈍ)`;
-  if(q.includes('senang')||q.includes('semangat')||q.includes('happy'))return `Wah, ikut seneng denger kamu baik-baik hari ini${name}! (≧▽≦) Jaga energi positifnya ya!`;
-  if(q.includes('makan')&&(q.includes('apa')||q.includes('saran'))){const m=getMenuSuggestions();const h=new Date().getHours();const rec=h<10?m[0]:h<14?m[1]:m[m.length-1];return `Aku rekomendasiin ${rec?.name||'nasi + protein + sayur'} — ~${rec?.cal||350} kkal. ${rec?.tip||''} (◕ᴗ◕✿)`;}
-  if(q.includes('kalori')||q.includes('kkal')){if(cal>0)return `Hari ini kamu sudah makan ~${cal} kkal. Target ideal sekitar ${P.age&&parseInt(P.age)>=60?1600:2000} kkal/hari.`;return `Belum ada catatan makan hari ini${name}. Coba catat di tab Hari Ini ya!`;}
-  if(q.includes('air')||q.includes('minum'))return water>=6?`Hidrasi kamu sudah bagus hari ini — ${water} gelas! (≧▽≦)`:`Kamu baru minum ${water} gelas${name}. Minum satu gelas sekarang yuk! (◕ᴗ◕✿)`;
-  if(q.includes('olahraga')||q.includes('gerak'))return `Konsistensi 3-4x seminggu lebih baik dari intense tapi jarang${name}. Mulai dari yang kamu suka (◕ᴗ◕✿)`;
-  if(q.includes('tidur')||q.includes('sleep'))return `Untuk tidur lebih nyenyak: hindari HP 30 menit sebelum tidur, dan coba tidur di jam yang sama setiap malam (ꈍᴗꈍ)`;
-  if(q.includes('lapar')||q.includes('snack'))return `Snack sehat${name}: pisang, telur rebus, tahu, atau segenggam kacang. Protein dan serat bikin kenyang lebih lama!`;
-  if(q.includes('motivasi')||q.includes('nyerah')||q.includes('males'))return `Satu hari "tidak produktif" bukan kegagalan${name} — itu manusiawi. Yang penting kamu kembali besok (ꈍᴗꈍ)`;
-  const defaults=[`Aku dengerin${name}! Ada yang bisa aku bantu soal makan, olahraga, atau wellness hari ini? (◕ᴗ◕✿)`,`Noted${name}! Kalau ada pertanyaan soal nutrisi atau kesehatan, tanya aja ya (◕ᴗ◕✿)`];
+  const q=msg.toLowerCase();
+  const name=P.name?` ${P.name}`:'';
+  const water=D.water||0;
+  const cal=D.totalCal||0;
+
+  // Sapaan
+  if(q.match(/^(hei|hai|halo|hi|hello|hay)\b/))
+    return `Hei${name}! (◕ᴗ◕✿) Senang kamu mampir. Mau ngobrol apa hari ini?`;
+
+  // Kerjaan & produktivitas
+  if(q.includes('kerjaan')||q.includes('kerja')||q.includes('deadline')||q.includes('delayed')||q.includes('prokrastin')||q.includes('tugas')||q.includes('kantor'))
+    return `Kerjaan yang numpuk memang bisa bikin overwhelmed${name}. Boleh kok delayed sebentar — istirahat itu bukan kelemahan. Kalau sudah agak segar, coba mulai dari satu hal kecil dulu (ꈍᴗꈍ)`;
+
+  // Perasaan berat
+  if(q.includes('sedih')||q.includes('nangis')||q.includes('down')||q.includes('depresi')||q.includes('putus asa'))
+    return `Terima kasih sudah mau cerita${name}. Perasaan itu valid banget — tidak harus kuat terus. Kalau mau cerita lebih, aku di sini (ꈍᴗꈍ)`;
+
+  // Stres & cemas
+  if(q.includes('stress')||q.includes('stres')||q.includes('cemas')||q.includes('anxiety')||q.includes('khawatir')||q.includes('takut'))
+    return `Stres itu sinyal tubuh kamu minta diperhatikan${name}. Coba napas dalam dulu — tarik 4 hitungan, tahan 4, buang 6. Kadang itu sudah cukup buat reset sebentar (◕ᴗ◕✿)`;
+
+  // Capek & lelah
+  if(q.includes('capek')||q.includes('lelah')||q.includes('exhausted')||q.includes('burn out')||q.includes('burnout'))
+    return `Capek itu wajar${name}, apalagi kalau sudah lama nahan. Istirahat bukan kemewahan — itu kebutuhan. Boleh banget recharge dulu (ꈍᴗꈍ)`;
+
+  // Senang & semangat
+  if(q.includes('senang')||q.includes('bahagia')||q.includes('semangat')||q.includes('happy')||q.includes('excited')||q.includes('yeay')||q.includes('yes'))
+    return `Wah, ikut seneng denger kamu baik-baik${name}! (≧▽≦) Jaga energi positifnya ya!`;
+
+  // Bosan
+  if(q.includes('bosan')||q.includes('boring')||q.includes('jenuh')||q.includes('gabut'))
+    return `Bosan itu kadang tanda otak butuh stimulasi baru${name}. Coba hal kecil yang berbeda — jalan ke tempat baru, coba resep baru, atau hubungi teman yang lama tidak disapa (◕ᴗ◕✿)`;
+
+  // Kesepian
+  if(q.includes('sepi')||q.includes('lonely')||q.includes('sendiri')||q.includes('kesepian'))
+    return `Rasa sepi itu berat${name}. Kadang menghubungi satu orang saja sudah bisa bikin perbedaan — tidak harus panjang, cukup "hei, apa kabar?" (ꈍᴗꈍ)`;
+
+  // Motivasi & males
+  if(q.includes('males')||q.includes('malas')||q.includes('nyerah')||q.includes('menyerah')||q.includes('give up')||q.includes('motivasi'))
+    return `Satu hari "tidak produktif" bukan kegagalan${name} — itu manusiawi. Yang penting kamu kembali besok. Proses itu tidak linear (ꈍᴗꈍ)`;
+
+  // Hubungan & personal
+  if(q.includes('pacar')||q.includes('gebetan')||q.includes('crush')||q.includes('putus')||q.includes('relationship')||q.includes('hubungan'))
+    return `Hmm, soal hubungan memang complicated${name}. Aku bukan ahlinya, tapi aku dengerin. Mau cerita lebih? (◕ᴗ◕✿)`;
+
+  // Keluarga
+  if(q.includes('keluarga')||q.includes('orang tua')||q.includes('mama')||q.includes('papa')||q.includes('kakak')||q.includes('adik'))
+    return `Dinamika keluarga itu kadang kompleks ya${name}. Apapun yang lagi kamu rasain, itu valid (ꈍᴗꈍ)`;
+
+  // Makanan
+  if(q.includes('makan')&&(q.includes('apa')||q.includes('saran')||q.includes('rekomen'))){
+    const m=getMenuSuggestions();const h=new Date().getHours();
+    const rec=h<10?m[0]:h<14?m[1]:m[m.length-1];
+    return `Aku rekomendasiin ${rec?.name||'nasi + protein + sayur'} — ~${rec?.cal||350} kkal. ${rec?.tip||''} (◕ᴗ◕✿)`;
+  }
+
+  // Kalori
+  if(q.includes('kalori')||q.includes('kkal')){
+    if(cal>0)return `Hari ini kamu sudah makan ~${cal} kkal. Target idealnya sekitar ${P.age&&parseInt(P.age)>=60?1600:2000} kkal/hari.`;
+    return `Belum ada catatan makan hari ini${name}. Coba catat di tab Hari Ini ya!`;
+  }
+
+  // Air
+  if(q.includes('air')||q.includes('minum')||q.includes('hidrasi'))
+    return water>=6?`Hidrasi kamu sudah bagus hari ini — ${water} gelas! (≧▽≦)`:`Kamu baru minum ${water} gelas${name}. Minum satu gelas sekarang yuk! (◕ᴗ◕✿)`;
+
+  // Olahraga
+  if(q.includes('olahraga')||q.includes('gym')||q.includes('lari')||q.includes('gerak'))
+    return `Konsistensi 3-4x seminggu lebih baik dari intense tapi jarang${name}. Mulai dari yang kamu suka (◕ᴗ◕✿)`;
+
+  // Tidur
+  if(q.includes('tidur')||q.includes('sleep')||q.includes('insomnia')||q.includes('susah tidur'))
+    return `Untuk tidur lebih nyenyak${name}: hindari layar HP 30 menit sebelum tidur dan coba tidur di jam yang sama setiap malam. Tubuh suka rutinitas (ꈍᴗꈍ)`;
+
+  // Lapar & snack
+  if(q.includes('lapar')||q.includes('snack')||q.includes('cemilan')||q.includes('ngemil'))
+    return `Snack sehat${name}: pisang, telur rebus, tahu, atau segenggam kacang. Protein dan serat bikin kenyang lebih lama!`;
+
+  // Berat badan
+  if(q.includes('berat badan')||q.includes('diet')||q.includes('kurus')||q.includes('gemuk')||q.includes('turun berat'))
+    return `Soal berat badan${name} — angka di timbangan bukan satu-satunya ukuran sehat. Yang lebih penting: bagaimana energimu, tidurmu, dan bagaimana kamu merasa (◕ᴗ◕✿)`;
+
+  // Terima kasih
+  if(q.includes('makasih')||q.includes('terima kasih')||q.includes('thanks')||q.includes('thx'))
+    return `Sama-sama${name}! (◕ᴗ◕✿) Aku selalu di sini kalau butuh ngobrol lagi ya.`;
+
+  // Default — lebih hangat dan tidak redirect ke topik nutrisi
+  const defaults=[
+    `Aku dengerin${name}. Mau cerita lebih? Atau ada yang bisa aku bantu hari ini? (◕ᴗ◕✿)`,
+    `Noted${name}! Apapun yang lagi kamu rasain, valid. Mau ngobrol lebih lanjut? (ꈍᴗꈍ)`,
+    `Hmm, cerita lebih dong${name}. Aku penasaran dan mau dengerin (◕ᴗ◕✿)`,
+  ];
   return defaults[Math.floor(Math.random()*defaults.length)];
 }
 
