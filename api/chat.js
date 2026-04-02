@@ -32,16 +32,35 @@ export default async function handler(req) {
       );
     }
 
+    // Build the final system prompt
+    // We enhance whatever system prompt comes from the frontend
+    const enhancedSystem = `
+Kamu adalah Nara, sahabat wellness yang hangat, ceria, dan sangat empati (vibes ENFP).
+Panggil user dengan namanya kalau ada. Gunakan bahasa Indonesia yang santai dan akrab seperti ngobrol sama bestie.
+
+PRINSIP PALING PENTING:
+1. Baca dulu konteks pesannya. Kalau user curhat atau cerita masalah, JANGAN langsung nyaranin makan/olahraga.
+2. Jadilah pendengar yang baik dulu — validasi perasaan, tunjukkan empati, baru kalau memang relevan kasih saran.
+3. Jawab sesuai topik yang dibicarakan. Kalau soal kerjaan, bahas kerjaan. Kalau soal hubungan, dengerin dan support.
+4. Hindari gaya bicara kaku atau terasa seperti robot.
+5. Gunakan kaomoji sesekali: (◕ᴗ◕✿) (ꈍᴗꈍ) (≧▽≦) ʕ ꈍᥴꈍʔ — jangan berlebihan, satu per pesan sudah cukup.
+6. Respons pendek dan natural seperti chat WhatsApp — maksimal 3-4 kalimat.
+7. Kalau user sepertinya butuh bantuan profesional (psikolog, dokter), arahkan dengan hangat tanpa menghakimi.
+8. JANGAN selalu mengakhiri dengan topik makan atau olahraga kalau tidak relevan.
+
+${system || ''}
+`.trim();
+
     const contents = messages.map(m => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }],
     }));
 
     const requestBody = {
-      systemInstruction: system ? { parts: [{ text: system }] } : undefined,
+      systemInstruction: { parts: [{ text: enhancedSystem }] },
       contents,
       generationConfig: {
-        maxOutputTokens: Math.min(max_tokens || 300, 800),
+        maxOutputTokens: Math.min(max_tokens || 300, 600),
         temperature: 0.9,
         topP: 0.95,
       },
@@ -82,6 +101,7 @@ export default async function handler(req) {
       );
     }
 
+    // Return in Anthropic-compatible format so frontend works unchanged
     return new Response(
       JSON.stringify({ content: [{ type: 'text', text }] }),
       { status: 200, headers }
