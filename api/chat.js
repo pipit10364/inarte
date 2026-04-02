@@ -27,25 +27,22 @@ export default async function handler(req) {
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return new Response(
-        JSON.stringify({ error: 'Invalid request: messages required' }),
+        JSON.stringify({ error: 'Invalid request' }),
         { status: 400, headers }
       );
     }
 
-    // Convert Anthropic-style messages → Gemini format
     const contents = messages.map(m => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }],
     }));
 
     const requestBody = {
-      systemInstruction: system
-        ? { parts: [{ text: system }] }
-        : undefined,
+      systemInstruction: system ? { parts: [{ text: system }] } : undefined,
       contents,
       generationConfig: {
         maxOutputTokens: Math.min(max_tokens || 300, 800),
-        temperature: 0.85,
+        temperature: 0.9,
         topP: 0.95,
       },
       safetySettings: [
@@ -57,7 +54,7 @@ export default async function handler(req) {
     };
 
     const apiKey = process.env.GEMINI_API_KEY;
-    const model = 'gemini-2.0-flash-lite';
+    const model = 'gemini-2.0-flash';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
@@ -68,35 +65,30 @@ export default async function handler(req) {
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('Gemini API error:', response.status, err);
+      console.error('Gemini error:', response.status, err);
       return new Response(
-        JSON.stringify({ error: 'Upstream API error' }),
+        JSON.stringify({ error: 'Upstream error' }),
         { status: response.status, headers }
       );
     }
 
     const data = await response.json();
-
-    // Extract text from Gemini response
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
 
     if (!text) {
       return new Response(
-        JSON.stringify({ error: 'No response from model' }),
+        JSON.stringify({ error: 'No response' }),
         { status: 500, headers }
       );
     }
 
-    // Return in Anthropic-compatible format so frontend callNara() works unchanged
     return new Response(
-      JSON.stringify({
-        content: [{ type: 'text', text }],
-      }),
+      JSON.stringify({ content: [{ type: 'text', text }] }),
       { status: 200, headers }
     );
 
   } catch (err) {
-    console.error('Edge function error:', err);
+    console.error('Edge error:', err);
     return new Response(
       JSON.stringify({ error: 'Internal error' }),
       { status: 500, headers }
