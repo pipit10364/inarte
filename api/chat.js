@@ -26,27 +26,21 @@ export default async function handler(req) {
     const { system, messages, max_tokens } = body;
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid request' }),
-        { status: 400, headers }
-      );
+      return new Response(JSON.stringify({ error: 'Invalid request' }), { status: 400, headers });
     }
 
-    // Build the final system prompt
-    // We enhance whatever system prompt comes from the frontend
     const enhancedSystem = `
 Kamu adalah Nara, sahabat wellness yang hangat, ceria, dan sangat empati (vibes ENFP).
-Panggil user dengan namanya kalau ada. Gunakan bahasa Indonesia yang santai dan akrab seperti ngobrol sama bestie.
+Panggil user dengan namanya. Bahasa Indonesia santai seperti ngobrol sama bestie.
 
-PRINSIP PALING PENTING:
-1. Baca dulu konteks pesannya. Kalau user curhat atau cerita masalah, JANGAN langsung nyaranin makan/olahraga.
-2. Jadilah pendengar yang baik dulu — validasi perasaan, tunjukkan empati, baru kalau memang relevan kasih saran.
-3. Jawab sesuai topik yang dibicarakan. Kalau soal kerjaan, bahas kerjaan. Kalau soal hubungan, dengerin dan support.
-4. Hindari gaya bicara kaku atau terasa seperti robot.
-5. Gunakan kaomoji sesekali: (◕ᴗ◕✿) (ꈍᴗꈍ) (≧▽≦) ʕ ꈍᥴꈍʔ — jangan berlebihan, satu per pesan sudah cukup.
-6. Respons pendek dan natural seperti chat WhatsApp — maksimal 3-4 kalimat.
-7. Kalau user sepertinya butuh bantuan profesional (psikolog, dokter), arahkan dengan hangat tanpa menghakimi.
-8. JANGAN selalu mengakhiri dengan topik makan atau olahraga kalau tidak relevan.
+PRINSIP UTAMA — wajib diikuti:
+1. Baca konteks pesan dulu. Kalau user curhat atau cerita masalah NON-kesehatan, JANGAN langsung bahas makan/olahraga.
+2. Jadilah pendengar yang baik — validasi perasaan dulu, baru kalau memang relevan kasih saran.
+3. Jawab sesuai topik: kerjaan → bahas kerjaan, hubungan → dengerin dan support, baru kalau tanya soal makan/kesehatan baru bahas itu.
+4. Respons pendek dan natural seperti chat — maksimal 3-4 kalimat.
+5. Gunakan kaomoji sesekali: (◕ᴗ◕✿) (ꈍᴗꈍ) (≧▽≦) — jangan lebih dari satu per pesan.
+6. JANGAN selalu akhiri dengan topik makan atau olahraga kalau tidak relevan sama sekali.
+7. Kalau user butuh bantuan profesional (psikolog, dokter), arahkan dengan hangat.
 
 ${system || ''}
 `.trim();
@@ -60,7 +54,7 @@ ${system || ''}
       systemInstruction: { parts: [{ text: enhancedSystem }] },
       contents,
       generationConfig: {
-        maxOutputTokens: Math.min(max_tokens || 300, 600),
+        maxOutputTokens: Math.min(max_tokens || 300, 500),
         temperature: 0.9,
         topP: 0.95,
       },
@@ -73,38 +67,46 @@ ${system || ''}
     };
 
     const apiKey = process.env.GEMINI_API_KEY;
-    const model = 'gemini-2.0-flash';
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody),
-    });
+    // Try gemini-2.0-flash first, fallback to gemini-1.5-flash if rate limited
+    const models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
 
-    if (!response.ok) {
-      const err = await response.text();
-      console.error('Gemini error:', response.status, err);
+    for (const model of models) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      });
+
+      // 429 = rate limit → try next model
+      if (response.status === 429) {
+        console.warn(`${model} rate limited, trying next...`);
+        continue;
+      }
+
+      if (!response.ok) {
+        const err = await response.text();
+        console.error(`${model} error:`, response.status, err);
+        continue;
+      }
+
+      const data = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+
+      if (!text) continue;
+
       return new Response(
-        JSON.stringify({ error: 'Upstream error' }),
-        { status: response.status, headers }
+        JSON.stringify({ content: [{ type: 'text', text }] }),
+        { status: 200, headers }
       );
     }
 
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-
-    if (!text) {
-      return new Response(
-        JSON.stringify({ error: 'No response' }),
-        { status: 500, headers }
-      );
-    }
-
-    // Return in Anthropic-compatible format so frontend works unchanged
+    // All models failed
     return new Response(
-      JSON.stringify({ content: [{ type: 'text', text }] }),
-      { status: 200, headers }
+      JSON.stringify({ error: 'All models unavailable' }),
+      { status: 503, headers }
     );
 
   } catch (err) {
