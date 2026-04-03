@@ -359,7 +359,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .nc-msg{max-width:88%;font-size:12px;line-height:1.7;padding:8px 12px;border-radius:12px;word-wrap:break-word;word-break:break-word;white-space:pre-wrap}
 .nc-msg.nara{background:var(--moss-p);color:var(--text2);align-self:flex-start;border-radius:4px 12px 12px 12px}
 .nc-msg.user{background:var(--moss);color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px}
-.nc-inp{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;word-wrap:break-word;resize:none;min-height:36px;max-height:80px;overflow-y:auto}
+.nc-inp{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;resize:none;min-height:36px;max-height:100px;overflow-y:auto;line-height:1.5;word-break:break-word}
 .nc-quick{display:flex;gap:5px;flex-wrap:wrap;padding:6px 12px;border-top:1px solid var(--border-l)}
 .nc-qbtn{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;color:var(--text2);cursor:pointer;transition:all .12s;white-space:nowrap}
 .nc-qbtn:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
@@ -865,7 +865,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <button class="nc-qbtn" onclick="quickChat('Olahraga apa yang cocok buat aku?')">Olahraga apa?</button>
     </div>
     <div class="nc-inp-row">
-      <input class="nc-inp" id="nc-inp" placeholder="Ketik sesuatu..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendNara()}"/>
+      <textarea class="nc-inp" id="nc-inp" placeholder="Ketik sesuatu..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendNara()}"></textarea>
       <button class="nc-send" onclick="sendNara()">Kirim</button>
     </div>
   </div>
