@@ -33,14 +33,13 @@ export default async function handler(req) {
 Kamu adalah Nara, sahabat wellness yang hangat, ceria, dan sangat empati (vibes ENFP).
 Panggil user dengan namanya. Bahasa Indonesia santai seperti ngobrol sama bestie.
 
-PRINSIP UTAMA — wajib diikuti:
+PRINSIP UTAMA:
 1. Baca konteks pesan dulu. Kalau user curhat atau cerita masalah NON-kesehatan, JANGAN langsung bahas makan/olahraga.
-2. Jadilah pendengar yang baik — validasi perasaan dulu, baru kalau memang relevan kasih saran.
-3. Jawab sesuai topik: kerjaan → bahas kerjaan, hubungan → dengerin dan support, baru kalau tanya soal makan/kesehatan baru bahas itu.
+2. Jadilah pendengar yang baik — validasi perasaan dulu, baru kalau relevan kasih saran.
+3. Jawab sesuai topik: kerjaan → bahas kerjaan, hubungan → dengerin, makan/kesehatan → baru bahas itu.
 4. Respons pendek dan natural seperti chat — maksimal 3-4 kalimat.
 5. Gunakan kaomoji sesekali: (◕ᴗ◕✿) (ꈍᴗꈍ) (≧▽≦) — jangan lebih dari satu per pesan.
-6. JANGAN selalu akhiri dengan topik makan atau olahraga kalau tidak relevan sama sekali.
-7. Kalau user butuh bantuan profesional (psikolog, dokter), arahkan dengan hangat.
+6. JANGAN selalu akhiri dengan topik makan atau olahraga kalau tidak relevan.
 
 ${system || ''}
 `.trim();
@@ -68,51 +67,71 @@ ${system || ''}
 
     const apiKey = process.env.GEMINI_API_KEY;
 
-    // Try gemini-2.0-flash first, fallback to gemini-1.5-flash if rate limited
-    const models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
+    // Try models in order — gemini-1.5-flash is most reliable for free tier
+    const models = [
+      'gemini-1.5-flash',
+      'gemini-1.5-flash-8b',
+      'gemini-2.0-flash-lite',
+    ];
+
+    const errors = [];
 
     for (const model of models) {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
-      });
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody),
+        });
 
-      // 429 = rate limit → try next model
-      if (response.status === 429) {
-        console.warn(`${model} rate limited, trying next...`);
+        if (response.status === 429 || response.status === 503) {
+          const errText = await response.text();
+          errors.push(`${model}: ${response.status}`);
+          console.warn(`${model} unavailable (${response.status}), trying next...`);
+          continue;
+        }
+
+        if (!response.ok) {
+          const errText = await response.text();
+          errors.push(`${model}: ${response.status} - ${errText}`);
+          console.error(`${model} error:`, response.status, errText);
+          continue;
+        }
+
+        const data = await response.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+
+        if (!text) {
+          errors.push(`${model}: empty response`);
+          continue;
+        }
+
+        // Success! Return with model info for debugging
+        return new Response(
+          JSON.stringify({ content: [{ type: 'text', text }], model }),
+          { status: 200, headers }
+        );
+
+      } catch (fetchErr) {
+        errors.push(`${model}: fetch error - ${fetchErr.message}`);
+        console.error(`${model} fetch error:`, fetchErr.message);
         continue;
       }
-
-      if (!response.ok) {
-        const err = await response.text();
-        console.error(`${model} error:`, response.status, err);
-        continue;
-      }
-
-      const data = await response.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-
-      if (!text) continue;
-
-      return new Response(
-        JSON.stringify({ content: [{ type: 'text', text }] }),
-        { status: 200, headers }
-      );
     }
 
-    // All models failed
+    // All models failed — return error with details
+    console.error('All models failed:', errors);
     return new Response(
-      JSON.stringify({ error: 'All models unavailable' }),
+      JSON.stringify({ error: 'All models unavailable', details: errors }),
       { status: 503, headers }
     );
 
   } catch (err) {
     console.error('Edge error:', err);
     return new Response(
-      JSON.stringify({ error: 'Internal error' }),
+      JSON.stringify({ error: 'Internal error', message: err.message }),
       { status: 500, headers }
     );
   }
