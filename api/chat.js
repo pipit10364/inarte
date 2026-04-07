@@ -40,6 +40,7 @@ PRINSIP UTAMA:
 4. Respons pendek dan natural seperti chat — maksimal 3-4 kalimat.
 5. Gunakan kaomoji sesekali: (◕ᴗ◕✿) (ꈍᴗꈍ) (≧▽≦) — jangan lebih dari satu per pesan.
 6. JANGAN selalu akhiri dengan topik makan atau olahraga kalau tidak relevan.
+7. Kalau user butuh bantuan profesional, arahkan dengan hangat.
 
 ${system || ''}
 `.trim();
@@ -67,11 +68,11 @@ ${system || ''}
 
     const apiKey = process.env.GEMINI_API_KEY;
 
-    // Try models in order — gemini-1.5-flash is most reliable for free tier
+    // Models confirmed available from API key's model list
     const models = [
-      'gemini-1.5-flash',
-      'gemini-1.5-flash-8b',
-      'gemini-2.0-flash-lite',
+      'gemini-2.0-flash-001',  // stable version, most reliable
+      'gemini-2.0-flash',      // latest 2.0
+      'gemini-2.5-flash',      // newest, might have higher rate limits
     ];
 
     const errors = [];
@@ -87,7 +88,6 @@ ${system || ''}
         });
 
         if (response.status === 429 || response.status === 503) {
-          const errText = await response.text();
           errors.push(`${model}: ${response.status}`);
           console.warn(`${model} unavailable (${response.status}), trying next...`);
           continue;
@@ -95,7 +95,7 @@ ${system || ''}
 
         if (!response.ok) {
           const errText = await response.text();
-          errors.push(`${model}: ${response.status} - ${errText}`);
+          errors.push(`${model}: ${response.status}`);
           console.error(`${model} error:`, response.status, errText);
           continue;
         }
@@ -108,20 +108,17 @@ ${system || ''}
           continue;
         }
 
-        // Success! Return with model info for debugging
         return new Response(
-          JSON.stringify({ content: [{ type: 'text', text }], model }),
+          JSON.stringify({ content: [{ type: 'text', text }] }),
           { status: 200, headers }
         );
 
       } catch (fetchErr) {
-        errors.push(`${model}: fetch error - ${fetchErr.message}`);
-        console.error(`${model} fetch error:`, fetchErr.message);
+        errors.push(`${model}: ${fetchErr.message}`);
         continue;
       }
     }
 
-    // All models failed — return error with details
     console.error('All models failed:', errors);
     return new Response(
       JSON.stringify({ error: 'All models unavailable', details: errors }),
@@ -131,7 +128,7 @@ ${system || ''}
   } catch (err) {
     console.error('Edge error:', err);
     return new Response(
-      JSON.stringify({ error: 'Internal error', message: err.message }),
+      JSON.stringify({ error: 'Internal error' }),
       { status: 500, headers }
     );
   }
