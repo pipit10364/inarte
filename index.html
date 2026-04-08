@@ -1806,7 +1806,8 @@ async function buildNaraRecap(){
 // NARA CHAT (API + smart static fallback)
 // ═══════════════════════════════
 function initNaraChat(){
-  addNaraMsg(`Hei${P.name?', '+P.name:''}! Aku Nara, teman perjalananmu di sini (◕ᴗ◕✿) Mau ngobrol soal makanan, olahraga, atau curhat aja — aku siap dengerin!`,'nara');
+  addNaraMsg(`Hei${P.name?', '+P.name:''}! Aku Nara (◕ᴗ◕✿)`,'nara');
+  setTimeout(()=>addNaraMsg('Mau ngobrol soal apa aja — makan, olahraga, atau curhat. Aku dengerin!','nara'),400);
   setTimeout(()=>document.getElementById('nara-badge').classList.add('on'),2000);
 }
 function togNaraChat(){const chat=document.getElementById('nara-chat');chat.classList.toggle('on');if(chat.classList.contains('on')){document.getElementById('nara-badge').classList.remove('on');document.getElementById('nc-inp').focus();}}
