@@ -477,8 +477,67 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .pwa-banner-close{background:none;border:none;cursor:pointer;font-size:14px;color:var(--moss);padding:2px;flex-shrink:0}
 @media(max-width:480px){.ob-wrap{padding:2rem 1.5rem}.nara-chat{width:calc(100vw - 32px);right:16px}.p-panel{width:100%}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:2000;overflow-y:auto;align-items:center;justify-content:center;padding:1.5rem;align-items:center;justify-content:center;padding:1.5rem">
+  <div style="background:var(--surface);border-radius:24px;padding:2.5rem 2rem;max-width:420px;width:100%;box-shadow:var(--sh)">
+    <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;color:var(--moss);letter-spacing:.08em;margin-bottom:4px">IN<span style="font-style:italic;color:var(--clay)">arte</span></div>
+    <div style="font-size:11px;color:var(--text3);letter-spacing:.08em;margin-bottom:2rem">perjalananmu, caramu</div>
+
+    <div id="auth-tabs" style="display:flex;gap:0;margin-bottom:1.5rem;border:1.5px solid var(--border);border-radius:var(--rsm);overflow:hidden">
+      <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:10px;background:var(--moss);color:#fff;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">Masuk</button>
+      <button id="tab-register" onclick="switchAuthTab('register')" style="flex:1;padding:10px;background:transparent;color:var(--text2);border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer">Daftar</button>
+    </div>
+
+    <div id="auth-login-form">
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:4px">Email</div>
+        <input id="auth-email" type="email" placeholder="email@kamu.com" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none"/>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:4px">Password</div>
+        <input id="auth-password" type="password" placeholder="Password kamu" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none" onkeydown="if(event.key==='Enter')authLogin()"/>
+      </div>
+      <button onclick="authLogin()" style="width:100%;padding:13px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:10px">Masuk →</button>
+      <button onclick="authGoogleLogin()" style="width:100%;padding:12px;background:var(--surface);color:var(--text2);border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Masuk dengan Google
+      </button>
+      <p style="font-size:11px;color:var(--text4);text-align:center;margin-top:4px">Belum punya akun? <span onclick="switchAuthTab('register')" style="color:var(--moss);cursor:pointer;text-decoration:underline">Daftar dulu</span></p>
+    </div>
+
+    <div id="auth-register-form" style="display:none">
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:4px">Nama panggilan</div>
+        <input id="reg-name" type="text" placeholder="Nama kamu..." maxlength="30" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none"/>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:4px">Email</div>
+        <input id="reg-email" type="email" placeholder="email@kamu.com" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none"/>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-size:11px;font-weight:500;color:var(--text3);margin-bottom:4px">Password</div>
+        <input id="reg-password" type="password" placeholder="Min. 6 karakter" style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none" onkeydown="if(event.key==='Enter')authRegister()"/>
+      </div>
+      <button onclick="authRegister()" style="width:100%;padding:13px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:10px">Buat akun →</button>
+      <button onclick="authGoogleLogin()" style="width:100%;padding:12px;background:var(--surface);color:var(--text2);border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Daftar dengan Google
+      </button>
+      <p style="font-size:11px;color:var(--text4);text-align:center;margin-top:4px">Sudah punya akun? <span onclick="switchAuthTab('login')" style="color:var(--moss);cursor:pointer;text-decoration:underline">Masuk</span></p>
+    </div>
+
+    <div id="auth-msg" style="display:none;margin-top:12px;padding:10px 14px;border-radius:var(--rxs);font-size:12px;line-height:1.6"></div>
+
+    <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border-l);text-align:center">
+      <button onclick="continueAsGuest()" style="background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--text3);cursor:pointer;text-decoration:underline">Lanjut tanpa login (data hanya tersimpan di HP ini)</button>
+    </div>
+  </div>
+</div>
 
 <div id="onboarding">
 <div class="ob-wrap">
@@ -1012,7 +1071,22 @@ function obBack(){if(obStep>0)goObStep(obStep-1);}
 function goObStep(n){document.getElementById('ob'+obStep).classList.remove('active');obStep=n;document.getElementById('ob'+n).classList.add('active');}
 function chipToggle(btn){btn.classList.toggle('sel');}
 function chipSolo(btn,key){btn.closest('.ob-chips').querySelectorAll('.ob-chip').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');obData[key]=btn.textContent.trim();}
-function doneOb(){P={...obData,created:Date.now(),avatarColor:'#4D6B52'};sv('inarte_profile',P);document.getElementById('onboarding').style.display='none';document.getElementById('app').classList.add('on');initApp();}
+function doneOb(){
+  P={...obData,created:Date.now(),avatarColor:'#4D6B52'};
+  sv('inarte_profile',P);
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('app').classList.add('on');
+  initApp();
+  // If logged in, save profile to Supabase
+  if(SB&&currentUser){
+    SB.from('profiles').upsert({
+      id:currentUser.id,name:P.name,age:P.age?parseInt(P.age):null,
+      act:P.act,home:P.home,cook:P.cook,budget:P.budget,
+      goals:P.goals||[],avatar_color:P.avatarColor||'#4D6B52'
+    }).then(()=>console.log('Profile saved to Supabase'));
+    setTimeout(addLogoutBtn,500);
+  }
+}
 
 // ═══════════════════════════════
 // INIT
@@ -2208,10 +2282,279 @@ try{
   document.getElementById('pwa-manifest').href=URL.createObjectURL(blob);
 }catch(e){}
 
-window.addEventListener('DOMContentLoaded',()=>{
-  const sp=ld('inarte_profile');
-  if(sp?.name){P=sp;document.getElementById('onboarding').style.display='none';document.getElementById('app').classList.add('on');initApp();}
+
+// ═══════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════
+const SUPABASE_URL = 'https://dcolcdwybmwkpovmorse.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE';
+const GOOGLE_CLIENT_ID = '706732144567-8km0k3dtp65qbupk3b6sibah3srdes9k.apps.googleusercontent.com';
+let SB = null;
+let currentUser = null;
+let syncPending = false;
+
+function initSupabase() {
+  try {
+    SB = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    return true;
+  } catch(e) {
+    console.warn('Supabase init failed:', e);
+    return false;
+  }
+}
+
+// ═══════════════════════════════
+// AUTH FUNCTIONS
+// ═══════════════════════════════
+function switchAuthTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('auth-login-form').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('auth-register-form').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('tab-login').style.background = isLogin ? 'var(--moss)' : 'transparent';
+  document.getElementById('tab-login').style.color = isLogin ? '#fff' : 'var(--text2)';
+  document.getElementById('tab-register').style.background = isLogin ? 'transparent' : 'var(--moss)';
+  document.getElementById('tab-register').style.color = isLogin ? 'var(--text2)' : '#fff';
+  showAuthMsg('');
+}
+
+function showAuthMsg(msg, isError=true) {
+  const el = document.getElementById('auth-msg');
+  if (!msg) { el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.style.background = isError ? 'var(--rose-p)' : 'var(--moss-p)';
+  el.style.color = isError ? 'var(--rose)' : 'var(--moss)';
+  el.style.border = isError ? '1px solid var(--rose-l)' : '1px solid var(--moss-l)';
+  el.textContent = msg;
+}
+
+async function authLogin() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  if (!email || !password) { showAuthMsg('Email dan password harus diisi.'); return; }
+  showAuthMsg('Sedang masuk...', false);
+  const { data, error } = await SB.auth.signInWithPassword({ email, password });
+  if (error) { showAuthMsg(error.message === 'Invalid login credentials' ? 'Email atau password salah.' : error.message); return; }
+  await onLoginSuccess(data.user);
+}
+
+async function authRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  if (!name) { showAuthMsg('Nama panggilan harus diisi.'); return; }
+  if (!email || !password) { showAuthMsg('Email dan password harus diisi.'); return; }
+  if (password.length < 6) { showAuthMsg('Password minimal 6 karakter.'); return; }
+  showAuthMsg('Membuat akun...', false);
+  const { data, error } = await SB.auth.signUp({ email, password, options: { data: { full_name: name } } });
+  if (error) { showAuthMsg(error.message); return; }
+  if (data.user && !data.session) {
+    showAuthMsg('Cek email kamu untuk verifikasi akun! Setelah itu bisa langsung login.', false);
+    return;
+  }
+  await onLoginSuccess(data.user, name);
+}
+
+async function authGoogleLogin() {
+  showAuthMsg('Membuka Google...', false);
+  const { error } = await SB.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin }
+  });
+  if (error) showAuthMsg(error.message);
+}
+
+function continueAsGuest() {
+  document.getElementById('auth-screen').style.display = 'none';
+  const sp = ld('inarte_profile');
+  if (sp?.name) {
+    P = sp;
+    document.getElementById('onboarding').style.display = 'none';
+    document.getElementById('app').classList.add('on');
+    initApp();
+  } else {
+    document.getElementById('onboarding').style.display = 'flex';
+  }
+}
+
+async function onLoginSuccess(user, nameOverride = null) {
+  currentUser = user;
+  document.getElementById('auth-screen').style.display = 'none';
+  
+  // Load profile from Supabase
+  const { data: profile } = await SB.from('profiles').select('*').eq('id', user.id).single();
+  
+  if (profile?.name) {
+    // Existing user — merge Supabase data with localStorage
+    P = {
+      name: profile.name,
+      age: profile.age || '',
+      act: profile.act || '',
+      home: profile.home || '',
+      cook: profile.cook || '',
+      budget: profile.budget || '',
+      goals: profile.goals || [],
+      avatarColor: profile.avatar_color || '#4D6B52',
+    };
+    sv('inarte_profile', P);
+    document.getElementById('onboarding').style.display = 'none';
+    document.getElementById('app').classList.add('on');
+    initApp();
+    syncFromSupabase(); // Load cloud data
+  } else {
+    // New user — set name from auth if available
+    const authName = nameOverride || user.user_metadata?.full_name || user.user_metadata?.name || '';
+    if (authName) {
+      P = { name: authName, avatarColor: '#4D6B52' };
+      sv('inarte_profile', P);
+      // Upsert profile
+      await SB.from('profiles').upsert({ id: user.id, name: authName, avatar_color: '#4D6B52' });
+      document.getElementById('onboarding').style.display = 'none';
+      document.getElementById('app').classList.add('on');
+      initApp();
+    } else {
+      // Go through onboarding
+      document.getElementById('onboarding').style.display = 'flex';
+    }
+  }
+}
+
+async function authLogout() {
+  await SB.auth.signOut();
+  currentUser = null;
+  P = {}; D = {};
+  localStorage.clear();
+  location.reload();
+}
+
+// ═══════════════════════════════
+// SUPABASE SYNC
+// ═══════════════════════════════
+async function syncToSupabase() {
+  if (!SB || !currentUser) return;
+  try {
+    const uid = currentUser.id;
+    // Sync profile
+    await SB.from('profiles').upsert({
+      id: uid, name: P.name, age: P.age ? parseInt(P.age) : null,
+      act: P.act, home: P.home, cook: P.cook, budget: P.budget,
+      goals: P.goals || [], avatar_color: P.avatarColor || '#4D6B52',
+    });
+    // Sync today's daily log
+    await SB.from('daily_logs').upsert({
+      user_id: uid, date: TODAY,
+      water: D.water || 0, mood: D.mood || null,
+      conditions: D.conditions || [], meals: D.meals || [],
+      moves: D.moves || [], total_cal: D.totalCal || 0,
+      total_move_cal: D.totalMoveCal || 0, habits: D.habits || [],
+      wellness: D.wellness || null,
+    }, { onConflict: 'user_id,date' });
+    // Sync habits template
+    const habits = loadHabitTemplate();
+    for (const h of habits) {
+      await SB.from('habits').upsert(
+        { user_id: uid, habit_id: h.id, text: h.text },
+        { onConflict: 'user_id,habit_id' }
+      );
+    }
+  } catch(e) {
+    console.warn('Sync to Supabase failed:', e);
+  }
+}
+
+async function syncFromSupabase() {
+  if (!SB || !currentUser) return;
+  try {
+    const uid = currentUser.id;
+    // Load today's daily log
+    const { data: log } = await SB.from('daily_logs').select('*').eq('user_id', uid).eq('date', TODAY).single();
+    if (log) {
+      D = {
+        water: log.water || 0, mood: log.mood,
+        conditions: log.conditions || [], meals: log.meals || [],
+        moves: log.moves || [], totalCal: log.total_cal || 0,
+        totalMoveCal: log.total_move_cal || 0, habits: log.habits || [],
+        wellness: log.wellness,
+      };
+      sv('inarte_day_' + TODAY, D);
+    }
+    // Load habits template
+    const { data: habits } = await SB.from('habits').select('*').eq('user_id', uid);
+    if (habits?.length) {
+      const template = habits.map(h => ({ id: h.habit_id, text: h.text, addedAt: Date.now() }));
+      sv('inarte_habits_template', template);
+    }
+    // Reload UI with fresh data
+    buildHabitList();
+    restoreToday();
+    buildGlasses();
+  } catch(e) {
+    console.warn('Sync from Supabase failed:', e);
+  }
+}
+
+// Override saveDay to also sync
+const _origSaveDay = saveDay;
+function saveDay() {
+  _origSaveDay();
+  // Sync in background — debounced 3 seconds
+  clearTimeout(window._syncTimer);
+  window._syncTimer = setTimeout(syncToSupabase, 3000);
+}
+
+// Override saveProfile to also sync
+const _origSaveProfile = saveProfile;
+function saveProfile() {
+  _origSaveProfile();
+  syncToSupabase();
+}
+
+// Add logout to profile panel
+function addLogoutBtn() {
+  const panel = document.getElementById('p-panel');
+  if (!panel || !currentUser) return;
+  if (document.getElementById('logout-btn')) return;
+  const btn = document.createElement('button');
+  btn.id = 'logout-btn';
+  btn.textContent = 'Keluar dari akun';
+  btn.style.cssText = 'width:100%;padding:11px;background:transparent;color:var(--rose);border:1.5px solid var(--rose-l);border-radius:var(--rsm);font-family:Plus Jakarta Sans,sans-serif;font-size:13px;cursor:pointer;margin-top:8px';
+  btn.onclick = authLogout;
+  panel.appendChild(btn);
+}
+
+// ═══════════════════════════════
+// BOOT
+// ═══════════════════════════════
+window.addEventListener('DOMContentLoaded', async () => {
+  initSupabase();
+  
+  if (!SB) {
+    // Supabase failed to load, go guest mode
+    continueAsGuest();
+    return;
+  }
+
+  // Check if returning from OAuth redirect
+  const { data: { session } } = await SB.auth.getSession();
+  
+  if (session?.user) {
+    // Already logged in
+    await onLoginSuccess(session.user);
+    addLogoutBtn();
+    return;
+  }
+
+  // Listen for auth state changes (e.g. after Google OAuth redirect)
+  SB.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session?.user && !currentUser) {
+      await onLoginSuccess(session.user);
+      addLogoutBtn();
+    }
+  });
+
+  // Show auth screen
+  document.getElementById('auth-screen').style.display = 'flex';
 });
+
 
 </script>
 </body>
