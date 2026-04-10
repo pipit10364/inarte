@@ -54,7 +54,7 @@ ${system || ''}
       systemInstruction: { parts: [{ text: enhancedSystem }] },
       contents,
       generationConfig: {
-        maxOutputTokens: Math.min(max_tokens || 300, 500),
+        maxOutputTokens: Math.min(max_tokens || 400, 800),
         temperature: 0.9,
         topP: 0.95,
       },
