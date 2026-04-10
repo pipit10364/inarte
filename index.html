@@ -1426,7 +1426,7 @@ function addMeal(){
   D.meals.push({name:txt,cal,portion,unit,time:`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`,note:FOOD_DB[txt.toLowerCase()]?.note||''});
   D.totalCal=D.meals.reduce((s,m)=>s+m.cal,0);
   inp.value='';document.getElementById('meal-portion').value='1';
-  renderMeals();saveDay();showNaraMealFeedback(txt,cal,portion,unit,D.totalCal);schedNaraToday();
+  renderMeals();saveDay();showNaraMealFeedbackAI(txt,cal,portion,unit,D.totalCal);schedNaraToday();
   btn.disabled=false;btn.textContent='Catat';
 }
 function deleteMeal(i){D.meals.splice(i,1);D.totalCal=D.meals.reduce((s,m)=>s+m.cal,0);renderMeals();saveDay();}
@@ -1463,6 +1463,25 @@ function showNaraMealFeedback(food,cal,portion,unit,total){
   if(q.includes('mie instan'))parts.push('Pro tip: kurangi bumbu setengah dan tambah sayur beku — lebih bergizi.');
   if(q.includes('es teh')||q.includes('teh manis'))parts.push('Kalau bisa, minta less sugar untuk hemat 40-80 kkal per gelas.');
   txt.innerHTML=parts.map(p=>`<p>${p}</p>`).join('');
+}
+
+// AI-powered meal feedback (called when user logs food)
+async function showNaraMealFeedbackAI(food,cal,portion,unit,total){
+  const el=document.getElementById('nara-meal'),txt=document.getElementById('nara-meal-txt');
+  el.classList.add('on');
+  // Show static first immediately
+  showNaraMealFeedback(food,cal,portion,unit,total);
+  // Then try to get AI response in background
+  const age=P.age?parseInt(P.age):25;
+  const target=age>=60?1600:age<=17?2200:2000;
+  const sys=`Kamu adalah Nara, companion wellness yang hangat. Nama user: ${P.name||'teman'}.
+Berikan feedback singkat (2-3 kalimat) tentang makanan yang baru dicatat user.
+Nada: hangat, tidak menghakimi, seperti teman yang peduli.
+Boleh kasih tip kecil yang relevan kalau ada — tapi tidak wajib.
+JANGAN selalu akhiri dengan saran olahraga.`;
+  const msg=`User baru makan: ${food} (${portion} ${unit}, ~${cal} kkal). Total hari ini: ~${total} kkal dari target ~${target} kkal.`;
+  const reply=await callNara(sys,[{role:'user',content:msg}],250);
+  if(reply){txt.innerHTML=`<p>${reply}</p>`;}
 }
 
 // ═══════════════════════════════
@@ -1535,7 +1554,7 @@ Gaya bicara: sahabat yang tulus dan hangat, bahasa Indonesia natural, sesekali 1
 - Gerak: ${moves} (~${D.totalMoveCal||0} kkal terbakar)
 - Kebiasaan: ${habitDone}/${habitTotal} selesai`;
 
-    let reply=await callNara(sys,[{role:'user',content:summary}],350);
+    let reply=await callNara(sys,[{role:'user',content:summary}],600);
 
     if(!reply){
       // Smart static fallback untuk EOD
@@ -1632,8 +1651,26 @@ async function saveWellness(){
   const el=document.getElementById('nara-w'),txt=document.getElementById('nara-w-txt');
   el.classList.add('on');
   txt.innerHTML='<div class="ld"><span></span><span></span><span></span></div>';
-  const sys=`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE. Nama user: ${P.name||'teman'}, usia ${P.age||'?'} tahun. Gaya bicara: sahabat yang benar-benar mendengarkan, bahasa Indonesia yang hangat, pakai kaomoji (◕ᴗ◕✿) (ꈍᴗꈍ) sesekali, validasi perasaan dulu sebelum apapun, maksimal 4 kalimat.`;
-  let reply=await callNara(sys,[{role:'user',content:`Tidur: ${sleepStart||'-'}-${sleepEnd||'-'}. Perasaan: ${broad}. Emosi: ${emos.join(', ')||'-'}. Kenapa: ${why||'-'}. Catatan: ${journal||'-'}. Hal baik: ${grat||'-'}. Harapan besok: ${hope||'-'}.`}],350);
+  const sleepHrs = (sleepStart&&sleepEnd) ? (()=>{const [sh,sm]=sleepStart.split(':').map(Number),[eh,em]=sleepEnd.split(':').map(Number);return ((eh*60+em-sh*60-sm+1440)%1440/60).toFixed(1);})() : null;
+  const sys=`Kamu adalah Nara, companion wellness ENFP yang hangat dalam INARTE.
+Nama user: ${P.name||'teman'}, usia ${P.age||'?'} tahun, ${P.act||''}, ${P.home||''}.
+Tugas: Tulis respons wellness yang hangat dan personal — seperti surat pendek dari sahabat yang benar-benar baca semua yang diceritakan user.
+Gaya: bahasa Indonesia natural seperti ngobrol, pakai kaomoji sesekali (◕ᴗ◕✿) (ꈍᴗꈍ), jangan kaku atau terasa AI.
+Panjang: 3-5 kalimat yang meaningful — tidak perlu panjang, tapi harus menyentuh semua aspek penting yang user ceritakan.
+Urutan: validasi perasaan dulu → acknowledge hal spesifik yang mereka tulis → tutup dengan sesuatu yang hangat atau semangat untuk besok.
+JANGAN: daftar bullet, header, atau format kaku. Tulis mengalir seperti pesan WhatsApp dari bestie.`;
+  const userReport = [
+    sleepHrs ? \`Tidur \${sleepHrs} jam (\${sleepStart}-\${sleepEnd})\` : 'Tidur: tidak diisi',
+    broad ? \`Perasaan umum: \${broad}\` : '',
+    emos.length ? \`Emosi spesifik: \${emos.join(', ')}\` : '',
+    why ? \`Kenapa merasa begitu: \${why}\` : '',
+    journal ? \`Catatan harian: \${journal}\` : '',
+    grat ? \`Hal baik hari ini: \${grat}\` : '',
+    hope ? \`Harapan untuk besok: \${hope}\` : '',
+    D.totalCal ? \`Makan hari ini: ~\${D.totalCal} kkal\` : '',
+    D.water ? \`Air: \${D.water}/8 gelas\` : '',
+  ].filter(Boolean).join('. ');
+  let reply=await callNara(sys,[{role:'user',content:userReport}],600);
   if(!reply){
     const parts=[];
     if(broad==='Berat')parts.push('Hari yang terasa berat itu valid banget. Terima kasih sudah mau nulis dan tidak menyimpannya sendiri.');
@@ -1898,9 +1935,10 @@ async function sendNara(){
 
   // Profil sebagai context — prinsip Nara sudah di chat.js
   const sys=`Profil user: nama ${P.name||'teman'}, usia ${P.age||'?'} tahun, ${P.act||''}, ${P.home||''}, budget makan ${P.budget||''}.
-Data hari ini: air ${D.water||0}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}, gerak: ${D.moves?.map(m=>m.name).join(', ')||'belum ada'}.`;
+Data hari ini: air ${D.water||0}/8 gelas, mood ${D.mood||'belum diisi'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'belum ada'}, gerak: ${D.moves?.map(m=>m.name).join(', ')||'belum ada'}.
+Gaya chat: natural seperti WhatsApp, boleh 3-6 kalimat kalau topiknya butuh. Tidak harus selalu pendek — kalau user curhat panjang, balas dengan selayaknya. Jangan potong di tengah kalimat.`;
 
-  let reply=await callNara(sys,chatHistory.slice(-10),300);
+  let reply=await callNara(sys,chatHistory.slice(-10),500);
   if(!reply){
     console.warn('Nara API gagal → static fallback');
     reply=buildNaraStaticReply(txt);
@@ -2466,8 +2504,8 @@ async function syncFromSupabase() {
   try {
     const uid = currentUser.id;
     // Load today's daily log
-    const { data: log } = await SB.from('daily_logs').select('*').eq('user_id', uid).eq('date', TODAY).single();
-    if (log) {
+    const { data: log, error: logErr } = await SB.from('daily_logs').select('*').eq('user_id', uid).eq('date', TODAY).maybeSingle();
+    if (log && !logErr) {
       D = {
         water: log.water || 0, mood: log.mood,
         conditions: log.conditions || [], meals: log.meals || [],
@@ -2478,7 +2516,7 @@ async function syncFromSupabase() {
       sv('inarte_day_' + TODAY, D);
     }
     // Load habits template
-    const { data: habits } = await SB.from('habits').select('*').eq('user_id', uid);
+    const { data: habits } = await SB.from('habits').select('*').eq('user_id', uid).order('added_at');
     if (habits?.length) {
       const template = habits.map(h => ({ id: h.habit_id, text: h.text, addedAt: Date.now() }));
       sv('inarte_habits_template', template);
