@@ -36,7 +36,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-#onboarding{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow-y:auto}
+#onboarding{position:fixed;inset:0;background:var(--bg);z-index:1000;display:none;align-items:center;justify-content:center;padding:1.5rem;overflow-y:auto}
 .ob-wrap{background:var(--surface);border-radius:28px;padding:2.75rem 2.25rem;max-width:480px;width:100%;box-shadow:var(--sh-card);border:1px solid var(--border-l)}
 .ob-step{display:none}.ob-step.active{display:block;animation:fadeUp .3s ease}
 .ob-logo{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--moss);letter-spacing:.08em;margin-bottom:4px}
@@ -562,12 +562,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
-<div id="onboarding">
+<div id="onboarding" style="display:none">
 <div class="ob-wrap">
   <div id="ob0" class="ob-step active">
     <div class="ob-logo">IN<span>arte</span></div>
     <div class="ob-tag">perjalananmu, caramu</div>
-    <div class="ob-q">Hei! Siapa namamu? (◕ᴗ◕✿)</div>
+    <div class="ob-q">Hei! Siapa namamu? <span style="font-size:.75em;vertical-align:middle">(◕ᴗ◕✿)</span></div>
     <div class="ob-hint">Nara akan pakai nama ini untuk menyapamu setiap hari.</div>
     <input class="ob-inp" id="ob-name" placeholder="Nama panggilanmu..." maxlength="30" onkeydown="if(event.key==='Enter')obNext()"/>
     <button class="ob-btn" onclick="obNext()">Lanjut →</button>
@@ -642,7 +642,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div></div><span class="ob-step-num">6/6</span></div>
     <div style="text-align:center;padding:.5rem 0">
       <div style="font-size:48px;margin-bottom:1rem">🌿</div>
-      <div class="ob-q" style="text-align:center">Hai, <span id="ob-preview">kamu</span>! (≧▽≦)</div>
+      <div class="ob-q" style="text-align:center">Hai, <span id="ob-preview">kamu</span>! <span style="font-size:.75em;vertical-align:middle">(≧▽≦)</span></div>
       <div style="font-size:13px;color:var(--text2);margin:10px 0 1.5rem;line-height:1.9">Aku <strong>Nara</strong>. Aku akan menemani perjalananmu di sini — tanpa menghakimi, tanpa menggurui. Kita berproses pelan-pelan sama-sama ya ʕ ꈍᥴꈍʔ</div>
       <button class="ob-btn" onclick="doneOb()">Mulai perjalanan →</button>
     </div>
@@ -2582,7 +2582,7 @@ function addLogoutBtn() {
   const btn = document.createElement('button');
   btn.id = 'logout-btn';
   btn.textContent = 'Keluar dari akun';
-  btn.style.cssText = 'width:100%;padding:11px;background:transparent;color:var(--rose);border:1.5px solid var(--rose-l);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;margin-top:8px';
+  btn.style.cssText = 'width:100%;padding:11px;background:transparent;color:var(--rose);border:1.5px solid var(--rose-l);border-radius:var(--rsm);font-family:"DM Sans",sans-serif;font-size:13px;cursor:pointer;margin-top:8px';
   btn.onclick = authLogout;
   panel.appendChild(btn);
 }
@@ -2597,6 +2597,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     continueAsGuest();
     return;
   }
+  // Show auth screen immediately while we check session
+  document.getElementById('auth-screen').style.display = 'flex';
 
   // Listen for auth state changes FIRST — catches OAuth redirect
   SB.auth.onAuthStateChange(async (event, session) => {
