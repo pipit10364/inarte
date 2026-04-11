@@ -2437,51 +2437,96 @@ function continueAsGuest() {
   }
 }
 
+let _loginInProgress = false;
 async function onLoginSuccess(user, nameOverride = null) {
-  if (currentUser?.id === user?.id) return; // prevent double-call
-  currentUser = user;
-  // Hide auth screen and clear URL hash
-  document.getElementById('auth-screen').style.display = 'none';
-  if (window.location.hash.includes('access_token')) {
-    history.replaceState(null, '', window.location.pathname);
-  }
-  
-  // Load profile from Supabase
-  const { data: profile } = await SB.from('profiles').select('*').eq('id', user.id).single();
-  
-  if (profile?.name) {
-    // Existing user — merge Supabase data with localStorage
-    P = {
-      name: profile.name,
-      age: profile.age || '',
-      act: profile.act || '',
-      home: profile.home || '',
-      cook: profile.cook || '',
-      budget: profile.budget || '',
-      goals: profile.goals || [],
-      avatarColor: profile.avatar_color || '#4D6B52',
-    };
-    sv('inarte_profile', P);
-    document.getElementById('onboarding').style.display = 'none';
-    document.getElementById('app').classList.add('on');
-    initApp();
-    syncFromSupabase(); // Load cloud data
-  } else {
-    // New user — set name from auth if available
-    const authName = nameOverride || user.user_metadata?.full_name || user.user_metadata?.name || '';
-    if (authName) {
-      P = { name: authName, avatarColor: '#4D6B52' };
+  // Strict dedup: prevent race condition from onAuthStateChange + getSession firing together
+  if (currentUser?.id === user?.id) return;
+  if (_loginInProgress) return;
+  _loginInProgress = true;
+
+  try {
+    currentUser = user;
+    // Hide auth screen and clear URL hash
+    document.getElementById('auth-screen').style.display = 'none';
+    if (window.location.hash.includes('access_token')) {
+      history.replaceState(null, '', window.location.pathname);
+    }
+
+    // Load profile from Supabase — with timeout fallback
+    let profile = null;
+    try {
+      const result = await Promise.race([
+        SB.from('profiles').select('*').eq('id', user.id).single(),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000))
+      ]);
+      profile = result?.data;
+    } catch(e) {
+      console.warn('Profile fetch failed/timed out, checking localStorage:', e.message);
+      profile = null;
+    }
+
+    // Also check localStorage as fallback
+    const localProfile = ld('inarte_profile');
+
+    if (profile?.name) {
+      // Existing cloud profile
+      P = {
+        name: profile.name,
+        age: profile.age || '',
+        act: profile.act || '',
+        home: profile.home || '',
+        cook: profile.cook || '',
+        budget: profile.budget || '',
+        goals: profile.goals || [],
+        avatarColor: profile.avatar_color || '#4D6B52',
+      };
       sv('inarte_profile', P);
-      // Upsert profile
-      await SB.from('profiles').upsert({ id: user.id, name: authName, avatar_color: '#4D6B52' });
-      document.getElementById('onboarding').style.display = 'none';
-      document.getElementById('app').classList.add('on');
-      initApp();
+      _showApp();
+      syncFromSupabase();
+    } else if (localProfile?.name) {
+      // Fallback: use localStorage profile (e.g. was guest before)
+      P = localProfile;
+      _showApp();
+      syncFromSupabase();
     } else {
-      // Go through onboarding
+      // New user — check metadata from OAuth
+      const authName = nameOverride || user.user_metadata?.full_name || user.user_metadata?.name || '';
+      if (authName) {
+        P = { name: authName, avatarColor: '#4D6B52' };
+        sv('inarte_profile', P);
+        try {
+          await SB.from('profiles').upsert({ id: user.id, name: authName, avatar_color: '#4D6B52' });
+        } catch(e) { console.warn('Profile upsert failed:', e); }
+        _showApp();
+      } else {
+        // No name available — show onboarding
+        document.getElementById('onboarding').style.display = 'flex';
+      }
+    }
+  } catch(e) {
+    console.error('onLoginSuccess error:', e);
+    // Fallback: never leave user on white screen
+    const localProfile = ld('inarte_profile');
+    if (localProfile?.name) {
+      P = localProfile;
+      _showApp();
+    } else {
       document.getElementById('onboarding').style.display = 'flex';
     }
+  } finally {
+    _loginInProgress = false;
   }
+}
+
+function _showApp() {
+  document.getElementById('onboarding').style.display = 'none';
+  const appEl = document.getElementById('app');
+  if (!appEl.classList.contains('on')) {
+    appEl.classList.add('on');
+    initApp();
+  }
+  // Add logout button if logged in (deferred so panel is in DOM)
+  setTimeout(addLogoutBtn, 600);
 }
 
 async function authLogout() {
@@ -2612,6 +2657,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Then check existing session
   // Small delay to let Supabase process hash fragment from OAuth redirect
   await new Promise(r => setTimeout(r, 300));
+
+  // If onAuthStateChange already handled login, don't double-call
+  if (currentUser) return;
+
   const { data: { session } } = await SB.auth.getSession();
 
   if (session?.user) {
@@ -2623,12 +2672,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   // No session — check if hash has OAuth tokens (redirect just happened)
   if (window.location.hash.includes('access_token')) {
     // Supabase is processing OAuth redirect, wait for onAuthStateChange
-    document.getElementById('auth-screen').style.display = 'flex';
+    // auth-screen already shown at top of boot
     return;
   }
 
-  // Show auth screen
-  document.getElementById('auth-screen').style.display = 'flex';
+  // Auth screen already shown at top of DOMContentLoaded, nothing else to do
 });
 
 
