@@ -63,8 +63,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ob-btn{width:100%;padding:13px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:8px}
 .ob-btn:hover{background:linear-gradient(135deg,#2E5038,#1E3828);box-shadow:0 6px 20px rgba(61,97,71,.4);transform:translateY(-1px)}
 .ob-ghost{width:100%;padding:10px;background:transparent;color:var(--text3);border:none;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;margin-top:4px}
-#app{display:none;min-height:100vh;padding-bottom:72px}
-#app.on{display:block}
+#app{display:none;height:100dvh;flex-direction:column;overflow:hidden}
+#app.on{display:flex}
 .topbar{position:sticky;top:0;z-index:100;background:rgba(245,240,235,.95);backdrop-filter:blur(16px) saturate(1.4);padding:.875rem 1.35rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(224,216,204,.6);box-shadow:0 1px 0 rgba(61,97,71,.06)}
 .topbar-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--moss);letter-spacing:.06em}
 .topbar-logo span{font-style:italic;color:var(--clay)}
@@ -76,8 +76,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .bnav-icon{font-size:19px;line-height:1}
 .bnav-label{font-size:10px;font-weight:500;color:var(--text3);font-family:'DM Sans',sans-serif}
 .bnav-btn.active .bnav-label{color:var(--moss);font-weight:600}
-.page{display:none;max-width:680px;margin:0 auto;padding:1.5rem 1.25rem}
-.page.active{display:block;animation:fadeUp .3s ease}
+.page{display:none;flex:1;flex-direction:column;overflow:hidden;padding:0}.page:not(#pg-today){overflow-y:auto;padding:1.25rem 1.25rem 80px;max-width:680px;margin:0 auto}
+.page.active{display:flex;flex-direction:column;animation:fadeUp .25s ease}
 .pg-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:400;color:var(--text);margin-bottom:4px;line-height:1.3}
 .pg-title em{font-style:italic;color:var(--moss)}
 .pg-sub{font-size:13px;color:var(--text2);margin-bottom:1.5rem;line-height:1.7}
@@ -482,36 +482,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 @media(max-width:480px){.ob-wrap{padding:2rem 1.5rem}.nara-chat{width:calc(100vw - 32px);right:16px}.p-panel{width:100%}}
 
 
-/* ═══ HERO CARD ═══ */
-.hero-card{background:linear-gradient(145deg,#2A4A34 0%,#3D6147 40%,#4E7A5A 75%,#2A4434 100%);border-radius:24px;padding:1.5rem 1.5rem 1.25rem;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 16px 48px rgba(26,22,16,.2),0 4px 12px rgba(26,22,16,.1)}
-.hero-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 70%)}
-.hero-card::after{content:'';position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(168,216,176,.06) 0%,transparent 70%)}
-.hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem}
-.hero-left{flex:1;min-width:0}
-.hero-time{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:5px}
-.hero-name{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500;color:#fff;line-height:1.2;margin-bottom:6px}
-.hero-wave{font-style:normal;display:inline-block;animation:wave 2.5s ease-in-out infinite;transform-origin:70% 70%}
-@keyframes wave{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-15deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}}
-.hero-msg{font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.65;max-width:200px}
-.hero-ring-wrap{position:relative;width:72px;height:72px;flex-shrink:0;margin-left:12px}
-.hero-ring{width:72px;height:72px}
-.hero-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;font-family:'DM Sans',sans-serif}
-.hero-stats{display:flex;align-items:center;background:rgba(255,255,255,.08);border-radius:14px;padding:10px 14px;gap:0;margin-bottom:12px;backdrop-filter:blur(4px)}
-.hero-stat{flex:1;text-align:center}
-.hero-stat-val{display:block;font-size:18px;font-weight:700;color:#fff;font-family:'DM Sans',sans-serif;line-height:1.1}
-.hero-stat-lbl{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px;display:block;white-space:nowrap}
-.hero-stat-div{width:1px;height:32px;background:rgba(255,255,255,.15);flex-shrink:0}
-.hero-nara{display:flex;align-items:center;gap:8px}
-.hero-nara .greet-nara-msg{font-size:12px;color:rgba(255,255,255,.6);font-style:italic;flex:1}
+/* hero-card CSS moved to dashboard section */
 
-/* ═══ CONFETTI ═══ */
-.confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
-.confetti-piece{position:absolute;top:-10px;width:8px;height:8px;border-radius:2px;animation:confetti-fall linear forwards}
-@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
-/* ═══ TOAST CELEBRATION ═══ */
-.nara-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border-l);border-radius:50px;padding:10px 20px;font-size:13px;color:var(--text2);box-shadow:0 8px 28px rgba(26,22,16,.15);white-space:nowrap;z-index:500;opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:90vw;text-align:center}
-.nara-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* confetti/toast CSS moved to dashboard section */
 
 /* ═══ HABIT CHECK ANIMATION ═══ */
 .habit-item .habit-check{transition:all .25s cubic-bezier(.34,1.56,.64,1)}
@@ -562,6 +535,134 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .glass{border-radius:10px;box-shadow:var(--shsm)}
 .glass.full{border-color:var(--sky);box-shadow:0 2px 8px rgba(46,95,122,.2)}
 .nc-float{box-shadow:0 8px 28px rgba(26,22,16,.18),0 4px 10px rgba(26,22,16,.12) !important}
+
+/* ═══ LAYOUT: NO-SCROLL DASHBOARD ═══ */
+#app{display:none;height:100dvh;display:none;flex-direction:column;overflow:hidden}
+#app.on{display:flex}
+.page{display:none;flex:1;overflow:hidden;flex-direction:column;padding:0}
+.page.active{display:flex;animation:fadeUp .25s ease}
+#pg-today{overflow:hidden;padding:0}
+
+/* ═══ TODAY PAGE LAYOUT ═══ */
+.today-scroll{flex:1;overflow-y:auto;padding:1rem 1rem 80px;-webkit-overflow-scrolling:touch}
+/* On larger screens, prevent scroll */
+@media(min-height:700px){
+  .today-scroll{overflow:hidden;padding-bottom:1rem}
+}
+
+/* ═══ HERO CARD ═══ */
+.hero-card{background:linear-gradient(145deg,#2A4A34 0%,#3D6147 40%,#4E7A5A 75%,#2A4434 100%);border-radius:20px;padding:1.25rem 1.35rem 1.1rem;margin-bottom:10px;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(26,22,16,.18),0 4px 10px rgba(26,22,16,.1);flex-shrink:0}
+.hero-card::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 70%)}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem}
+.hero-left{flex:1;min-width:0}
+.hero-time{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:#fff;line-height:1.2;margin-bottom:4px}
+.hero-wave{font-style:normal;display:inline-block;animation:wave 2.5s ease-in-out infinite;transform-origin:70% 70%}
+@keyframes wave{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-15deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}}
+.hero-msg{font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;max-width:190px}
+.hero-ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0;margin-left:10px}
+.hero-ring{width:64px;height:64px}
+.hero-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.hero-stats{display:flex;align-items:center;background:rgba(255,255,255,.08);border-radius:12px;padding:8px 10px;gap:0;margin-bottom:10px}
+.hero-stat{flex:1;text-align:center}
+.hero-stat-val{display:block;font-size:16px;font-weight:700;color:#fff;line-height:1.1}
+.hero-stat-lbl{font-size:9px;color:rgba(255,255,255,.5);margin-top:1px;display:block;white-space:nowrap}
+.hero-stat-div{width:1px;height:28px;background:rgba(255,255,255,.15);flex-shrink:0}
+.hero-nara{display:flex;align-items:center;gap:8px}
+.hero-nara .greet-nara-msg{font-size:11.5px;color:rgba(255,255,255,.58);font-style:italic}
+
+/* ═══ DASHBOARD GRID ═══ */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto;gap:8px;flex-shrink:0}
+.dash-card{background:var(--surface);border:1px solid var(--border-l);border-radius:16px;cursor:pointer;transition:all .18s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--shsm);position:relative;overflow:hidden;min-height:0}
+.dash-card:active{transform:scale(.97);box-shadow:none}
+.dash-card--wide{grid-column:span 3}
+.dash-card-inner{padding:11px 12px}
+.dash-card-head{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.dash-card-icon{font-size:15px;line-height:1}
+.dash-card-title{font-size:11px;font-weight:600;color:var(--text2);flex:1;letter-spacing:.01em}
+.dash-card-badge{font-size:10px;font-weight:700;color:var(--moss);background:var(--moss-p);border-radius:10px;padding:2px 7px;white-space:nowrap}
+.dash-empty-hint{font-size:11px;color:var(--text4);font-style:italic}
+
+/* Habits mini */
+.dash-habit-mini{display:flex;flex-wrap:wrap;gap:4px;min-height:20px;margin-bottom:6px}
+.dash-habit-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .2s}
+.dash-habit-dot.done{background:var(--moss)}
+.dash-progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:4px}
+.dash-progress-fill{height:100%;background:linear-gradient(90deg,var(--moss),#5A9A6A);border-radius:2px;transition:width .4s ease}
+
+/* Mood display */
+.dash-mood-display{text-align:center;padding:4px 0}
+.dash-mood-em{font-size:28px;display:block;line-height:1.2}
+.dash-mood-lbl{font-size:10px;color:var(--text3);margin-top:2px;display:block}
+
+/* Water display */
+.dash-water-display{display:flex;align-items:baseline;gap:3px;margin-bottom:5px}
+.dash-water-num{font-size:28px;font-weight:700;color:var(--sky);font-family:'DM Sans',sans-serif;line-height:1}
+.dash-water-lbl{font-size:10px;color:var(--text4)}
+.dash-water-dots{display:flex;gap:3px;flex-wrap:wrap}
+.dash-water-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .2s}
+.dash-water-dot.full{background:var(--sky)}
+
+/* Meal mini */
+.dash-meal-mini{font-size:11px;color:var(--text3);min-height:20px}
+.dash-meal-item{display:flex;justify-content:space-between;margin-bottom:2px}
+.dash-meal-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text2)}
+.dash-meal-cal{color:var(--amber);font-weight:600;margin-left:4px;white-space:nowrap}
+
+/* Move mini */
+.dash-move-mini{font-size:11px;color:var(--text3);min-height:20px}
+
+/* Cond mini */
+.dash-cond-mini{font-size:11px;min-height:20px;display:flex;flex-wrap:wrap;gap:4px}
+.dash-cond-tag{background:var(--rose-p);color:var(--rose);border-radius:10px;padding:2px 8px;font-size:10px;font-weight:500}
+
+/* Menu strip */
+.dash-menu-strip{background:linear-gradient(135deg,var(--moss-p),var(--amber-p));border:1px solid var(--moss-l);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .18s;flex-shrink:0;margin-top:8px}
+.dash-menu-strip:active{transform:scale(.98)}
+.dash-menu-icon{font-size:18px}
+.dash-menu-txt{font-size:12px;font-weight:500;color:var(--moss);flex:1}
+
+/* ═══ TODAY WRAPPER ═══ */
+.today-wrap{display:flex;flex-direction:column;gap:0;padding:1rem 1rem 0;height:100%;box-sizing:border-box;overflow:hidden}
+
+/* ═══ BOTTOM SHEET ═══ */
+.sheet-overlay{position:fixed;inset:0;background:rgba(26,22,16,.45);z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(2px)}
+.sheet-overlay.on{opacity:1;pointer-events:auto}
+.bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:24px 24px 0 0;z-index:900;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);max-height:88dvh;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(26,22,16,.18)}
+.bottom-sheet.open{transform:translateY(0)}
+.sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.sheet-head{display:flex;align-items:center;padding:12px 16px 10px;border-bottom:1px solid var(--border-l);flex-shrink:0;gap:8px}
+.sheet-title{font-size:14px;font-weight:600;color:var(--text);flex:1}
+.sheet-subtitle{font-size:12px;color:var(--amber);font-weight:600}
+.sheet-close{background:var(--bg2);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:12px;color:var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sheet-body{flex:1;overflow-y:auto;padding:14px 16px 32px;-webkit-overflow-scrolling:touch}
+
+/* ═══ RESPONSIVE: LAPTOP / TABLET ═══ */
+@media(min-width:640px){
+  .today-wrap{max-width:600px;margin:0 auto;padding:1.25rem 1.5rem 0}
+  .dash-grid{gap:10px}
+  .dash-card-inner{padding:14px 15px}
+  .bottom-sheet{left:50%;right:auto;width:540px;transform:translateX(-50%) translateY(100%);border-radius:24px 24px 0 0}
+  .bottom-sheet.open{transform:translateX(-50%) translateY(0)}
+  .sheet-overlay{backdrop-filter:blur(4px)}
+  .hero-name{font-size:1.6rem}
+  .hero-stat-val{font-size:18px}
+}
+@media(min-width:900px){
+  .today-wrap{max-width:680px}
+  .dash-grid{grid-template-columns:repeat(6,1fr)}
+  .dash-card--wide{grid-column:span 6}
+}
+
+/* ═══ CONFETTI ═══ */
+.confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti-piece{position:absolute;top:-10px;width:8px;height:8px;border-radius:2px;animation:confetti-fall linear forwards}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* ═══ TOAST ═══ */
+.nara-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border-l);border-radius:50px;padding:10px 20px;font-size:13px;color:var(--text2);box-shadow:0 8px 28px rgba(26,22,16,.15);white-space:nowrap;z-index:1000;opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:90vw;text-align:center}
+.nara-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -720,7 +821,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 
   <div class="page active" id="pg-today">
+    <div class="today-wrap">
     <div id="pwa-banner-wrap"></div>
+
     <!-- HERO CARD -->
     <div class="hero-card" id="hero-card">
       <div class="hero-top">
@@ -742,105 +845,125 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="hero-stats">
         <div class="hero-stat">
           <span class="hero-stat-val" id="hs-streak">0</span>
-          <span class="hero-stat-lbl">🔥 hari streak</span>
+          <span class="hero-stat-lbl">🔥 streak</span>
         </div>
         <div class="hero-stat-div"></div>
         <div class="hero-stat">
           <span class="hero-stat-val" id="hs-water">0/8</span>
-          <span class="hero-stat-lbl">💧 gelas air</span>
+          <span class="hero-stat-lbl">💧 air</span>
         </div>
         <div class="hero-stat-div"></div>
         <div class="hero-stat">
-          <span class="hero-stat-val" id="hs-habits">0/0</span>
-          <span class="hero-stat-lbl">✅ kebiasaan</span>
+          <span class="hero-stat-val" id="hs-habits">—</span>
+          <span class="hero-stat-lbl">✅ habits</span>
+        </div>
+        <div class="hero-stat-div"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-val" id="hs-mood">—</span>
+          <span class="hero-stat-lbl">🌤 mood</span>
         </div>
       </div>
       <div class="hero-nara">
         <div class="nara-pulse"></div>
-        <div class="greet-nara-msg" id="g-nara">Nara ada di sini untukmu.</div>
+        <div class="greet-nara-msg" id="g-nara">Nara ada di sini.</div>
       </div>
     </div>
-    <div class="tc">
-      <div class="tc-head"><span class="tc-icon">🌀</span><span class="tc-title">Kebiasaan hari ini</span><span class="tc-status" id="habit-status">0/0</span></div>
-      <div class="habit-section-lbl">Tambah dari tema</div>
-      <div class="habit-theme-row" id="habit-theme-row"></div>
-      <div class="habit-suggestions" id="habit-suggestions"><div class="habit-sug-head" id="habit-sug-head">Pilih kebiasaan</div><div class="habit-sug-grid" id="habit-sug-grid"></div></div>
-      <ul class="habit-list" id="habit-list"></ul>
-      <div class="habit-progress-bar"><div class="habit-progress-fill" id="habit-prog-fill" style="width:0%"></div></div>
-      <div class="habit-progress-txt" id="habit-prog-txt"></div>
-      <div class="habit-add-row">
-        <input class="habit-add-inp" id="habit-add-inp" placeholder="Atau tulis kebiasaanmu sendiri..." maxlength="80" onkeydown="if(event.key==='Enter')addHabit()"/>
-        <button class="habit-add-btn" onclick="addHabit()">+ Tambah</button>
+
+    <!-- DASHBOARD GRID -->
+    <div class="dash-grid">
+      <!-- Habits card -->
+      <div class="dash-card dash-card--wide" onclick="openSheet('habits')">
+        <div class="dash-card-inner">
+          <div class="dash-card-head">
+            <span class="dash-card-icon">🌀</span>
+            <span class="dash-card-title">Kebiasaan</span>
+            <span class="dash-card-badge" id="dc-habit-badge">0/0</span>
+          </div>
+          <div class="dash-habit-mini" id="dc-habit-mini">
+            <div class="dash-empty-hint">Tap untuk mulai</div>
+          </div>
+          <div class="dash-progress-bar"><div class="dash-progress-fill" id="dc-habit-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <!-- Mood card -->
+      <div class="dash-card" onclick="openSheet('mood')">
+        <div class="dash-card-inner">
+          <div class="dash-card-head">
+            <span class="dash-card-icon">🌤</span>
+            <span class="dash-card-title">Mood</span>
+          </div>
+          <div class="dash-mood-display" id="dc-mood-display">
+            <span class="dash-mood-em" id="dc-mood-em">—</span>
+            <span class="dash-mood-lbl" id="dc-mood-lbl">Belum diisi</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water card -->
+      <div class="dash-card" onclick="openSheet('water')">
+        <div class="dash-card-inner">
+          <div class="dash-card-head">
+            <span class="dash-card-icon">💧</span>
+            <span class="dash-card-title">Air</span>
+          </div>
+          <div class="dash-water-display">
+            <span class="dash-water-num" id="dc-water-num">0</span>
+            <span class="dash-water-lbl">/ 8 gelas</span>
+          </div>
+          <div class="dash-water-dots" id="dc-water-dots"></div>
+        </div>
+      </div>
+
+      <!-- Meals card -->
+      <div class="dash-card" onclick="openSheet('meals')">
+        <div class="dash-card-inner">
+          <div class="dash-card-head">
+            <span class="dash-card-icon">🍽</span>
+            <span class="dash-card-title">Makan</span>
+            <span class="dash-card-badge" id="dc-cal-badge">0 kkal</span>
+          </div>
+          <div class="dash-meal-mini" id="dc-meal-mini">
+            <div class="dash-empty-hint">Tap untuk catat</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Move card -->
+      <div class="dash-card" onclick="openSheet('move')">
+        <div class="dash-card-inner">
+          <div class="dash-card-head">
+            <span class="dash-card-icon">🏃</span>
+            <span class="dash-card-title">Gerak</span>
+            <span class="dash-card-badge" id="dc-move-badge">0 kkal</span>
+          </div>
+          <div class="dash-move-mini" id="dc-move-mini">
+            <div class="dash-empty-hint">Tap untuk catat</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Condition card -->
+      <div class="dash-card" onclick="openSheet('cond')">
+        <div class="dash-card-inner">
+          <div class="dash-card-head">
+            <span class="dash-card-icon">🩺</span>
+            <span class="dash-card-title">Kondisi</span>
+          </div>
+          <div class="dash-cond-mini" id="dc-cond-mini">
+            <span class="dash-empty-hint">Tap untuk isi</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="menu-suggest"><div class="menu-suggest-head">🍴 Rekomendasi menu hari ini</div><div class="menu-day-grid" id="menu-grid"></div></div>
-    <div class="tc">
-      <div class="tc-head"><span class="tc-icon">🩺</span><span class="tc-title">Kondisi hari ini</span></div>
-      <div class="cond-row">
-        <button class="cond-btn" onclick="togCond(this,'haid')" id="cd-haid">🩸 Haid</button>
-        <button class="cond-btn" onclick="togCond(this,'hamil')" id="cd-hamil">🤰 Hamil</button>
-        <button class="cond-btn" onclick="togCond(this,'menyusui')" id="cd-menyusui">🤱 Menyusui</button>
-        <button class="cond-btn" onclick="togCond(this,'sakit')" id="cd-sakit">🤒 Kurang sehat</button>
-      </div>
+
+    <!-- Menu suggest strip -->
+    <div class="dash-menu-strip" onclick="openSheet('menu')">
+      <span class="dash-menu-icon">🍴</span>
+      <span class="dash-menu-txt" id="dc-menu-txt">Lihat rekomendasi menu hari ini →</span>
     </div>
-    <div class="tc">
-      <div class="tc-head"><span class="tc-icon">💧</span><span class="tc-title">Air minum</span><span class="tc-status" id="w-status">0 dari 8 gelas</span></div>
-      <div class="glasses" id="glasses"></div>
-      <div class="water-msg" id="w-msg">Tap satu-satu setiap kali minum segelas ya!</div>
-    </div>
-    <div class="tc">
-      <div class="tc-head"><span class="tc-icon">🌤</span><span class="tc-title">Mood sekarang</span></div>
-      <div class="mood-row">
-        <button class="mood-btn" onclick="setMood(this,'senang')"><span class="mood-em">😊</span><span class="mood-lbl">Senang</span></button>
-        <button class="mood-btn" onclick="setMood(this,'netral')"><span class="mood-em">😐</span><span class="mood-lbl">Biasa</span></button>
-        <button class="mood-btn" onclick="setMood(this,'lelah')"><span class="mood-em">😮‍💨</span><span class="mood-lbl">Lelah</span></button>
-        <button class="mood-btn" onclick="setMood(this,'berat')"><span class="mood-em">😔</span><span class="mood-lbl">Berat</span></button>
-        <button class="mood-btn" onclick="setMood(this,'semangat')"><span class="mood-em">🔥</span><span class="mood-lbl">Semangat</span></button>
-      </div>
-    </div>
-    <div class="tc">
-      <div class="tc-head"><span class="tc-icon">🍽</span><span class="tc-title">Makan hari ini</span><span class="tc-status" id="cal-status">0 kkal</span></div>
-      <ul class="meal-list" id="meal-list"></ul>
-      <div class="meal-inp-row">
-        <input class="meal-inp" id="meal-inp" placeholder="Contoh: nasi goreng, telur dadar..." onkeydown="if(event.key==='Enter')addMeal()"/>
-        <button class="add-btn" id="add-btn" onclick="addMeal()">Catat</button>
-      </div>
-      <div class="meal-portion-row">
-        <span class="meal-portion-lbl">Porsi:</span>
-        <input class="meal-portion-inp" id="meal-portion" type="number" value="1" min="0.5" max="20" step="0.5"/>
-        <select class="meal-unit-sel" id="meal-unit"><option>porsi</option><option>piring</option><option>mangkok</option><option>potong</option><option>butir</option><option>gelas</option><option>bungkus</option></select>
-      </div>
-      <div class="food-sug-wrap" id="food-sug-wrap"></div>
-      <div class="cal-bar" id="cal-bar" style="display:none"><span class="cal-bar-lbl">Total estimasi hari ini</span><span class="cal-bar-num" id="cal-bar-num">0 kkal</span></div>
-      <div class="cal-breakdown" id="cal-breakdown"></div>
-      <div class="nara-reply" id="nara-meal"><div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div><div class="nara-rbody" id="nara-meal-txt"></div></div>
-    </div>
-    <div class="tc">
-      <div class="tc-head"><span class="tc-icon">🏃</span><span class="tc-title">Gerak hari ini</span><span class="tc-status" id="move-cal-status"></span></div>
-      <div class="move-grid">
-        <button class="move-btn" onclick="quickMove('Jalan kaki',200,'🚶',30)"><span class="move-icon">🚶</span><span class="move-lbl">Jalan kaki</span><span class="move-cal-lbl">~200 kkal/jam</span></button>
-        <button class="move-btn" onclick="quickMove('Jogging',400,'🏃',30)"><span class="move-icon">🏃</span><span class="move-lbl">Jogging</span><span class="move-cal-lbl">~400 kkal/jam</span></button>
-        <button class="move-btn" onclick="quickMove('Gym',350,'💪',45)"><span class="move-icon">💪</span><span class="move-lbl">Gym</span><span class="move-cal-lbl">~350 kkal/jam</span></button>
-        <button class="move-btn" onclick="quickMove('Bersepeda',300,'🚴',30)"><span class="move-icon">🚴</span><span class="move-lbl">Bersepeda</span><span class="move-cal-lbl">~300 kkal/jam</span></button>
-        <button class="move-btn" onclick="quickMove('Renang',450,'🏊',30)"><span class="move-icon">🏊</span><span class="move-lbl">Renang</span><span class="move-cal-lbl">~450 kkal/jam</span></button>
-        <button class="move-btn" onclick="quickMove('Yoga',180,'🧘',30)"><span class="move-icon">🧘</span><span class="move-lbl">Yoga</span><span class="move-cal-lbl">~180 kkal/jam</span></button>
-      </div>
-      <div class="move-custom-row">
-        <input class="move-custom-inp" id="move-custom-name" placeholder="Olahraga lain... (futsal, badminton, dll)"/>
-        <input class="move-dur-inp" id="move-custom-dur" type="number" placeholder="30" min="5" max="300"/>
-        <span class="move-dur-lbl">mnt</span>
-        <button class="move-add-btn" onclick="addCustomMove()">+ Tambah</button>
-      </div>
-      <ul class="move-list" id="move-list"></ul>
-      <div class="move-summary" id="move-summary"></div>
-    </div>
-    <div class="nara-reply" id="nara-today"><div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div><div class="nara-rbody" id="nara-today-txt"></div></div>
-    <div class="nara-eod-wrap" id="nara-eod-wrap">
-      <button class="nara-eod-btn" onclick="askNaraEOD()" id="nara-eod-btn">
-        <span class="nara-eod-icon">🌿</span><span>Minta catatan penutup hari dari Nara</span>
-      </button>
-    </div>
-    <div class="nara-reply" id="nara-eod"><div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara — Penutup Hari</span></div><div class="nara-rbody" id="nara-eod-txt"></div></div>
+
+      </div><!-- end today-wrap -->
   </div>
 
   <div class="page" id="pg-wellness">
@@ -1239,8 +1362,7 @@ function initApp(){
   document.getElementById('nara-float').style.display='block';
   initNaraChat();
   initPWA();
-  // Hero ring
-  setTimeout(updateHeroRing, 100);
+  setTimeout(()=>{updateHeroRing();if(typeof updateDashCards==='function')updateDashCards();},120);
 }
 
 function loadDay(){
@@ -1256,6 +1378,7 @@ function saveDay(){
   const logs=ld('inarte_logs')||{};
   logs[TODAY]={logged:true,water:D.water,mood:D.mood,meals:D.meals.length,move:D.moves.length,mealCal:D.totalCal,moveCal:D.totalMoveCal};
   sv('inarte_logs',logs);
+  if(typeof updateDashCards==='function')setTimeout(updateDashCards,0);
 }
 
 // ═══════════════════════════════
@@ -1412,7 +1535,8 @@ function calcHabitStreak(id){
 
 function toggleHabitDone(id,li){
   if(!D.habits)D.habits=[];
-  if(D.habits.includes(id)){D.habits=D.habits.filter(x=>x!==id);li.classList.remove('done');}
+  const wasDone=D.habits.includes(id);
+  if(wasDone){D.habits=D.habits.filter(x=>x!==id);li.classList.remove('done');}
   else{D.habits.push(id);li.classList.add('done');}
   const logKey=`inarte_habitlog_${TODAY}`;
   const log=ld(logKey)||{};
@@ -1420,7 +1544,19 @@ function toggleHabitDone(id,li){
   sv(logKey,log);
   saveDay();
   const t=loadHabitTemplate();
-  updateHabitProgress(t.filter(h=>D.habits.includes(h.id)).length,t.length);
+  const done=t.filter(h=>D.habits.includes(h.id)).length;
+  updateHabitProgress(done,t.length);
+  updateHeroRing();
+  if(!wasDone){
+    if(done===t.length&&t.length>0){
+      fireConfetti();
+      const m=['🎉 SEMUA KEBIASAAN SELESAI! Luar biasa!','🏆 Perfect day! Kamu keren banget!','🌟 100%! Nara bangga sama kamu!'];
+      setTimeout(()=>showToast(m[Math.floor(Math.random()*m.length)],4000),200);
+    } else {
+      const m=['✅ Satu kebiasaan terceklis!','🌱 Pelan-pelan tapi pasti~','💪 Keren banget! Lanjut!','⭐ Progress is progress!','🎯 Satu langkah lebih dekat!'];
+      showToast(m[Math.floor(Math.random()*m.length)]);
+    }
+  }
 }
 
 function updateHabitProgress(done,total){
@@ -1494,7 +1630,16 @@ function buildGlasses(){
   }
   updWater();
 }
-function togGlass(i){D.water=i<D.water?i:i+1;buildGlasses();saveDay();schedNaraToday();}
+function togGlass(i){
+  const prev=D.water||0;
+  D.water=i<D.water?i:i+1;
+  buildGlasses();saveDay();schedNaraToday();
+  updateHeroRing();
+  if(D.water>prev){
+    if(D.water===8){fireConfetti();showToast('💧 Target air tercapai! Tubuhmu happy banget! (≧▽≦)',4000);}
+    else{const m=['💧 Satu gelas tercatat!','🌊 Tubuhmu berterima kasih!','💙 Hidrasi itu self-care loh~','✨ Bagus! Terus minum ya!'];showToast(m[Math.floor(Math.random()*m.length)]);}
+  }
+}
 function updWater(){
   const w=D.water||0;
   document.getElementById('w-status').textContent=`${w} dari 8 gelas`;
@@ -1502,7 +1647,13 @@ function updWater(){
   document.getElementById('w-msg').textContent=m[Math.min(w,8)];
   const hsW=document.getElementById('hs-water');if(hsW)hsW.textContent=`${w}/8`;
 }
-function setMood(btn,mood){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');D.mood=mood;saveDay();schedNaraToday();}
+function setMood(btn,mood){
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');D.mood=mood;saveDay();schedNaraToday();
+  updateHeroRing();
+  const msgs={senang:'😊 Mood senang tercatat! Semoga terus bertahan ya~',netral:'😐 Mood biasa aja juga valid! Kamu tetap keren.',lelah:'😮‍💨 Hari melelahkan ya. Istirahat yang cukup.',berat:'😔 Nara di sini. Kamu tidak sendirian.',semangat:'🔥 Semangat banget! Salurkan energinya ya!'};
+  showToast(msgs[mood]||'✨ Mood tercatat!',3500);
+}
 function togCond(btn,c){
   btn.classList.toggle('on');
   if(!D.conditions)D.conditions=[];
@@ -1562,7 +1713,7 @@ function addMeal(){
   D.meals.push({name:txt,cal,portion,unit,time:`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`,note:FOOD_DB[txt.toLowerCase()]?.note||''});
   D.totalCal=D.meals.reduce((s,m)=>s+m.cal,0);
   inp.value='';document.getElementById('meal-portion').value='1';
-  renderMeals();saveDay();showNaraMealFeedbackAI(txt,cal,portion,unit,D.totalCal);schedNaraToday();
+  renderMeals();saveDay();showNaraMealFeedbackAI(txt,cal,portion,unit,D.totalCal);schedNaraToday();updateHeroRing();
   btn.disabled=false;btn.textContent='Catat';
 }
 function deleteMeal(i){D.meals.splice(i,1);D.totalCal=D.meals.reduce((s,m)=>s+m.cal,0);renderMeals();saveDay();}
@@ -2440,8 +2591,7 @@ function restoreToday(){
   if(D.meals?.length)renderMeals();
   if(D.moves?.length)renderMoves();
   if(D.conditions?.length)D.conditions.forEach(c=>{const btn=document.getElementById('cd-'+c);if(btn)btn.classList.add('on');});
-  // Update hero ring with restored data
-  setTimeout(updateHeroRing, 50);
+  setTimeout(()=>{updateHeroRing();if(typeof updateDashCards==='function')updateDashCards();},80);
 }
 
 // ═══════════════════════════════
@@ -2905,65 +3055,311 @@ const ALLHABITS_TOASTS = [
   '🌟 100%! Nara bangga sama kamu!',
 ];
 
-// Override toggleHabitDone to add microfeedback
-const _origToggleHabit = toggleHabitDone;
-function toggleHabitDone(id, li) {
-  const wasDone = (D.habits||[]).includes(id);
-  _origToggleHabit(id, li);
-  updateHeroRing();
-  
-  if (!wasDone) { // just checked
-    const t = loadHabitTemplate();
-    const done = t.filter(h => (D.habits||[]).includes(h.id)).length;
-    
-    if (done === t.length && t.length > 0) {
-      // ALL DONE — big celebration!
-      fireConfetti();
-      setTimeout(() => showToast(ALLHABITS_TOASTS[Math.floor(Math.random()*ALLHABITS_TOASTS.length)], 4000), 200);
+// Microfeedback integrated directly into original functions above
+
+
+// ═══════════════════════════════
+// BOTTOM SHEET SYSTEM
+// ═══════════════════════════════
+let _currentSheet = null;
+
+function openSheet(id) {
+  closeSheet(true);
+  const sheet = document.getElementById('sheet-' + id);
+  const overlay = document.getElementById('sheet-overlay');
+  if (!sheet) return;
+  overlay.classList.add('on');
+  requestAnimationFrame(() => {
+    sheet.classList.add('open');
+    _currentSheet = id;
+  });
+  // Special inits per sheet
+  if (id === 'move') buildMoveGridSheet();
+  if (id === 'menu') buildMenuSuggest();
+  if (id === 'cond') buildCondSheet();
+}
+
+function closeSheet(immediate) {
+  const overlay = document.getElementById('sheet-overlay');
+  document.querySelectorAll('.bottom-sheet.open').forEach(s => s.classList.remove('open'));
+  overlay.classList.remove('on');
+  _currentSheet = null;
+}
+
+// ═══ DASHBOARD MINI UPDATES ═══
+function updateDashCards() {
+  // Habits
+  const template = loadHabitTemplate();
+  const done = template.filter(h => (D.habits||[]).includes(h.id)).length;
+  const total = template.length;
+  const badge = document.getElementById('dc-habit-badge');
+  if (badge) badge.textContent = total > 0 ? done + '/' + total : '0/0';
+  const miniEl = document.getElementById('dc-habit-mini');
+  if (miniEl) {
+    if (total === 0) {
+      miniEl.innerHTML = '<div class="dash-empty-hint">Tap untuk mulai</div>';
     } else {
-      showToast(HABIT_TOASTS[Math.floor(Math.random()*HABIT_TOASTS.length)]);
+      miniEl.innerHTML = template.map(h =>
+        `<div class="dash-habit-dot${(D.habits||[]).includes(h.id)?' done':''}"></div>`
+      ).join('');
     }
+  }
+  const bar = document.getElementById('dc-habit-bar');
+  if (bar) bar.style.width = (total > 0 ? done/total*100 : 0) + '%';
+
+  // Mood
+  const moodEm = {senang:'😊',netral:'😐',lelah:'😮‍💨',berat:'😔',semangat:'🔥'};
+  const moodLbl = {senang:'Senang',netral:'Biasa aja',lelah:'Lelah',berat:'Berat',semangat:'Semangat'};
+  const moodEmEl = document.getElementById('dc-mood-em');
+  const moodLblEl = document.getElementById('dc-mood-lbl');
+  const hsMood = document.getElementById('hs-mood');
+  if (D.mood) {
+    if (moodEmEl) moodEmEl.textContent = moodEm[D.mood] || '—';
+    if (moodLblEl) moodLblEl.textContent = moodLbl[D.mood] || D.mood;
+    if (hsMood) hsMood.textContent = moodEm[D.mood] || '—';
+  } else {
+    if (moodEmEl) moodEmEl.textContent = '—';
+    if (moodLblEl) moodLblEl.textContent = 'Belum diisi';
+    if (hsMood) hsMood.textContent = '—';
+  }
+
+  // Water
+  const w = D.water || 0;
+  const wNum = document.getElementById('dc-water-num');
+  if (wNum) wNum.textContent = w;
+  const wDots = document.getElementById('dc-water-dots');
+  if (wDots) {
+    wDots.innerHTML = Array.from({length:8}, (_,i) =>
+      `<div class="dash-water-dot${i < w ? ' full' : ''}"></div>`
+    ).join('');
+  }
+
+  // Meals
+  const calBadge = document.getElementById('dc-cal-badge');
+  if (calBadge) calBadge.textContent = (D.totalCal || 0) + ' kkal';
+  const mealMini = document.getElementById('dc-meal-mini');
+  if (mealMini) {
+    const meals = D.meals || [];
+    if (meals.length === 0) {
+      mealMini.innerHTML = '<div class="dash-empty-hint">Tap untuk catat</div>';
+    } else {
+      mealMini.innerHTML = meals.slice(-3).map(m =>
+        `<div class="dash-meal-item"><span class="dash-meal-name">${m.name}</span><span class="dash-meal-cal">${m.cal}k</span></div>`
+      ).join('');
+    }
+  }
+
+  // Move
+  const moveBadge = document.getElementById('dc-move-badge');
+  const moveBadge2 = document.getElementById('dc-move-badge-2');
+  const moveCal = D.totalMoveCal || 0;
+  if (moveBadge) moveBadge.textContent = moveCal + ' kkal';
+  if (moveBadge2) moveBadge2.textContent = moveCal + ' kkal';
+  const moveMini = document.getElementById('dc-move-mini');
+  if (moveMini) {
+    const moves = D.moves || [];
+    if (moves.length === 0) {
+      moveMini.innerHTML = '<div class="dash-empty-hint">Tap untuk catat</div>';
+    } else {
+      moveMini.innerHTML = moves.slice(-2).map(m =>
+        `<div class="dash-meal-item"><span class="dash-meal-name">${m.icon||'🏃'} ${m.name}</span><span class="dash-meal-cal">${m.cal}k</span></div>`
+      ).join('');
+    }
+  }
+
+  // Conditions
+  const condMini = document.getElementById('dc-cond-mini');
+  if (condMini) {
+    const conds = D.conditions || [];
+    const condLabel = {haid:'🩸 Haid', hamil:'🤰 Hamil', menyusui:'🤱 Menyusui', sakit:'🤒 Kurang sehat'};
+    if (conds.length === 0) {
+      condMini.innerHTML = '<span class="dash-empty-hint">Tap untuk isi</span>';
+    } else {
+      condMini.innerHTML = conds.map(c => `<span class="dash-cond-tag">${condLabel[c]||c}</span>`).join('');
+    }
+  }
+
+  // Menu text
+  const menuTxt = document.getElementById('dc-menu-txt');
+  if (menuTxt) {
+    const h = new Date().getHours();
+    const time = h < 10 ? 'sarapan' : h < 14 ? 'makan siang' : h < 18 ? 'camilan sore' : 'makan malam';
+    menuTxt.textContent = `Lihat rekomendasi ${time} hari ini →`;
   }
 }
 
-// Override togGlass to add water microfeedback  
-const _origTogGlass = togGlass;
-function togGlass(i) {
-  const prevWater = D.water || 0;
-  _origTogGlass(i);
-  updateHeroRing();
-  if (D.water > prevWater) {
-    if (D.water === 8) {
-      fireConfetti();
-      showToast('💧 Target air tercapai! Tubuhmu happy banget! (≧▽≦)', 4000);
-    } else {
-      showToast(WATER_TOASTS[Math.floor(Math.random()*WATER_TOASTS.length)]);
-    }
-  }
+function buildCondSheet() {
+  // Restore condition buttons
+  (D.conditions||[]).forEach(c => {
+    const btn = document.getElementById('cd-' + c);
+    if (btn) btn.classList.add('on');
+  });
 }
 
-// Override setMood to add hero ring update
-const _origSetMood = setMood;
-function setMood(btn, mood) {
-  _origSetMood(btn, mood);
-  updateHeroRing();
-  const moodMsgs = {
-    senang: '😊 Ciee yang lagi seneng... Semoga terus bertahan ya~',
-    netral: '😐 Ngerasa flat juga valid! Kamu tetap keren.',
-    lelah: '😮‍💨 Hari yang melelahkan ya? Jangan lupa istirahat yang cukup.',
-    berat: '😔 Nara di sini. Apapun yang berat hari ini, kamu tidak sendirian.',
-    semangat: '🔥 Semangat banget! Salurkan energinya ke hal baik ya!',
-  };
-  showToast(moodMsgs[mood] || '✨ Mood tercatat!', 3500);
+function buildMoveGridSheet() {
+  const grid = document.getElementById('move-grid-sheet');
+  if (!grid || grid.children.length > 0) return;
+  const moves = [
+    {icon:'🚶',name:'Jalan kaki',met:3.5},{icon:'🏃',name:'Lari',met:8},{icon:'🚴',name:'Bersepeda',met:6},
+    {icon:'🏊',name:'Renang',met:7},{icon:'🧘',name:'Yoga',met:3},{icon:'💪',name:'Gym',met:5},
+    {icon:'⚽',name:'Olahraga tim',met:7},{icon:'🕺',name:'Dance/Zumba',met:5.5},{icon:'🧹',name:'Bersih-bersih',met:3},
+  ];
+  const weight = P.weight || 55;
+  moves.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'move-btn';
+    const calPer30 = Math.round(m.met * weight * 0.5);
+    btn.innerHTML = `<span class="move-icon">${m.icon}</span><span class="move-lbl">${m.name}</span><span class="move-cal-lbl">~${calPer30} kkal/30mnt</span>`;
+    btn.onclick = () => quickAddMove(m.icon, m.name, 30, calPer30);
+    grid.appendChild(btn);
+  });
 }
 
-// Override addMeal to update hero ring
-const _origAddMeal = addMeal;
-function addMeal() {
-  _origAddMeal();
+function quickAddMove(icon, name, dur, cal) {
+  if (!D.moves) D.moves = [];
+  D.moves.push({icon, name, duration: dur, cal});
+  D.totalMoveCal = D.moves.reduce((s,m) => s + m.cal, 0);
+  renderMoves();
+  saveDay();
+  updateDashCards();
   updateHeroRing();
+  showToast(`${icon} ${name} tercatat! +${cal} kkal`);
 }
+
+// updateDashCards called directly in initApp below
+
+// Dash card updates wired directly into saveDay and restoreToday below
+
+// Also update hero mood stat when mood set
+const _moodSetBase = setMood;
+// (already integrated above — updateHeroRing handles hs-mood)
+
+// ═══ TODAY PAGE WRAPPER ═══
+// Wrap the page in today-wrap div via JS
+function wrapTodayPage() {
+  const pg = document.getElementById('pg-today');
+  if (!pg || pg.querySelector('.today-wrap')) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'today-wrap';
+  while (pg.firstChild) wrap.appendChild(pg.firstChild);
+  pg.appendChild(wrap);
+}
+
 
 </script>
+
+<!-- BOTTOM SHEETS OVERLAY -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+
+<!-- HABITS SHEET -->
+<div class="bottom-sheet" id="sheet-habits">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><span class="sheet-title">🌀 Kebiasaan hari ini</span><button class="sheet-close" onclick="closeSheet()">✕</button></div>
+  <div class="sheet-body">
+    <div class="habit-section-lbl">Tambah dari tema</div>
+    <div class="habit-theme-row" id="habit-theme-row"></div>
+    <div class="habit-suggestions" id="habit-suggestions"><div class="habit-sug-head" id="habit-sug-head">Pilih kebiasaan</div><div class="habit-sug-grid" id="habit-sug-grid"></div></div>
+    <ul class="habit-list" id="habit-list"></ul>
+    <div class="habit-progress-bar"><div class="habit-progress-fill" id="habit-prog-fill" style="width:0%"></div></div>
+    <div class="habit-progress-txt" id="habit-prog-txt"></div>
+    <div class="habit-add-row">
+      <input class="habit-add-inp" id="habit-add-inp" placeholder="Tulis kebiasaanmu sendiri..." maxlength="80" onkeydown="if(event.key==='Enter')addHabit()"/>
+      <button class="habit-add-btn" onclick="addHabit()">+ Tambah</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOOD SHEET -->
+<div class="bottom-sheet" id="sheet-mood">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><span class="sheet-title">🌤 Mood sekarang</span><button class="sheet-close" onclick="closeSheet()">✕</button></div>
+  <div class="sheet-body">
+    <div class="mood-row">
+      <button class="mood-btn" onclick="setMood(this,'senang')"><span class="mood-em">😊</span><span class="mood-lbl">Senang</span></button>
+      <button class="mood-btn" onclick="setMood(this,'netral')"><span class="mood-em">😐</span><span class="mood-lbl">Biasa</span></button>
+      <button class="mood-btn" onclick="setMood(this,'lelah')"><span class="mood-em">😮‍💨</span><span class="mood-lbl">Lelah</span></button>
+      <button class="mood-btn" onclick="setMood(this,'berat')"><span class="mood-em">😔</span><span class="mood-lbl">Berat</span></button>
+      <button class="mood-btn" onclick="setMood(this,'semangat')"><span class="mood-em">🔥</span><span class="mood-lbl">Semangat</span></button>
+    </div>
+    <div class="nara-reply" id="nara-mood-sheet" style="margin-top:1rem;display:none"><div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div><div class="nara-rbody" id="nara-mood-sheet-txt"></div></div>
+  </div>
+</div>
+
+<!-- WATER SHEET -->
+<div class="bottom-sheet" id="sheet-water">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><span class="sheet-title">💧 Air minum</span><button class="sheet-close" onclick="closeSheet()">✕</button></div>
+  <div class="sheet-body">
+    <div class="glasses" id="glasses"></div>
+    <div class="water-msg" id="w-msg">Tap satu-satu setiap kali minum segelas ya!</div>
+    <div style="margin-top:1rem;font-size:13px;color:var(--text3);text-align:center" id="w-status">0 dari 8 gelas</div>
+  </div>
+</div>
+
+<!-- MEALS SHEET -->
+<div class="bottom-sheet" id="sheet-meals">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><span class="sheet-title">🍽 Makan hari ini</span><button class="sheet-close" onclick="closeSheet()">✕</button><span class="sheet-subtitle" id="cal-status">0 kkal</span></div>
+  <div class="sheet-body">
+    <ul class="meal-list" id="meal-list"></ul>
+    <div class="meal-inp-row">
+      <input class="meal-inp" id="meal-inp" placeholder="Contoh: nasi goreng, telur dadar..." onkeydown="if(event.key==='Enter')addMeal()"/>
+      <button class="add-btn" id="add-btn" onclick="addMeal()">Catat</button>
+    </div>
+    <div class="meal-portion-row">
+      <span class="meal-portion-lbl">Porsi:</span>
+      <input class="meal-portion-inp" id="meal-portion" type="number" value="1" min="0.5" max="20" step="0.5"/>
+      <select class="meal-unit-sel" id="meal-unit"><option>porsi</option><option>piring</option><option>mangkok</option><option>potong</option><option>butir</option><option>gelas</option><option>bungkus</option></select>
+    </div>
+    <div class="food-sug-wrap" id="food-sug-wrap"></div>
+    <div class="cal-bar" id="cal-bar" style="display:none"><span class="cal-bar-lbl">Total hari ini</span><span class="cal-bar-num" id="cal-bar-num">0 kkal</span></div>
+    <div class="cal-breakdown" id="cal-breakdown"></div>
+    <div class="nara-reply" id="nara-meal"><div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div><div class="nara-rbody" id="nara-meal-txt"></div></div>
+  </div>
+</div>
+
+<!-- MOVE SHEET -->
+<div class="bottom-sheet" id="sheet-move">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><span class="sheet-title">🏃 Gerak hari ini</span><button class="sheet-close" onclick="closeSheet()">✕</button><span class="sheet-subtitle" id="dc-move-badge-2">0 kkal</span></div>
+  <div class="sheet-body">
+    <div class="move-grid" id="move-grid-sheet"></div>
+    <div class="move-custom-row">
+      <input class="move-custom-inp" id="move-custom-inp" placeholder="Nama gerakan..." maxlength="40"/>
+      <input class="move-dur-inp" id="move-dur-inp" type="number" min="1" max="300" placeholder="mnt"/>
+      <span class="move-dur-lbl">mnt</span>
+      <button class="move-add-btn" onclick="addCustomMove()">+ Catat</button>
+    </div>
+    <ul class="move-list" id="move-list"></ul>
+    <div class="move-summary" id="move-summary"></div>
+    <div class="nara-reply" id="nara-move"><div class="nara-rhead"><div class="nara-av">N</div><span class="nara-rname">Nara</span></div><div class="nara-rbody" id="nara-move-txt"></div></div>
+  </div>
+</div>
+
+<!-- CONDITION SHEET -->
+<div class="bottom-sheet" id="sheet-cond">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><span class="sheet-title">🩺 Kondisi hari ini</span><button class="sheet-close" onclick="closeSheet()">✕</button></div>
+  <div class="sheet-body">
+    <div class="cond-row">
+      <button class="cond-btn" onclick="togCond(this,'haid')" id="cd-haid">🩸 Haid</button>
+      <button class="cond-btn" onclick="togCond(this,'hamil')" id="cd-hamil">🤰 Hamil</button>
+      <button class="cond-btn" onclick="togCond(this,'menyusui')" id="cd-menyusui">🤱 Menyusui</button>
+      <button class="cond-btn" onclick="togCond(this,'sakit')" id="cd-sakit">🤒 Kurang sehat</button>
+    </div>
+    <!-- Haid detail -->
+    <div id="haid-detail" class="haid-detail" style="margin-top:1rem"></div>
+  </div>
+</div>
+
+<!-- MENU SHEET -->
+<div class="bottom-sheet" id="sheet-menu">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><span class="sheet-title">🍴 Rekomendasi menu hari ini</span><button class="sheet-close" onclick="closeSheet()">✕</button></div>
+  <div class="sheet-body">
+    <div class="menu-day-grid" id="menu-grid"></div>
+  </div>
+</div>
+
 </body>
 </html>
