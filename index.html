@@ -481,6 +481,69 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .pwa-banner-close{background:none;border:none;cursor:pointer;font-size:14px;color:var(--moss);padding:2px;flex-shrink:0}
 @media(max-width:480px){.ob-wrap{padding:2rem 1.5rem}.nara-chat{width:calc(100vw - 32px);right:16px}.p-panel{width:100%}}
 
+
+/* ═══ HERO CARD ═══ */
+.hero-card{background:linear-gradient(145deg,#2A4A34 0%,#3D6147 40%,#4E7A5A 75%,#2A4434 100%);border-radius:24px;padding:1.5rem 1.5rem 1.25rem;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 16px 48px rgba(26,22,16,.2),0 4px 12px rgba(26,22,16,.1)}
+.hero-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 70%)}
+.hero-card::after{content:'';position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(168,216,176,.06) 0%,transparent 70%)}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem}
+.hero-left{flex:1;min-width:0}
+.hero-time{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:5px}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500;color:#fff;line-height:1.2;margin-bottom:6px}
+.hero-wave{font-style:normal;display:inline-block;animation:wave 2.5s ease-in-out infinite;transform-origin:70% 70%}
+@keyframes wave{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-15deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}}
+.hero-msg{font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.65;max-width:200px}
+.hero-ring-wrap{position:relative;width:72px;height:72px;flex-shrink:0;margin-left:12px}
+.hero-ring{width:72px;height:72px}
+.hero-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;font-family:'DM Sans',sans-serif}
+.hero-stats{display:flex;align-items:center;background:rgba(255,255,255,.08);border-radius:14px;padding:10px 14px;gap:0;margin-bottom:12px;backdrop-filter:blur(4px)}
+.hero-stat{flex:1;text-align:center}
+.hero-stat-val{display:block;font-size:18px;font-weight:700;color:#fff;font-family:'DM Sans',sans-serif;line-height:1.1}
+.hero-stat-lbl{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px;display:block;white-space:nowrap}
+.hero-stat-div{width:1px;height:32px;background:rgba(255,255,255,.15);flex-shrink:0}
+.hero-nara{display:flex;align-items:center;gap:8px}
+.hero-nara .greet-nara-msg{font-size:12px;color:rgba(255,255,255,.6);font-style:italic;flex:1}
+
+/* ═══ CONFETTI ═══ */
+.confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti-piece{position:absolute;top:-10px;width:8px;height:8px;border-radius:2px;animation:confetti-fall linear forwards}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* ═══ TOAST CELEBRATION ═══ */
+.nara-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border-l);border-radius:50px;padding:10px 20px;font-size:13px;color:var(--text2);box-shadow:0 8px 28px rgba(26,22,16,.15);white-space:nowrap;z-index:500;opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:90vw;text-align:center}
+.nara-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ HABIT CHECK ANIMATION ═══ */
+.habit-item .habit-check{transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.habit-item.done .habit-check{transform:scale(1.15)}
+.habit-item{transition:background .2s}
+.habit-item.done{background:var(--moss-p)}
+.habit-item.done .habit-item-text{color:var(--text3)}
+
+/* ═══ STREAK BADGE ═══ */
+.streak-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#FF6B35,#FF9A3C);color:#fff;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;box-shadow:0 3px 10px rgba(255,107,53,.35)}
+
+/* ═══ WATER GLASS UPGRADE ═══ */
+.glass{transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.glass:active{transform:scale(.9)}
+.glass.full{transform:scale(1.05)}
+.glass.just-filled{animation:glassPop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes glassPop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1.05)}}
+
+/* ═══ MOOD BUTTON UPGRADE ═══ */
+.mood-em{transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.mood-btn.sel .mood-em{transform:scale(1.3)}
+.mood-btn{transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.mood-btn.sel{transform:translateY(-3px)}
+
+/* ═══ DAILY SCORE SECTION ═══ */
+.daily-score-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px}
+.daily-score-fill{height:100%;background:linear-gradient(90deg,var(--moss),#5A9A6A);border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+/* ═══ TIPS PERSONAL — always show base tips ═══ */
+.tip-card{border-radius:var(--rsm);background:var(--surface);border:1px solid var(--border-l);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shsm)}
+.tip-card-accent{border-left:3px solid var(--moss)}
+
 /* === ENHANCED UI ADDITIONS === */
 .ob-logo{background:linear-gradient(135deg,var(--moss),var(--clay));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .topbar-logo span,.ob-logo span{background:linear-gradient(135deg,var(--clay),#A05060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -658,11 +721,44 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="page active" id="pg-today">
     <div id="pwa-banner-wrap"></div>
-    <div class="greet-card">
-      <div class="greet-time" id="g-time">Selamat pagi</div>
-      <div class="greet-name">Hai, <em id="g-name">kamu</em>!</div>
-      <div class="greet-msg" id="g-msg">Semoga hari ini baik untukmu.</div>
-      <div class="greet-nara"><div class="nara-pulse"></div><div class="greet-nara-msg" id="g-nara">Nara ada di sini.</div></div>
+    <!-- HERO CARD -->
+    <div class="hero-card" id="hero-card">
+      <div class="hero-top">
+        <div class="hero-left">
+          <div class="hero-time" id="g-time">Selamat pagi</div>
+          <div class="hero-name">Hai, <span id="g-name">kamu</span>! <span class="hero-wave">👋</span></div>
+          <div class="hero-msg" id="g-msg">Semoga hari ini baik untukmu.</div>
+        </div>
+        <div class="hero-ring-wrap">
+          <svg class="hero-ring" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="6"/>
+            <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="6"
+              stroke-linecap="round" stroke-dasharray="188.5" stroke-dashoffset="188.5"
+              id="hero-ring-fill" style="transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1);transform:rotate(-90deg);transform-origin:center"/>
+          </svg>
+          <div class="hero-ring-pct" id="hero-ring-pct">0%</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-val" id="hs-streak">0</span>
+          <span class="hero-stat-lbl">🔥 hari streak</span>
+        </div>
+        <div class="hero-stat-div"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-val" id="hs-water">0/8</span>
+          <span class="hero-stat-lbl">💧 gelas air</span>
+        </div>
+        <div class="hero-stat-div"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-val" id="hs-habits">0/0</span>
+          <span class="hero-stat-lbl">✅ kebiasaan</span>
+        </div>
+      </div>
+      <div class="hero-nara">
+        <div class="nara-pulse"></div>
+        <div class="greet-nara-msg" id="g-nara">Nara ada di sini untukmu.</div>
+      </div>
     </div>
     <div class="tc">
       <div class="tc-head"><span class="tc-icon">🌀</span><span class="tc-title">Kebiasaan hari ini</span><span class="tc-status" id="habit-status">0/0</span></div>
@@ -1143,6 +1239,8 @@ function initApp(){
   document.getElementById('nara-float').style.display='block';
   initNaraChat();
   initPWA();
+  // Hero ring
+  setTimeout(updateHeroRing, 100);
 }
 
 function loadDay(){
@@ -1172,8 +1270,21 @@ function buildGreeting(){
     ?['Istirahat yang cukup sama pentingnya dengan makan sehat.','Pelan-pelan itu justru cara yang bijak.']
     :['Satu langkah kecil hari ini sudah berarti banyak.','Tidak perlu sempurna. Yang penting kamu hadir untuk dirimu sendiri.','Tubuhmu bekerja keras untukmu. Yuk balas kebaikannya!','Hari yang biasa pun bisa jadi hari yang baik.','Pelan-pelan itu baik-baik saja. Prosesnya yang penting.'];
   document.getElementById('g-msg').textContent=msgs[new Date().getDate()%msgs.length];
-  const nmsgs=['Butuh rekomendasi makan? Chat Nara di pojok kanan bawah ya!','Hari ini gimana? Cerita ke Nara kapanpun kamu mau (◕ᴗ◕✿)','Nara ada di sini kapanpun kamu butuh.'];
-  document.getElementById('g-nara').textContent=nmsgs[new Date().getDay()%nmsgs.length];
+  // Personalized nara message based on time + recent data
+  const logs = ld('inarte_logs') || {};
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const yKey = yesterday.toISOString().split('T')[0];
+  const yLog = logs[yKey];
+  let naraMsg = '';
+  const h2 = new Date().getHours();
+  if (yLog?.water < 4) naraMsg = 'Kemarin air minumnya kurang. Hari ini mulai dari segelas dulu ya~ 💧';
+  else if (h2 < 9) naraMsg = 'Pagi yang baik! Sarapan dulu sebelum mulai hari ya (◕ᴗ◕✿)';
+  else if (h2 < 12) naraMsg = 'Semangat pagi! Jangan lupa minum air ya 💧';
+  else if (h2 < 15) naraMsg = 'Sudah makan siang? Jangan skip ya, tubuh butuh energi.';
+  else if (h2 < 18) naraMsg = 'Sore nih. Gimana hari ini sejauh ini? (◕ᴗ◕✿)';
+  else naraMsg = 'Malam sudah hampir tiba. Jangan lupa isi wellness check hari ini ya.';
+  const nmsgs = [naraMsg];
+  document.getElementById('g-nara').textContent=nmsgs[0];
 }
 
 function buildTopbar(){
@@ -1317,6 +1428,7 @@ function updateHabitProgress(done,total){
   document.getElementById('habit-prog-fill').style.width=pct+'%';
   document.getElementById('habit-prog-txt').textContent=total>0?`${done} dari ${total} kebiasaan selesai (${pct}%)`:'';
   document.getElementById('habit-status').textContent=total>0?`${done}/${total}`:'';
+  if(document.getElementById('hs-habits'))document.getElementById('hs-habits').textContent=total>0?`${done}/${total}`:'—';
 }
 
 function addHabitText(text){
@@ -1388,6 +1500,7 @@ function updWater(){
   document.getElementById('w-status').textContent=`${w} dari 8 gelas`;
   const m=['Yuk mulai minum! (◕ᴗ◕✿)','Satu sudah! Tujuh lagi ya.','Bagus! Terus lanjut.','Hampir setengah, kamu bisa!','Setengah jalan, bagus banget!','Tiga lagi!','Dua lagi!','Satu lagi untuk genap!','Target tercapai! (≧▽≦)'];
   document.getElementById('w-msg').textContent=m[Math.min(w,8)];
+  const hsW=document.getElementById('hs-water');if(hsW)hsW.textContent=`${w}/8`;
 }
 function setMood(btn,mood){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');D.mood=mood;saveDay();schedNaraToday();}
 function togCond(btn,c){
@@ -1800,16 +1913,31 @@ function buildJajanan(){
 function buildPersonalTips(){
   const c=document.getElementById('tips-personal');
   if(!c)return;
-  c.innerHTML=''; // BUG FIX #4: clear sebelum rebuild
-  const act=P.act||'',home=P.home||'',age=P.age?parseInt(P.age):25;const tips=[];
-  if(age>=60)tips.push({icon:'🧓',title:'Tips untuk yang lebih senior',badge:'Usia',bc:'background:var(--sky-p);color:var(--sky)',body:'Kebutuhan nutrisi berubah seiring usia. Protein tetap penting untuk menjaga massa otot.',items:['Pilih makanan yang lunak dan mudah dikunyah','Kurangi yang terlalu pedas, manis, dan asin','Perbanyak sayur dan buah setiap hari','Jalan kaki ringan 20-30 menit sangat bermanfaat']});
-  if(act.includes('kantoran'))tips.push({icon:'💼',title:'Untuk kamu yang kerja di kantor',badge:'Gerak',bc:'background:var(--moss-p);color:var(--moss)',body:'Duduk terlalu lama berpengaruh ke metabolisme.',items:['Jalan ke tempat makan sedikit lebih jauh','Snack meja: almond, yogurt, atau buah','Minum air sebelum makan siang']});
-  if(act.includes('mahasiswa')||home.includes('Sendiri'))tips.push({icon:'📚',title:'Hidup sehat di kos, bisa banget!',badge:'Budget',bc:'background:var(--amber-p);color:var(--amber)',body:'Makan sehat tidak harus mahal.',items:['Indomie? Kurangi bumbu setengah, tambah telur dan sayur','Warteg: lebih banyak sayur, nasi setengah','Snack: pisang, kacang rebus, atau roti gandum']});
-  if(home.includes('orang tua'))tips.push({icon:'🏠',title:'Makan di rumah, tetap bisa dijaga',badge:'Keluarga',bc:'background:var(--sky-p);color:var(--sky)',body:'Makan ikut masakan rumah tidak apa-apa! Yang bisa dikontrol adalah porsi.',items:['Ambil sayur lebih banyak setiap makan','Makan protein dulu sebelum nasi','Kurangi nasi pelan-pelan']});
-  if(home.includes('anak'))tips.push({icon:'👨‍👩‍👧',title:'Masak sekali untuk semua, bisa!',badge:'Keluarga',bc:'background:var(--rose-p);color:var(--rose)',body:'Tidak harus masak dua kali. Kuncinya ada di cara saji.',items:['Bumbu seperti ayam bakar disukai semua usia','Untuk anak: tambah nasi. Untuk kamu: kurangi nasi','Sajikan sayur dalam variasi yang menarik']});
-  tips.push({icon:'🌙',title:'Rutinitas malam yang membantu',badge:'Tidur',bc:'background:var(--dusk-p);color:var(--dusk)',body:'Tidur buruk membuat rasa lapar meningkat keesokan harinya.',items:['Hindari layar HP 30 menit sebelum tidur','Makan malam ringan dan selesai sebelum jam 20.00','Stretching 5 menit sebelum tidur']});
-  tips.forEach(t=>{
-    const card=document.createElement('div');card.className='tip-card';
+  c.innerHTML='';
+  const act=P.act||'',home=P.home||'',age=P.age?parseInt(P.age):25;
+  const tips=[];
+
+  // BASE TIPS — always shown regardless of profile
+  const baseTips=[
+    {icon:'🥗',title:'Piring ideal itu sederhana',badge:'Makan',bc:'background:var(--moss-p);color:var(--moss)',body:'Tidak perlu diet ketat. Cukup atur komposisi piringmu.',items:['½ piring sayur & buah','¼ piring protein (telur, ayam, tahu, tempe)','¼ piring karbohidrat (nasi, kentang, roti)','Minum 1 gelas air sebelum makan']},
+    {icon:'🚶',title:'Gerak 10 menit itu udah cukup loh',badge:'Gerak',bc:'background:var(--sky-p);color:var(--sky)',body:'Tidak harus gym. Gerak ringan yang konsisten jauh lebih baik dari olahraga intens tapi jarang.',items:['Jalan kaki 10 menit setelah makan besar','Naik tangga bukan lift kalau bisa','Stretching 5 menit sebelum tidur','Berdiri dan gerak setiap 1 jam sekali']},
+    {icon:'🧠',title:'Makan itu juga soal mental',badge:'Mindset',bc:'background:var(--dusk-p);color:var(--dusk)',body:'Hubungan kamu dengan makanan itu penting. Makan tidak harus jadi sumber stres.',items:['Makan pelan dan nikmati tiap suapan','Jangan skip makan karena terlalu sibuk','Satu hari "tidak sehat" tidak menghancurkan segalanya','Dengarkan sinyal lapar dan kenyang tubuhmu']},
+    {icon:'💧',title:'Air putih itu power-up tersembunyi',badge:'Hidrasi',bc:'background:var(--sky-p);color:var(--sky)',body:'Dehidrasi ringan sudah bisa bikin kamu lelah, susah fokus, dan lapar palsu.',items:['Target 8 gelas per hari (sekitar 2 liter)','Minum segelas air begitu bangun pagi','Taruh botol air di tempat yang selalu kelihatan','Rasa lapar sering sebenarnya haus — coba minum dulu']},
+    {icon:'🌙',title:'Tidur adalah investasi kesehatan',badge:'Tidur',bc:'background:var(--dusk-p);color:var(--dusk)',body:'Tidur buruk bikin rasa lapar meningkat dan metabolisme melambat keesokan harinya.',items:['Targetkan 7-9 jam per malam','Hindari layar HP 30 menit sebelum tidur','Tidur dan bangun di jam yang sama setiap hari','Makan malam selesai sebelum jam 20.00']},
+    {icon:'🌱',title:'Progress itu bukan garis lurus',badge:'Mindset',bc:'background:var(--moss-p);color:var(--moss)',body:'Jangan ukur keberhasilan hanya dari timbangan atau angka.',items:['Foto tubuh tiap 2 minggu di kondisi yang sama','Perhatikan energi dan mood, bukan hanya berat badan','Rayakan hal kecil — itu juga pencapaian','Satu hari gagal bukan berarti berhenti']},
+  ];
+
+  // PERSONAL tips based on profile
+  if(age>=60)tips.push({icon:'🧓',title:'Tips khusus untuk kamu yang lebih senior',badge:'Usia',bc:'background:var(--amber-p);color:var(--amber)',body:'Kebutuhan nutrisi berubah seiring usia. Protein tetap penting untuk menjaga massa otot.',items:['Pilih makanan yang lunak dan mudah dikunyah','Kurangi yang terlalu pedas, manis, dan asin','Perbanyak sayur dan buah setiap hari','Jalan kaki ringan 20-30 menit sangat bermanfaat']});
+  if(act.includes('kantoran'))tips.push({icon:'💼',title:'Untuk kamu yang kerja di kantor',badge:'Kantor',bc:'background:var(--moss-p);color:var(--moss)',body:'Duduk terlalu lama berpengaruh ke metabolisme dan postur tubuh.',items:['Jalan ke tempat makan sedikit lebih jauh dari biasanya','Snack meja yang aman: almond, yogurt, atau buah','Minum air sebelum makan siang','Set reminder berdiri tiap 1 jam sekali']});
+  if(act.includes('mahasiswa')||home.includes('Sendiri'))tips.push({icon:'📚',title:'Hidup sehat di kos, bisa banget!',badge:'Budget',bc:'background:var(--amber-p);color:var(--amber)',body:'Makan sehat tidak harus mahal atau ribet.',items:['Indomie: kurangi bumbu setengah, tambah telur dan sayur','Warteg: lebih banyak sayur, protein, nasi setengah','Snack hemat: pisang, kacang rebus, roti gandum','Masak telur rebus/dadar seminggu sekali untuk stok']});
+  if(home.includes('orang tua'))tips.push({icon:'🏠',title:'Makan di rumah? Tetap bisa dijaga',badge:'Keluarga',bc:'background:var(--sky-p);color:var(--sky)',body:'Makan ikut masakan keluarga tidak apa-apa. Yang bisa dikontrol adalah porsi dan urutan makan.',items:['Ambil sayur lebih banyak sebelum nasi','Makan protein dulu sebelum karbohidrat','Kurangi nasi pelan-pelan, tidak harus drastis','Minta dimasak dengan cara yang lebih sehat untuk semua']});
+  if(home.includes('anak'))tips.push({icon:'👨‍👩‍👧',title:'Masak sehat untuk semua bisa!',badge:'Keluarga',bc:'background:var(--rose-p);color:var(--rose)',body:'Tidak harus masak dua versi. Kuncinya ada di cara saji dan porsi.',items:['Bumbu bakar dan kukus disukai semua usia','Untuk anak: tambah nasi. Untuk kamu: kurangi nasi','Sajikan sayur dalam variasi warna yang menarik','Libatkan anak pilih sayuran — mereka lebih suka makan yang mereka pilih']});
+
+  // Render personal first, then base
+  const allTips = [...tips, ...baseTips];
+  allTips.forEach(t=>{
+    const card=document.createElement('div');card.className='tip-card tip-card-accent';
     card.innerHTML=`<div class="tip-ch"><span class="tip-ci">${t.icon}</span><span class="tip-ct">${t.title}</span><span class="tip-badge" style="${t.bc}">${t.badge}</span></div><div class="tip-cb">${t.body}<ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
     c.appendChild(card);
   });
@@ -2312,6 +2440,8 @@ function restoreToday(){
   if(D.meals?.length)renderMeals();
   if(D.moves?.length)renderMoves();
   if(D.conditions?.length)D.conditions.forEach(c=>{const btn=document.getElementById('cd-'+c);if(btn)btn.classList.add('on');});
+  // Update hero ring with restored data
+  setTimeout(updateHeroRing, 50);
 }
 
 // ═══════════════════════════════
@@ -2679,6 +2809,160 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Auth screen already shown at top of DOMContentLoaded, nothing else to do
 });
 
+
+
+// ═══════════════════════════════
+// GAMIFICATION & MICROFEEDBACK
+// ═══════════════════════════════
+
+function updateHeroRing() {
+  const logs = ld('inarte_logs') || {};
+  const template = loadHabitTemplate();
+  const done = template.filter(h => (D.habits||[]).includes(h.id)).length;
+  const total = template.length;
+  const water = D.water || 0;
+  const mood = D.mood ? 1 : 0;
+  
+  // Score: habits 50%, water 30%, mood 20%
+  const habitScore = total > 0 ? (done / total) * 50 : 0;
+  const waterScore = Math.min(water / 8, 1) * 30;
+  const moodScore = mood * 20;
+  const pct = Math.round(habitScore + waterScore + moodScore);
+  
+  const circumference = 188.5;
+  const offset = circumference - (pct / 100) * circumference;
+  const ring = document.getElementById('hero-ring-fill');
+  const pctEl = document.getElementById('hero-ring-pct');
+  if (ring) ring.style.strokeDashoffset = offset;
+  if (pctEl) pctEl.textContent = pct + '%';
+  
+  // Stroke color based on score
+  if (ring) {
+    ring.style.stroke = pct >= 80 ? '#7DD98A' : pct >= 50 ? 'rgba(255,255,255,.85)' : 'rgba(255,200,100,.85)';
+  }
+  
+  // Update hero stats
+  const el = id => document.getElementById(id);
+  if (el('hs-water')) el('hs-water').textContent = water + '/8';
+  if (el('hs-habits')) el('hs-habits').textContent = (total > 0 ? done + '/' + total : '—');
+  
+  // Streak
+  let streak = 0;
+  const dd = new Date();
+  while (streak < 365) {
+    const k = dd.toISOString().split('T')[0];
+    if (logs[k]?.logged) { streak++; dd.setDate(dd.getDate() - 1); } else break;
+  }
+  if (el('hs-streak')) el('hs-streak').textContent = streak;
+  if (el('st-streak')) el('st-streak').textContent = streak;
+}
+
+function showToast(msg, duration = 3000) {
+  let toast = document.getElementById('nara-toast-el');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'nara-toast-el';
+    toast.className = 'nara-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+}
+
+function fireConfetti(x, y) {
+  const colors = ['#4D9B5A','#F4C46A','#E07B6A','#7B9FD4','#C67BAD','#7DD98A'];
+  const wrap = document.createElement('div');
+  wrap.className = 'confetti-wrap';
+  document.body.appendChild(wrap);
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const startX = (x || window.innerWidth / 2) + (Math.random() - 0.5) * 200;
+    p.style.cssText = `left:${startX}px;background:${colors[i % colors.length]};width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${0.9+Math.random()*0.8}s;animation-delay:${Math.random()*0.2}s`;
+    wrap.appendChild(p);
+  }
+  setTimeout(() => wrap.remove(), 1800);
+}
+
+const HABIT_TOASTS = [
+  '✅ Yes! Satu kebiasaan terceklis!',
+  '🌱 Pelan-pelan tapi pasti~',
+  '💪 Keren banget! Lanjut!',
+  '⭐ Progress is progress!',
+  '🎯 Satu langkah lebih dekat!',
+];
+const WATER_TOASTS = [
+  '💧 Satu gelas tercatat!',
+  '🌊 Tubuhmu berterima kasih!',
+  '💙 Hidrasi itu self-care loh~',
+  '✨ Bagus! Terus minum ya!',
+];
+const ALLHABITS_TOASTS = [
+  '🎉 SEMUA KEBIASAAN SELESAI! Luar biasa!',
+  '🏆 Perfect day! Kamu keren banget hari ini!',
+  '🌟 100%! Nara bangga sama kamu!',
+];
+
+// Override toggleHabitDone to add microfeedback
+const _origToggleHabit = toggleHabitDone;
+function toggleHabitDone(id, li) {
+  const wasDone = (D.habits||[]).includes(id);
+  _origToggleHabit(id, li);
+  updateHeroRing();
+  
+  if (!wasDone) { // just checked
+    const t = loadHabitTemplate();
+    const done = t.filter(h => (D.habits||[]).includes(h.id)).length;
+    
+    if (done === t.length && t.length > 0) {
+      // ALL DONE — big celebration!
+      fireConfetti();
+      setTimeout(() => showToast(ALLHABITS_TOASTS[Math.floor(Math.random()*ALLHABITS_TOASTS.length)], 4000), 200);
+    } else {
+      showToast(HABIT_TOASTS[Math.floor(Math.random()*HABIT_TOASTS.length)]);
+    }
+  }
+}
+
+// Override togGlass to add water microfeedback  
+const _origTogGlass = togGlass;
+function togGlass(i) {
+  const prevWater = D.water || 0;
+  _origTogGlass(i);
+  updateHeroRing();
+  if (D.water > prevWater) {
+    if (D.water === 8) {
+      fireConfetti();
+      showToast('💧 Target air tercapai! Tubuhmu happy banget! (≧▽≦)', 4000);
+    } else {
+      showToast(WATER_TOASTS[Math.floor(Math.random()*WATER_TOASTS.length)]);
+    }
+  }
+}
+
+// Override setMood to add hero ring update
+const _origSetMood = setMood;
+function setMood(btn, mood) {
+  _origSetMood(btn, mood);
+  updateHeroRing();
+  const moodMsgs = {
+    senang: '😊 Ciee yang lagi seneng... Semoga terus bertahan ya~',
+    netral: '😐 Ngerasa flat juga valid! Kamu tetap keren.',
+    lelah: '😮‍💨 Hari yang melelahkan ya? Jangan lupa istirahat yang cukup.',
+    berat: '😔 Nara di sini. Apapun yang berat hari ini, kamu tidak sendirian.',
+    semangat: '🔥 Semangat banget! Salurkan energinya ke hal baik ya!',
+  };
+  showToast(moodMsgs[mood] || '✨ Mood tercatat!', 3500);
+}
+
+// Override addMeal to update hero ring
+const _origAddMeal = addMeal;
+function addMeal() {
+  _origAddMeal();
+  updateHeroRing();
+}
 
 </script>
 </body>
