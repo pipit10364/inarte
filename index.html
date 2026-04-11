@@ -2415,8 +2415,13 @@ function continueAsGuest() {
 }
 
 async function onLoginSuccess(user, nameOverride = null) {
+  if (currentUser?.id === user?.id) return; // prevent double-call
   currentUser = user;
+  // Hide auth screen and clear URL hash
   document.getElementById('auth-screen').style.display = 'none';
+  if (window.location.hash.includes('access_token')) {
+    history.replaceState(null, '', window.location.pathname);
+  }
   
   // Load profile from Supabase
   const { data: profile } = await SB.from('profiles').select('*').eq('id', user.id).single();
@@ -2564,30 +2569,38 @@ function addLogoutBtn() {
 // ═══════════════════════════════
 window.addEventListener('DOMContentLoaded', async () => {
   initSupabase();
-  
+
   if (!SB) {
-    // Supabase failed to load, go guest mode
     continueAsGuest();
     return;
   }
 
-  // Check if returning from OAuth redirect
+  // Listen for auth state changes FIRST — catches OAuth redirect
+  SB.auth.onAuthStateChange(async (event, session) => {
+    console.log('Auth event:', event, session?.user?.email);
+    if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user && !currentUser) {
+      await onLoginSuccess(session.user);
+      addLogoutBtn();
+    }
+  });
+
+  // Then check existing session
+  // Small delay to let Supabase process hash fragment from OAuth redirect
+  await new Promise(r => setTimeout(r, 300));
   const { data: { session } } = await SB.auth.getSession();
-  
+
   if (session?.user) {
-    // Already logged in
     await onLoginSuccess(session.user);
     addLogoutBtn();
     return;
   }
 
-  // Listen for auth state changes (e.g. after Google OAuth redirect)
-  SB.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session?.user && !currentUser) {
-      await onLoginSuccess(session.user);
-      addLogoutBtn();
-    }
-  });
+  // No session — check if hash has OAuth tokens (redirect just happened)
+  if (window.location.hash.includes('access_token')) {
+    // Supabase is processing OAuth redirect, wait for onAuthStateChange
+    document.getElementById('auth-screen').style.display = 'flex';
+    return;
+  }
 
   // Show auth screen
   document.getElementById('auth-screen').style.display = 'flex';
