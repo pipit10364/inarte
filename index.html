@@ -6,876 +6,363 @@
 <title>INARTE — Hari Ini</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
 <style>
-/* ═══ TOKENS ═══ */
 :root {
-  --bg:        #F4EFE8;
-  --bg2:       #EDE6DA;
-  --surface:   #FDFAF6;
-  --surface2:  #F7F2EA;
-  --border:    #E2D9CC;
-  --border-l:  #EDE8DF;
+  --bg:       #F4EFE8;
+  --bg2:      #EDE6DA;
+  --surface:  #FDFAF6;
+  --border:   #E2D9CC;
+  --border-l: #EDE8DF;
+  --text:     #1C1810;
+  --text2:    #4A4238;
+  --text3:    #8A7F72;
+  --text4:    #BEB4A8;
+  --moss:     #3D6147;
+  --moss-d:   #2A4432;
+  --moss-l:   #B4CEBC;
+  --moss-p:   #EAF2EC;
+  --moss-mid: #5A8A68;
+  --clay:     #7D3E2C;
+  --clay-l:   #DDB8A8;
+  --clay-p:   #F8EDE8;
+  --amber:    #9B6E2A;
+  --amber-l:  #E0C88A;
+  --amber-p:  #F8F0DC;
+  --sky:      #2E5F7A;
+  --sky-l:    #A4CCDE;
+  --sky-p:    #E4EFF6;
+  --rose:     #7A3E50;
+  --rose-l:   #D8B0C0;
+  --rose-p:   #F5EAEE;
+  --dusk:     #4C4272;
+  --dusk-p:   #EDEAF6;
+  --r:    20px;
+  --rsm:  14px;
+  --rxs:  10px;
+  --sh:   0 2px 16px rgba(28,24,16,.07), 0 1px 4px rgba(28,24,16,.04);
+  --sh-md:0 6px 28px rgba(28,24,16,.10), 0 2px 8px rgba(28,24,16,.05);
+  --sh-lg:0 12px 48px rgba(28,24,16,.13), 0 4px 12px rgba(28,24,16,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
 
-  --text:      #1C1810;
-  --text2:     #4A4238;
-  --text3:     #8A7F72;
-  --text4:     #BEB4A8;
+/* ══ TOPBAR ══ */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(244,239,232,.93);backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(226,217,204,.5);padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
+.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:var(--moss);letter-spacing:.08em}
+.topbar-logo em{font-style:italic;color:var(--clay)}
+.topbar-r{display:flex;align-items:center;gap:.75rem}
+.topbar-date{font-size:11px;color:var(--text3)}
+.av-btn{width:32px;height:32px;border-radius:50%;background:var(--moss);color:#fff;border:none;cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.av-btn:hover{transform:scale(1.08)}
 
-  --moss:      #3D6147;
-  --moss-d:    #2A4432;
-  --moss-l:    #B4CEBC;
-  --moss-p:    #EAF2EC;
-  --moss-mid:  #5A8A68;
+/* ══ SCROLL ══ */
+.today-scroll{padding:1.125rem 1.125rem 100px;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
 
-  --clay:      #7D3E2C;
-  --clay-l:    #DDB8A8;
-  --clay-p:    #F8EDE8;
+/* ══ SECTION DIVIDER ══ */
+.section-divider{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);padding:0 2px;margin-top:4px}
 
-  --amber:     #9B6E2A;
-  --amber-l:   #E0C88A;
-  --amber-p:   #F8F0DC;
+/* ══ GREETING ══ */
+.greeting{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:1.125rem 1.25rem 1rem;position:relative;overflow:hidden}
+.greeting::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--moss),var(--clay),transparent);border-radius:var(--r) var(--r) 0 0}
+.greeting-time{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);margin-bottom:3px}
+.greeting-name{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500;color:var(--text);line-height:1.2;margin-bottom:.5rem}
+.greeting-name em{font-style:italic;color:var(--moss);display:inline-block;animation:nameReveal .8s cubic-bezier(.22,1,.36,1) both}
+@keyframes nameReveal{
+  from{opacity:0;transform:translateY(6px);clip-path:inset(0 100% 0 0)}
+  to{opacity:1;transform:translateY(0);clip-path:inset(0 0% 0 0)}
+}
+.greeting-name em::after{content:'';display:inline-block;width:0;height:1.5px;background:var(--moss);border-radius:1px;vertical-align:middle;margin-left:3px;animation:underlineGrow 1s .6s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes underlineGrow{from{width:0}to{width:100%}}
+.greeting-nara{display:flex;align-items:flex-start;gap:7px}
+.nara-dot{width:7px;height:7px;border-radius:50%;background:var(--moss-mid);flex-shrink:0;margin-top:4px;animation:pulseDot 2.5s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
+.nara-greeting-txt{font-size:12.5px;color:var(--text3);line-height:1.65;font-style:italic}
 
-  --sky:       #2E5F7A;
-  --sky-l:     #A4CCDE;
-  --sky-p:     #E4EFF6;
+/* ══ SECTION CARD ══ */
+.section-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.125rem .75rem;border-bottom:1px solid var(--border-l)}
+.section-title{font-size:11.5px;font-weight:600;color:var(--text2);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.s-icon{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s-icon-moss{background:var(--moss-p)}
+.s-icon-amber{background:var(--amber-p)}
+.s-icon-sky{background:var(--sky-p)}
+.section-badge{font-size:11px;font-weight:600;color:var(--moss);background:var(--moss-p);border-radius:20px;padding:2px 9px}
+.section-body{padding:.875rem 1.125rem}
 
-  --rose:      #7A3E50;
-  --rose-l:    #D8B0C0;
-  --rose-p:    #F5EAEE;
+/* ══ HABIT LIST ══ */
+.habit-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.habit-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--rsm);cursor:pointer;user-select:none;transition:background .15s}
+.habit-row:hover{background:var(--bg2)}
+.habit-row.done{background:var(--moss-p)}
+.habit-check{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .22s cubic-bezier(.34,1.56,.64,1)}
+.habit-row.done .habit-check{background:var(--moss);border-color:var(--moss);transform:scale(1.1)}
+.check-svg{width:10px;height:8px;opacity:0;transition:opacity .15s}
+.habit-row.done .check-svg{opacity:1}
+.habit-text{flex:1;font-size:13px;color:var(--text2);transition:color .15s}
+.habit-row.done .habit-text{color:var(--text4);text-decoration:line-through}
+.habit-streak{font-size:10px;font-weight:700;color:var(--amber);white-space:nowrap}
+.habit-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text4);padding:3px 5px;border-radius:5px;opacity:0;transition:all .15s;flex-shrink:0}
+.habit-row:hover .habit-del{opacity:1}
+.habit-del:hover{color:var(--clay);background:var(--clay-p);opacity:1}
 
-  --dusk:      #4C4272;
-  --dusk-p:    #EDEAF6;
+.habit-progress{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border-l)}
+.habit-prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.habit-prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--moss),var(--moss-mid));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.habit-prog-row{display:flex;justify-content:space-between;margin-top:5px}
+.habit-prog-count{font-size:10px;color:var(--text4)}
+.habit-prog-msg{font-size:10px;color:var(--moss);font-style:italic}
 
-  --r:     20px;
-  --rsm:   14px;
-  --rxs:   10px;
+.habit-themes{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.625rem}
+.theme-chip{padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s}
+.theme-chip:hover{background:var(--bg2)}
+.theme-chip.active{border-color:var(--moss);background:var(--moss-p);color:var(--moss);font-weight:600}
 
-  --sh:    0 2px 16px rgba(28,24,16,.07), 0 1px 4px rgba(28,24,16,.04);
-  --sh-md: 0 6px 28px rgba(28,24,16,.10), 0 2px 8px rgba(28,24,16,.05);
-  --sh-lg: 0 12px 48px rgba(28,24,16,.13), 0 4px 12px rgba(28,24,16,.06);
-}
+.habit-suggestions{display:none;background:var(--bg2);border:1px solid var(--border-l);border-radius:var(--rsm);padding:9px 11px;margin-bottom:.625rem;animation:fadeUp .2s ease}
+.habit-suggestions.on{display:block}
+.habit-sug-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:7px}
+.habit-sug-chips{display:flex;flex-wrap:wrap;gap:5px}
+.habit-sug-chip{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
+.habit-sug-chip:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.habit-add{display:flex;gap:7px;margin-top:.875rem}
+.habit-add-inp{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.habit-add-inp:focus{border-color:var(--moss)}
+.habit-add-inp::placeholder{color:var(--text4);font-style:italic}
+.habit-add-btn{padding:8px 14px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
+.habit-add-btn:hover{background:var(--moss-d)}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
+/* ══ QUICK ROW: 3fr + 2fr ══ */
+.quick-row{display:grid;grid-template-columns:3fr 2fr;gap:8px}
 
-/* ═══ TOPBAR ═══ */
-.topbar {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(244,239,232,.92);
-  backdrop-filter: blur(18px) saturate(1.5);
-  border-bottom: 1px solid rgba(226,217,204,.5);
-  padding: .75rem 1.25rem;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.topbar-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.25rem; font-weight: 400;
-  color: var(--moss); letter-spacing: .08em;
-}
-.topbar-logo em { font-style: italic; color: var(--clay); }
-.topbar-r { display: flex; align-items: center; gap: .75rem; }
-.topbar-date { font-size: 11px; color: var(--text3); letter-spacing: .02em; }
-.av-btn {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: var(--moss); color: #fff;
-  border: none; cursor: pointer;
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 14px;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform .2s;
-}
-.av-btn:hover { transform: scale(1.08); }
+/* Water card */
+.water-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.water-top{padding:.875rem 1rem .75rem;cursor:pointer;display:flex;align-items:center;gap:1rem}
+.water-visual{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+.bottle{width:28px;height:44px;position:relative;display:flex;flex-direction:column}
+.bottle-neck{width:12px;height:7px;border:2px solid var(--sky-l);border-bottom:none;border-radius:3px 3px 0 0;margin:0 auto;background:var(--surface);position:relative;z-index:2}
+.bottle-body{flex:1;border:2px solid var(--sky-l);border-radius:3px 3px 7px 7px;overflow:hidden;position:relative;background:var(--surface)}
+.bottle-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(46,95,122,.2),rgba(46,95,122,.42));transition:height .5s cubic-bezier(.4,0,.2,1);border-radius:0 0 4px 4px}
+.bottle-shine{position:absolute;top:3px;left:3px;width:3px;height:55%;border-radius:2px;background:rgba(255,255,255,.55)}
+.water-info{flex:1}
+.water-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:4px}
+.water-count-big{font-size:2rem;font-weight:700;color:var(--sky);line-height:1;margin-bottom:2px}
+.water-of{font-size:11px;color:var(--text4)}
+.water-dots{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.water-dot{width:9px;height:9px;border-radius:50%;background:var(--border);transition:background .3s,transform .2s cubic-bezier(.34,1.56,.64,1)}
+.water-dot.full{background:var(--sky)}
+.water-dot.just-filled{animation:dotPop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes dotPop{0%{transform:scale(1)}50%{transform:scale(1.6)}100%{transform:scale(1)}}
 
-/* ═══ SCROLL CONTAINER ═══ */
-.today-scroll {
-  padding: 1.125rem 1.125rem 100px;
-  max-width: 680px;
-  margin: 0 auto;
-  display: flex; flex-direction: column; gap: 10px;
-}
+.water-controls{display:none;padding:.5rem 1rem .875rem;border-top:1px solid var(--border-l);align-items:center;gap:1rem}
+.water-controls.on{display:flex;animation:fadeUp .2s ease}
+.wc-hint{font-size:11px;color:var(--text3);flex:1;font-style:italic}
+.wc-btns{display:flex;align-items:center;gap:8px}
+.wc-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);font-size:17px;color:var(--sky);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s cubic-bezier(.34,1.56,.64,1);line-height:1}
+.wc-btn:hover{border-color:var(--sky);background:var(--sky-p);transform:scale(1.12)}
+.wc-num{font-size:17px;font-weight:700;color:var(--sky);min-width:28px;text-align:center}
 
-/* ═══ GREETING ═══ */
-.greeting {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  padding: 1.125rem 1.25rem 1rem;
-  background: var(--surface);
-  border-radius: var(--r);
-  border: 1px solid var(--border-l);
-  box-shadow: var(--sh);
-  position: relative; overflow: hidden;
-}
-.greeting::after {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--moss), var(--clay), transparent);
-  border-radius: var(--r) var(--r) 0 0;
-}
-.greeting-left { flex: 1; min-width: 0; }
-.greeting-time {
-  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--text4); margin-bottom: 3px;
-}
-.greeting-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.5rem; font-weight: 500;
-  color: var(--text); line-height: 1.2; margin-bottom: 6px;
-}
-.greeting-name em { font-style: italic; color: var(--moss); }
-.greeting-nara {
-  display: flex; align-items: flex-start; gap: 7px;
-}
-.nara-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--moss-mid); flex-shrink: 0; margin-top: 4px;
-  animation: pulse-dot 2.5s ease-in-out infinite;
-}
-@keyframes pulse-dot {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50% { opacity: .5; transform: scale(.7); }
-}
-.nara-text { font-size: 12px; color: var(--text3); line-height: 1.6; font-style: italic; }
-.greeting-score {
-  flex-shrink: 0; margin-left: .875rem;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-}
-.score-circle {
-  width: 52px; height: 52px; border-radius: 50%;
-  background: conic-gradient(var(--moss) calc(var(--pct, 0) * 1%), var(--border) 0%);
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-}
-.score-inner {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: var(--surface);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: var(--moss);
-}
-.score-lbl { font-size: 9px; color: var(--text4); letter-spacing: .06em; text-transform: uppercase; }
+/* Mood+Cond combined card */
+.mc-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
 
-/* ═══ HABIT SECTION ═══ */
-.section-card {
-  background: var(--surface);
-  border: 1px solid var(--border-l);
-  border-radius: var(--r);
-  box-shadow: var(--sh);
-  overflow: hidden;
-}
-.section-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .875rem 1.125rem .75rem;
-  border-bottom: 1px solid var(--border-l);
-}
-.section-title {
-  font-size: 12px; font-weight: 600; color: var(--text2);
-  letter-spacing: .04em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 7px;
-}
-.section-title-icon {
-  width: 22px; height: 22px; border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; flex-shrink: 0;
-}
-.section-badge {
-  font-size: 11px; font-weight: 600; color: var(--moss);
-  background: var(--moss-p); border-radius: 20px;
-  padding: 2px 9px;
-}
-.section-body { padding: .875rem 1.125rem; }
+/* Mood section */
+.mood-section{padding:.75rem .875rem;cursor:pointer;border-bottom:1px solid var(--border-l);transition:background .15s;flex:1}
+.mood-section:hover{background:var(--bg2)}
+.mood-section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:.5rem}
+.mood-display{display:flex;align-items:center;gap:8px}
+.mood-em{font-size:26px;line-height:1;transition:transform .2s cubic-bezier(.34,1.56,.64,1);display:inline-block}
+.mood-right{display:flex;flex-direction:column;gap:2px}
+.mood-lbl{font-size:12px;font-weight:600;color:var(--text2)}
+.mood-sub{font-size:10px;color:var(--text3);line-height:1.5}
+.mood-picker{display:none;padding:.5rem .875rem .75rem;border-bottom:1px solid var(--border-l);flex-wrap:wrap;gap:5px}
+.mood-picker.on{display:flex;animation:fadeUp .18s ease}
+.mood-opt{padding:5px 8px;border-radius:12px;border:1.5px solid var(--border);background:transparent;cursor:pointer;transition:all .15s;text-align:center;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:1px}
+.mood-opt-em{font-size:18px;line-height:1}
+.mood-opt-lbl{font-size:9px;color:var(--text2)}
+.mood-opt:hover{background:var(--moss-p);border-color:var(--moss-l)}
+.mood-opt.sel{background:var(--moss-p);border-color:var(--moss)}
 
-/* Habit list */
-.habit-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
-.habit-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 10px; border-radius: var(--rsm);
-  cursor: pointer; user-select: none;
-  transition: background .15s;
-}
-.habit-row:hover { background: var(--bg2); }
-.habit-row.done { background: var(--moss-p); }
-.habit-check {
-  width: 22px; height: 22px; border-radius: 7px;
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all .2s cubic-bezier(.34,1.56,.64,1);
-}
-.habit-row.done .habit-check {
-  background: var(--moss); border-color: var(--moss);
-  transform: scale(1.1);
-}
-.check-mark {
-  width: 10px; height: 8px; opacity: 0; transition: opacity .15s;
-}
-.habit-row.done .check-mark { opacity: 1; }
-.habit-text { flex: 1; font-size: 13px; color: var(--text2); transition: color .15s; }
-.habit-row.done .habit-text { color: var(--text4); text-decoration: line-through; }
-.habit-streak {
-  font-size: 10px; font-weight: 700; color: var(--amber);
-  white-space: nowrap;
-}
-.habit-del {
-  background: none; border: none; cursor: pointer;
-  font-size: 11px; color: var(--text4); padding: 3px 5px;
-  border-radius: 5px; opacity: 0; transition: all .15s;
-}
-.habit-row:hover .habit-del { opacity: 1; }
-.habit-del:hover { color: var(--clay); background: var(--clay-p); opacity: 1; }
+/* Cond section */
+.cond-section{padding:.625rem .875rem .75rem;cursor:pointer;transition:background .15s}
+.cond-section:hover{background:var(--bg2)}
+.cond-section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:.4rem}
+.cond-tags{display:flex;flex-wrap:wrap;gap:4px;min-height:24px;align-items:center}
+.cond-tag{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500;background:var(--rose-p);color:var(--rose);border:1px solid var(--rose-l)}
+.cond-empty{font-size:11px;color:var(--text4);font-style:italic}
+.cond-picker{display:none;padding:.375rem .875rem .625rem;border-top:1px solid var(--border-l);flex-wrap:wrap;gap:5px}
+.cond-picker.on{display:flex;animation:fadeUp .18s ease}
+.cond-opt{padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s}
+.cond-opt.on{border-color:var(--rose);background:var(--rose-p);color:var(--rose)}
 
-/* Habit progress */
-.habit-progress {
-  margin-top: .75rem; padding-top: .75rem;
-  border-top: 1px solid var(--border-l);
-}
-.habit-prog-bar {
-  height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
-}
-.habit-prog-fill {
-  height: 100%; border-radius: 2px;
-  background: linear-gradient(90deg, var(--moss), var(--moss-mid));
-  transition: width .5s cubic-bezier(.4,0,.2,1);
-}
-.habit-prog-txt {
-  margin-top: 5px; font-size: 10px; color: var(--text4);
-  display: flex; justify-content: space-between;
-}
-.habit-prog-msg { font-style: italic; color: var(--moss); }
+/* ══ MENU CARD (accent treatment) ══ */
+.menu-card{background:var(--surface);border:1px solid var(--border-l);border-left:3px solid var(--moss);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.menu-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.125rem .75rem;background:linear-gradient(135deg,rgba(234,242,236,.7),rgba(248,240,220,.5));border-bottom:1px solid var(--border-l)}
+.menu-head-left{}
+.menu-head-title{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--moss);margin-bottom:2px}
+.menu-head-sub{font-size:11px;color:var(--text3)}
+.menu-refresh{padding:5px 12px;border-radius:20px;border:1.5px solid var(--moss-l);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--moss);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
+.menu-refresh:hover{background:var(--moss-p)}
+.menu-refresh svg{transition:transform .3s}
+.menu-refresh.loading svg{animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* Add habit row */
-.habit-add {
-  display: flex; gap: 7px; margin-top: .75rem;
-}
-.habit-add-inp {
-  flex: 1; padding: 8px 12px;
-  border: 1.5px solid var(--border); border-radius: var(--rsm);
-  font-family: 'DM Sans', sans-serif; font-size: 12px;
-  color: var(--text); background: var(--bg);
-  outline: none; transition: border-color .2s;
-}
-.habit-add-inp:focus { border-color: var(--moss); }
-.habit-add-inp::placeholder { color: var(--text4); font-style: italic; }
-.habit-add-btn {
-  padding: 8px 14px;
-  background: var(--moss); color: #fff;
-  border: none; border-radius: var(--rsm);
-  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
-  cursor: pointer; white-space: nowrap; transition: background .15s;
-}
-.habit-add-btn:hover { background: var(--moss-d); }
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.menu-cell{padding:.875rem .875rem .75rem;border-right:1px solid var(--border-l);cursor:pointer;transition:background .15s}
+.menu-cell:last-child{border-right:none}
+.menu-cell:hover{background:var(--bg2)}
+.menu-cell-time{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text4);margin-bottom:4px}
+.menu-cell-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3}
+.menu-cell-cal{font-size:10px;color:var(--amber);font-weight:600;margin-bottom:3px}
+.menu-cell-why{font-size:10px;color:var(--text3);line-height:1.45}
+.menu-nara{padding:.625rem 1.125rem .875rem;border-top:1px solid var(--border-l);font-size:11.5px;color:var(--moss);font-style:italic;line-height:1.6;display:none;background:var(--moss-p)}
+.menu-nara.on{display:block}
 
-/* Habit themes */
-.habit-themes {
-  display: flex; flex-wrap: wrap; gap: 5px;
-  margin-bottom: .625rem;
-}
-.theme-chip {
-  padding: 5px 11px; border-radius: 20px;
-  border: 1.5px solid var(--border); background: transparent;
-  font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text2);
-  cursor: pointer; transition: all .15s;
-}
-.theme-chip:hover { background: var(--bg2); }
-.theme-chip.active { border-color: var(--moss); background: var(--moss-p); color: var(--moss); font-weight: 600; }
+/* ══ ACTION ROW ══ */
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.action-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);cursor:pointer;overflow:hidden;transition:all .18s cubic-bezier(.34,1.56,.64,1)}
+.action-card:active{transform:scale(.97)}
+.action-card-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem .875rem .625rem;border-bottom:1px solid var(--border-l)}
+.action-card-title{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.03em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.action-card-stat{font-size:11px;font-weight:700;color:var(--amber);background:var(--amber-p);padding:2px 8px;border-radius:10px}
+.action-card-body{padding:.625rem .875rem .875rem;min-height:54px}
+.action-item{font-size:11px;color:var(--text2);display:flex;justify-content:space-between;gap:6px;margin-bottom:2px}
+.action-item-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.action-item-cal{color:var(--amber);font-weight:600;white-space:nowrap}
+.action-empty{font-size:11px;color:var(--text4);font-style:italic;line-height:1.55}
+.action-tap{font-size:10px;color:var(--moss);font-weight:500;margin-top:3px}
 
-.habit-suggestions {
-  display: none; background: var(--bg2);
-  border: 1px solid var(--border-l); border-radius: var(--rsm);
-  padding: 9px 11px; margin-bottom: .625rem;
-  animation: fadeUp .2s ease;
-}
-.habit-suggestions.on { display: block; }
-.habit-sug-label {
-  font-size: 10px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: .07em; color: var(--text3); margin-bottom: 7px;
-}
-.habit-sug-chips { display: flex; flex-wrap: wrap; gap: 5px; }
-.habit-sug-chip {
-  padding: 4px 10px; border-radius: 12px;
-  border: 1px solid var(--border); background: var(--surface);
-  font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text2);
-  cursor: pointer; transition: all .12s;
-}
-.habit-sug-chip:hover { border-color: var(--moss-l); background: var(--moss-p); color: var(--moss); }
+/* ══ NARA MESSAGE ══ */
+.nara-message{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:1rem 1.125rem;display:none}
+.nara-message.on{display:block;animation:fadeUp .4s ease}
+.nara-msg-head{display:flex;align-items:center;gap:8px;margin-bottom:.5rem}
+.nara-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nara-msg-name{font-size:12px;font-weight:600;color:var(--moss)}
+.nara-msg-body{font-size:13px;color:var(--text2);line-height:1.8}
+.nara-msg-body p{margin-bottom:5px}
+.nara-msg-body p:last-child{margin-bottom:0}
+.nara-dots{display:flex;gap:4px;align-items:center;padding:2px 0}
+.nara-dots span{width:6px;height:6px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s infinite}
+.nara-dots span:nth-child(2){animation-delay:.2s}
+.nara-dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounceDot{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1.2);opacity:1}}
 
-/* ═══ QUICK ROW: WATER | MOOD | COND ═══ */
-.quick-row {
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+/* ══ SHEETS ══ */
+.sheet-overlay{position:fixed;inset:0;background:rgba(28,24,16,.45);z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(3px)}
+.sheet-overlay.on{opacity:1;pointer-events:auto}
+.bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:24px 24px 0 0;z-index:900;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);max-height:88dvh;display:flex;flex-direction:column;box-shadow:0 -8px 48px rgba(28,24,16,.15)}
+.bottom-sheet.open{transform:translateY(0)}
+@media(min-width:640px){
+  .bottom-sheet{left:50%;right:auto;width:540px;transform:translateX(-50%) translateY(100%);border-radius:24px 24px 0 0}
+  .bottom-sheet.open{transform:translateX(-50%) translateY(0)}
 }
-.quick-card {
-  background: var(--surface); border: 1px solid var(--border-l);
-  border-radius: var(--r); box-shadow: var(--sh);
-  cursor: pointer; overflow: hidden;
-  transition: all .18s cubic-bezier(.34,1.56,.64,1);
-}
-.quick-card:active { transform: scale(.97); }
-.quick-card-inner { padding: .875rem .875rem .75rem; }
-.quick-card-label {
-  font-size: 10px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--text4); margin-bottom: .5rem;
-}
+.sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.sheet-head{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-l);flex-shrink:0;gap:8px}
+.sheet-title{font-size:13px;font-weight:600;color:var(--text);flex:1}
+.sheet-stat{font-size:12px;color:var(--amber);font-weight:600}
+.sheet-close{background:var(--bg2);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:12px;color:var(--text3);display:flex;align-items:center;justify-content:center}
+.sheet-body{flex:1;overflow-y:auto;padding:14px 16px 32px;-webkit-overflow-scrolling:touch}
 
-/* Water bottle visual */
-.bottle-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.bottle {
-  width: 32px; height: 50px; position: relative;
-  display: flex; flex-direction: column;
-}
-.bottle-neck {
-  width: 14px; height: 8px;
-  border: 2px solid var(--sky-l); border-bottom: none;
-  border-radius: 3px 3px 0 0;
-  margin: 0 auto; background: var(--surface);
-  position: relative; z-index: 2;
-}
-.bottle-body {
-  flex: 1; border: 2px solid var(--sky-l);
-  border-radius: 4px 4px 8px 8px;
-  overflow: hidden; position: relative;
-  background: var(--surface);
-}
-.bottle-fill {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: linear-gradient(180deg, rgba(46,95,122,.25), rgba(46,95,122,.45));
-  transition: height .5s cubic-bezier(.4,0,.2,1);
-  border-radius: 0 0 5px 5px;
-}
-.bottle-shine {
-  position: absolute; top: 3px; left: 4px;
-  width: 3px; height: 60%; border-radius: 2px;
-  background: rgba(255,255,255,.5);
-}
-.bottle-count { font-size: 16px; font-weight: 700; color: var(--sky); line-height: 1; }
-.bottle-sub { font-size: 9px; color: var(--text4); }
+/* Meals */
+.meal-list{list-style:none;margin-bottom:.875rem}
+.meal-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border-l);font-size:12px}
+.meal-row:last-child{border-bottom:none}
+.meal-time{font-size:10px;color:var(--text4);min-width:34px;padding-top:1px}
+.meal-name{flex:1;color:var(--text2)}
+.meal-name small{font-size:10px;color:var(--text4);display:block}
+.meal-kcal{font-size:11px;font-weight:700;color:var(--amber);white-space:nowrap}
+.meal-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text4);padding:2px 4px;border-radius:4px;transition:all .15s}
+.meal-del:hover{color:var(--clay);background:var(--clay-p)}
+.meal-inp-row{display:flex;gap:7px;margin-bottom:6px}
+.meal-inp{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.meal-inp:focus{border-color:var(--moss)}
+.meal-inp::placeholder{color:var(--text4)}
+.meal-portion-row{display:flex;gap:7px;align-items:center;margin-bottom:7px}
+.meal-portion-lbl{font-size:11px;color:var(--text3);white-space:nowrap}
+.meal-portion-inp{width:54px;padding:7px 8px;border:1.5px solid var(--border);border-radius:var(--rxs);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;text-align:center}
+.meal-unit-sel{flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rxs);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);background:var(--bg);outline:none;cursor:pointer}
+.food-sug-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.food-sug-chip{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--bg2);font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
+.food-sug-chip:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
+.add-btn{padding:9px 16px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
+.add-btn:hover{background:var(--moss-d)}
+.cal-summary{display:flex;align-items:center;justify-content:space-between;background:var(--amber-p);border:1px solid var(--amber-l);border-radius:var(--rxs);padding:8px 12px;margin-top:8px}
+.cal-summary-lbl{font-size:11px;color:var(--text2)}
+.cal-summary-num{font-size:15px;font-weight:700;color:var(--amber)}
 
-/* Water controls (expanded) */
-.water-controls {
-  display: none; padding: .625rem .875rem .875rem;
-  border-top: 1px solid var(--border-l);
-  align-items: center; justify-content: center; gap: 12px;
-}
-.water-controls.on { display: flex; animation: fadeUp .2s ease; }
-.wc-btn {
-  width: 34px; height: 34px; border-radius: 50%;
-  border: 1.5px solid var(--border); background: var(--surface);
-  font-size: 18px; color: var(--sky); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .15s cubic-bezier(.34,1.56,.64,1);
-}
-.wc-btn:hover { border-color: var(--sky); background: var(--sky-p); transform: scale(1.1); }
-.wc-val { font-size: 20px; font-weight: 700; color: var(--sky); min-width: 44px; text-align: center; }
-.wc-target { font-size: 10px; color: var(--text4); }
+/* Move */
+.move-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.move-opt{padding:10px 6px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;text-align:center;font-family:'DM Sans',sans-serif;transition:all .15s}
+.move-opt:hover{background:var(--bg2);border-color:var(--moss-l)}
+.move-opt-icon{font-size:20px;display:block;margin-bottom:3px}
+.move-opt-lbl{font-size:10px;color:var(--text2);font-weight:500}
+.move-opt-cal{font-size:9px;color:var(--amber);margin-top:2px}
+.move-custom-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.move-inp{flex:1;min-width:120px;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.move-inp:focus{border-color:var(--moss)}
+.move-inp::placeholder{color:var(--text4)}
+.move-dur{width:58px;padding:9px 8px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;text-align:center}
+.move-dur-lbl{font-size:11px;color:var(--text3);align-self:center}
+.move-add-btn{padding:9px 14px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
+.move-list{list-style:none}
+.move-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border-l);font-size:12px}
+.move-row:last-child{border-bottom:none}
+.move-row-icon{font-size:15px;flex-shrink:0}
+.move-row-name{flex:1;color:var(--text2)}
+.move-row-dur{font-size:10px;color:var(--text4)}
+.move-row-cal{font-size:11px;font-weight:700;color:var(--amber);white-space:nowrap}
+.move-row-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text4);padding:2px 4px;border-radius:4px;transition:all .15s}
+.move-row-del:hover{color:var(--clay);background:var(--clay-p)}
+.move-summary-bar{background:var(--sky-p);border:1px solid var(--sky-l);border-radius:var(--rxs);padding:9px 12px;margin-top:8px;font-size:12px;color:var(--sky);line-height:1.6;display:none}
+.move-summary-bar.on{display:block}
 
-/* Mood display */
-.mood-display { text-align: center; }
-.mood-current-em { font-size: 32px; line-height: 1.2; margin-bottom: 3px; display: block; }
-.mood-current-lbl { font-size: 10px; color: var(--text3); }
-
-/* Mood picker (expanded) */
-.mood-picker {
-  display: none; padding: .5rem .875rem .875rem;
-  border-top: 1px solid var(--border-l);
-  flex-wrap: wrap; gap: 6px; justify-content: center;
-}
-.mood-picker.on { display: flex; animation: fadeUp .2s ease; }
-.mood-opt {
-  padding: 6px 10px; border-radius: 20px;
-  border: 1.5px solid var(--border); background: transparent;
-  cursor: pointer; transition: all .15s; text-align: center;
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-}
-.mood-opt-em { font-size: 20px; line-height: 1; }
-.mood-opt-lbl { font-size: 9px; color: var(--text2); font-family: 'DM Sans', sans-serif; }
-.mood-opt:hover { background: var(--moss-p); border-color: var(--moss-l); }
-.mood-opt.sel { background: var(--moss-p); border-color: var(--moss); }
-
-/* Condition display */
-.cond-display { display: flex; flex-wrap: wrap; gap: 4px; min-height: 32px; align-items: center; }
-.cond-tag {
-  padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 500;
-  background: var(--rose-p); color: var(--rose); border: 1px solid var(--rose-l);
-}
-.cond-empty { font-size: 11px; color: var(--text4); font-style: italic; }
-
-/* Cond picker (expanded) */
-.cond-picker {
-  display: none; padding: .5rem .875rem .875rem;
-  border-top: 1px solid var(--border-l); flex-wrap: wrap; gap: 6px;
-}
-.cond-picker.on { display: flex; animation: fadeUp .2s ease; }
-.cond-opt {
-  padding: 6px 13px; border-radius: 20px;
-  border: 1.5px solid var(--border); background: transparent;
-  font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text2);
-  cursor: pointer; transition: all .15s;
-}
-.cond-opt.on { border-color: var(--rose); background: var(--rose-p); color: var(--rose); }
-
-/* ═══ MENU REKOMENDASI ═══ */
-.menu-card {
-  background: var(--surface); border: 1px solid var(--border-l);
-  border-radius: var(--r); box-shadow: var(--sh); overflow: hidden;
-}
-.menu-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .875rem 1.125rem .75rem;
-  background: linear-gradient(135deg, var(--moss-p), var(--amber-p));
-  border-bottom: 1px solid var(--border-l);
-}
-.menu-head-left { display: flex; flex-direction: column; gap: 2px; }
-.menu-head-title { font-size: 12px; font-weight: 600; color: var(--moss); letter-spacing: .04em; text-transform: uppercase; }
-.menu-head-sub { font-size: 11px; color: var(--text3); }
-.menu-refresh {
-  padding: 5px 12px; border-radius: 20px;
-  border: 1.5px solid var(--moss-l); background: var(--surface);
-  font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
-  color: var(--moss); cursor: pointer; transition: all .15s;
-  display: flex; align-items: center; gap: 5px;
-}
-.menu-refresh:hover { background: var(--moss-p); }
-.menu-refresh.loading svg { animation: spin .8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
-.menu-cell {
-  padding: .875rem .875rem .75rem;
-  border-right: 1px solid var(--border-l);
-  cursor: pointer; transition: background .15s;
-}
-.menu-cell:last-child { border-right: none; }
-.menu-cell:hover { background: var(--bg2); }
-.menu-cell-time {
-  font-size: 9px; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--text4); margin-bottom: 4px;
-}
-.menu-cell-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; line-height: 1.3; }
-.menu-cell-cal { font-size: 10px; color: var(--amber); font-weight: 600; margin-bottom: 3px; }
-.menu-cell-why { font-size: 10px; color: var(--text3); line-height: 1.45; }
-
-.menu-nara {
-  padding: .625rem 1.125rem .875rem;
-  border-top: 1px solid var(--border-l);
-  font-size: 12px; color: var(--text3); font-style: italic;
-  line-height: 1.6; display: none;
-}
-.menu-nara.on { display: block; }
-
-/* ═══ MAKAN & GERAK ROW ═══ */
-.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.action-card {
-  background: var(--surface); border: 1px solid var(--border-l);
-  border-radius: var(--r); box-shadow: var(--sh);
-  cursor: pointer; overflow: hidden;
-  transition: all .18s cubic-bezier(.34,1.56,.64,1);
-}
-.action-card:active { transform: scale(.97); }
-.action-card-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .875rem .875rem .625rem;
-  border-bottom: 1px solid var(--border-l);
-}
-.action-card-title {
-  font-size: 11px; font-weight: 600; color: var(--text2);
-  letter-spacing: .03em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 6px;
-}
-.action-card-stat {
-  font-size: 11px; font-weight: 700; color: var(--amber);
-  background: var(--amber-p); padding: 2px 8px; border-radius: 10px;
-}
-.action-card-body { padding: .625rem .875rem .875rem; min-height: 56px; }
-.action-preview { display: flex; flex-direction: column; gap: 3px; }
-.action-item {
-  font-size: 11px; color: var(--text2);
-  display: flex; justify-content: space-between; gap: 6px;
-}
-.action-item-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.action-item-cal { color: var(--amber); font-weight: 600; white-space: nowrap; }
-.action-empty { font-size: 11px; color: var(--text4); font-style: italic; line-height: 1.5; }
-.action-tap-hint { font-size: 10px; color: var(--moss); font-weight: 500; margin-top: 4px; }
-
-/* ═══ NARA MESSAGE ═══ */
-.nara-message {
-  background: var(--surface); border: 1px solid var(--border-l);
-  border-radius: var(--r); box-shadow: var(--sh);
-  padding: 1rem 1.125rem; display: none;
-}
-.nara-message.on { display: block; animation: fadeUp .4s ease; }
-.nara-msg-head {
-  display: flex; align-items: center; gap: 8px; margin-bottom: .625rem;
-}
-.nara-av {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--moss), var(--moss-d));
-  color: #fff; font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 13px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.nara-msg-name { font-size: 12px; font-weight: 600; color: var(--moss); }
-.nara-msg-body { font-size: 13px; color: var(--text2); line-height: 1.8; }
-.nara-msg-body p { margin-bottom: 6px; }
-.nara-msg-body p:last-child { margin-bottom: 0; }
-.nara-loading { display: flex; gap: 4px; align-items: center; padding: 2px 0; }
-.nara-loading span {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--moss-l);
-  animation: bounce-dot 1.2s infinite;
-}
-.nara-loading span:nth-child(2) { animation-delay: .2s; }
-.nara-loading span:nth-child(3) { animation-delay: .4s; }
-@keyframes bounce-dot {
-  0%,80%,100% { transform: scale(.7); opacity: .5; }
-  40% { transform: scale(1.2); opacity: 1; }
-}
-
-/* ═══ BOTTOM SHEETS ═══ */
-.sheet-overlay {
-  position: fixed; inset: 0;
-  background: rgba(28,24,16,.45);
-  z-index: 800; opacity: 0; pointer-events: none;
-  transition: opacity .3s;
-  backdrop-filter: blur(3px);
-}
-.sheet-overlay.on { opacity: 1; pointer-events: auto; }
-
-.bottom-sheet {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--surface); border-radius: 24px 24px 0 0;
-  z-index: 900; transform: translateY(100%);
-  transition: transform .35s cubic-bezier(.32,.72,0,1);
-  max-height: 88dvh; display: flex; flex-direction: column;
-  box-shadow: 0 -8px 48px rgba(28,24,16,.15);
-}
-.bottom-sheet.open { transform: translateY(0); }
-
-@media (min-width: 640px) {
-  .bottom-sheet {
-    left: 50%; right: auto; width: 540px;
-    transform: translateX(-50%) translateY(100%);
-    border-radius: 24px 24px 0 0;
-  }
-  .bottom-sheet.open { transform: translateX(-50%) translateY(0); }
-}
-
-.sheet-handle {
-  width: 40px; height: 4px; background: var(--border);
-  border-radius: 2px; margin: 12px auto 0; flex-shrink: 0;
-}
-.sheet-head {
-  display: flex; align-items: center;
-  padding: 10px 16px 10px; border-bottom: 1px solid var(--border-l);
-  flex-shrink: 0; gap: 8px;
-}
-.sheet-title { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
-.sheet-stat { font-size: 12px; color: var(--amber); font-weight: 600; }
-.sheet-close {
-  background: var(--bg2); border: none; width: 28px; height: 28px;
-  border-radius: 50%; cursor: pointer; font-size: 12px; color: var(--text3);
-  display: flex; align-items: center; justify-content: center;
-}
-.sheet-body {
-  flex: 1; overflow-y: auto; padding: 14px 16px 32px;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Meals sheet */
-.meal-list { list-style: none; margin-bottom: .875rem; }
-.meal-row {
-  display: flex; align-items: flex-start; gap: 8px;
-  padding: 7px 0; border-bottom: 1px solid var(--border-l);
-  font-size: 12px;
-}
-.meal-row:last-child { border-bottom: none; }
-.meal-time { font-size: 10px; color: var(--text4); min-width: 34px; padding-top: 1px; }
-.meal-name { flex: 1; color: var(--text2); }
-.meal-name small { font-size: 10px; color: var(--text4); display: block; }
-.meal-kcal { font-size: 11px; font-weight: 700; color: var(--amber); white-space: nowrap; }
-.meal-del {
-  background: none; border: none; cursor: pointer;
-  font-size: 11px; color: var(--text4); padding: 2px 4px;
-  border-radius: 4px; transition: all .15s;
-}
-.meal-del:hover { color: var(--clay); background: var(--clay-p); }
-
-.meal-inp-row { display: flex; gap: 7px; margin-bottom: 6px; }
-.meal-inp {
-  flex: 1; padding: 9px 12px;
-  border: 1.5px solid var(--border); border-radius: var(--rsm);
-  font-family: 'DM Sans', sans-serif; font-size: 13px;
-  color: var(--text); background: var(--bg);
-  outline: none; transition: border-color .2s;
-}
-.meal-inp:focus { border-color: var(--moss); }
-.meal-inp::placeholder { color: var(--text4); }
-.meal-portion-row {
-  display: flex; gap: 7px; align-items: center; margin-bottom: 7px;
-}
-.meal-portion-lbl { font-size: 11px; color: var(--text3); white-space: nowrap; }
-.meal-portion-inp {
-  width: 54px; padding: 7px 8px;
-  border: 1.5px solid var(--border); border-radius: var(--rxs);
-  font-family: 'DM Sans', sans-serif; font-size: 13px;
-  color: var(--text); background: var(--bg);
-  outline: none; text-align: center;
-}
-.meal-unit-sel {
-  flex: 1; padding: 7px 10px;
-  border: 1.5px solid var(--border); border-radius: var(--rxs);
-  font-family: 'DM Sans', sans-serif; font-size: 12px;
-  color: var(--text2); background: var(--bg); outline: none; cursor: pointer;
-}
-.food-sug-wrap { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
-.food-sug-chip {
-  padding: 4px 10px; border-radius: 12px;
-  border: 1px solid var(--border); background: var(--bg2);
-  font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text2);
-  cursor: pointer; transition: all .12s;
-}
-.food-sug-chip:hover { border-color: var(--moss-l); background: var(--moss-p); color: var(--moss); }
-.add-btn {
-  padding: 9px 16px; background: var(--moss); color: #fff;
-  border: none; border-radius: var(--rsm);
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-  cursor: pointer; white-space: nowrap; transition: background .15s;
-}
-.add-btn:hover { background: var(--moss-d); }
-.cal-summary {
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--amber-p); border: 1px solid var(--amber-l);
-  border-radius: var(--rxs); padding: 8px 12px; margin-top: 8px;
-}
-.cal-summary-lbl { font-size: 11px; color: var(--text2); }
-.cal-summary-num { font-size: 15px; font-weight: 700; color: var(--amber); }
-
-/* Move sheet */
-.move-grid {
-  display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px;
-}
-.move-opt {
-  padding: 10px 6px; border-radius: var(--rsm);
-  border: 1.5px solid var(--border); background: var(--bg);
-  cursor: pointer; text-align: center; font-family: 'DM Sans', sans-serif;
-  transition: all .15s;
-}
-.move-opt:hover { background: var(--bg2); border-color: var(--moss-l); }
-.move-opt-icon { font-size: 20px; display: block; margin-bottom: 3px; }
-.move-opt-lbl { font-size: 10px; color: var(--text2); font-weight: 500; }
-.move-opt-cal { font-size: 9px; color: var(--amber); margin-top: 2px; }
-
-.move-custom-row {
-  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;
-}
-.move-inp {
-  flex: 1; min-width: 120px; padding: 9px 12px;
-  border: 1.5px solid var(--border); border-radius: var(--rsm);
-  font-family: 'DM Sans', sans-serif; font-size: 12px;
-  color: var(--text); background: var(--bg); outline: none;
-  transition: border-color .2s;
-}
-.move-inp:focus { border-color: var(--moss); }
-.move-inp::placeholder { color: var(--text4); }
-.move-dur {
-  width: 60px; padding: 9px 8px;
-  border: 1.5px solid var(--border); border-radius: var(--rsm);
-  font-family: 'DM Sans', sans-serif; font-size: 12px;
-  color: var(--text); background: var(--bg); outline: none; text-align: center;
-}
-.move-dur-lbl { font-size: 11px; color: var(--text3); align-self: center; }
-.move-add { padding: 9px 14px; background: var(--moss); color: #fff; border: none; border-radius: var(--rsm); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; }
-
-.move-list { list-style: none; }
-.move-row {
-  display: flex; align-items: center; gap: 8px;
-  padding: 7px 0; border-bottom: 1px solid var(--border-l); font-size: 12px;
-}
-.move-row:last-child { border-bottom: none; }
-.move-row-icon { font-size: 16px; flex-shrink: 0; }
-.move-row-name { flex: 1; color: var(--text2); }
-.move-row-dur { font-size: 10px; color: var(--text4); }
-.move-row-cal { font-size: 11px; font-weight: 700; color: var(--amber); white-space: nowrap; }
-.move-row-del { background: none; border: none; cursor: pointer; font-size: 11px; color: var(--text4); padding: 2px 4px; border-radius: 4px; transition: all .15s; }
-.move-row-del:hover { color: var(--clay); background: var(--clay-p); }
-.move-summary-bar {
-  background: var(--sky-p); border: 1px solid var(--sky-l);
-  border-radius: var(--rxs); padding: 9px 12px; margin-top: 8px;
-  font-size: 12px; color: var(--sky); line-height: 1.6; display: none;
-}
-.move-summary-bar.on { display: block; }
-
-/* ═══ NARA FLOAT ═══ */
-.nara-float {
-  position: fixed; bottom: 82px; right: 16px; z-index: 99;
-}
-.nara-fab {
-  width: 50px; height: 50px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--moss), var(--moss-d));
-  color: #fff; border: none; cursor: pointer;
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-weight: 700; font-size: 20px;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 18px rgba(61,97,71,.4);
-  transition: all .2s cubic-bezier(.34,1.56,.64,1);
-}
-.nara-fab:hover { transform: scale(1.1); }
-.nara-badge {
-  position: absolute; top: -2px; right: -2px;
-  width: 13px; height: 13px; border-radius: 50%;
-  background: var(--clay); border: 2px solid var(--bg);
-  display: none; animation: pulse-dot 2s infinite;
-}
-.nara-badge.on { display: block; }
+/* ══ NARA FLOAT ══ */
+.nara-float{position:fixed;bottom:82px;right:16px;z-index:99}
+.nara-fab{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;border:none;cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(61,97,71,.4);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.nara-fab:hover{transform:scale(1.1)}
+.nara-badge{position:absolute;top:-2px;right:-2px;width:13px;height:13px;border-radius:50%;background:var(--clay);border:2px solid var(--bg);animation:pulseDot 2s infinite;display:none}
+.nara-badge.on{display:block}
 
 /* Nara chat */
-.nara-chat {
-  position: fixed; bottom: 82px; right: 16px;
-  width: 320px; background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r); z-index: 99;
-  display: none; flex-direction: column; height: 500px; max-height: 78vh;
-  box-shadow: var(--sh-lg);
-}
-.nara-chat.on { display: flex; animation: fadeUp .3s ease; }
-@media (max-width: 480px) {
-  .nara-chat { width: calc(100vw - 32px); right: 16px; }
-}
-.nc-head {
-  padding: 11px 14px 9px; border-bottom: 1px solid var(--border-l);
-  display: flex; align-items: center; gap: 8px;
-}
-.nc-av {
-  width: 26px; height: 26px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--moss), var(--moss-d));
-  color: #fff; font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 12px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.nc-name { font-size: 12px; font-weight: 600; color: var(--moss); }
-.nc-status { font-size: 10px; color: var(--text3); }
-.nc-close {
-  background: none; border: none; cursor: pointer;
-  font-size: 14px; color: var(--text3); padding: 2px; margin-left: auto;
-}
-.nc-msgs {
-  flex: 1; overflow-y: auto; padding: 10px 12px;
-  display: flex; flex-direction: column; gap: 8px; min-height: 0;
-}
-.nc-msg {
-  max-width: 88%; font-size: 12px; line-height: 1.7;
-  padding: 7px 11px; border-radius: 12px; word-wrap: break-word;
-  white-space: pre-wrap; flex-shrink: 0;
-}
-.nc-msg.nara {
-  background: var(--moss-p); color: var(--text2);
-  align-self: flex-start; border-radius: 4px 12px 12px 12px;
-}
-.nc-msg.user {
-  background: var(--moss); color: #fff;
-  align-self: flex-end; border-radius: 12px 4px 12px 12px;
-}
-.nc-quick {
-  display: flex; gap: 5px; flex-wrap: wrap;
-  padding: 5px 10px; border-top: 1px solid var(--border-l);
-}
-.nc-qbtn {
-  padding: 4px 9px; border-radius: 12px;
-  border: 1px solid var(--border); background: var(--bg);
-  font-family: 'DM Sans', sans-serif; font-size: 10px; color: var(--text2);
-  cursor: pointer; transition: all .12s; white-space: nowrap;
-}
-.nc-qbtn:hover { border-color: var(--moss-l); background: var(--moss-p); color: var(--moss); }
-.nc-inp-row {
-  padding: 8px 10px; border-top: 1px solid var(--border-l);
-  display: flex; gap: 7px;
-}
-.nc-inp {
-  flex: 1; padding: 7px 11px;
-  border: 1.5px solid var(--border); border-radius: 18px;
-  font-family: 'DM Sans', sans-serif; font-size: 12px;
-  color: var(--text); background: var(--bg); outline: none;
-  transition: border-color .2s; resize: none;
-  min-height: 34px; max-height: 90px; overflow-y: auto; line-height: 1.5;
-}
-.nc-inp:focus { border-color: var(--moss); }
-.nc-send {
-  padding: 7px 13px; background: var(--moss); color: #fff;
-  border: none; border-radius: 18px;
-  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
-  cursor: pointer; transition: background .15s;
-}
-.nc-send:hover { background: var(--moss-d); }
+.nara-chat{position:fixed;bottom:82px;right:16px;width:320px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);z-index:99;display:none;flex-direction:column;height:500px;max-height:78vh;box-shadow:var(--sh-lg)}
+.nara-chat.on{display:flex;animation:fadeUp .3s ease}
+@media(max-width:480px){.nara-chat{width:calc(100vw - 32px)}}
+.nc-head{padding:11px 14px 9px;border-bottom:1px solid var(--border-l);display:flex;align-items:center;gap:8px}
+.nc-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nc-name{font-size:12px;font-weight:600;color:var(--moss)}
+.nc-status{font-size:10px;color:var(--text3)}
+.nc-close{background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:2px;margin-left:auto}
+.nc-msgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.nc-msg{max-width:88%;font-size:12px;line-height:1.7;padding:7px 11px;border-radius:12px;word-wrap:break-word;white-space:pre-wrap;flex-shrink:0}
+.nc-msg.nara{background:var(--moss-p);color:var(--text2);align-self:flex-start;border-radius:4px 12px 12px 12px}
+.nc-msg.user{background:var(--moss);color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px}
+.nc-quick{display:flex;gap:5px;flex-wrap:wrap;padding:5px 10px;border-top:1px solid var(--border-l)}
+.nc-qbtn{padding:4px 9px;border-radius:12px;border:1px solid var(--border);background:var(--bg);font-family:'DM Sans',sans-serif;font-size:10px;color:var(--text2);cursor:pointer;transition:all .12s;white-space:nowrap}
+.nc-qbtn:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
+.nc-inp-row{padding:8px 10px;border-top:1px solid var(--border-l);display:flex;gap:7px}
+.nc-inp{flex:1;padding:7px 11px;border:1.5px solid var(--border);border-radius:18px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;resize:none;min-height:34px;max-height:90px;line-height:1.5}
+.nc-inp:focus{border-color:var(--moss)}
+.nc-send{padding:7px 13px;background:var(--moss);color:#fff;border:none;border-radius:18px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
+.nc-send:hover{background:var(--moss-d)}
 
-/* ═══ BOTTOM NAV ═══ */
-.bnav {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: rgba(253,250,246,.97);
-  backdrop-filter: blur(20px) saturate(1.5);
-  border-top: 1px solid rgba(226,217,204,.5);
-  display: flex; z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom);
-  box-shadow: 0 -4px 20px rgba(28,24,16,.06);
-}
-.bnav-btn {
-  flex: 1; padding: 10px 8px 8px;
-  background: transparent; border: none; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  transition: opacity .15s;
-}
-.bnav-icon { font-size: 18px; line-height: 1; }
-.bnav-lbl {
-  font-size: 10px; font-weight: 500; color: var(--text3);
-  font-family: 'DM Sans', sans-serif;
-}
-.bnav-btn.active .bnav-lbl { color: var(--moss); font-weight: 600; }
+/* ══ BOTTOM NAV ══ */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(253,250,246,.97);backdrop-filter:blur(20px) saturate(1.5);border-top:1px solid rgba(226,217,204,.5);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 20px rgba(28,24,16,.06)}
+.bnav-btn{flex:1;padding:10px 8px 8px;background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bnav-icon{font-size:18px;line-height:1}
+.bnav-lbl{font-size:10px;font-weight:500;color:var(--text3);font-family:'DM Sans',sans-serif}
+.bnav-btn.active .bnav-lbl{color:var(--moss);font-weight:600}
 
-/* ═══ TOAST ═══ */
-.toast {
-  position: fixed; bottom: 88px; left: 50%;
-  transform: translateX(-50%) translateY(16px);
-  background: var(--surface); border: 1px solid var(--border-l);
-  border-radius: 50px; padding: 9px 18px;
-  font-size: 12px; color: var(--text2);
-  box-shadow: var(--sh-md); white-space: nowrap; z-index: 1000;
-  opacity: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1);
-  pointer-events: none; max-width: 88vw; text-align: center;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border-l);border-radius:50px;padding:9px 18px;font-size:12px;color:var(--text2);box-shadow:var(--sh-md);white-space:nowrap;z-index:1000;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ═══ ICON HELPERS ═══ */
-.icon-sq {
-  width: 22px; height: 22px; border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; flex-shrink: 0;
-}
-.icon-moss { background: var(--moss-p); }
-.icon-sky { background: var(--sky-p); }
-.icon-amber { background: var(--amber-p); }
-.icon-rose { background: var(--rose-p); }
-.icon-clay { background: var(--clay-p); }
+/* ══ SVG ICON HELPER ══ */
+.si{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 
-/* ═══ SVG ICONS ═══ */
-.svg-icon { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ═══ ANIMATIONS ═══ */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ═══ SECTION DIVIDER (for scanability) ═══ */
-.section-divider {
-  font-size: 10px; font-weight: 600; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--text4);
-  padding: 0 2px; margin-top: 4px;
-}
-
-/* ═══ RESPONSIVE ═══ */
-@media (min-width: 640px) {
-  .today-scroll { padding: 1.5rem 1.5rem 100px; gap: 12px; }
-  .quick-row { gap: 10px; }
-  .action-row { gap: 10px; }
+@media(min-width:640px){
+  .today-scroll{padding:1.5rem 1.5rem 100px;gap:12px}
+  .quick-row{gap:10px}
+  .action-row{gap:10px}
 }
 </style>
 </head>
@@ -890,24 +377,16 @@ body {
   </div>
 </div>
 
-<!-- MAIN SCROLL -->
-<div class="today-scroll" id="today-scroll">
+<!-- SCROLL -->
+<div class="today-scroll">
 
   <!-- 1. GREETING -->
-  <div class="greeting" id="greeting-card">
-    <div class="greeting-left">
-      <div class="greeting-time" id="g-time">Selamat pagi</div>
-      <div class="greeting-name">Hei, <em id="g-name">Pipit</em>! <span id="g-wave" style="display:inline-block;animation:wave 2.5s ease-in-out infinite;transform-origin:70% 70%">👋</span></div>
-      <div class="greeting-nara">
-        <div class="nara-dot"></div>
-        <div class="nara-text" id="g-nara-msg">Semoga harimu berjalan baik ya.</div>
-      </div>
-    </div>
-    <div class="greeting-score" id="score-wrap">
-      <div class="score-circle" id="score-circle" style="--pct:0">
-        <div class="score-inner" id="score-pct">0%</div>
-      </div>
-      <div class="score-lbl">hari ini</div>
+  <div class="greeting">
+    <div class="greeting-time" id="g-time">Selamat pagi</div>
+    <div class="greeting-name">Hei, <em id="g-name">Pipit</em></div>
+    <div class="greeting-nara">
+      <div class="nara-dot"></div>
+      <div class="nara-greeting-txt" id="g-nara">Gimana kondisi hari ini? Nara di sini kalau mau cerita.</div>
     </div>
   </div>
 
@@ -916,50 +395,42 @@ body {
   <div class="section-card">
     <div class="section-head">
       <div class="section-title">
-        <div class="icon-sq icon-moss">
-          <svg class="svg-icon" style="color:var(--moss)" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        <div class="s-icon s-icon-moss">
+          <svg class="si" style="color:var(--moss)" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         </div>
         Daily Habit
       </div>
       <span class="section-badge" id="habit-badge">0/0</span>
     </div>
     <div class="section-body">
-      <!-- Theme chips -->
       <div class="habit-themes" id="habit-themes"></div>
-      <!-- Suggestions -->
       <div class="habit-suggestions" id="habit-suggestions">
         <div class="habit-sug-label" id="habit-sug-head">Pilih kebiasaan</div>
         <div class="habit-sug-chips" id="habit-sug-chips"></div>
       </div>
-      <!-- List -->
-      <ul class="habit-list" id="habit-list">
-        <li style="font-size:12px;color:var(--text4);font-style:italic;padding:6px 0">Belum ada kebiasaan. Pilih dari tema atau tulis sendiri (◕ᴗ◕✿)</li>
-      </ul>
-      <!-- Progress -->
+      <ul class="habit-list" id="habit-list"></ul>
       <div class="habit-progress">
         <div class="habit-prog-bar"><div class="habit-prog-fill" id="habit-prog-fill" style="width:0%"></div></div>
-        <div class="habit-prog-txt">
-          <span id="habit-prog-count"></span>
+        <div class="habit-prog-row">
+          <span class="habit-prog-count" id="habit-prog-count"></span>
           <span class="habit-prog-msg" id="habit-prog-msg"></span>
         </div>
       </div>
-      <!-- Add -->
-      <div class="habit-add" style="margin-top:.875rem">
+      <div class="habit-add">
         <input class="habit-add-inp" id="habit-add-inp" placeholder="Tulis kebiasaanmu sendiri..." maxlength="80" onkeydown="if(event.key==='Enter')addHabit()"/>
         <button class="habit-add-btn" onclick="addHabit()">+ Tambah</button>
       </div>
     </div>
   </div>
 
-  <!-- 3. QUICK ROW: WATER | MOOD | COND -->
+  <!-- 3. QUICK ROW -->
   <div class="section-divider">Status Hari Ini</div>
   <div class="quick-row">
 
-    <!-- WATER -->
-    <div class="quick-card" id="water-card">
-      <div class="quick-card-inner" onclick="toggleWater()">
-        <div class="quick-card-label">Air Minum</div>
-        <div class="bottle-wrap">
+    <!-- WATER (lebar) -->
+    <div class="water-card">
+      <div class="water-top" onclick="toggleWater()">
+        <div class="water-visual">
           <div class="bottle">
             <div class="bottle-neck"></div>
             <div class="bottle-body">
@@ -967,43 +438,48 @@ body {
               <div class="bottle-shine"></div>
             </div>
           </div>
-          <div class="bottle-count" id="water-count">0</div>
-          <div class="bottle-sub">/ 8 gelas</div>
+        </div>
+        <div class="water-info">
+          <div class="water-label">Air Minum</div>
+          <div class="water-count-big" id="water-count">0</div>
+          <div class="water-of">dari 8 gelas</div>
+          <div class="water-dots" id="water-dots"></div>
         </div>
       </div>
       <div class="water-controls" id="water-controls">
-        <button class="wc-btn" onclick="adjustWater(-1)">−</button>
-        <div>
-          <div class="wc-val" id="water-val">0</div>
-          <div class="wc-target">/ 8 gelas</div>
+        <div class="wc-hint" id="wc-hint">Tap + untuk tambah</div>
+        <div class="wc-btns">
+          <button class="wc-btn" onclick="adjustWater(-1)">−</button>
+          <span class="wc-num" id="wc-num">0</span>
+          <button class="wc-btn" onclick="adjustWater(1)">+</button>
         </div>
-        <button class="wc-btn" onclick="adjustWater(1)">+</button>
       </div>
     </div>
 
-    <!-- MOOD -->
-    <div class="quick-card" id="mood-card">
-      <div class="quick-card-inner" onclick="toggleMood()">
-        <div class="quick-card-label">Mood</div>
+    <!-- MOOD + KONDISI (combined) -->
+    <div class="mc-card">
+      <!-- Mood -->
+      <div class="mood-section" onclick="toggleMood()">
+        <div class="mood-section-label">Mood</div>
         <div class="mood-display">
-          <span class="mood-current-em" id="mood-em">—</span>
-          <span class="mood-current-lbl" id="mood-lbl">Tap untuk pilih</span>
+          <span class="mood-em" id="mood-em">—</span>
+          <div class="mood-right">
+            <span class="mood-lbl" id="mood-lbl">Tap untuk pilih</span>
+            <span class="mood-sub" id="mood-sub"></span>
+          </div>
         </div>
       </div>
       <div class="mood-picker" id="mood-picker">
-        <button class="mood-opt" onclick="selectMood('senang','😊','Senang')"><span class="mood-opt-em">😊</span><span class="mood-opt-lbl">Senang</span></button>
-        <button class="mood-opt" onclick="selectMood('netral','😐','Biasa')"><span class="mood-opt-em">😐</span><span class="mood-opt-lbl">Biasa</span></button>
-        <button class="mood-opt" onclick="selectMood('lelah','😮‍💨','Lelah')"><span class="mood-opt-em">😮‍💨</span><span class="mood-opt-lbl">Lelah</span></button>
-        <button class="mood-opt" onclick="selectMood('berat','😔','Berat')"><span class="mood-opt-em">😔</span><span class="mood-opt-lbl">Berat</span></button>
-        <button class="mood-opt" onclick="selectMood('semangat','🔥','Semangat')"><span class="mood-opt-em">🔥</span><span class="mood-opt-lbl">Semangat</span></button>
+        <button class="mood-opt" onclick="selectMood('senang','😊','Senang','Semoga terus terbawa ya~')"><span class="mood-opt-em">😊</span><span class="mood-opt-lbl">Senang</span></button>
+        <button class="mood-opt" onclick="selectMood('netral','😐','Biasa','Hari biasa pun punya nilainya.')"><span class="mood-opt-em">😐</span><span class="mood-opt-lbl">Biasa</span></button>
+        <button class="mood-opt" onclick="selectMood('lelah','😮‍💨','Lelah','Istirahat yang cukup ya.')"><span class="mood-opt-em">😮‍💨</span><span class="mood-opt-lbl">Lelah</span></button>
+        <button class="mood-opt" onclick="selectMood('berat','😔','Berat','Nara di sini. Tidak sendirian.')"><span class="mood-opt-em">😔</span><span class="mood-opt-lbl">Berat</span></button>
+        <button class="mood-opt" onclick="selectMood('semangat','🔥','Semangat','Salurkan energinya dengan baik!')"><span class="mood-opt-em">🔥</span><span class="mood-opt-lbl">Semangat</span></button>
       </div>
-    </div>
-
-    <!-- KONDISI -->
-    <div class="quick-card" id="cond-card">
-      <div class="quick-card-inner" onclick="toggleCond()">
-        <div class="quick-card-label">Kondisi</div>
-        <div class="cond-display" id="cond-display">
+      <!-- Kondisi -->
+      <div class="cond-section" onclick="toggleCond()">
+        <div class="cond-section-label">Kondisi</div>
+        <div class="cond-tags" id="cond-tags">
           <span class="cond-empty">Tap untuk isi</span>
         </div>
       </div>
@@ -1019,79 +495,72 @@ body {
 
   <!-- 4. MENU REKOMENDASI -->
   <div class="section-divider">Menu Hari Ini</div>
-  <div class="menu-card" id="menu-card">
+  <div class="menu-card">
     <div class="menu-head">
       <div class="menu-head-left">
         <div class="menu-head-title">Rekomendasi menu</div>
         <div class="menu-head-sub" id="menu-head-sub">Berdasarkan profil & kondisimu</div>
       </div>
       <button class="menu-refresh" id="menu-refresh-btn" onclick="refreshMenu()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10"/><path d="M20.49 15a9 9 0 01-14.85 3.36L1 14"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10"/><path d="M20.49 15a9 9 0 01-14.85 3.36L1 14"/></svg>
         Ganti menu
       </button>
     </div>
-    <div class="menu-grid" id="menu-grid">
-      <!-- filled by JS -->
-    </div>
+    <div class="menu-grid" id="menu-grid"></div>
     <div class="menu-nara" id="menu-nara"></div>
   </div>
 
   <!-- 5. MAKAN & GERAK -->
   <div class="section-divider">Catatan Hari Ini</div>
   <div class="action-row">
-
-    <!-- MAKAN -->
     <div class="action-card" onclick="openSheet('meals')">
       <div class="action-card-head">
         <div class="action-card-title">
-          <div class="icon-sq icon-amber">
-            <svg class="svg-icon" style="color:var(--amber)" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          <div class="s-icon s-icon-amber">
+            <svg class="si" style="color:var(--amber)" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
           </div>
           Makan
         </div>
         <span class="action-card-stat" id="meal-stat">0 kkal</span>
       </div>
       <div class="action-card-body">
-        <div class="action-preview" id="meal-preview">
+        <div id="meal-preview">
           <div class="action-empty">Belum ada catatan.</div>
-          <div class="action-tap-hint">Tap untuk catat →</div>
+          <div class="action-tap">Tap untuk catat →</div>
         </div>
       </div>
     </div>
-
-    <!-- GERAK -->
     <div class="action-card" onclick="openSheet('move')">
       <div class="action-card-head">
         <div class="action-card-title">
-          <div class="icon-sq icon-sky">
-            <svg class="svg-icon" style="color:var(--sky)" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><path d="M8 21l4-4 4 4"/><path d="M12 17V9"/><path d="M9 12l-1 2"/><path d="M15 12l1 2"/></svg>
+          <div class="s-icon s-icon-sky">
+            <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M12 9v5"/><path d="M9 14l-1.5 3"/><path d="M15 14l1.5 3"/><path d="M9 12l-2 1"/><path d="M15 12l2 1"/></svg>
           </div>
           Gerak
         </div>
         <span class="action-card-stat" id="move-stat">0 kkal</span>
       </div>
       <div class="action-card-body">
-        <div class="action-preview" id="move-preview">
+        <div id="move-preview">
           <div class="action-empty">Belum ada aktivitas.</div>
-          <div class="action-tap-hint">Tap untuk catat →</div>
+          <div class="action-tap">Tap untuk catat →</div>
         </div>
       </div>
     </div>
-
-  </div><!-- end action-row -->
+  </div>
 
   <!-- 6. PESAN NARA -->
-  <div class="nara-message" id="nara-today-msg">
+  <div class="nara-message" id="nara-today">
     <div class="nara-msg-head">
       <div class="nara-av">N</div>
-      <div class="nara-msg-name">Nara</div>
+      <span class="nara-msg-name">Nara</span>
     </div>
     <div class="nara-msg-body" id="nara-today-txt">
-      <div class="nara-loading"><span></span><span></span><span></span></div>
+      <div class="nara-dots"><span></span><span></span><span></span></div>
     </div>
   </div>
 
-</div><!-- end today-scroll -->
+</div><!-- end scroll -->
 
 <!-- SHEET OVERLAY -->
 <div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
@@ -1140,7 +609,7 @@ body {
       <input class="move-inp" id="move-custom-name" placeholder="Nama gerakan lain..." maxlength="40"/>
       <input class="move-dur" id="move-custom-dur" type="number" min="1" max="300" placeholder="mnt"/>
       <span class="move-dur-lbl">mnt</span>
-      <button class="move-add" onclick="addCustomMove()">+ Catat</button>
+      <button class="move-add-btn" onclick="addCustomMove()">+ Catat</button>
     </div>
     <ul class="move-list" id="move-list"></ul>
     <div class="move-summary-bar" id="move-summary-bar"></div>
@@ -1150,7 +619,7 @@ body {
 <!-- NARA FLOAT -->
 <div class="nara-float">
   <div class="nara-badge on" id="nara-badge"></div>
-  <button class="nara-fab" onclick="toggleNaraChat()" id="nara-fab-btn">N</button>
+  <button class="nara-fab" onclick="toggleNaraChat()">N</button>
 </div>
 
 <!-- NARA CHAT -->
@@ -1173,7 +642,7 @@ body {
   </div>
 </div>
 
-<!-- BOTTOM NAV (preview only) -->
+<!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="bnav-btn active"><span class="bnav-icon">☀️</span><span class="bnav-lbl">Hari Ini</span></button>
   <button class="bnav-btn"><span class="bnav-icon">🌿</span><span class="bnav-lbl">Wellness</span></button>
@@ -1181,688 +650,540 @@ body {
   <button class="bnav-btn"><span class="bnav-icon">📅</span><span class="bnav-lbl">Progres</span></button>
 </nav>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<style>
-@keyframes wave {
-  0%,100%{transform:rotate(0)}20%{transform:rotate(-14deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(5deg)}
-}
-</style>
-
 <script>
-// ═══ DATA ═══
+// ══ STATE ══
 const TODAY = new Date().toISOString().split('T')[0];
 let P = JSON.parse(localStorage.getItem('inarte_profile') || '{"name":"Pipit","age":25,"act":"Pekerja kantoran","home":"Sendiri (kos / kontrakan)","cook":"Lebih sering beli / jajan","budget":"Rp 50–100rb"}');
 let D = JSON.parse(localStorage.getItem('inarte_day_' + TODAY) || '{"water":0,"mood":null,"meals":[],"moves":[],"habits":[],"conditions":[],"totalCal":0,"totalMoveCal":0}');
-if(!D.moves) D.moves=[];
-if(!D.habits) D.habits=[];
-if(!D.conditions) D.conditions=[];
-let chatHistory = [];
+if(!D.moves)D.moves=[];if(!D.habits)D.habits=[];if(!D.conditions)D.conditions=[];
+let chatHistory=[], chatInited=false;
+function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function ld(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
 
-function sv(k,v){localStorage.setItem(k,JSON.stringify(v));}
-function ld(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}}
+// ══ FOOD DB ══
+const FOOD_DB={'nasi putih':{cal:180},'nasi merah':{cal:160},'nasi goreng':{cal:380},'nasi uduk':{cal:300},'mie goreng':{cal:350},'mie rebus':{cal:250},'mie instan':{cal:320},'roti tawar':{cal:80},'roti gandum':{cal:70},'oatmeal':{cal:150},'telur dadar':{cal:95},'telur ceplok':{cal:90},'telur rebus':{cal:70},'telur':{cal:75},'ayam goreng':{cal:250},'ayam bakar':{cal:180},'dada ayam':{cal:165},'ikan goreng':{cal:200},'ikan bakar':{cal:150},'tempe goreng':{cal:160},'tahu goreng':{cal:80},'tumis kangkung':{cal:50},'tumis bayam':{cal:45},'sayur bening':{cal:40},'gado-gado':{cal:300},'bakso':{cal:280},'soto ayam':{cal:220},'pisang':{cal:90},'apel':{cal:80},'jeruk':{cal:60},'es teh manis':{cal:90},'kopi susu':{cal:80},'susu putih':{cal:130},'gorengan':{cal:150},'kerupuk':{cal:50},'yogurt':{cal:120}};
+const FOOD_SUGS=['nasi putih','telur dadar','ayam bakar','tempe goreng','sayur bening','bakso','pisang'];
 
-// ═══ FOOD DB (compact) ═══
-const FOOD_DB={
-  'nasi putih':{cal:180},'nasi merah':{cal:160},'nasi goreng':{cal:380},'nasi uduk':{cal:300},
-  'mie goreng':{cal:350},'mie rebus':{cal:250},'mie instan':{cal:320},
-  'roti tawar':{cal:80},'roti gandum':{cal:70},'oatmeal':{cal:150},
-  'telur dadar':{cal:95},'telur ceplok':{cal:90},'telur rebus':{cal:70},'telur':{cal:75},
-  'ayam goreng':{cal:250},'ayam bakar':{cal:180},'dada ayam':{cal:165},
-  'ikan goreng':{cal:200},'ikan bakar':{cal:150},
-  'tempe goreng':{cal:160},'tahu goreng':{cal:80},
-  'tumis kangkung':{cal:50},'tumis bayam':{cal:45},'sayur bening':{cal:40},'gado-gado':{cal:300},
-  'bakso':{cal:280},'soto ayam':{cal:220},
-  'pisang':{cal:90},'apel':{cal:80},'jeruk':{cal:60},
-  'es teh manis':{cal:90},'kopi susu':{cal:80},'susu putih':{cal:130},
-  'gorengan':{cal:150},'kerupuk':{cal:50},'yogurt':{cal:120},
-};
-const FOOD_SUGS = ['nasi putih','telur dadar','ayam bakar','tempe goreng','sayur bening','bakso','pisang'];
-
-// ═══ HABIT THEMES ═══
-const HABIT_THEMES = [
-  {id:'makan',label:'Makan',suggestions:['Sarapan sebelum jam 9','Makan sayur minimal sekali','Minum 8 gelas air','Tidak makan setelah jam 8 malam','Protein di setiap makan']},
-  {id:'gerak',label:'Gerak',suggestions:['Jalan kaki 20 menit','Stretching pagi hari','Naik tangga bukan lift','Olahraga 30 menit','Plank 1 menit']},
-  {id:'tidur',label:'Tidur',suggestions:['Tidur sebelum jam 11 malam','Tidak HP 30 menit sebelum tidur','Bangun tanpa snooze','Tidur minimal 7 jam']},
-  {id:'mental',label:'Mental',suggestions:['Meditasi 5 menit','Tulis jurnal singkat','Screen time < 3 jam','Napas dalam saat stres']},
-  {id:'ibadah',label:'Ibadah',suggestions:['Sholat tepat waktu','Baca Al-Quran 1 halaman','Dzikir pagi dan petang','Bersedekah hari ini']},
+// ══ HABIT THEMES (spiritual dihapus, ganti Sosial & Kreasi) ══
+const HABIT_THEMES=[
+  {id:'makan',label:'Makan',sugs:['Sarapan sebelum jam 9','Makan sayur minimal sekali','Minum 8 gelas air','Tidak makan setelah jam 8 malam','Protein di setiap makan']},
+  {id:'gerak',label:'Gerak',sugs:['Jalan kaki 20 menit','Stretching pagi hari','Naik tangga bukan lift','Olahraga 30 menit','Plank 1 menit']},
+  {id:'tidur',label:'Tidur',sugs:['Tidur sebelum jam 11 malam','Tidak HP 30 menit sebelum tidur','Bangun tanpa snooze','Tidur minimal 7 jam']},
+  {id:'mental',label:'Mental',sugs:['Meditasi 5 menit','Tulis jurnal singkat','Screen time < 3 jam','Napas dalam saat stres']},
+  {id:'sosial',label:'Sosial',sugs:['Hubungi satu teman atau keluarga','Quality time tanpa HP','Ucapkan terima kasih ke seseorang','Lakukan satu kebaikan kecil']},
+  {id:'kreasi',label:'Kreasi',sugs:['Baca minimal 10 halaman','Belajar satu hal baru','Tulis sesuatu — apapun','Dengarkan podcast edukatif']},
 ];
 
-// ═══ MOVE OPTIONS ═══
-const MOVE_OPTS = [
-  {icon:'🚶',name:'Jalan kaki',cph:210},{icon:'🏃',name:'Lari',cph:480},
-  {icon:'🚴',name:'Bersepeda',cph:360},{icon:'🏊',name:'Renang',cph:420},
-  {icon:'🧘',name:'Yoga',cph:180},{icon:'💪',name:'Gym/Latihan',cph:300},
-  {icon:'⚽',name:'Olahraga tim',cph:420},{icon:'🕺',name:'Dance',cph:330},
-  {icon:'🧹',name:'Bersih-bersih',cph:180},
-];
+// ══ MOVE OPTIONS ══
+const MOVE_OPTS=[{icon:'🚶',name:'Jalan kaki',cph:210},{icon:'🏃',name:'Lari',cph:480},{icon:'🚴',name:'Bersepeda',cph:360},{icon:'🏊',name:'Renang',cph:420},{icon:'🧘',name:'Yoga',cph:180},{icon:'💪',name:'Gym',cph:300},{icon:'⚽',name:'Olahraga tim',cph:420},{icon:'🕺',name:'Dance',cph:330},{icon:'🧹',name:'Bersih-bersih',cph:180}];
 
-// ═══ BOOT ═══
-window.addEventListener('DOMContentLoaded', () => {
-  buildTopbar();
-  buildGreeting();
-  buildHabitSection();
-  buildWaterVisual();
-  restoreQuickRow();
-  buildMenuGrid();
-  renderMeals();
-  renderMoves();
-  buildFoodSuggs();
-  buildMoveGrid();
-  maybeShowNaraMessage();
-  updateScore();
+// ══ BOOT ══
+window.addEventListener('DOMContentLoaded',()=>{
+  buildTopbar(); buildGreeting(); buildHabitSection();
+  buildWaterVisual(); restoreQuickRow();
+  buildMenuGrid(); renderMeals(); renderMoves();
+  buildFoodSuggs(); buildMoveGrid();
+  maybeShowNaraMsg();
 });
 
-// ═══ TOPBAR ═══
-function buildTopbar() {
+// ══ TOPBAR ══
+function buildTopbar(){
   const days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-  const d = new Date();
-  document.getElementById('tb-date').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
-  const av = document.getElementById('av-btn');
-  av.textContent = (P.name||'P').charAt(0).toUpperCase();
+  const d=new Date();
+  document.getElementById('tb-date').textContent=`${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+  document.getElementById('av-btn').textContent=(P.name||'P').charAt(0).toUpperCase();
 }
 
-// ═══ GREETING ═══
-function buildGreeting() {
-  const h = new Date().getHours();
-  const times = ['Selamat malam','Selamat malam','Selamat malam','Selamat malam','Selamat malam','Selamat pagi','Selamat pagi','Selamat pagi','Selamat pagi','Selamat pagi','Selamat pagi','Selamat pagi','Selamat siang','Selamat siang','Selamat siang','Selamat sore','Selamat sore','Selamat sore','Selamat malam','Selamat malam','Selamat malam','Selamat malam','Selamat malam','Selamat malam'];
-  document.getElementById('g-time').textContent = times[h];
-  document.getElementById('g-name').textContent = P.name || 'kamu';
-
-  const naraMessages = [
+// ══ GREETING ══
+function buildGreeting(){
+  const h=new Date().getHours();
+  const t=h<5?'Selamat malam':h<11?'Selamat pagi':h<15?'Selamat siang':h<18?'Selamat sore':'Selamat malam';
+  document.getElementById('g-time').textContent=t;
+  document.getElementById('g-name').textContent=P.name||'kamu';
+  const msgs=[
     'Gimana kondisi hari ini? Nara di sini kalau mau cerita.',
-    'Yuk mulai hari dengan satu kebiasaan kecil dulu (◕ᴗ◕✿)',
-    'Tubuhmu bekerja keras untukmu. Balas kebaikannya ya!',
-    'Tidak perlu sempurna. Yang penting hadir untuk dirimu sendiri.',
+    'Yuk mulai dengan satu langkah kecil dulu (◕ᴗ◕✿)',
+    'Tidak perlu sempurna — yang penting hadir untuk dirimu sendiri.',
+    'Tubuhmu bekerja keras untukmu. Yuk balas kebaikannya!',
     'Pelan-pelan itu baik-baik saja. Prosesnya yang penting.',
   ];
-  document.getElementById('g-nara-msg').textContent = naraMessages[new Date().getDate() % naraMessages.length];
+  document.getElementById('g-nara').textContent=msgs[new Date().getDate()%msgs.length];
 }
 
-// ═══ SCORE ═══
-function updateScore() {
-  const template = loadHabitTemplate();
-  const done = template.filter(h => (D.habits||[]).includes(h.id)).length;
-  const total = template.length;
-  const habitPct = total > 0 ? (done/total) : 0;
-  const waterPct = Math.min((D.water||0)/8, 1);
-  const moodPct = D.mood ? 1 : 0;
-  const pct = Math.round((habitPct * 0.5 + waterPct * 0.3 + moodPct * 0.2) * 100);
-  document.getElementById('score-circle').style.setProperty('--pct', pct);
-  document.getElementById('score-pct').textContent = pct + '%';
-}
+// ══ HABITS ══
+function loadHabitTemplate(){return ld('inarte_habits_template')||[]}
+function saveHabitTemplate(arr){sv('inarte_habits_template',arr)}
+let activeTheme=null;
 
-// ═══ HABITS ═══
-function loadHabitTemplate() { return ld('inarte_habits_template') || []; }
-function saveHabitTemplate(arr) { sv('inarte_habits_template', arr); }
-
-let activeTheme = null;
-
-function buildHabitSection() {
-  // Build theme chips
-  const row = document.getElementById('habit-themes');
-  row.innerHTML = '';
-  HABIT_THEMES.forEach(t => {
-    const btn = document.createElement('button');
-    btn.className = 'theme-chip';
-    btn.textContent = t.label;
-    btn.onclick = () => toggleTheme(btn, t);
+function buildHabitSection(){
+  const row=document.getElementById('habit-themes');
+  row.innerHTML='';
+  HABIT_THEMES.forEach(t=>{
+    const btn=document.createElement('button');
+    btn.className='theme-chip';btn.textContent=t.label;
+    btn.onclick=()=>toggleTheme(btn,t);
     row.appendChild(btn);
   });
   buildHabitList();
 }
-
-function toggleTheme(btn, theme) {
-  const isActive = btn.classList.contains('active');
-  document.querySelectorAll('.theme-chip').forEach(b => b.classList.remove('active'));
-  const sugEl = document.getElementById('habit-suggestions');
-  if (isActive) { sugEl.classList.remove('on'); activeTheme = null; return; }
-  btn.classList.add('active'); activeTheme = theme.id;
-  document.getElementById('habit-sug-head').textContent = theme.label;
-  const chips = document.getElementById('habit-sug-chips');
-  chips.innerHTML = '';
-  const existing = loadHabitTemplate().map(h => h.text.toLowerCase());
-  theme.suggestions.forEach(s => {
-    if (existing.includes(s.toLowerCase())) return;
-    const c = document.createElement('button');
-    c.className = 'habit-sug-chip';
-    c.textContent = s;
-    c.onclick = () => { addHabitText(s); c.style.opacity = '.4'; c.style.pointerEvents = 'none'; };
+function toggleTheme(btn,theme){
+  const isActive=btn.classList.contains('active');
+  document.querySelectorAll('.theme-chip').forEach(b=>b.classList.remove('active'));
+  const sug=document.getElementById('habit-suggestions');
+  if(isActive){sug.classList.remove('on');activeTheme=null;return}
+  btn.classList.add('active');activeTheme=theme.id;
+  document.getElementById('habit-sug-head').textContent=theme.label;
+  const chips=document.getElementById('habit-sug-chips');chips.innerHTML='';
+  const existing=loadHabitTemplate().map(h=>h.text.toLowerCase());
+  theme.sugs.forEach(s=>{
+    if(existing.includes(s.toLowerCase()))return;
+    const c=document.createElement('button');c.className='habit-sug-chip';c.textContent=s;
+    c.onclick=()=>{addHabitText(s);c.style.opacity='.4';c.style.pointerEvents='none'};
     chips.appendChild(c);
   });
-  sugEl.classList.add('on');
+  sug.classList.add('on');
 }
-
-function buildHabitList() {
-  const template = loadHabitTemplate();
-  const list = document.getElementById('habit-list');
-  list.innerHTML = '';
-  if (!template.length) {
-    list.innerHTML = '<li style="font-size:12px;color:var(--text4);font-style:italic;padding:6px 0">Belum ada kebiasaan. Pilih dari tema atau tulis sendiri (◕ᴗ◕✿)</li>';
-    updateHabitProgress(0, 0);
-    return;
+function buildHabitList(){
+  const tmpl=loadHabitTemplate();
+  const list=document.getElementById('habit-list');list.innerHTML='';
+  if(!tmpl.length){
+    list.innerHTML='<li style="font-size:12px;color:var(--text4);font-style:italic;padding:6px 0">Belum ada kebiasaan. Pilih dari tema di atas atau tulis sendiri (◕ᴗ◕✿)</li>';
+    updateHabitProgress(0,0);return;
   }
-  template.forEach(h => {
-    const isDone = (D.habits||[]).includes(h.id);
-    const streak = calcStreak(h.id);
-    const li = document.createElement('li');
-    li.className = 'habit-row' + (isDone ? ' done' : '');
-    li.innerHTML = `
-      <div class="habit-check">
-        <svg class="check-mark" viewBox="0 0 10 8" fill="none">
-          <path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <span class="habit-text">${h.text}</span>
-      ${streak > 1 ? `<span class="habit-streak">🔥 ${streak}</span>` : ''}
-      <button class="habit-del" onclick="deleteHabit('${h.id}',event)">✕</button>
-    `;
-    li.addEventListener('click', e => { if (e.target.closest('.habit-del')) return; toggleHabit(h.id, li); });
+  tmpl.forEach(h=>{
+    const isDone=(D.habits||[]).includes(h.id);
+    const streak=calcStreak(h.id);
+    const li=document.createElement('li');li.className='habit-row'+(isDone?' done':'');
+    li.innerHTML=`<div class="habit-check"><svg class="check-svg" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="habit-text">${h.text}</span>${streak>1?`<span class="habit-streak">🔥 ${streak}</span>`:''}<button class="habit-del" onclick="deleteHabit('${h.id}',event)">✕</button>`;
+    li.addEventListener('click',e=>{if(e.target.closest('.habit-del'))return;toggleHabit(h.id,li)});
     list.appendChild(li);
   });
-  const done = template.filter(h => (D.habits||[]).includes(h.id)).length;
-  updateHabitProgress(done, template.length);
+  const done=tmpl.filter(h=>(D.habits||[]).includes(h.id)).length;
+  updateHabitProgress(done,tmpl.length);
 }
-
-function calcStreak(id) {
-  let streak = 0; const d = new Date();
-  while (streak < 90) {
-    const key = `inarte_habitlog_${d.toISOString().split('T')[0]}`;
-    const log = ld(key) || {};
-    if (log[id]) { streak++; d.setDate(d.getDate()-1); } else break;
-  }
-  return streak;
+function calcStreak(id){
+  let s=0;const d=new Date();
+  while(s<90){const k=`inarte_habitlog_${d.toISOString().split('T')[0]}`;const l=ld(k)||{};if(l[id]){s++;d.setDate(d.getDate()-1)}else break}
+  return s;
 }
-
-function toggleHabit(id, li) {
-  if (!D.habits) D.habits = [];
-  const wasDone = D.habits.includes(id);
-  if (wasDone) { D.habits = D.habits.filter(x => x !== id); li.classList.remove('done'); }
-  else { D.habits.push(id); li.classList.add('done'); }
-  const logKey = `inarte_habitlog_${TODAY}`;
-  const log = ld(logKey) || {};
-  log[id] = D.habits.includes(id);
-  sv(logKey, log);
+function toggleHabit(id,li){
+  if(!D.habits)D.habits=[];
+  const was=D.habits.includes(id);
+  if(was){D.habits=D.habits.filter(x=>x!==id);li.classList.remove('done')}
+  else{D.habits.push(id);li.classList.add('done')}
+  const log=ld(`inarte_habitlog_${TODAY}`)||{};
+  log[id]=D.habits.includes(id);sv(`inarte_habitlog_${TODAY}`,log);
   saveDay();
-  const t = loadHabitTemplate();
-  const done = t.filter(h => D.habits.includes(h.id)).length;
-  updateHabitProgress(done, t.length);
-  updateScore();
-  if (!wasDone) {
-    if (done === t.length && t.length > 0) { showToast('🎉 Semua kebiasaan selesai! Luar biasa!', 4000); }
-    else { const m = ['✅ Satu kebiasaan terceklis!','🌱 Pelan-pelan tapi pasti~','💪 Keren! Lanjut!','⭐ Progress is progress!']; showToast(m[Math.floor(Math.random()*m.length)]); }
+  const t=loadHabitTemplate();
+  const done=t.filter(h=>D.habits.includes(h.id)).length;
+  updateHabitProgress(done,t.length);
+  if(!was){
+    if(done===t.length&&t.length>0)showToast('🎉 Semua kebiasaan selesai! Luar biasa!',4000);
+    else{const m=['✅ Satu kebiasaan terceklis!','🌱 Pelan-pelan tapi pasti~','💪 Keren! Lanjut!','⭐ Progress is progress!'];showToast(m[Math.floor(Math.random()*m.length)])}
   }
 }
-
-function updateHabitProgress(done, total) {
-  const pct = total > 0 ? Math.round(done/total*100) : 0;
-  document.getElementById('habit-prog-fill').style.width = pct + '%';
-  document.getElementById('habit-badge').textContent = total > 0 ? `${done}/${total}` : '0/0';
-  document.getElementById('habit-prog-count').textContent = total > 0 ? `${done} dari ${total} selesai` : '';
-  const msgs = ['','Bagus, mulai dulu yang mudah (◕ᴗ◕✿)','Jalan terus!','Mantap, setengah jalan!','Hampir sampai!','Sebentar lagi!'];
-  const idx = total > 0 ? Math.min(Math.round(pct/20), 5) : 0;
-  document.getElementById('habit-prog-msg').textContent = total > 0 ? (pct === 100 ? 'Hari ini sempurna! (≧▽≦)' : msgs[idx]) : '';
+function updateHabitProgress(done,total){
+  const pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('habit-prog-fill').style.width=pct+'%';
+  document.getElementById('habit-badge').textContent=`${done}/${total}`;
+  document.getElementById('habit-prog-count').textContent=total>0?`${done} dari ${total} selesai`:'';
+  const msg=pct===100?'Hari ini sempurna! (≧▽≦)':pct>=60?'Hampir sampai!':pct>=40?'Jalan terus!':total>0?'Mulai dari yang mudah dulu~':'';
+  document.getElementById('habit-prog-msg').textContent=msg;
 }
-
-function addHabitText(text) {
-  const arr = loadHabitTemplate();
-  if (arr.some(h => h.text.toLowerCase() === text.toLowerCase())) return;
-  arr.push({ id: 'h_'+Date.now(), text, addedAt: Date.now() });
-  saveHabitTemplate(arr);
-  buildHabitList();
-  showToast('Kebiasaan ditambahkan!');
+function addHabitText(text){
+  const arr=loadHabitTemplate();
+  if(arr.some(h=>h.text.toLowerCase()===text.toLowerCase()))return;
+  arr.push({id:'h_'+Date.now(),text,addedAt:Date.now()});
+  saveHabitTemplate(arr);buildHabitList();showToast('Kebiasaan ditambahkan!');
 }
-function addHabit() {
-  const inp = document.getElementById('habit-add-inp');
-  const text = inp.value.trim();
-  if (!text) return;
-  addHabitText(text);
-  inp.value = '';
-}
-function deleteHabit(id, e) {
+function addHabit(){const inp=document.getElementById('habit-add-inp');const t=inp.value.trim();if(!t)return;addHabitText(t);inp.value=''}
+function deleteHabit(id,e){
   e.stopPropagation();
-  saveHabitTemplate(loadHabitTemplate().filter(h => h.id !== id));
-  D.habits = (D.habits||[]).filter(x => x !== id);
-  saveDay(); buildHabitList();
+  saveHabitTemplate(loadHabitTemplate().filter(h=>h.id!==id));
+  D.habits=(D.habits||[]).filter(x=>x!==id);
+  saveDay();buildHabitList();
 }
 
-// ═══ WATER ═══
-let waterExpanded = false;
-function toggleWater() {
-  waterExpanded = !waterExpanded;
-  document.getElementById('water-controls').classList.toggle('on', waterExpanded);
+// ══ WATER ══
+let waterOpen=false;
+function buildWaterVisual(){
+  const w=D.water||0;
+  document.getElementById('bottle-fill').style.height=(w/8*100)+'%';
+  document.getElementById('water-count').textContent=w;
+  document.getElementById('wc-num').textContent=w;
+  // dots
+  const dotsEl=document.getElementById('water-dots');dotsEl.innerHTML='';
+  for(let i=0;i<8;i++){
+    const d=document.createElement('div');
+    d.className='water-dot'+(i<w?' full':'');
+    dotsEl.appendChild(d);
+  }
+  // hint
+  const hints=['Yuk mulai minum! (◕ᴗ◕✿)','1 gelas sudah! 7 lagi ya.','Bagus! Terus lanjut.','Hampir setengah!','Setengah jalan!','3 lagi!','2 lagi!','Satu lagi untuk genap!','Target tercapai! (≧▽≦)'];
+  const hintEl=document.getElementById('wc-hint');
+  if(hintEl)hintEl.textContent=hints[Math.min(w,8)];
 }
-function adjustWater(delta) {
-  const prev = D.water || 0;
-  D.water = Math.max(0, Math.min(8, prev + delta));
-  buildWaterVisual();
+function toggleWater(){
+  waterOpen=!waterOpen;
+  document.getElementById('water-controls').classList.toggle('on',waterOpen);
+}
+function adjustWater(delta){
+  const prev=D.water||0;
+  D.water=Math.max(0,Math.min(8,prev+delta));
+  // animate last dot
+  if(D.water>prev){
+    buildWaterVisual();
+    const dots=document.querySelectorAll('.water-dot');
+    if(dots[D.water-1])dots[D.water-1].classList.add('just-filled');
+  } else buildWaterVisual();
   saveDay();
-  updateScore();
-  if (D.water > prev) {
-    if (D.water === 8) showToast('💧 Target air tercapai! Tubuhmu happy! (≧▽≦)', 4000);
-    else { const m = ['💧 Satu gelas tercatat!','🌊 Tubuhmu berterima kasih!','💙 Hidrasi itu self-care~']; showToast(m[Math.floor(Math.random()*m.length)]); }
+  if(D.water>prev){
+    if(D.water===8)showToast('💧 Target air tercapai! Tubuhmu happy! (≧▽≦)',4000);
+    else{const m=['💧 Satu gelas tercatat!','🌊 Tubuhmu berterima kasih!','💙 Hidrasi itu self-care~'];showToast(m[Math.floor(Math.random()*m.length)])}
   }
 }
-function buildWaterVisual() {
-  const w = D.water || 0;
-  const pct = Math.round(w/8*100);
-  document.getElementById('bottle-fill').style.height = pct + '%';
-  document.getElementById('water-count').textContent = w;
-  document.getElementById('water-val').textContent = w;
+
+// ══ MOOD ══
+let moodOpen=false;
+function toggleMood(){
+  moodOpen=!moodOpen;
+  document.getElementById('mood-picker').classList.toggle('on',moodOpen);
+}
+function selectMood(id,em,lbl,sub){
+  D.mood=id;
+  document.getElementById('mood-em').textContent=em;
+  document.getElementById('mood-lbl').textContent=lbl;
+  document.getElementById('mood-sub').textContent=sub;
+  document.querySelectorAll('.mood-opt').forEach(b=>b.classList.remove('sel'));
+  // find and mark selected
+  document.querySelectorAll('.mood-opt').forEach(b=>{if(b.querySelector('.mood-opt-lbl')?.textContent===lbl)b.classList.add('sel')});
+  moodOpen=false;document.getElementById('mood-picker').classList.remove('on');
+  saveDay();
+  // Human feedback — not "tercatat" but actual response
+  const feedbacks={
+    senang:`😊 ${P.name?P.name+', s':'S'}enang denger kamu lagi baik-baik! Semoga terbawa sampai malam ya~`,
+    netral:`Hari yang biasa pun punya nilainya${P.name?', '+P.name:''}. Tidak harus selalu wow (◕ᴗ◕✿)`,
+    lelah:`Badan lelah itu sinyal${P.name?', '+P.name:''}. Boleh istirahat sejenak — itu bukan malas, itu perlu.`,
+    berat:`Hari yang berat terasa berat${P.name?', '+P.name:''}. Tapi kamu masih di sini, dan itu sudah cukup. Nara di sini ya (ꈍᴗꈍ)`,
+    semangat:`Wah energi hari ini positif banget${P.name?', '+P.name:''}! (≧▽≦) Salurkan ke hal-hal yang kamu suka!`
+  };
+  showToast(feedbacks[id]||'✨',4000);
 }
 
-// ═══ MOOD ═══
-let moodExpanded = false;
-function toggleMood() {
-  moodExpanded = !moodExpanded;
-  document.getElementById('mood-picker').classList.toggle('on', moodExpanded);
+// ══ KONDISI ══
+let condOpen=false;
+function toggleCond(){
+  condOpen=!condOpen;
+  document.getElementById('cond-picker').classList.toggle('on',condOpen);
 }
-function selectMood(id, em, lbl) {
-  D.mood = id;
-  document.getElementById('mood-em').textContent = em;
-  document.getElementById('mood-lbl').textContent = lbl;
-  document.querySelectorAll('.mood-opt').forEach(b => b.classList.remove('sel'));
-  event.currentTarget.classList.add('sel');
-  moodExpanded = false;
-  document.getElementById('mood-picker').classList.remove('on');
-  saveDay(); updateScore();
-  const msgs = { senang:'😊 Mood senang tercatat~', netral:'😐 Hari yang biasa pun punya nilainya.', lelah:'😮‍💨 Hari melelahkan. Istirahat yang cukup ya.', berat:'😔 Nara di sini. Kamu tidak sendirian.', semangat:'🔥 Semangat! Salurkan energinya!' };
-  showToast(msgs[id] || '✨ Mood tercatat!', 3000);
-}
-
-// ═══ KONDISI ═══
-let condExpanded = false;
-function toggleCond() {
-  condExpanded = !condExpanded;
-  document.getElementById('cond-picker').classList.toggle('on', condExpanded);
-}
-function toggleCondOpt(btn, id) {
+function toggleCondOpt(btn,id){
   btn.classList.toggle('on');
-  if (!D.conditions) D.conditions = [];
-  if (btn.classList.contains('on')) { if (!D.conditions.includes(id)) D.conditions.push(id); }
-  else D.conditions = D.conditions.filter(x => x !== id);
-  renderCondDisplay();
-  saveDay();
+  if(!D.conditions)D.conditions=[];
+  if(btn.classList.contains('on')){if(!D.conditions.includes(id))D.conditions.push(id)}
+  else D.conditions=D.conditions.filter(x=>x!==id);
+  renderCondTags();saveDay();
 }
-function renderCondDisplay() {
-  const el = document.getElementById('cond-display');
-  const condLabel = { haid:'🩸 Haid', hamil:'🤰 Hamil', menyusui:'🤱 Menyusui', sakit:'🤒 Kurang sehat' };
-  if (!D.conditions || !D.conditions.length) {
-    el.innerHTML = '<span class="cond-empty">Tap untuk isi</span>';
-  } else {
-    el.innerHTML = D.conditions.map(c => `<span class="cond-tag">${condLabel[c]||c}</span>`).join('');
-  }
+function renderCondTags(){
+  const el=document.getElementById('cond-tags');
+  const labels={haid:'🩸 Haid',hamil:'🤰 Hamil',menyusui:'🤱 Menyusui',sakit:'🤒 Kurang sehat'};
+  if(!D.conditions||!D.conditions.length){el.innerHTML='<span class="cond-empty">Tap untuk isi</span>';return}
+  el.innerHTML=D.conditions.map(c=>`<span class="cond-tag">${labels[c]||c}</span>`).join('');
 }
-function restoreQuickRow() {
+function restoreQuickRow(){
   buildWaterVisual();
-  if (D.mood) {
-    const moodMap = { senang:['😊','Senang'], netral:['😐','Biasa'], lelah:['😮‍💨','Lelah'], berat:['😔','Berat'], semangat:['🔥','Semangat'] };
-    const m = moodMap[D.mood];
-    if (m) { document.getElementById('mood-em').textContent = m[0]; document.getElementById('mood-lbl').textContent = m[1]; }
+  if(D.mood){
+    const map={senang:['😊','Senang'],netral:['😐','Biasa'],lelah:['😮‍💨','Lelah'],berat:['😔','Berat'],semangat:['🔥','Semangat']};
+    const m=map[D.mood];if(m){document.getElementById('mood-em').textContent=m[0];document.getElementById('mood-lbl').textContent=m[1]}
   }
-  renderCondDisplay();
-  // Restore cond buttons
-  (D.conditions||[]).forEach(id => {
-    const btn = document.querySelector(`.cond-opt[onclick*="'${id}'"]`);
-    if (btn) btn.classList.add('on');
+  renderCondTags();
+  (D.conditions||[]).forEach(id=>{
+    const btn=document.querySelector(`.cond-opt[onclick*="'${id}'"]`);
+    if(btn)btn.classList.add('on');
   });
 }
 
-// ═══ MENU ═══
-function buildMenuGrid() {
-  const menus = getMenus();
-  const grid = document.getElementById('menu-grid');
-  grid.innerHTML = '';
-  menus.forEach(m => {
-    const cell = document.createElement('div');
-    cell.className = 'menu-cell';
-    cell.innerHTML = `
-      <div class="menu-cell-time">${m.time}</div>
-      <div class="menu-cell-name">${m.name}</div>
-      <div class="menu-cell-cal">~${m.cal} kkal</div>
-      <div class="menu-cell-why">${m.why}</div>
-    `;
-    cell.onclick = () => {
-      document.getElementById('meal-inp').value = m.name;
-      openSheet('meals');
-    };
+// ══ MENU ══
+function buildMenuGrid(){
+  const menus=getMenus();
+  const grid=document.getElementById('menu-grid');grid.innerHTML='';
+  menus.forEach(m=>{
+    const cell=document.createElement('div');cell.className='menu-cell';
+    cell.innerHTML=`<div class="menu-cell-time">${m.time}</div><div class="menu-cell-name">${m.name}</div><div class="menu-cell-cal">~${m.cal} kkal</div><div class="menu-cell-why">${m.why}</div>`;
+    cell.onclick=()=>{document.getElementById('meal-inp').value=m.name;openSheet('meals')};
     grid.appendChild(cell);
   });
-  // Sub label personalized
-  const sub = [];
-  if (D.conditions?.includes('haid')) sub.push('cocok untuk haid');
-  if (P.budget) sub.push(P.budget);
-  if (P.cook) sub.push(P.cook.toLowerCase());
-  document.getElementById('menu-head-sub').textContent = sub.length ? sub.join(' · ') : 'Berdasarkan profil & kondisimu';
+  const sub=[];
+  if((D.conditions||[]).includes('haid'))sub.push('disesuaikan untuk haid');
+  if((D.conditions||[]).includes('hamil'))sub.push('untuk ibu hamil');
+  if(P.budget)sub.push(P.budget);
+  document.getElementById('menu-head-sub').textContent=sub.length?sub.join(' · '):'Berdasarkan profil & kondisimu';
 }
-
-function getMenus() {
-  const conds = D.conditions || [];
-  const age = P.age ? parseInt(P.age) : 25;
-  const isLansia = age >= 60;
-  const isMenyusui = conds.includes('menyusui');
-  const isHamil = conds.includes('hamil');
-  const isHaid = conds.includes('haid');
-  const day = new Date().getDay();
-
-  if (isLansia) return [{time:'Sarapan',name:'Bubur ayam lembut',cal:200,why:'Mudah dicerna'},{time:'Siang',name:'Nasi tim + ikan kukus',cal:350,why:'Lunak, tidak pedas'},{time:'Malam',name:'Sup tahu telur',cal:180,why:'Ringan untuk malam'}];
-  if (isMenyusui) return [{time:'Sarapan',name:'Oatmeal + telur + susu',cal:380,why:'Booster ASI'},{time:'Siang',name:'Sayur bening katuk + ikan',cal:350,why:'Katuk = booster ASI terbaik'},{time:'Malam',name:'Tempe + tumis bayam',cal:280,why:'Zat besi untuk ASI'}];
-  if (isHamil) return [{time:'Sarapan',name:'Roti gandum + telur + susu',cal:380,why:'Folat penting'},{time:'Siang',name:'Nasi + ikan + sayur hijau',cal:480,why:'Nutrisi lengkap untuk janin'},{time:'Malam',name:'Sup ayam sayur hangat',cal:350,why:'Baik untuk mual'}];
-  if (isHaid) return [{time:'Sarapan',name:'Oatmeal + pisang + susu',cal:350,why:'Magnesium bantu nyeri'},{time:'Siang',name:'Nasi + tempe + tumis bayam',cal:380,why:'Zat besi untuk pemulihan'},{time:'Malam',name:'Sup tahu telur + sayur',cal:260,why:'Ringan tapi bergizi'}];
-
-  const sets = [
-    [{time:'Sarapan',name:'Roti gandum + telur ceplok',cal:280,why:'Siap 10 menit, mengenyangkan'},{time:'Siang',name:'Nasi + ayam bakar + lalapan',cal:400,why:'Nasi setengah untuk jaga kalori'},{time:'Malam',name:'Mie rebus + telur + sayur',cal:280,why:'Kurangi bumbu, tambah sayur'}],
-    [{time:'Sarapan',name:'Oatmeal + telur rebus',cal:250,why:'Serat tinggi, kenyang lama'},{time:'Siang',name:'Pecel + tahu tempe',cal:350,why:'Skip lontong bisa hemat 150 kkal'},{time:'Malam',name:'Soto ayam bening',cal:220,why:'Kuah bening lebih sehat dari santan'}],
-    [{time:'Sarapan',name:'Telur dadar + nasi',cal:280,why:'Cepat dan padat nutrisi'},{time:'Siang',name:'Tempe orek + tumis bayam + nasi',cal:380,why:'Masak sekali untuk 2 hari'},{time:'Malam',name:'Sup tahu bening',cal:180,why:'Ringan dan hangat untuk malam'}],
+function getMenus(){
+  const conds=D.conditions||[];
+  const age=P.age?parseInt(P.age):25;
+  const day=new Date().getDay();
+  if(age>=60)return [{time:'Sarapan',name:'Bubur ayam lembut',cal:200,why:'Mudah dicerna, cocok untuk pagi'},{time:'Siang',name:'Nasi tim + ikan kukus',cal:350,why:'Lunak, tidak pedas'},{time:'Malam',name:'Sup tahu telur',cal:180,why:'Ringan untuk malam'}];
+  if(conds.includes('menyusui'))return [{time:'Sarapan',name:'Oatmeal + telur + susu',cal:380,why:'Booster ASI'},{time:'Siang',name:'Sayur bening katuk + ikan',cal:350,why:'Katuk = booster ASI terbaik'},{time:'Malam',name:'Tempe + tumis bayam',cal:280,why:'Zat besi untuk ASI'}];
+  if(conds.includes('hamil'))return [{time:'Sarapan',name:'Roti gandum + telur + susu',cal:380,why:'Folat penting'},{time:'Siang',name:'Nasi + ikan + sayur hijau',cal:480,why:'Nutrisi lengkap'},{time:'Malam',name:'Sup ayam sayur hangat',cal:350,why:'Baik untuk mual'}];
+  if(conds.includes('haid'))return [{time:'Sarapan',name:'Oatmeal + pisang + susu',cal:350,why:'Magnesium bantu nyeri'},{time:'Siang',name:'Nasi + tempe + tumis bayam',cal:380,why:'Zat besi untuk pemulihan'},{time:'Malam',name:'Sup tahu telur + sayur',cal:260,why:'Ringan tapi bergizi'}];
+  const sets=[
+    [{time:'Sarapan',name:'Roti gandum + telur ceplok',cal:280,why:'Siap 10 menit, mengenyangkan'},{time:'Siang',name:'Nasi + ayam bakar + lalapan',cal:400,why:'Nasi setengah bisa hemat kalori'},{time:'Malam',name:'Mie rebus + telur + sayur',cal:280,why:'Kurangi bumbu, tambah sayur'}],
+    [{time:'Sarapan',name:'Oatmeal + telur rebus',cal:250,why:'Serat tinggi, kenyang lebih lama'},{time:'Siang',name:'Pecel + tahu tempe',cal:350,why:'Skip lontong hemat 150 kkal'},{time:'Malam',name:'Soto ayam bening',cal:220,why:'Kuah bening lebih sehat dari santan'}],
+    [{time:'Sarapan',name:'Telur dadar + nasi',cal:280,why:'Cepat dan padat nutrisi'},{time:'Siang',name:'Tempe + tumis bayam + nasi',cal:380,why:'Bisa masak sekali untuk 2 hari'},{time:'Malam',name:'Sup tahu bening',cal:180,why:'Ringan dan hangat untuk malam'}],
     [{time:'Sarapan',name:'Yogurt + pisang + granola',cal:290,why:'Probiotik + serat + energi'},{time:'Siang',name:'Gado-gado no lontong',cal:300,why:'Saus kacang sedikit lebih hemat'},{time:'Malam',name:'Ayam bakar + lalapan',cal:280,why:'Tanpa nasi sudah cukup malam ini'}],
-    [{time:'Sarapan',name:'Roti gandum + alpukat + telur',cal:380,why:'Lemak sehat untuk energi'},{time:'Siang',name:'Nasi + rendang + sayur bening',cal:450,why:'Protein tinggi dari rendang'},{time:'Malam',name:'Tumis tahu tempe + nasi sedikit',cal:300,why:'Ringan tapi protein cukup'}],
-    [{time:'Sarapan',name:'Bubur sumsum + pisang',cal:280,why:'Nyaman di perut pagi hari'},{time:'Siang',name:'Warung padang — sayur + protein',cal:420,why:'Pilih sayur dan protein, kurangi nasi'},{time:'Malam',name:'Mie rebus sayur telur',cal:270,why:'Mie rebus lebih ringan dari goreng'}],
+    [{time:'Sarapan',name:'Roti gandum + alpukat + telur',cal:380,why:'Lemak sehat untuk energi'},{time:'Siang',name:'Warteg — sayur + protein + nasi',cal:420,why:'Ambil lebih banyak sayur dari nasi'},{time:'Malam',name:'Tumis tahu tempe + nasi sedikit',cal:300,why:'Ringan tapi protein cukup'}],
+    [{time:'Sarapan',name:'Bubur sumsum + pisang',cal:280,why:'Nyaman di perut pagi hari'},{time:'Siang',name:'Nasi padang — sayur + protein',cal:420,why:'Pilih sayur & protein, kurangi nasi'},{time:'Malam',name:'Mie rebus sayur telur',cal:270,why:'Lebih ringan dari mie goreng'}],
     [{time:'Sarapan',name:'Nasi kuning + telur pindang',cal:320,why:'Hari Minggu boleh sedikit spesial'},{time:'Siang',name:'Soto ayam + lontong sedikit',cal:380,why:'Kuah bening, nutrisi lengkap'},{time:'Malam',name:'Tempe bacem + nasi merah',cal:290,why:'Nasi merah = serat lebih tinggi'}],
   ];
-  return sets[day % sets.length];
+  return sets[day%sets.length];
 }
-
-async function refreshMenu() {
-  const btn = document.getElementById('menu-refresh-btn');
-  btn.classList.add('loading');
-  btn.disabled = true;
-
-  // Try AI-generated menu first
-  try {
-    const age = P.age ? parseInt(P.age) : 25;
-    const conds = (D.conditions||[]).join(', ') || 'tidak ada';
-    const sys = `Kamu adalah Nara. Berikan 3 rekomendasi menu hari ini untuk user dengan profil berikut.
-Kondisi: ${conds}. Usia: ${age} tahun. Keseharian: ${P.act||''}. Situasi rumah: ${P.home||''}. Budget makan: ${P.budget||'Rp 50-100rb'}. Preferensi masak: ${P.cook||''}.
-Jawab HANYA dengan JSON array, tanpa penjelasan lain, format:
-[{"time":"Sarapan","name":"nama makanan","cal":angka,"why":"satu kalimat kenapa cocok"},{"time":"Siang",...},{"time":"Malam",...}]`;
-
-    const r = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'gemini-2.0-flash', max_tokens:400, system:sys, messages:[{role:'user',content:'Berikan menu hari ini.'}] }),
-      signal: AbortSignal.timeout(12000),
-    });
-
-    if (r.ok) {
-      const data = await r.json();
-      const text = data.content?.[0]?.text || '';
-      const clean = text.replace(/```json|```/g,'').trim();
-      const menus = JSON.parse(clean);
-      if (Array.isArray(menus) && menus.length >= 3) {
-        const grid = document.getElementById('menu-grid');
-        grid.innerHTML = '';
-        menus.forEach(m => {
-          const cell = document.createElement('div');
-          cell.className = 'menu-cell';
-          cell.innerHTML = `<div class="menu-cell-time">${m.time}</div><div class="menu-cell-name">${m.name}</div><div class="menu-cell-cal">~${m.cal} kkal</div><div class="menu-cell-why">${m.why}</div>`;
-          cell.onclick = () => { document.getElementById('meal-inp').value = m.name; openSheet('meals'); };
+async function refreshMenu(){
+  const btn=document.getElementById('menu-refresh-btn');
+  btn.classList.add('loading');btn.disabled=true;
+  try{
+    const age=P.age?parseInt(P.age):25;
+    const conds=(D.conditions||[]).join(', ')||'tidak ada';
+    const sys=`Berikan 3 rekomendasi menu hari ini dalam format JSON array saja, tanpa penjelasan lain, tanpa markdown.
+Format: [{"time":"Sarapan","name":"nama makanan","cal":angka,"why":"satu kalimat singkat kenapa cocok"},{"time":"Siang",...},{"time":"Malam",...}]
+Profil user: usia ${age} tahun, kondisi: ${conds}, budget: ${P.budget||'Rp 50-100rb'}, ${P.act||''}, ${P.home||''}, ${P.cook||''}.
+Pertimbangkan kondisi secara spesifik. Berikan pilihan yang beragam dari menu sebelumnya.`;
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gemini-2.0-flash',max_tokens:400,system:sys,messages:[{role:'user',content:'Berikan menu hari ini.'}]}),signal:AbortSignal.timeout(12000)});
+    if(r.ok){
+      const data=await r.json();
+      const text=data.content?.[0]?.text||'';
+      const clean=text.replace(/```json|```/g,'').trim();
+      const menus=JSON.parse(clean);
+      if(Array.isArray(menus)&&menus.length>=3){
+        const grid=document.getElementById('menu-grid');grid.innerHTML='';
+        menus.forEach(m=>{
+          const cell=document.createElement('div');cell.className='menu-cell';
+          cell.innerHTML=`<div class="menu-cell-time">${m.time}</div><div class="menu-cell-name">${m.name}</div><div class="menu-cell-cal">~${m.cal} kkal</div><div class="menu-cell-why">${m.why}</div>`;
+          cell.onclick=()=>{document.getElementById('meal-inp').value=m.name;openSheet('meals')};
           grid.appendChild(cell);
         });
-        const nara = document.getElementById('menu-nara');
-        nara.textContent = 'Menu ini dipilihkan Nara khusus berdasarkan kondisi & profil kamu hari ini (◕ᴗ◕✿)';
+        const nara=document.getElementById('menu-nara');
+        nara.textContent='Menu ini Nara pilihkan khusus berdasarkan kondisi & profil kamu hari ini (◕ᴗ◕✿)';
         nara.classList.add('on');
-        btn.classList.remove('loading'); btn.disabled = false;
+        btn.classList.remove('loading');btn.disabled=false;
         return;
       }
     }
-  } catch(e) { console.warn('AI menu failed, using static rotation'); }
-
-  // Fallback: rotate static sets
-  const allSets = [];
-  for (let i = 0; i < 7; i++) {
-    // cycle through different day sets
-    const d = new Date(); d.setDate(d.getDate() + i);
-    allSets.push(getMenusForDay(d.getDay(), i));
-  }
-  const current = document.getElementById('menu-grid').querySelectorAll('.menu-cell').length;
+  }catch(e){console.warn('AI menu failed, rotating static')}
+  // Fallback: just rebuild with next day's set
   buildMenuGrid();
-  btn.classList.remove('loading'); btn.disabled = false;
+  btn.classList.remove('loading');btn.disabled=false;
   showToast('Menu diperbarui!');
 }
 
-function getMenusForDay(day, offset) {
-  // same as getMenus but offset-aware
-  return getMenus();
+// ══ MEALS ══
+function estCal(name,portion){
+  const q=name.toLowerCase().trim();
+  if(FOOD_DB[q])return Math.round(FOOD_DB[q].cal*portion);
+  const key=Object.keys(FOOD_DB).find(k=>q.includes(k)||k.includes(q));
+  if(key)return Math.round(FOOD_DB[key].cal*portion);
+  if(q.includes('goreng'))return Math.round(200*portion);
+  if(q.includes('bakar')||q.includes('kukus'))return Math.round(140*portion);
+  if(q.includes('sayur')||q.includes('tumis'))return Math.round(60*portion);
+  if(q.includes('nasi'))return Math.round(200*portion);
+  return Math.round(220*portion);
 }
-
-// ═══ MEALS ═══
-function estCal(name, portion) {
-  const q = name.toLowerCase().trim();
-  if (FOOD_DB[q]) return Math.round(FOOD_DB[q].cal * portion);
-  const key = Object.keys(FOOD_DB).find(k => q.includes(k) || k.includes(q));
-  if (key) return Math.round(FOOD_DB[key].cal * portion);
-  if (q.includes('goreng')) return Math.round(200 * portion);
-  if (q.includes('bakar') || q.includes('kukus')) return Math.round(140 * portion);
-  if (q.includes('sayur') || q.includes('tumis')) return Math.round(60 * portion);
-  if (q.includes('nasi')) return Math.round(200 * portion);
-  return Math.round(220 * portion);
+function addMeal(){
+  const inp=document.getElementById('meal-inp');const txt=inp.value.trim();if(!txt)return;
+  const portion=parseFloat(document.getElementById('meal-portion').value)||1;
+  const unit=document.getElementById('meal-unit').value;
+  const cal=estCal(txt,portion);
+  const t=new Date();
+  D.meals.push({name:txt,cal,portion,unit,time:`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`});
+  D.totalCal=D.meals.reduce((s,m)=>s+m.cal,0);
+  inp.value='';document.getElementById('meal-portion').value='1';
+  renderMeals();saveDay();showToast(`🍽 ${txt} tercatat — ~${cal} kkal`);
 }
-function addMeal() {
-  const inp = document.getElementById('meal-inp');
-  const txt = inp.value.trim(); if (!txt) return;
-  const portion = parseFloat(document.getElementById('meal-portion').value) || 1;
-  const unit = document.getElementById('meal-unit').value;
-  const cal = estCal(txt, portion);
-  const t = new Date();
-  D.meals.push({ name:txt, cal, portion, unit, time:`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}` });
-  D.totalCal = D.meals.reduce((s,m) => s+m.cal, 0);
-  inp.value = ''; document.getElementById('meal-portion').value = '1';
-  renderMeals(); saveDay();
-  showToast(`🍽 ${txt} tercatat — ~${cal} kkal`);
-}
-function deleteMeal(i) { D.meals.splice(i,1); D.totalCal = D.meals.reduce((s,m)=>s+m.cal,0); renderMeals(); saveDay(); }
-function renderMeals() {
-  const list = document.getElementById('meal-list'); list.innerHTML = '';
-  (D.meals||[]).forEach((m,i) => {
-    const li = document.createElement('li'); li.className = 'meal-row';
-    li.innerHTML = `<span class="meal-time">${m.time}</span><span class="meal-name">${m.name}<small>${m.portion} ${m.unit}</small></span><span class="meal-kcal">~${m.cal} kkal</span><button class="meal-del" onclick="deleteMeal(${i})">✕</button>`;
+function deleteMeal(i){D.meals.splice(i,1);D.totalCal=D.meals.reduce((s,m)=>s+m.cal,0);renderMeals();saveDay()}
+function renderMeals(){
+  const list=document.getElementById('meal-list');list.innerHTML='';
+  (D.meals||[]).forEach((m,i)=>{
+    const li=document.createElement('li');li.className='meal-row';
+    li.innerHTML=`<span class="meal-time">${m.time}</span><span class="meal-name">${m.name}<small>${m.portion} ${m.unit}</small></span><span class="meal-kcal">~${m.cal} kkal</span><button class="meal-del" onclick="deleteMeal(${i})">✕</button>`;
     list.appendChild(li);
   });
-  const tot = D.totalCal || 0;
-  document.getElementById('sheet-cal-stat').textContent = `~${tot} kkal`;
-  const cs = document.getElementById('cal-summary');
-  if (tot > 0) { cs.style.display = 'flex'; document.getElementById('cal-summary-num').textContent = `~${tot} kkal`; }
-  // Update action card preview
-  const meals = D.meals || [];
-  const stat = document.getElementById('meal-stat');
-  stat.textContent = tot > 0 ? `~${tot} kkal` : '0 kkal';
-  const preview = document.getElementById('meal-preview');
-  if (meals.length === 0) {
-    preview.innerHTML = '<div class="action-empty">Belum ada catatan.</div><div class="action-tap-hint">Tap untuk catat →</div>';
-  } else {
-    preview.innerHTML = meals.slice(-3).map(m => `<div class="action-item"><span class="action-item-name">${m.name}</span><span class="action-item-cal">${m.cal}k</span></div>`).join('');
-  }
+  const tot=D.totalCal||0;
+  document.getElementById('sheet-cal-stat').textContent=`~${tot} kkal`;
+  const cs=document.getElementById('cal-summary');
+  if(tot>0){cs.style.display='flex';document.getElementById('cal-summary-num').textContent=`~${tot} kkal`}
+  document.getElementById('meal-stat').textContent=tot>0?`~${tot} kkal`:'0 kkal';
+  const preview=document.getElementById('meal-preview');
+  const meals=D.meals||[];
+  if(!meals.length){preview.innerHTML='<div class="action-empty">Belum ada catatan.</div><div class="action-tap">Tap untuk catat →</div>'}
+  else{preview.innerHTML=meals.slice(-3).map(m=>`<div class="action-item"><span class="action-item-name">${m.name}</span><span class="action-item-cal">${m.cal}k</span></div>`).join('')}
 }
-function buildFoodSuggs() {
-  const wrap = document.getElementById('food-sug-wrap');
-  function render(foods) {
-    wrap.innerHTML = '';
-    foods.forEach(f => {
-      const db = FOOD_DB[f]; if (!db) return;
-      const c = document.createElement('button'); c.className = 'food-sug-chip';
-      c.textContent = `${f} (~${db.cal} kkal)`;
-      c.onclick = () => { document.getElementById('meal-inp').value = f; document.getElementById('meal-inp').focus(); };
+function buildFoodSuggs(){
+  const wrap=document.getElementById('food-sug-wrap');
+  function render(foods){
+    wrap.innerHTML='';
+    foods.forEach(f=>{
+      const db=FOOD_DB[f];if(!db)return;
+      const c=document.createElement('button');c.className='food-sug-chip';
+      c.textContent=`${f} (~${db.cal} kkal)`;
+      c.onclick=()=>{document.getElementById('meal-inp').value=f;document.getElementById('meal-inp').focus()};
       wrap.appendChild(c);
     });
   }
   render(FOOD_SUGS);
-  document.getElementById('meal-inp').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase().trim();
-    if (!q) { render(FOOD_SUGS); return; }
-    render(Object.keys(FOOD_DB).filter(k => k.includes(q)).slice(0,8));
+  document.getElementById('meal-inp').addEventListener('input',e=>{
+    const q=e.target.value.toLowerCase().trim();
+    if(!q){render(FOOD_SUGS);return}
+    render(Object.keys(FOOD_DB).filter(k=>k.includes(q)).slice(0,8));
   });
 }
 
-// ═══ MOVE ═══
-function buildMoveGrid() {
-  const grid = document.getElementById('move-grid');
-  if (grid.children.length > 0) return;
-  const w = P.weight || 55;
-  MOVE_OPTS.forEach(m => {
-    const btn = document.createElement('button'); btn.className = 'move-opt';
-    const cal30 = Math.round(m.cph * w * 0.5 / 60);
-    btn.innerHTML = `<span class="move-opt-icon">${m.icon}</span><span class="move-opt-lbl">${m.name}</span><span class="move-opt-cal">~${cal30} kkal/30mnt</span>`;
-    btn.onclick = () => addMoveEntry(m.icon, m.name, 30, Math.round(m.cph * w * 30 / 60 / 60));
+// ══ MOVE ══
+function buildMoveGrid(){
+  const grid=document.getElementById('move-grid');
+  if(grid.children.length>0)return;
+  const w=P.weight||55;
+  MOVE_OPTS.forEach(m=>{
+    const btn=document.createElement('button');btn.className='move-opt';
+    const cal30=Math.round(m.cph*w*30/3600);
+    btn.innerHTML=`<span class="move-opt-icon">${m.icon}</span><span class="move-opt-lbl">${m.name}</span><span class="move-opt-cal">~${cal30} kkal/30mnt</span>`;
+    btn.onclick=()=>addMoveEntry(m.icon,m.name,30,cal30);
     grid.appendChild(btn);
   });
 }
-function addMoveEntry(icon, name, dur, cal) {
-  D.moves.push({ icon, name, dur, cal });
-  D.totalMoveCal = D.moves.reduce((s,m) => s+m.cal, 0);
-  renderMoves(); saveDay();
-  showToast(`${icon} ${name} tercatat! ~${cal} kkal`);
+function addMoveEntry(icon,name,dur,cal){
+  D.moves.push({icon,name,dur,cal});
+  D.totalMoveCal=D.moves.reduce((s,m)=>s+m.cal,0);
+  renderMoves();saveDay();showToast(`${icon} ${name} tercatat — ~${cal} kkal`);
 }
-function addCustomMove() {
-  const name = document.getElementById('move-custom-name').value.trim();
-  const dur = parseInt(document.getElementById('move-custom-dur').value) || 30;
-  if (!name) { document.getElementById('move-custom-name').focus(); return; }
-  addMoveEntry('🏅', name, dur, Math.round(4 * dur));
-  document.getElementById('move-custom-name').value = '';
-  document.getElementById('move-custom-dur').value = '';
+function addCustomMove(){
+  const name=document.getElementById('move-custom-name').value.trim();
+  const dur=parseInt(document.getElementById('move-custom-dur').value)||30;
+  if(!name){document.getElementById('move-custom-name').focus();return}
+  addMoveEntry('🏅',name,dur,Math.round(4*dur));
+  document.getElementById('move-custom-name').value='';
+  document.getElementById('move-custom-dur').value='';
 }
-function deleteMove(i) { D.moves.splice(i,1); D.totalMoveCal = D.moves.reduce((s,m)=>s+m.cal,0); renderMoves(); saveDay(); }
-function renderMoves() {
-  const list = document.getElementById('move-list'); list.innerHTML = '';
-  (D.moves||[]).forEach((m,i) => {
-    const li = document.createElement('li'); li.className = 'move-row';
-    li.innerHTML = `<span class="move-row-icon">${m.icon||'🏅'}</span><span class="move-row-name">${m.name}</span><span class="move-row-dur">${m.dur} mnt</span><span class="move-row-cal">~${m.cal} kkal</span><button class="move-row-del" onclick="deleteMove(${i})">✕</button>`;
+function deleteMove(i){D.moves.splice(i,1);D.totalMoveCal=D.moves.reduce((s,m)=>s+m.cal,0);renderMoves();saveDay()}
+function renderMoves(){
+  const list=document.getElementById('move-list');list.innerHTML='';
+  (D.moves||[]).forEach((m,i)=>{
+    const li=document.createElement('li');li.className='move-row';
+    li.innerHTML=`<span class="move-row-icon">${m.icon||'🏅'}</span><span class="move-row-name">${m.name}</span><span class="move-row-dur">${m.dur} mnt</span><span class="move-row-cal">~${m.cal} kkal</span><button class="move-row-del" onclick="deleteMove(${i})">✕</button>`;
     list.appendChild(li);
   });
-  const total = D.totalMoveCal || 0;
-  document.getElementById('sheet-move-stat').textContent = `~${total} kkal`;
-  // Summary bar
-  const bar = document.getElementById('move-summary-bar');
-  if (D.moves.length > 0) {
-    const net = (D.totalCal||0) - total;
-    bar.textContent = `Total gerak hari ini ~${total} kkal. Kalori bersih ~${net} kkal.`;
-    bar.classList.add('on');
-  } else { bar.classList.remove('on'); }
-  // Update action card
-  const moves = D.moves || [];
-  document.getElementById('move-stat').textContent = total > 0 ? `~${total} kkal` : '0 kkal';
-  const preview = document.getElementById('move-preview');
-  if (moves.length === 0) {
-    preview.innerHTML = '<div class="action-empty">Belum ada aktivitas.</div><div class="action-tap-hint">Tap untuk catat →</div>';
-  } else {
-    preview.innerHTML = moves.slice(-2).map(m => `<div class="action-item"><span class="action-item-name">${m.icon} ${m.name} ${m.dur}mnt</span><span class="action-item-cal">${m.cal}k</span></div>`).join('');
-  }
+  const total=D.totalMoveCal||0;
+  document.getElementById('sheet-move-stat').textContent=`~${total} kkal`;
+  const bar=document.getElementById('move-summary-bar');
+  if(D.moves.length>0){const net=(D.totalCal||0)-total;bar.textContent=`Total gerak hari ini ~${total} kkal. Kalori bersih ~${net} kkal.`;bar.classList.add('on')}
+  else bar.classList.remove('on');
+  document.getElementById('move-stat').textContent=total>0?`~${total} kkal`:'0 kkal';
+  const preview=document.getElementById('move-preview');
+  const moves=D.moves||[];
+  if(!moves.length){preview.innerHTML='<div class="action-empty">Belum ada aktivitas.</div><div class="action-tap">Tap untuk catat →</div>'}
+  else{preview.innerHTML=moves.slice(-2).map(m=>`<div class="action-item"><span class="action-item-name">${m.icon} ${m.name} ${m.dur}mnt</span><span class="action-item-cal">${m.cal}k</span></div>`).join('')}
 }
 
-// ═══ NARA TODAY MESSAGE ═══
-let naraShown = false;
-function maybeShowNaraMessage() {
-  const hasData = (D.water > 0) || D.mood || (D.meals && D.meals.length > 0) || (D.moves && D.moves.length > 0);
-  if (!hasData) return;
-  const el = document.getElementById('nara-today-msg');
-  const txt = document.getElementById('nara-today-txt');
+// ══ NARA MSG ══
+function maybeShowNaraMsg(){
+  const hasData=(D.water>0)||D.mood||(D.meals&&D.meals.length)||(D.moves&&D.moves.length);
+  if(!hasData)return;
+  const el=document.getElementById('nara-today');
+  const txt=document.getElementById('nara-today-txt');
   el.classList.add('on');
-  const parts = [];
-  if ((D.conditions||[]).includes('haid')) parts.push('Lagi haid ya — wajar kalau badan lebih berat. Perbanyak minum air dan makanan kaya zat besi (ꈍᴗꈍ)');
-  if (D.mood === 'berat') parts.push('Hari yang berat — itu valid banget. Tidak harus produktif di semua hal hari ini.');
-  if (D.mood === 'semangat') parts.push('Semangat yang kamu bawa hari ini itu energi yang bagus banget!');
-  if ((D.water||0) >= 6) parts.push(`${D.water} gelas air sudah tercatat — hidrasi kamu bagus hari ini! (≧▽≦)`);
-  else if ((D.water||0) > 0 && (D.water||0) < 4) parts.push(`Baru ${D.water} gelas. Yuk pelan-pelan tambah lagi ya!`);
-  if ((D.moves||[]).length > 0) parts.push(`Sudah gerak ${D.moves.length} aktivitas — ~${D.totalMoveCal} kkal terbakar. Kamu keren!`);
-  const template = loadHabitTemplate();
-  const done = (D.habits||[]).length;
-  if (template.length > 0 && done === template.length) parts.push(`Semua ${done} kebiasaan hari ini selesai! (≧▽≦)`);
-  if (!parts.length) parts.push('Kamu sudah mulai hari ini dengan langkah yang baik. Lanjutkan pelan-pelan ya (◕ᴗ◕✿)');
-  txt.innerHTML = parts.slice(0,2).map(p => `<p>${p}</p>`).join('');
+  const parts=[];
+  if((D.conditions||[]).includes('haid'))parts.push('Lagi haid ya — wajar kalau badan lebih berat dari biasanya. Perbanyak zat besi dan minum air ya (ꈍᴗꈍ)');
+  if(D.mood==='berat')parts.push('Hari yang berat — itu valid banget. Tidak harus produktif di semua hal hari ini. Kamu sudah cukup.');
+  else if(D.mood==='semangat')parts.push('Semangat yang kamu bawa hari ini itu energi yang bagus banget. Jaga terus ya!');
+  if((D.water||0)>=6)parts.push(`${D.water} gelas air sudah tercatat — hidrasi kamu bagus hari ini! (≧▽≦)`);
+  else if((D.water||0)>0&&(D.water||0)<4)parts.push(`Baru ${D.water} gelas nih. Yuk pelan-pelan tambah lagi, target 8 gelas ya!`);
+  if((D.moves||[]).length>0)parts.push(`Sudah gerak ${D.moves.length} aktivitas — ~${D.totalMoveCal} kkal. Tubuhmu berterima kasih!`);
+  const tmpl=loadHabitTemplate();const done=(D.habits||[]).length;
+  if(tmpl.length>0&&done===tmpl.length)parts.push(`Semua ${done} kebiasaan hari ini selesai! Konsistensi kamu luar biasa (≧▽≦)`);
+  if(!parts.length)parts.push('Kamu sudah mulai mengisi hari ini — itu sudah jadi langkah yang berarti. Lanjutkan pelan-pelan ya (◕ᴗ◕✿)');
+  txt.innerHTML=parts.slice(0,2).map(p=>`<p>${p}</p>`).join('');
 }
 
-// ═══ SAVE ═══
-function saveDay() {
-  sv('inarte_day_' + TODAY, D);
-  const logs = ld('inarte_logs') || {};
-  logs[TODAY] = { logged: true, water: D.water, mood: D.mood, meals: D.meals.length, move: D.moves.length, mealCal: D.totalCal, moveCal: D.totalMoveCal };
-  sv('inarte_logs', logs);
-  maybeShowNaraMessage();
+// ══ SAVE ══
+function saveDay(){
+  sv('inarte_day_'+TODAY,D);
+  const logs=ld('inarte_logs')||{};
+  logs[TODAY]={logged:true,water:D.water,mood:D.mood,meals:D.meals.length,move:D.moves.length,mealCal:D.totalCal,moveCal:D.totalMoveCal};
+  sv('inarte_logs',logs);
+  maybeShowNaraMsg();
 }
 
-// ═══ SHEETS ═══
-function openSheet(id) {
+// ══ SHEETS ══
+function openSheet(id){
   closeSheet(true);
-  const sheet = document.getElementById('sheet-' + id);
-  const overlay = document.getElementById('sheet-overlay');
-  if (!sheet) return;
+  const sheet=document.getElementById('sheet-'+id);
+  const overlay=document.getElementById('sheet-overlay');
+  if(!sheet)return;
   overlay.classList.add('on');
-  requestAnimationFrame(() => sheet.classList.add('open'));
-  if (id === 'move') buildMoveGrid();
+  requestAnimationFrame(()=>sheet.classList.add('open'));
+  if(id==='move')buildMoveGrid();
 }
-function closeSheet(immediate) {
-  document.querySelectorAll('.bottom-sheet.open').forEach(s => s.classList.remove('open'));
+function closeSheet(){
+  document.querySelectorAll('.bottom-sheet.open').forEach(s=>s.classList.remove('open'));
   document.getElementById('sheet-overlay').classList.remove('on');
 }
 
-// ═══ NARA CHAT ═══
-function initNaraChat() {
-  addMsg('Hei ' + (P.name || 'kamu') + '! Aku Nara (◕ᴗ◕✿)', 'nara');
-  setTimeout(() => addMsg('Mau ngobrol soal apa aja — makan, olahraga, atau curhat. Aku dengerin!', 'nara'), 400);
-}
-let chatInited = false;
-function toggleNaraChat() {
-  const chat = document.getElementById('nara-chat');
+// ══ NARA CHAT ══
+function toggleNaraChat(){
+  const chat=document.getElementById('nara-chat');
   chat.classList.toggle('on');
-  if (chat.classList.contains('on')) {
+  if(chat.classList.contains('on')){
     document.getElementById('nara-badge').classList.remove('on');
     document.getElementById('nc-inp').focus();
-    if (!chatInited) { initNaraChat(); chatInited = true; }
+    if(!chatInited){
+      addNaraMsg('Hei '+(P.name||'kamu')+'! Aku Nara (◕ᴗ◕✿)');
+      setTimeout(()=>addNaraMsg('Mau ngobrol soal apa aja — makan, olahraga, atau curhat. Aku dengerin!'),400);
+      chatInited=true;
+    }
   }
 }
-function addMsg(text, who) {
-  const msgs = document.getElementById('nc-msgs');
-  const div = document.createElement('div');
-  div.className = `nc-msg ${who}`; div.textContent = text;
-  msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
+function addNaraMsg(text,who='nara'){
+  const msgs=document.getElementById('nc-msgs');
+  const div=document.createElement('div');div.className=`nc-msg ${who}`;div.textContent=text;
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
 }
-function quickChat(text) { document.getElementById('nc-inp').value = text; sendNara(); }
-async function sendNara() {
-  const inp = document.getElementById('nc-inp');
-  const txt = inp.value.trim(); if (!txt) return;
-  addMsg(txt, 'user'); inp.value = '';
-  chatHistory.push({ role:'user', content:txt });
-  const msgs = document.getElementById('nc-msgs');
-  const typing = document.createElement('div');
-  typing.className = 'nc-msg nara';
-  typing.innerHTML = '<div class="nara-loading"><span></span><span></span><span></span></div>';
-  msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
-
-  const sys = `Profil: ${P.name||'teman'}, ${P.age||'?'} tahun, ${P.act||''}, ${P.home||''}.
-Hari ini: air ${D.water||0}/8, mood ${D.mood||'-'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'-'}.`;
+function quickChat(text){document.getElementById('nc-inp').value=text;sendNara()}
+async function sendNara(){
+  const inp=document.getElementById('nc-inp');const txt=inp.value.trim();if(!txt)return;
+  addNaraMsg(txt,'user');inp.value='';
+  chatHistory.push({role:'user',content:txt});
+  const msgs=document.getElementById('nc-msgs');
+  const typing=document.createElement('div');typing.className='nc-msg nara';
+  typing.innerHTML='<div class="nara-dots"><span></span><span></span><span></span></div>';
+  msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
+  const sys=`Profil: ${P.name||'teman'}, ${P.age||'?'} tahun, ${P.act||''}, ${P.home||''}. Hari ini: air ${D.water||0}/8, mood ${D.mood||'-'}, makan: ${D.meals?.map(m=>m.name).join(', ')||'-'}.`;
   let reply;
-  try {
-    const r = await fetch('/api/chat', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'gemini-2.0-flash', max_tokens:400, system:sys, messages:chatHistory.slice(-10) }),
-      signal: AbortSignal.timeout(12000),
-    });
-    if (r.ok) { const d = await r.json(); reply = d.content?.[0]?.text; }
-  } catch(e) {}
-
-  if (!reply) reply = buildStaticReply(txt);
-  msgs.removeChild(typing);
-  addMsg(reply, 'nara');
-  chatHistory.push({ role:'assistant', content:reply });
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gemini-2.0-flash',max_tokens:400,system:sys,messages:chatHistory.slice(-10)}),signal:AbortSignal.timeout(12000)});
+    if(r.ok){const d=await r.json();reply=d.content?.[0]?.text}
+  }catch(e){}
+  if(!reply)reply=staticReply(txt);
+  msgs.removeChild(typing);addNaraMsg(reply,'nara');
+  chatHistory.push({role:'assistant',content:reply});
 }
-function buildStaticReply(msg) {
-  const q = msg.toLowerCase();
-  const name = P.name ? ` ${P.name}` : '';
-  if (q.match(/^(hei|hai|halo|hi)\b/)) return `Hei${name}! (◕ᴗ◕✿) Mau ngobrol apa hari ini?`;
-  if (q.includes('capek')||q.includes('lelah')) return `Capek itu wajar${name} — istirahat bukan kemewahan, itu kebutuhan (ꈍᴗꈍ)`;
-  if (q.includes('sedih')||q.includes('berat')) return `Terima kasih sudah mau cerita${name}. Perasaan itu valid banget. Aku di sini (ꈍᴗꈍ)`;
-  if (q.includes('makan')) return `Cek bagian menu rekomendasi di atas${name} — ada pilihan yang sudah disesuaikan untukmu (◕ᴗ◕✿)`;
-  if (q.includes('olahraga')||q.includes('gerak')) return `Mulai dari yang kamu suka${name}. 10 menit jalan kaki itu sudah bagus banget untuk awal!`;
-  return `Aku dengerin${name}. Mau cerita lebih? (◕ᴗ◕✿)`;
+function staticReply(msg){
+  const q=msg.toLowerCase();const n=P.name?` ${P.name}`:'';
+  if(q.match(/^(hei|hai|halo|hi)\b/))return `Hei${n}! (◕ᴗ◕✿) Mau ngobrol apa hari ini?`;
+  if(q.includes('capek')||q.includes('lelah'))return `Capek itu wajar${n} — istirahat bukan kelemahan, itu kebutuhan (ꈍᴗꈍ)`;
+  if(q.includes('sedih')||q.includes('berat')||q.includes('nangis'))return `Makasih udah mau cerita${n}. Perasaan itu valid banget — tidak harus kuat terus. Aku di sini (ꈍᴗꈍ)`;
+  if(q.includes('senang')||q.includes('bahagia')||q.includes('yeay'))return `Wah ikut seneng denger kamu baik-baik${n}! (≧▽≦) Jaga energi positifnya ya!`;
+  if(q.includes('makan'))return `Cek menu rekomendasi di halaman utama ya${n} — ada pilihan yang sudah disesuaikan untukmu (◕ᴗ◕✿)`;
+  if(q.includes('olahraga')||q.includes('gerak'))return `Mulai dari yang kamu suka${n}. 10 menit jalan kaki itu sudah bagus banget untuk awal!`;
+  if(q.includes('tidur')||q.includes('insomnia'))return `Untuk tidur lebih nyenyak${n}: hindari HP 30 menit sebelum tidur dan coba tidur di jam yang sama setiap hari.`;
+  return `Aku dengerin${n} (◕ᴗ◕✿) Mau cerita lebih?`;
 }
 
-// ═══ TOAST ═══
-function showToast(msg, duration = 2800) {
-  let t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove('show'), duration);
+// ══ TOAST ══
+function showToast(msg,duration=2800){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),duration);
 }
 </script>
 </body>
