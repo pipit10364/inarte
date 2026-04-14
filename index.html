@@ -48,7 +48,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .tracker-card:active{transform:scale(.97)}
 .tracker-inner{padding:.875rem .75rem .75rem;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:110px;justify-content:center}
 .tracker-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);align-self:flex-start}
-.tracker-tap-hint{font-size:9px;color:var(--text4);font-style:italic;align-self:flex-start;margin-top:auto}
+.tracker-nara{font-size:10px;color:var(--text3);font-style:italic;align-self:flex-start;margin-top:auto;line-height:1.45}
 
 /* Sleep arc */
 .sleep-arc-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;width:100%}
@@ -114,7 +114,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ach-add-btn{padding:8px 14px;background:var(--amber);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
 .ach-add-btn:hover{background:#8A6020}
 .ach-add-hint{font-size:10px;color:var(--text4);margin-top:5px;font-style:italic}
-.ach-empty{font-size:12px;color:var(--text4);font-style:italic;text-align:center;padding:.875rem 0}
+.ach-empty{font-size:11px;color:var(--text4);font-style:italic;padding:4px 2px}
 
 /* ══ JOURNAL CARD ══ */
 .journal-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
@@ -122,8 +122,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .journal-card-title{font-size:11.5px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:7px}
 
 /* Journal tabs row */
-.journal-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border-l)}
-.jtab{padding:.75rem .5rem;background:transparent;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px;transition:background .15s;border-bottom:2px solid transparent;position:relative}
+.journal-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:none}
+.jtab{padding:.75rem .5rem .625rem;background:transparent;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px;transition:background .15s;border-bottom:2px solid transparent;position:relative}
 .jtab:hover{background:var(--bg2)}
 .jtab.active{border-bottom-color:var(--moss)}
 .jtab-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center}
@@ -132,8 +132,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .jtab-dot{width:5px;height:5px;border-radius:50%;background:var(--border);position:absolute;top:8px;right:8px;transition:background .2s}
 .jtab-dot.filled{background:var(--moss-mid)}
 
-/* Journal content area */
-.journal-content{display:none;padding:1rem 1.125rem 1.125rem;animation:fadeUp .2s ease}
+/* Journal content area — hidden, just for structure */
+.journal-content{display:none}
 .journal-content.active{display:block}
 
 /* Full screen journal view */
@@ -321,7 +321,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
           <div class="sleep-dur-big" id="sleep-dur-big">—</div>
           <div class="sleep-dur-sub" id="sleep-dur-sub">jam tidur</div>
         </div>
-        <div class="tracker-tap-hint">Tap untuk isi</div>
+        <div class="tracker-nara" id="sleep-nara">Tidur semalam gimana?</div>
       </div>
     </div>
 
@@ -337,11 +337,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="tracker-inner">
         <div class="tracker-label">Emosi</div>
         <div class="wheel-compact">
-          <svg class="wheel-compact-svg" viewBox="0 0 64 64" width="64" height="64" id="wheel-compact-svg">
-            <!-- built by JS -->
-          </svg>
+          <svg class="wheel-compact-svg" viewBox="0 0 64 64" width="64" height="64" id="wheel-compact-svg"></svg>
           <div class="wheel-compact-lbl" id="wheel-compact-lbl">Tap untuk pilih</div>
         </div>
+        <div class="tracker-nara" id="emotion-nara">Hari ini rasanya kayak apa?</div>
       </div>
     </div>
 
@@ -405,31 +404,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="jtab-dot" id="jdot-harapan"></div>
       </button>
     </div>
-    <!-- Tab content preview + open button -->
-    <div class="journal-content active" id="jc-cerita">
-      <div class="journal-preview-row" id="jp-cerita">
-        <div class="journal-preview-empty">Belum ditulis hari ini.</div>
-      </div>
-      <button style="margin-top:.625rem;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--moss);cursor:pointer;transition:all .15s" onclick="openJournal('cerita')" onmouseover="this.style.background='var(--moss-p)'" onmouseout="this.style.background='transparent'">
-        Tulis / buka →
-      </button>
-    </div>
-    <div class="journal-content" id="jc-syukur">
-      <div class="journal-preview-row" id="jp-syukur">
-        <div class="journal-preview-empty">Belum ditulis hari ini.</div>
-      </div>
-      <button style="margin-top:.625rem;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--moss);cursor:pointer;transition:all .15s" onclick="openJournal('syukur')" onmouseover="this.style.background='var(--moss-p)'" onmouseout="this.style.background='transparent'">
-        Tulis / buka →
-      </button>
-    </div>
-    <div class="journal-content" id="jc-harapan">
-      <div class="journal-preview-row" id="jp-harapan">
-        <div class="journal-preview-empty">Belum ditulis hari ini.</div>
-      </div>
-      <button style="margin-top:.625rem;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--moss);cursor:pointer;transition:all .15s" onclick="openJournal('harapan')" onmouseover="this.style.background='var(--moss-p)'" onmouseout="this.style.background='transparent'">
-        Tulis / buka →
-      </button>
-    </div>
+    <!-- Tab content: tap tab opens fullscreen directly, dot shows filled status -->
+    <div class="journal-content active" id="jc-cerita"></div>
+    <div class="journal-content" id="jc-syukur"></div>
+    <div class="journal-content" id="jc-harapan"></div>
   </div>
 
   <button class="save-btn" onclick="saveWellness()">Simpan catatan hari ini</button>
@@ -569,15 +547,19 @@ function updateSleepArc(hrs){
   const arc=document.getElementById('sleep-arc');
   const big=document.getElementById('sleep-dur-big');
   const sub=document.getElementById('sleep-dur-sub');
+  const nara=document.getElementById('sleep-nara');
   const total=81.68;
-  if(!hrs||hrs<=0){arc.style.strokeDashoffset=total;arc.style.stroke='var(--border)';big.textContent='—';return}
+  if(!hrs||hrs<=0){
+    arc.style.strokeDashoffset=total;arc.style.stroke='var(--border)';big.textContent='—';
+    if(nara)nara.textContent='Tidur semalam gimana?';
+    return;
+  }
   const pct=Math.min(hrs/10,1);
   arc.style.strokeDashoffset=total-(pct*total);
-  big.textContent=hrs.toFixed(1);
-  sub.textContent='jam tidur';
-  if(hrs>=7&&hrs<=9)arc.style.stroke='var(--moss)';
-  else if(hrs>=5)arc.style.stroke='var(--amber)';
-  else arc.style.stroke='var(--rose)';
+  big.textContent=hrs.toFixed(1);sub.textContent='jam tidur';
+  if(hrs>=7&&hrs<=9){arc.style.stroke='var(--moss)';if(nara)nara.textContent=`${hrs.toFixed(1)} jam — pas banget! (◕ᴗ◕✿)`;}
+  else if(hrs>=5){arc.style.stroke='var(--amber)';if(nara)nara.textContent=`${hrs.toFixed(1)} jam, sedikit kurang.`;}
+  else{arc.style.stroke='var(--rose)';if(nara)nara.textContent=`${hrs.toFixed(1)} jam itu kurang, istirahat ya.`;}
 }
 function calcSleep(){
   const s=document.getElementById('sleep-start').value;
@@ -626,12 +608,22 @@ function buildEPInner(){
         </div>
         <div style="font-size:8px;color:var(--text4)">${Math.max(0,28-day)} hari lagi</div>
       </div>
-      <div class="tracker-tap-hint">Tap untuk detail</div>`;
+      <div class="tracker-nara">${day<=5?'Lagi haid, jaga diri ya (ꈍᴗꈍ)':day<=14?'Fase folikuler — energi cenderung meningkat.':day<=21?'Sekitar ovulasi sekarang.':'Fase luteal, PMS mungkin muncul.'}</div>`;
     buildPeriodSheet(day,pct);
   } else {
     document.getElementById('ep-sheet-title').textContent='⚡ Energi hari ini';
     const fisik=W.energyFisik||0;
     const mental=W.energyMental||0;
+    // Nara microcopy
+    let naraMsg='Tubuh dan pikiran lagi di level berapa?';
+    if(fisik>0&&mental>0){
+      const avg=(fisik+mental)/2;
+      if(avg>=4)naraMsg='Energimu bagus hari ini! (◕ᴗ◕✿)';
+      else if(avg>=2.5)naraMsg='Energi sedang-sedang — wajar banget.';
+      else naraMsg='Energi lagi rendah, boleh istirahat ya.';
+    } else if(fisik>0||mental>0){
+      naraMsg='Isi yang satu lagi ya (◕ᴗ◕✿)';
+    }
     inner.innerHTML=`
       <div class="tracker-label">Energi</div>
       <div class="energy-wrap" style="width:100%">
@@ -644,7 +636,7 @@ function buildEPInner(){
           <div class="energy-pips" id="epips-mental">${buildPipHTML('mental',mental)}</div>
         </div>
       </div>
-      <div class="tracker-tap-hint">Tap untuk isi</div>`;
+      <div class="tracker-nara">${naraMsg}</div>`;
     buildEnergySheet();
   }
 }
@@ -744,8 +736,28 @@ function buildWheelCompact(){
   html+=`<circle cx="${cx}" cy="${cy}" r="9" fill="var(--surface)" stroke="var(--border-l)" stroke-width="1"/>`;
   if(selectedEmotions.length>0) html+=`<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="8" fill="var(--text3)" font-family="DM Sans,sans-serif">${selectedEmotions.length}</text>`;
   svg.innerHTML=html;
+
   const lbl=document.getElementById('wheel-compact-lbl');
-  lbl.textContent=selectedEmotions.length>0?selectedEmotions.slice(0,2).join(', ')+(selectedEmotions.length>2?'...':''):'Tap untuk pilih';
+  lbl.textContent=selectedEmotions.length>0
+    ?selectedEmotions.slice(0,2).join(', ')+(selectedEmotions.length>2?'...':'')
+    :'Tap untuk pilih';
+
+  // Nara microcopy based on dominant emotion zone
+  const naraEl=document.getElementById('emotion-nara');
+  if(!naraEl)return;
+  if(!selectedEmotions.length){naraEl.textContent='Hari ini rasanya kayak apa?';return;}
+  const dominantZone=ZONES.find(z=>z.emotions.some(e=>selectedEmotions.includes(e)));
+  const naraMap={
+    gembira:'Energi positif hari ini — bagus! (◕ᴗ◕✿)',
+    percaya:'Merasa aman dan tenang. Nikmati ya.',
+    antisipasi:'Ada yang ditunggu-tunggu nih!',
+    terkejut:'Hari yang penuh kejutan rupanya.',
+    sedih:'Hari yang berat — kamu tidak sendirian (ꈍᴗꈍ)',
+    jijik:'Ada yang bikin tidak nyaman hari ini.',
+    marah:'Perasaan itu valid. Napas dulu ya.',
+    takut:'Wajar merasa begitu. Pelan-pelan aja.',
+  };
+  naraEl.textContent=dominantZone?naraMap[dominantZone.id]||'Emosi tercatat.':'Emosi tercatat.';
 }
 
 function buildWheelSheet(){
@@ -877,13 +889,13 @@ function addAchText(text,target){const data=loadAch();if(data.items.some(a=>a.te
 function addAch(){const inp=document.getElementById('ach-add-inp');const t=inp.value.trim();if(!t)return;addAchText(t,parseInt(document.getElementById('ach-target-inp').value)||1);inp.value='';document.getElementById('ach-target-inp').value='1'}
 function deleteAch(i,e){e.stopPropagation();const data=loadAch();data.items.splice(i,1);saveAch(data);renderAchList()}
 
-// ══ JOURNAL TABS ══
+// ══ JOURNAL TABS — tap tab opens fullscreen directly ══
 function switchJTab(id){
   activeJournalTab=id;
   document.querySelectorAll('.jtab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.journal-content').forEach(c=>c.classList.remove('active'));
   document.getElementById('jtab-'+id).classList.add('active');
-  document.getElementById('jc-'+id).classList.add('active');
+  // Open fullscreen directly
+  openJournal(id);
 }
 
 // ══ JOURNAL FULLSCREEN ══
@@ -959,16 +971,8 @@ function updateJfsChar(){
 function updateJournalPreviews(){
   const fields={cerita:'journalText',syukur:'gratText',harapan:'hopeText'};
   Object.entries(fields).forEach(([tab,field])=>{
-    const val=W[field]||'';
-    const el=document.getElementById('jp-'+tab);
     const dot=document.getElementById('jdot-'+tab);
-    if(val.trim()){
-      el.innerHTML=`<div class="journal-preview-item">${val.slice(0,60)}${val.length>60?'...':''}</div>`;
-      if(dot)dot.classList.add('filled');
-    } else {
-      el.innerHTML='<div class="journal-preview-empty">Belum ditulis hari ini.</div>';
-      if(dot)dot.classList.remove('filled');
-    }
+    if(dot) dot.classList.toggle('filled',!!(W[field]||'').trim());
   });
 }
 
