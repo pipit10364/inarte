@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>INARTE — Wellness</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#F4EFE8;--bg2:#EDE6DA;--surface:#FDFAF6;--border:#E2D9CC;--border-l:#EDE8DF;
+  --text:#1C1810;--text2:#4A4238;--text3:#8A7F72;--text4:#BEB4A8;
+  --moss:#3D6147;--moss-d:#2A4432;--moss-l:#B4CEBC;--moss-p:#EAF2EC;--moss-mid:#5A8A68;
+  --clay:#7D3E2C;--clay-l:#DDB8A8;--clay-p:#F8EDE8;
+  --amber:#9B6E2A;--amber-l:#E0C88A;--amber-p:#F8F0DC;
+  --sky:#2E5F7A;--sky-l:#A4CCDE;--sky-p:#E4EFF6;
+  --rose:#7A3E50;--rose-l:#D8B0C0;--rose-p:#F5EAEE;
+  --dusk:#4C4272;--dusk-l:#C0B8D8;--dusk-p:#EDEAF6;
+  --r:20px;--rsm:14px;--rxs:10px;
+  --sh:0 2px 16px rgba(28,24,16,.07),0 1px 4px rgba(28,24,16,.04);
+  --sh-md:0 6px 28px rgba(28,24,16,.10),0 2px 8px rgba(28,24,16,.05);
+  --sh-lg:0 12px 48px rgba(28,24,16,.13),0 4px 12px rgba(28,24,16,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ══ TOPBAR ══ */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(244,239,232,.93);backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(226,217,204,.5);padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
+.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:var(--moss);letter-spacing:.08em}
+.topbar-logo em{font-style:italic;color:var(--clay)}
+.topbar-r{display:flex;align-items:center;gap:.75rem}
+.topbar-date{font-size:11px;color:var(--text3)}
+.av-btn{width:32px;height:32px;border-radius:50%;background:var(--moss);color:#fff;border:none;cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.av-btn:hover{transform:scale(1.08)}
+
+/* ══ MAIN SCROLL ══ */
+.w-scroll{padding:1.125rem 1.125rem 100px;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+
+/* ══ PAGE HEADER ══ */
+.page-header{padding:.25rem 2px .125rem}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--text);line-height:1.2;margin-bottom:3px}
+.page-title em{font-style:italic;color:var(--moss)}
+.page-sub{font-size:11px;color:var(--text3);line-height:1.5}
+.section-divider{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);padding:0 2px;margin-top:4px}
+
+/* ══ TRACKER ROW ══ */
+.tracker-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tracker-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);cursor:pointer;transition:all .18s cubic-bezier(.34,1.56,.64,1);overflow:hidden}
+.tracker-card:active{transform:scale(.97)}
+.tracker-inner{padding:.875rem .75rem .75rem;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:110px;justify-content:center}
+.tracker-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);align-self:flex-start}
+.tracker-nara{font-size:10px;color:var(--text3);font-style:italic;align-self:flex-start;margin-top:auto;line-height:1.45}
+
+/* Sleep arc */
+.sleep-arc-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;width:100%}
+.sleep-arc-svg{overflow:visible}
+.sleep-dur-big{font-size:1.15rem;font-weight:700;color:var(--dusk);line-height:1}
+.sleep-dur-sub{font-size:9px;color:var(--text4);text-align:center}
+
+/* Energy pips */
+.energy-wrap{width:100%;display:flex;flex-direction:column;gap:7px}
+.energy-row{display:flex;flex-direction:column;gap:3px}
+.energy-row-lbl{font-size:9px;color:var(--text3);display:flex;justify-content:space-between;align-items:center}
+.energy-row-val{font-size:10px;font-weight:700}
+.energy-pips{display:flex;gap:3px}
+.epip{flex:1;height:5px;border-radius:3px;background:var(--border);cursor:pointer;transition:background .15s}
+
+/* Emotion wheel compact */
+.wheel-compact{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%}
+.wheel-compact-svg{overflow:visible}
+.wheel-compact-lbl{font-size:9px;color:var(--text4);text-align:center;font-style:italic;line-height:1.4;max-width:80px}
+
+/* ══ SECTION CARD ══ */
+.section-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.125rem .75rem;border-bottom:1px solid var(--border-l)}
+.section-title{font-size:11.5px;font-weight:600;color:var(--text2);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.s-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.section-badge{font-size:11px;color:var(--text3)}
+.section-body{padding:.875rem 1.125rem}
+
+/* ══ ACHIEVEMENT ══ */
+.ach-month-lbl{font-size:10px;color:var(--text4);margin-bottom:.75rem}
+.ach-themes{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.625rem}
+.ach-theme-btn{padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s}
+.ach-theme-btn:hover{background:var(--bg2)}
+.ach-theme-btn.active{border-color:var(--amber);background:var(--amber-p);color:var(--amber);font-weight:600}
+.ach-suggestions{display:none;background:var(--bg2);border:1px solid var(--border-l);border-radius:var(--rsm);padding:9px 11px;margin-bottom:.625rem;animation:fadeUp .2s ease}
+.ach-suggestions.on{display:block}
+.ach-sug-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:7px}
+.ach-sug-chips{display:flex;flex-wrap:wrap;gap:5px}
+.ach-sug-chip{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
+.ach-sug-chip:hover{border-color:var(--amber-l);color:var(--amber)}
+.ach-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:.875rem}
+.ach-item{padding:10px 12px;border-radius:var(--rsm);border:1px solid var(--border-l);background:var(--bg)}
+.ach-item.done{border-color:var(--amber-l)}
+.ach-item-top{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.ach-item-text{flex:1;font-size:13px;color:var(--text2)}
+.ach-item.done .ach-item-text{color:var(--amber)}
+.ach-item-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text4);padding:2px 4px;border-radius:4px;transition:all .15s}
+.ach-item-del:hover{color:var(--clay)}
+.ach-progress-row{display:flex;align-items:center;gap:8px}
+.ach-bar-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.ach-bar-fill{height:100%;border-radius:2px;background:var(--amber);transition:width .4s ease}
+.ach-counter{display:flex;align-items:center;gap:5px}
+.ach-cnt-btn{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .15s;color:var(--text2);line-height:1}
+.ach-cnt-btn:hover{border-color:var(--amber);color:var(--amber)}
+.ach-cnt-val{font-size:11px;font-weight:600;color:var(--text3);min-width:36px;text-align:center}
+.ach-nara{font-size:11px;color:var(--text3);font-style:italic;margin-top:5px;line-height:1.5;display:none}
+.ach-nara.on{display:block}
+.ach-add-row{display:flex;gap:7px;flex-wrap:wrap}
+.ach-add-inp{flex:2;min-width:150px;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.ach-add-inp:focus{border-color:var(--amber)}
+.ach-add-inp::placeholder{color:var(--text4);font-style:italic}
+.ach-target-inp{width:62px;padding:8px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;text-align:center}
+.ach-add-btn{padding:8px 14px;background:var(--amber);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+.ach-add-btn:hover{background:#8A6020}
+.ach-add-hint{font-size:10px;color:var(--text4);margin-top:5px;font-style:italic}
+.ach-empty{font-size:11px;color:var(--text4);font-style:italic;padding:4px 2px}
+
+/* ══ JOURNAL CARD ══ */
+.journal-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.journal-card-head{padding:.875rem 1.125rem .75rem;border-bottom:1px solid var(--border-l);display:flex;align-items:center;justify-content:space-between}
+.journal-card-title{font-size:11.5px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:7px}
+
+/* Journal tabs row */
+.journal-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:none}
+.jtab{padding:.75rem .5rem .625rem;background:transparent;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px;transition:background .15s;border-bottom:2px solid transparent;position:relative}
+.jtab:hover{background:var(--bg2)}
+.jtab.active{border-bottom-color:var(--moss)}
+.jtab-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center}
+.jtab-label{font-size:10px;font-weight:500;color:var(--text3);white-space:nowrap}
+.jtab.active .jtab-label{color:var(--moss);font-weight:600}
+.jtab-dot{width:5px;height:5px;border-radius:50%;background:var(--border);position:absolute;top:8px;right:8px;transition:background .2s}
+.jtab-dot.filled{background:var(--moss-mid)}
+
+/* Journal content area — hidden, just for structure */
+.journal-content{display:none}
+.journal-content.active{display:block}
+
+/* Full screen journal view */
+.journal-fullscreen{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)}
+.journal-fullscreen.open{display:flex;transform:translateY(0)}
+.jfs-topbar{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;border-bottom:1px solid var(--border-l);background:rgba(244,239,232,.93);backdrop-filter:blur(16px);flex-shrink:0}
+.jfs-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--text)}
+.jfs-title em{font-style:italic;color:var(--moss)}
+.jfs-close{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.jfs-close:hover{background:var(--bg2)}
+.jfs-save-btn{padding:7px 16px;background:var(--moss);color:#fff;border:none;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+.jfs-save-btn:hover{background:var(--moss-d)}
+.jfs-body{flex:1;overflow-y:auto;padding:1.25rem;max-width:680px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:.875rem;-webkit-overflow-scrolling:touch}
+.jfs-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text4);margin-bottom:5px}
+.jfs-ta{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--surface);outline:none;resize:none;line-height:1.8;transition:border-color .2s;min-height:200px}
+.jfs-ta:focus{border-color:var(--moss)}
+.jfs-ta::placeholder{color:var(--text4);font-style:italic}
+.jfs-ta.short{min-height:100px}
+.jfs-char{font-size:10px;color:var(--text4);text-align:right;margin-top:4px}
+.jfs-emotion-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.625rem;min-height:22px}
+.jfs-emotion-hint{font-size:11px;color:var(--text4);font-style:italic}
+
+/* Photo in fullscreen */
+.jfs-photo-row{display:flex;align-items:center;gap:8px;margin-bottom:.75rem}
+.jfs-photo-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px dashed var(--border);border-radius:var(--rsm);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text3);cursor:pointer;transition:all .15s}
+.jfs-photo-btn:hover{border-color:var(--moss-l);color:var(--moss)}
+.jfs-photo-hint{font-size:10px;color:var(--text4);font-style:italic}
+.jfs-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+@media(min-width:480px){.jfs-photo-grid{grid-template-columns:repeat(4,1fr)}}
+.photo-item{position:relative;aspect-ratio:1;border-radius:var(--rxs);overflow:hidden;background:var(--bg2)}
+.photo-item img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-del{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(28,24,16,.6);border:none;cursor:pointer;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+
+/* Journal preview in dashboard */
+.journal-preview-row{display:flex;flex-direction:column;gap:3px}
+.journal-preview-item{font-size:11px;color:var(--text3);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.journal-preview-empty{font-size:11px;color:var(--text4);font-style:italic}
+
+/* ══ SAVE BTN ══ */
+.save-btn{width:100%;padding:13px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.save-btn:hover{background:var(--moss-d)}
+.diary-btn{width:100%;padding:11px;background:transparent;color:var(--moss);border:1.5px solid var(--moss-l);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;margin-top:6px}
+.diary-btn:hover{background:var(--moss-p)}
+
+/* ══ NARA RESPONSE ══ */
+.nara-response{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:1rem 1.125rem;display:none}
+.nara-response.on{display:block;animation:fadeUp .4s ease}
+.nara-resp-head{display:flex;align-items:center;gap:8px;margin-bottom:.5rem}
+.nara-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nara-resp-name{font-size:12px;font-weight:600;color:var(--moss)}
+.nara-resp-body{font-size:13px;color:var(--text2);line-height:1.85}
+.nara-resp-body p{margin-bottom:5px}
+.nara-resp-body p:last-child{margin-bottom:0}
+.nara-dots{display:flex;gap:4px;align-items:center;padding:2px 0}
+.nara-dots span{width:6px;height:6px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s infinite}
+.nara-dots span:nth-child(2){animation-delay:.2s}
+.nara-dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounceDot{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1.2);opacity:1}}
+
+/* ══ BOTTOM SHEETS ══ */
+.sheet-overlay{position:fixed;inset:0;background:rgba(28,24,16,.45);z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(3px)}
+.sheet-overlay.on{opacity:1;pointer-events:auto}
+.bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:24px 24px 0 0;z-index:900;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);max-height:88dvh;display:flex;flex-direction:column;box-shadow:0 -8px 48px rgba(28,24,16,.15)}
+.bottom-sheet.open{transform:translateY(0)}
+@media(min-width:640px){
+  .bottom-sheet{left:50%;right:auto;width:540px;transform:translateX(-50%) translateY(100%)}
+  .bottom-sheet.open{transform:translateX(-50%) translateY(0)}
+}
+.sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.sheet-head{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-l);flex-shrink:0;gap:8px}
+.sheet-title{font-size:13px;font-weight:600;color:var(--text);flex:1}
+.sheet-close{background:var(--bg2);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:12px;color:var(--text3);display:flex;align-items:center;justify-content:center}
+.sheet-body{flex:1;overflow-y:auto;padding:14px 16px 32px;-webkit-overflow-scrolling:touch}
+
+/* Sleep sheet */
+.sleep-inp-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sleep-inp-lbl{font-size:12px;color:var(--text3);min-width:48px}
+.sleep-inp{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--bg);outline:none;text-align:center;transition:border-color .2s}
+.sleep-inp:focus{border-color:var(--dusk)}
+.sleep-feedback{font-size:12px;line-height:1.65;padding:9px 12px;border-radius:var(--rxs);margin-top:6px;display:none}
+.sleep-feedback.on{display:block}
+.sleep-feedback.good{background:var(--moss-p);color:var(--moss-d)}
+.sleep-feedback.ok{background:var(--amber-p);color:var(--amber)}
+.sleep-feedback.bad{background:var(--rose-p);color:var(--rose)}
+
+/* Energy sheet */
+.energy-sheet-row{margin-bottom:1rem}
+.energy-sheet-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:8px}
+.energy-sheet-pips{display:flex;gap:6px;margin-bottom:5px}
+.energy-sheet-pip{flex:1;height:32px;border-radius:var(--rxs);background:var(--border);cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);border:1.5px solid transparent;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:transparent}
+.energy-sheet-pip.filled-fisik{background:var(--moss);border-color:var(--moss);color:#fff}
+.energy-sheet-pip.filled-mental{background:var(--dusk);border-color:var(--dusk);color:#fff}
+.energy-sheet-pip:hover{transform:scale(1.05)}
+.energy-sheet-val{font-size:12px;color:var(--text3);text-align:center}
+.energy-why-inp{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;resize:none;line-height:1.65;min-height:72px;transition:border-color .2s;margin-top:6px}
+.energy-why-inp:focus{border-color:var(--moss)}
+.energy-why-inp::placeholder{color:var(--text4);font-style:italic}
+
+/* Period sheet */
+.period-day-display{text-align:center;margin-bottom:1rem}
+.period-day-num{font-size:2.5rem;font-weight:700;color:var(--rose);line-height:1;font-family:'Cormorant Garamond',serif}
+.period-day-sub{font-size:12px;color:var(--text3);margin-top:3px}
+.period-strip{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:6px}
+.period-strip-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--rose),var(--rose-l));transition:width .5s ease}
+.period-markers{display:flex;justify-content:space-between;font-size:9px;color:var(--text4);margin-bottom:1rem}
+.period-next-lbl{font-size:12px;color:var(--text3);text-align:center;margin-bottom:1rem;font-style:italic}
+.period-section-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:7px}
+.period-int-row{display:flex;gap:6px;margin-bottom:1rem}
+.period-int-btn{flex:1;padding:8px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;text-align:center;transition:all .12s}
+.period-int-btn.sel{border-color:var(--rose);background:var(--rose-p);color:var(--rose)}
+.period-gejala-grid{display:flex;flex-wrap:wrap;gap:6px}
+.period-gejala-btn{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .12s}
+.period-gejala-btn.sel{border-color:var(--rose);background:var(--rose-p);color:var(--rose)}
+
+/* Emotion wheel sheet */
+.wheel-zones{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+.wheel-zone-btn{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s;font-weight:500}
+.wheel-zone-btn.active{font-weight:600}
+.wheel-specific{display:none;flex-wrap:wrap;gap:6px;margin-bottom:.875rem;padding:10px 12px;background:var(--bg2);border-radius:var(--rsm);animation:fadeUp .15s ease}
+.wheel-specific.on{display:flex}
+.wheel-spec-btn{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .12s}
+.wheel-spec-btn.sel{font-weight:600}
+.wheel-selected-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:7px}
+.wheel-tags{display:flex;flex-wrap:wrap;gap:5px;min-height:24px}
+.wheel-tag{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;display:flex;align-items:center;gap:5px;cursor:default}
+.wheel-tag-x{cursor:pointer;opacity:.6;font-size:10px;transition:opacity .15s}
+.wheel-tag-x:hover{opacity:1}
+.wheel-max-hint{font-size:10px;color:var(--text4);font-style:italic;margin-top:4px;display:none}
+.wheel-max-hint.on{display:block}
+
+/* ══ BOTTOM NAV ══ */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(253,250,246,.97);backdrop-filter:blur(20px) saturate(1.5);border-top:1px solid rgba(226,217,204,.5);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 20px rgba(28,24,16,.06)}
+.bnav-btn{flex:1;padding:10px 8px 8px;background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bnav-svg{width:20px;height:20px;stroke:var(--text4);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s}
+.bnav-lbl{font-size:10px;font-weight:500;color:var(--text4);font-family:'DM Sans',sans-serif;transition:color .15s}
+.bnav-btn.active .bnav-svg{stroke:var(--moss)}
+.bnav-btn.active .bnav-lbl{color:var(--moss);font-weight:600}
+
+/* ══ NARA FLOAT ══ */
+.nara-float{position:fixed;bottom:82px;right:16px;z-index:99}
+.nara-fab{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;border:none;cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(61,97,71,.4);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.nara-fab:hover{transform:scale(1.1)}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border-l);border-radius:50px;padding:9px 18px;font-size:12px;color:var(--text2);box-shadow:var(--sh-md);white-space:nowrap;z-index:1000;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.si{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:640px){.w-scroll{padding:1.5rem 1.5rem 100px;gap:12px}}
+</style>
+</head>
+<body data-page="wellness">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">IN<em>arte</em></div>
+  <div class="topbar-r">
+    <span class="topbar-date" id="tb-date"></span>
+    <button class="av-btn" id="av-btn">P</button>
+  </div>
+</div>
+
+<div class="w-scroll">
+
+  <div class="page-header">
+    <div class="page-title">Ruang <em>dalam</em></div>
+    <div class="page-sub">Tidak ada yang harus diisi semuanya. Tulis sebisanya, seadanya.</div>
+  </div>
+
+  <!-- 1. TRACKER ROW -->
+  <div class="section-divider">Kondisi Hari Ini</div>
+  <div class="tracker-row">
+
+    <!-- SLEEP -->
+    <div class="tracker-card" onclick="openSheet('sleep')">
+      <div class="tracker-inner">
+        <div class="tracker-label">Tidur</div>
+        <div class="sleep-arc-wrap">
+          <svg class="sleep-arc-svg" viewBox="0 0 64 36" width="64" height="36">
+            <path d="M 6 34 A 26 26 0 0 1 58 34" fill="none" stroke="var(--border)" stroke-width="5" stroke-linecap="round"/>
+            <path d="M 6 34 A 26 26 0 0 1 58 34" fill="none" stroke="var(--border)" stroke-width="5" stroke-linecap="round"
+              id="sleep-arc" stroke-dasharray="81.68" stroke-dashoffset="81.68" style="transition:stroke-dashoffset .8s ease,stroke .4s ease"/>
+          </svg>
+          <div class="sleep-dur-big" id="sleep-dur-big">—</div>
+          <div class="sleep-dur-sub" id="sleep-dur-sub">jam tidur</div>
+        </div>
+        <div class="tracker-nara" id="sleep-nara">Tidur semalam gimana?</div>
+      </div>
+    </div>
+
+    <!-- ENERGY / PERIOD -->
+    <div class="tracker-card" id="ep-card" onclick="openSheet('ep')">
+      <div class="tracker-inner" id="ep-inner">
+        <!-- built by JS -->
+      </div>
+    </div>
+
+    <!-- EMOTION WHEEL -->
+    <div class="tracker-card" onclick="openSheet('emotion')">
+      <div class="tracker-inner">
+        <div class="tracker-label">Emosi</div>
+        <div class="wheel-compact">
+          <svg class="wheel-compact-svg" viewBox="0 0 64 64" width="64" height="64" id="wheel-compact-svg"></svg>
+          <div class="wheel-compact-lbl" id="wheel-compact-lbl">Tap untuk pilih</div>
+        </div>
+        <div class="tracker-nara" id="emotion-nara">Hari ini rasanya kayak apa?</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 2. ACHIEVEMENT -->
+  <div class="section-divider">Pencapaian Bulan Ini</div>
+  <div class="section-card">
+    <div class="section-head">
+      <div class="section-title">
+        <div class="s-icon">
+          <svg class="si" style="color:var(--amber)" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        Pencapaian
+      </div>
+      <span class="section-badge" id="ach-badge">0 tercapai</span>
+    </div>
+    <div class="section-body">
+      <div class="ach-month-lbl" id="ach-month"></div>
+      <div class="ach-themes" id="ach-themes"></div>
+      <div class="ach-suggestions" id="ach-suggestions">
+        <div class="ach-sug-label" id="ach-sug-label">Pilih pencapaian</div>
+        <div class="ach-sug-chips" id="ach-sug-chips"></div>
+      </div>
+      <ul class="ach-list" id="ach-list"></ul>
+      <div class="ach-add-row">
+        <input class="ach-add-inp" id="ach-add-inp" placeholder="Tulis pencapaianmu..." maxlength="80" onkeydown="if(event.key==='Enter')addAch()"/>
+        <input class="ach-target-inp" id="ach-target-inp" type="number" placeholder="×" min="1" max="999" value="1"/>
+        <button class="ach-add-btn" onclick="addAch()">+ Tambah</button>
+      </div>
+      <div class="ach-add-hint">Angka = berapa kali ingin dicapai bulan ini</div>
+    </div>
+  </div>
+
+  <!-- 3. JOURNAL CARD -->
+  <div class="section-divider">Catatan Hari Ini</div>
+  <div class="journal-card">
+    <div class="journal-card-head">
+      <div class="journal-card-title">
+        <div class="s-icon">
+          <svg class="si" style="color:var(--moss)" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        Jurnal
+      </div>
+    </div>
+    <!-- Tab row -->
+    <div class="journal-tabs">
+      <button class="jtab active" id="jtab-cerita" onclick="switchJTab('cerita')">
+        <div class="jtab-icon"><svg class="si" style="color:var(--moss)" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <span class="jtab-label">Cerita</span>
+        <div class="jtab-dot" id="jdot-cerita"></div>
+      </button>
+      <button class="jtab" id="jtab-syukur" onclick="switchJTab('syukur')">
+        <div class="jtab-icon"><svg class="si" style="color:var(--amber)" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        <span class="jtab-label">Syukur</span>
+        <div class="jtab-dot" id="jdot-syukur"></div>
+      </button>
+      <button class="jtab" id="jtab-harapan" onclick="switchJTab('harapan')">
+        <div class="jtab-icon"><svg class="si" style="color:var(--clay)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+        <span class="jtab-label">Harapan</span>
+        <div class="jtab-dot" id="jdot-harapan"></div>
+      </button>
+    </div>
+    <!-- Tab content: tap tab opens fullscreen directly, dot shows filled status -->
+    <div class="journal-content active" id="jc-cerita"></div>
+    <div class="journal-content" id="jc-syukur"></div>
+    <div class="journal-content" id="jc-harapan"></div>
+  </div>
+
+  <button class="save-btn" onclick="saveWellness()">Simpan catatan hari ini</button>
+  <button class="diary-btn" onclick="showToast('Fitur diary akan hadir segera (◕ᴗ◕✿)')">📖 Lihat catatan sebelumnya</button>
+
+  <!-- NARA RESPONSE -->
+  <div class="nara-response" id="nara-response">
+    <div class="nara-resp-head">
+      <div class="nara-av">N</div>
+      <span class="nara-resp-name">Nara</span>
+    </div>
+    <div class="nara-resp-body" id="nara-resp-txt">
+      <div class="nara-dots"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SHEET OVERLAY -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+
+<!-- SLEEP SHEET -->
+<div class="bottom-sheet" id="sheet-sleep">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-title">🌙 Tidur semalam</span>
+    <button class="sheet-close" onclick="closeSheet()">✕</button>
+  </div>
+  <div class="sheet-body">
+    <div class="sleep-inp-row">
+      <span class="sleep-inp-lbl">Tidur</span>
+      <input class="sleep-inp" id="sleep-start" type="time" oninput="calcSleep()"/>
+    </div>
+    <div class="sleep-inp-row">
+      <span class="sleep-inp-lbl">Bangun</span>
+      <input class="sleep-inp" id="sleep-end" type="time" oninput="calcSleep()"/>
+    </div>
+    <div class="sleep-feedback" id="sleep-feedback"></div>
+  </div>
+</div>
+
+<!-- ENERGY/PERIOD SHEET -->
+<div class="bottom-sheet" id="sheet-ep">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-title" id="ep-sheet-title">⚡ Energi hari ini</span>
+    <button class="sheet-close" onclick="closeSheet()">✕</button>
+  </div>
+  <div class="sheet-body" id="ep-sheet-body">
+    <!-- built by JS -->
+  </div>
+</div>
+
+<!-- EMOTION SHEET -->
+<div class="bottom-sheet" id="sheet-emotion">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-title">🎨 Emosi hari ini</span>
+    <button class="sheet-close" onclick="closeSheet()">✕</button>
+  </div>
+  <div class="sheet-body">
+    <div style="font-size:12px;color:var(--text3);margin-bottom:1rem;line-height:1.6">Pilih zona emosi, lalu pilih yang paling tepat. Boleh pilih dari beberapa zona sekaligus.</div>
+    <div class="wheel-zones" id="wheel-zones"></div>
+    <div class="wheel-specific" id="wheel-specific"></div>
+    <div class="wheel-selected-lbl">Yang kamu rasakan hari ini</div>
+    <div class="wheel-tags" id="wheel-tags"></div>
+    <div class="wheel-max-hint" id="wheel-max-hint">Maksimal 8 emosi ya (◕ᴗ◕✿)</div>
+  </div>
+</div>
+
+<!-- JOURNAL FULLSCREEN -->
+<div class="journal-fullscreen" id="journal-fullscreen">
+  <div class="jfs-topbar">
+    <div class="jfs-title" id="jfs-title">Cerita</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="jfs-save-btn" onclick="saveJournalEntry()">Simpan</button>
+      <button class="jfs-close" onclick="closeJournal()">✕</button>
+    </div>
+  </div>
+  <div class="jfs-body" id="jfs-body">
+    <!-- built by JS -->
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn" id="nav-today" onclick="navTo('today')">
+    <svg class="bnav-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    <span class="bnav-lbl">Hari Ini</span>
+  </button>
+  <button class="bnav-btn" id="nav-wellness" onclick="navTo('wellness')">
+    <svg class="bnav-svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    <span class="bnav-lbl">Wellness</span>
+  </button>
+  <button class="bnav-btn" id="nav-finance" onclick="navTo('finance')">
+    <svg class="bnav-svg" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+    <span class="bnav-lbl">Keuangan</span>
+  </button>
+  <button class="bnav-btn" id="nav-progress" onclick="navTo('progress')">
+    <svg class="bnav-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span class="bnav-lbl">Progres</span>
+  </button>
+</nav>
+<div class="nara-float"><button class="nara-fab">N</button></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ STATE ══
+const TODAY = new Date().toISOString().split('T')[0];
+let P = JSON.parse(localStorage.getItem('inarte_profile')||'{"name":"Pipit","age":25}');
+let W = JSON.parse(localStorage.getItem('inarte_wellness_'+TODAY)||'{}');
+let selectedEmotions = W.emotions || [];
+let photos = W.photos || [];
+let activeJournalTab = 'cerita';
+let currentJournalOpen = null;
+
+function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function ld(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
+
+// ══ BOOT ══
+window.addEventListener('DOMContentLoaded',()=>{
+  buildTopbar(); buildEPInner(); buildWheelCompact();
+  buildAchSection(); restoreWellness();
+  if(W.sleepHrs) updateSleepArc(W.sleepHrs);
+});
+
+function buildTopbar(){
+  const days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const d=new Date();
+  document.getElementById('tb-date').textContent=`${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+  document.getElementById('av-btn').textContent=(P.name||'P').charAt(0).toUpperCase();
+}
+
+// ══ SLEEP ══
+function updateSleepArc(hrs){
+  const arc=document.getElementById('sleep-arc');
+  const big=document.getElementById('sleep-dur-big');
+  const sub=document.getElementById('sleep-dur-sub');
+  const nara=document.getElementById('sleep-nara');
+  const total=81.68;
+  if(!hrs||hrs<=0){
+    arc.style.strokeDashoffset=total;arc.style.stroke='var(--border)';big.textContent='—';
+    if(nara)nara.textContent='Tidur semalam gimana?';
+    return;
+  }
+  const pct=Math.min(hrs/10,1);
+  arc.style.strokeDashoffset=total-(pct*total);
+  big.textContent=hrs.toFixed(1);sub.textContent='jam tidur';
+  if(hrs>=7&&hrs<=9){arc.style.stroke='var(--moss)';if(nara)nara.textContent=`${hrs.toFixed(1)} jam — pas banget! (◕ᴗ◕✿)`;}
+  else if(hrs>=5){arc.style.stroke='var(--amber)';if(nara)nara.textContent=`${hrs.toFixed(1)} jam, sedikit kurang.`;}
+  else{arc.style.stroke='var(--rose)';if(nara)nara.textContent=`${hrs.toFixed(1)} jam itu kurang, istirahat ya.`;}
+}
+function calcSleep(){
+  const s=document.getElementById('sleep-start').value;
+  const e=document.getElementById('sleep-end').value;
+  if(!s||!e)return;
+  const[sh,sm]=s.split(':').map(Number);
+  const[eh,em]=e.split(':').map(Number);
+  const diff=((eh*60+em)-(sh*60+sm)+1440)%1440;
+  const hrs=diff/60;
+  W.sleepStart=s;W.sleepEnd=e;W.sleepHrs=hrs;
+  updateSleepArc(hrs);
+  const fb=document.getElementById('sleep-feedback');
+  const h=hrs.toFixed(1);
+  if(hrs>=7&&hrs<=9){fb.className='sleep-feedback on good';fb.textContent=`${h} jam — durasi ideal! Tubuh dan otakmu sudah diisi dengan baik (◕ᴗ◕✿)`}
+  else if(hrs>=5){fb.className='sleep-feedback on ok';fb.textContent=`${h} jam — sedikit kurang. Coba mundurkan waktu tidur 30 menit malam ini.`}
+  else if(hrs>0){fb.className='sleep-feedback on bad';fb.textContent=`${h} jam itu kurang banget. Kalau bisa, sempatin tidur siang 20 menit ya (ꈍᴗꈍ)`}
+  else if(hrs>9){fb.className='sleep-feedback on ok';fb.textContent=`${h} jam — sedikit lebih dari ideal. Tidak apa-apa kalau badan butuh istirahat.`}
+}
+
+// ══ ENERGY / PERIOD ══
+function checkHasPeriod(){
+  for(let i=0;i<90;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const h=ld(`inarte_haid_${d.toISOString().split('T')[0]}`);
+    if(h?.status)return true;
+  }
+  return ld('inarte_day_'+TODAY)?.conditions?.includes('haid')||false;
+}
+function buildEPInner(){
+  const hasPeriod=checkHasPeriod();
+  const inner=document.getElementById('ep-inner');
+  if(hasPeriod){
+    // Find last period start
+    let lastStart=null;
+    for(let i=0;i<90;i++){const d=new Date();d.setDate(d.getDate()-i);const h=ld(`inarte_haid_${d.toISOString().split('T')[0]}`);if(h?.status==='mulai'){lastStart=d;break}}
+    const day=lastStart?Math.floor((new Date()-lastStart)/(86400000))+1:1;
+    const pct=Math.min(day/28*100,100);
+    document.getElementById('ep-sheet-title').textContent='🌸 Siklus haid';
+    inner.innerHTML=`
+      <div class="tracker-label">Siklus</div>
+      <div style="text-align:center;width:100%">
+        <div style="font-size:1.6rem;font-weight:700;color:var(--rose);font-family:'Cormorant Garamond',serif;line-height:1">${day}</div>
+        <div style="font-size:9px;color:var(--text4);margin-bottom:6px">hari ke-${day}</div>
+        <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:3px">
+          <div style="width:${pct}%;height:100%;background:var(--rose);border-radius:2px;transition:width .5s ease"></div>
+        </div>
+        <div style="font-size:8px;color:var(--text4)">${Math.max(0,28-day)} hari lagi</div>
+      </div>
+      <div class="tracker-nara">${day<=5?'Lagi haid, jaga diri ya (ꈍᴗꈍ)':day<=14?'Fase folikuler — energi cenderung meningkat.':day<=21?'Sekitar ovulasi sekarang.':'Fase luteal, PMS mungkin muncul.'}</div>`;
+    buildPeriodSheet(day,pct);
+  } else {
+    document.getElementById('ep-sheet-title').textContent='⚡ Energi hari ini';
+    const fisik=W.energyFisik||0;
+    const mental=W.energyMental||0;
+    // Nara microcopy
+    let naraMsg='Tubuh dan pikiran lagi di level berapa?';
+    if(fisik>0&&mental>0){
+      const avg=(fisik+mental)/2;
+      if(avg>=4)naraMsg='Energimu bagus hari ini! (◕ᴗ◕✿)';
+      else if(avg>=2.5)naraMsg='Energi sedang-sedang — wajar banget.';
+      else naraMsg='Energi lagi rendah, boleh istirahat ya.';
+    } else if(fisik>0||mental>0){
+      naraMsg='Isi yang satu lagi ya (◕ᴗ◕✿)';
+    }
+    inner.innerHTML=`
+      <div class="tracker-label">Energi</div>
+      <div class="energy-wrap" style="width:100%">
+        <div class="energy-row">
+          <div class="energy-row-lbl"><span>Fisik</span><span class="energy-row-val" style="color:var(--moss)">${fisik>0?fisik+'/5':'—'}</span></div>
+          <div class="energy-pips" id="epips-fisik">${buildPipHTML('fisik',fisik)}</div>
+        </div>
+        <div class="energy-row">
+          <div class="energy-row-lbl"><span>Mental</span><span class="energy-row-val" style="color:var(--dusk)">${mental>0?mental+'/5':'—'}</span></div>
+          <div class="energy-pips" id="epips-mental">${buildPipHTML('mental',mental)}</div>
+        </div>
+      </div>
+      <div class="tracker-nara">${naraMsg}</div>`;
+    buildEnergySheet();
+  }
+}
+function buildPipHTML(type,val){
+  let h='';
+  for(let i=1;i<=5;i++) h+=`<div class="epip${i<=val?' filled-'+type:''}" onclick="setEnergyQuick('${type}',${i});event.stopPropagation()"></div>`;
+  return h;
+}
+function setEnergyQuick(type,val){
+  if(type==='fisik')W.energyFisik=val;else W.energyMental=val;
+  buildEPInner();sv('inarte_wellness_'+TODAY,W);
+}
+function buildEnergySheet(){
+  const fisik=W.energyFisik||0,mental=W.energyMental||0;
+  document.getElementById('ep-sheet-body').innerHTML=`
+    <div class="energy-sheet-row">
+      <div class="energy-sheet-lbl">Energi Fisik</div>
+      <div class="energy-sheet-pips" id="esp-fisik">${buildSheetPipHTML('fisik',fisik)}</div>
+      <div class="energy-sheet-val" id="esv-fisik">${fisik>0?'Level '+fisik+' dari 5':'Belum diisi'}</div>
+    </div>
+    <div class="energy-sheet-row">
+      <div class="energy-sheet-lbl">Energi Mental</div>
+      <div class="energy-sheet-pips" id="esp-mental">${buildSheetPipHTML('mental',mental)}</div>
+      <div class="energy-sheet-val" id="esv-mental">${mental>0?'Level '+mental+' dari 5':'Belum diisi'}</div>
+    </div>
+    <div class="energy-sheet-lbl" style="margin-top:.5rem">Ada yang pengaruhi energimu hari ini? <span style="color:var(--text4);font-weight:400">(opsional)</span></div>
+    <textarea class="energy-why-inp" id="energy-why" placeholder="Kurang tidur, banyak kerjaan, habis olahraga...">${W.energyWhy||''}</textarea>`;
+}
+function buildSheetPipHTML(type,val){
+  const labels=['1','2','3','4','5'];
+  let h='';
+  for(let i=1;i<=5;i++) h+=`<div class="energy-sheet-pip${i<=val?' filled-'+type:''}" onclick="setEnergySheet('${type}',${i})">${labels[i-1]}</div>`;
+  return h;
+}
+function setEnergySheet(type,val){
+  if(type==='fisik'){W.energyFisik=val;document.getElementById('esp-fisik').innerHTML=buildSheetPipHTML('fisik',val);document.getElementById('esv-fisik').textContent='Level '+val+' dari 5';}
+  else{W.energyMental=val;document.getElementById('esp-mental').innerHTML=buildSheetPipHTML('mental',val);document.getElementById('esv-mental').textContent='Level '+val+' dari 5';}
+  buildEPInner();sv('inarte_wellness_'+TODAY,W);
+}
+function buildPeriodSheet(day,pct){
+  const daysLeft=Math.max(0,28-day);
+  document.getElementById('ep-sheet-body').innerHTML=`
+    <div class="period-day-display">
+      <div class="period-day-num">${day}</div>
+      <div class="period-day-sub">hari ke-${day} dari siklus 28 hari</div>
+    </div>
+    <div class="period-strip"><div class="period-strip-fill" style="width:${pct}%"></div></div>
+    <div class="period-markers"><span>Haid</span><span>Ovulasi</span><span>PMS</span><span>Haid</span></div>
+    <div class="period-next-lbl">Perkiraan haid berikutnya: ~${daysLeft} hari lagi</div>
+    <div class="period-section-lbl">Intensitas hari ini</div>
+    <div class="period-int-row">
+      ${['ringan','sedang','berat'].map(v=>`<button class="period-int-btn${W.periodInt===v?' sel':''}" onclick="setPeriodInt(this,'${v}')">${v.charAt(0).toUpperCase()+v.slice(1)}</button>`).join('')}
+    </div>
+    <div class="period-section-lbl">Gejala hari ini</div>
+    <div class="period-gejala-grid">
+      ${['Nyeri perut','Sakit pinggang','Sakit kepala','Mood tidak stabil','Kembung','Mudah lelah','Ngidam','Susah tidur','Jerawat'].map(g=>`<button class="period-gejala-btn${(W.periodGejala||[]).includes(g)?' sel':''}" onclick="togglePeriodGejala(this,'${g}')">${g}</button>`).join('')}
+    </div>`;
+}
+function setPeriodInt(btn,val){document.querySelectorAll('.period-int-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');W.periodInt=val;sv('inarte_wellness_'+TODAY,W)}
+function togglePeriodGejala(btn,val){btn.classList.toggle('sel');if(!W.periodGejala)W.periodGejala=[];if(btn.classList.contains('sel')){if(!W.periodGejala.includes(val))W.periodGejala.push(val)}else W.periodGejala=W.periodGejala.filter(x=>x!==val);sv('inarte_wellness_'+TODAY,W)}
+
+// ══ EMOTION WHEEL ══
+// Based on Plutchik's 8 primary emotions with Indonesian turunan
+const ZONES=[
+  {id:'gembira',label:'Gembira',color:'#C8973A',bg:'#F8F0DC',border:'#9B6E2A',
+   emotions:['Bahagia','Bersyukur','Gembira','Puas','Bangga','Optimis','Terharu','Penuh harapan','Bersemangat','Antusias']},
+  {id:'percaya',label:'Percaya',color:'#3D6147',bg:'#EAF2EC',border:'#2A4432',
+   emotions:['Tenang','Aman','Damai','Diterima','Nyaman','Intim','Percaya diri','Terbuka','Terhubung']},
+  {id:'antisipasi',label:'Antisipasi',color:'#5A8A68',bg:'#DFF0E4',border:'#3D6147',
+   emotions:['Penasaran','Tidak sabar','Berharap','Waspada','Ambisius','Termotivasi','Siap','Bersemangat menunggu']},
+  {id:'terkejut',label:'Terkejut',color:'#4C4272',bg:'#EDEAF6',border:'#3C3262',
+   emotions:['Kagum','Kaget','Bingung','Tidak percaya','Takjub','Terheran','Overwhelmed positif','Speechless']},
+  {id:'sedih',label:'Sedih',color:'#2E5F7A',bg:'#E4EFF6',border:'#1E4F6A',
+   emotions:['Sedih','Kecewa','Kesepian','Hampa','Putus asa','Kehilangan','Menyesal','Rindu','Apatis','Lesu']},
+  {id:'jijik',label:'Tidak suka',color:'#6B7A3A',bg:'#EEF2DC',border:'#5B6A2A',
+   emotions:['Tidak suka','Muak','Malu','Merasa bersalah','Tidak nyaman','Canggung','Minder','Menyesal']},
+  {id:'marah',label:'Marah',color:'#7D3E2C',bg:'#F8EDE8',border:'#5D2E1C',
+   emotions:['Marah','Frustrasi','Kesal','Jengkel','Iri','Cemburu','Tidak sabar negatif','Agresif','Membenci','Benci']},
+  {id:'takut',label:'Takut',color:'#7A3E50',bg:'#F5EAEE',border:'#5A2E40',
+   emotions:['Cemas','Khawatir','Tidak yakin','Gugup','Takut','Panik','Insecure','Terancam','Tidak aman']},
+];
+let activeZone=null;
+
+function buildWheelCompact(){
+  const svg=document.getElementById('wheel-compact-svg');
+  const cx=32,cy=32,r=28,n=ZONES.length;
+  const step=(2*Math.PI)/n;
+  let html='';
+  ZONES.forEach((z,i)=>{
+    const a1=i*step-Math.PI/2,a2=(i+1)*step-Math.PI/2;
+    const x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1);
+    const x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2);
+    const hasSelected=selectedEmotions.some(e=>z.emotions.includes(e));
+    const fill=hasSelected?z.color:z.color+'44';
+    html+=`<path d="M${cx},${cy} L${x1.toFixed(2)},${y1.toFixed(2)} A${r},${r} 0 0,1 ${x2.toFixed(2)},${y2.toFixed(2)} Z" fill="${fill}" stroke="var(--surface)" stroke-width="1.5"/>`;
+  });
+  html+=`<circle cx="${cx}" cy="${cy}" r="9" fill="var(--surface)" stroke="var(--border-l)" stroke-width="1"/>`;
+  if(selectedEmotions.length>0) html+=`<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="8" fill="var(--text3)" font-family="DM Sans,sans-serif">${selectedEmotions.length}</text>`;
+  svg.innerHTML=html;
+
+  const lbl=document.getElementById('wheel-compact-lbl');
+  lbl.textContent=selectedEmotions.length>0
+    ?selectedEmotions.slice(0,2).join(', ')+(selectedEmotions.length>2?'...':'')
+    :'Tap untuk pilih';
+
+  // Nara microcopy based on dominant emotion zone
+  const naraEl=document.getElementById('emotion-nara');
+  if(!naraEl)return;
+  if(!selectedEmotions.length){naraEl.textContent='Hari ini rasanya kayak apa?';return;}
+  const dominantZone=ZONES.find(z=>z.emotions.some(e=>selectedEmotions.includes(e)));
+  const naraMap={
+    gembira:'Energi positif hari ini — bagus! (◕ᴗ◕✿)',
+    percaya:'Merasa aman dan tenang. Nikmati ya.',
+    antisipasi:'Ada yang ditunggu-tunggu nih!',
+    terkejut:'Hari yang penuh kejutan rupanya.',
+    sedih:'Hari yang berat — kamu tidak sendirian (ꈍᴗꈍ)',
+    jijik:'Ada yang bikin tidak nyaman hari ini.',
+    marah:'Perasaan itu valid. Napas dulu ya.',
+    takut:'Wajar merasa begitu. Pelan-pelan aja.',
+  };
+  naraEl.textContent=dominantZone?naraMap[dominantZone.id]||'Emosi tercatat.':'Emosi tercatat.';
+}
+
+function buildWheelSheet(){
+  const zones=document.getElementById('wheel-zones');zones.innerHTML='';
+  ZONES.forEach(z=>{
+    const btn=document.createElement('button');btn.className='wheel-zone-btn'+(activeZone===z.id?' active':'');
+    btn.textContent=z.label;
+    btn.style.borderColor=btn.classList.contains('active')?z.border:'var(--border)';
+    btn.style.color=btn.classList.contains('active')?z.border:'var(--text2)';
+    if(btn.classList.contains('active'))btn.style.background=z.bg;
+    btn.onclick=()=>selectZone(z.id);
+    zones.appendChild(btn);
+  });
+  renderWheelTags();
+}
+function selectZone(id){
+  activeZone=activeZone===id?null:id;
+  buildWheelSheet();
+  const specEl=document.getElementById('wheel-specific');
+  if(!activeZone){specEl.classList.remove('on');specEl.innerHTML='';return}
+  const z=ZONES.find(z=>z.id===id);
+  specEl.innerHTML='';
+  z.emotions.forEach(e=>{
+    const btn=document.createElement('button');btn.className='wheel-spec-btn'+(selectedEmotions.includes(e)?' sel':'');
+    btn.textContent=e;
+    if(selectedEmotions.includes(e)){btn.style.borderColor=z.border;btn.style.color=z.border;btn.style.background=z.bg;}
+    btn.onclick=()=>toggleEmotion(e,z);
+    specEl.appendChild(btn);
+  });
+  specEl.classList.add('on');
+}
+function toggleEmotion(e,z){
+  if(selectedEmotions.includes(e)){selectedEmotions=selectedEmotions.filter(x=>x!==e);}
+  else{
+    if(selectedEmotions.length>=8){document.getElementById('wheel-max-hint').classList.add('on');return;}
+    selectedEmotions.push(e);
+  }
+  document.getElementById('wheel-max-hint').classList.remove('on');
+  W.emotions=selectedEmotions;
+  buildWheelCompact();
+  selectZone(z.id);
+  renderWheelTags();
+  sv('inarte_wellness_'+TODAY,W);
+}
+function renderWheelTags(){
+  const el=document.getElementById('wheel-tags');el.innerHTML='';
+  if(!selectedEmotions.length){el.innerHTML='<span style="font-size:11px;color:var(--text4);font-style:italic">Belum ada emosi dipilih</span>';return}
+  selectedEmotions.forEach(e=>{
+    const z=ZONES.find(z=>z.emotions.includes(e));
+    const span=document.createElement('span');span.className='wheel-tag';
+    span.style.cssText=`background:${z?z.bg:'var(--bg2)'};color:${z?z.border:'var(--text2)'};border:1px solid ${z?z.border+'66':'var(--border)'}`;
+    span.innerHTML=`${e}<span class="wheel-tag-x" onclick="toggleEmotion('${e}',${z?`ZONES.find(z=>z.id==='${z.id}')`:'{emotions:[]}'})">✕</span>`;
+    el.appendChild(span);
+  });
+}
+
+// ══ ACHIEVEMENT ══
+const ACH_THEMES=[
+  {id:'baca',label:'Literasi',sugs:[{t:'Baca buku',n:2},{t:'Podcast edukasi',n:8},{t:'Artikel informatif',n:20}]},
+  {id:'gerak',label:'Olahraga',sugs:[{t:'Olahraga 30 menit',n:12},{t:'Jalan kaki 10.000 langkah',n:10},{t:'Ikut kelas fitness',n:4}]},
+  {id:'makan',label:'Pola makan',sugs:[{t:'Masak sendiri',n:15},{t:'Tidak minum manis',n:20},{t:'Makan sayur setiap hari',n:28}]},
+  {id:'mental',label:'Mental',sugs:[{t:'Meditasi atau journaling',n:15},{t:'Screen time < 3 jam',n:15},{t:'Hari tanpa medsos',n:4}]},
+  {id:'sosial',label:'Sosial',sugs:[{t:'Kumpul dengan teman',n:2},{t:'Hubungi keluarga',n:8},{t:'Lakukan kebaikan kecil',n:10}]},
+  {id:'kreasi',label:'Kreasi',sugs:[{t:'Belajar resep baru',n:3},{t:'Tulis sesuatu',n:4},{t:'Selesaikan project pribadi',n:1}]},
+];
+const NARA_ACH={
+  start:['Bagus, perjalanan dimulai!','Langkah pertama itu paling sulit — dan kamu sudah melakukannya.'],
+  half:['Sudah setengah jalan! Konsistensi kamu keren (◕ᴗ◕✿)','Hampir sampai — terus ya!'],
+  done:['Tercapai! Nara bangga sama kamu (≧▽≦)','Ini pencapaian nyata. Rayakan!'],
+};
+let activeAchTheme=null;
+function getAchKey(){const d=new Date();return `inarte_ach_${d.getFullYear()}_${d.getMonth()+1}`}
+function loadAch(){return ld(getAchKey())||{items:[]}}
+function saveAch(d){sv(getAchKey(),d)}
+
+function buildAchSection(){
+  const months=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const d=new Date();
+  document.getElementById('ach-month').textContent=`${months[d.getMonth()]} ${d.getFullYear()}`;
+  const row=document.getElementById('ach-themes');row.innerHTML='';
+  ACH_THEMES.forEach(t=>{
+    const btn=document.createElement('button');btn.className='ach-theme-btn'+(activeAchTheme===t.id?' active':'');
+    btn.textContent=t.label;btn.onclick=()=>toggleAchTheme(btn,t);row.appendChild(btn);
+  });
+  renderAchList();
+}
+function toggleAchTheme(btn,theme){
+  const isActive=btn.classList.contains('active');
+  document.querySelectorAll('.ach-theme-btn').forEach(b=>b.classList.remove('active'));
+  const sug=document.getElementById('ach-suggestions');
+  if(isActive){sug.classList.remove('on');activeAchTheme=null;return}
+  btn.classList.add('active');activeAchTheme=theme.id;
+  document.getElementById('ach-sug-label').textContent=theme.label;
+  const chips=document.getElementById('ach-sug-chips');chips.innerHTML='';
+  const existing=loadAch().items.map(a=>a.text.toLowerCase());
+  theme.sugs.forEach(s=>{
+    if(existing.includes(s.t.toLowerCase()))return;
+    const c=document.createElement('button');c.className='ach-sug-chip';c.textContent=`${s.t} (${s.n}×)`;
+    c.onclick=()=>{addAchText(s.t,s.n);c.style.opacity='.4';c.style.pointerEvents='none'};
+    chips.appendChild(c);
+  });
+  sug.classList.add('on');
+}
+function renderAchList(){
+  const data=loadAch();const list=document.getElementById('ach-list');list.innerHTML='';
+  if(!data.items.length){
+    list.innerHTML='<div class="ach-empty">Belum ada pencapaian. Pilih dari tema atau tulis sendiri.</div>';
+    document.getElementById('ach-badge').textContent='0 tercapai';return;
+  }
+  data.items.forEach((a,i)=>{
+    const pct=a.target>0?Math.min(Math.round(a.current/a.target*100),100):0;
+    const done=a.current>=a.target;
+    let nara='';
+    if(a.current===1&&a.target>1)nara=NARA_ACH.start[i%2];
+    else if(pct>=50&&pct<100)nara=NARA_ACH.half[i%2];
+    else if(done)nara=NARA_ACH.done[i%2];
+    const li=document.createElement('li');li.className='ach-item'+(done?' done':'');
+    li.innerHTML=`<div class="ach-item-top"><span class="ach-item-text">${done?'🏆 ':''} ${a.text}</span><button class="ach-item-del" onclick="deleteAch(${i},event)">✕</button></div>
+      <div class="ach-progress-row"><div class="ach-bar-track"><div class="ach-bar-fill" style="width:${pct}%"></div></div>
+      <div class="ach-counter"><button class="ach-cnt-btn" onclick="updateAch(${i},-1,event)">−</button><span class="ach-cnt-val">${a.current}/${a.target}</span><button class="ach-cnt-btn" onclick="updateAch(${i},1,event)">+</button></div></div>
+      ${nara?`<div class="ach-nara on">${nara}</div>`:''}`;
+    list.appendChild(li);
+  });
+  const done=data.items.filter(a=>a.current>=a.target).length;
+  document.getElementById('ach-badge').textContent=`${done} dari ${data.items.length} tercapai`;
+}
+function updateAch(i,d,e){e.stopPropagation();const data=loadAch();data.items[i].current=Math.max(0,(data.items[i].current||0)+d);saveAch(data);renderAchList();if(d>0&&data.items[i].current>=data.items[i].target)showToast('🏆 Pencapaian tercapai! (≧▽≦)',4000)}
+function addAchText(text,target){const data=loadAch();if(data.items.some(a=>a.text.toLowerCase()===text.toLowerCase()))return;data.items.push({text,target:parseInt(target)||1,current:0});saveAch(data);renderAchList();showToast('Pencapaian ditambahkan!')}
+function addAch(){const inp=document.getElementById('ach-add-inp');const t=inp.value.trim();if(!t)return;addAchText(t,parseInt(document.getElementById('ach-target-inp').value)||1);inp.value='';document.getElementById('ach-target-inp').value='1'}
+function deleteAch(i,e){e.stopPropagation();const data=loadAch();data.items.splice(i,1);saveAch(data);renderAchList()}
+
+// ══ JOURNAL TABS — tap tab opens fullscreen directly ══
+function switchJTab(id){
+  activeJournalTab=id;
+  document.querySelectorAll('.jtab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('jtab-'+id).classList.add('active');
+  // Open fullscreen directly
+  openJournal(id);
+}
+
+// ══ JOURNAL FULLSCREEN ══
+const JFS_CONFIG={
+  cerita:{title:'Mau cerita <em>apa?</em>',placeholder:'Apapun yang ada di kepala. Tidak ada yang menilai di sini...',hasPhoto:true,field:'journalText'},
+  syukur:{title:'Satu hal yang <em>berjalan baik</em>',placeholder:'Sekecil apapun, tetap berarti...',hasPhoto:false,field:'gratText'},
+  harapan:{title:'Harapan untuk <em>besok</em>',placeholder:'Satu hal kecil yang ingin kamu bawa ke hari esok...',hasPhoto:false,field:'hopeText'},
+};
+
+function openJournal(id){
+  currentJournalOpen=id;
+  const cfg=JFS_CONFIG[id];
+  document.getElementById('jfs-title').innerHTML=cfg.title;
+  const body=document.getElementById('jfs-body');
+  // Emotion chips for cerita
+  let emotionHtml='';
+  if(id==='cerita'&&selectedEmotions.length>0){
+    emotionHtml=`<div>
+      <div class="jfs-label">Emosi yang dirasakan</div>
+      <div class="jfs-emotion-chips">${selectedEmotions.map(e=>{const z=ZONES.find(z=>z.emotions.includes(e));return`<span style="padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;background:${z?z.bg:'var(--bg2)'};color:${z?z.border:'var(--text2)'};border:1px solid ${z?z.border+'44':'var(--border)'}">${e}</span>`}).join('')}</div>
+    </div>`;
+  } else if(id==='cerita'){
+    emotionHtml=`<div style="font-size:11px;color:var(--text4);font-style:italic;margin-bottom:.5rem">Isi emotion tracker dulu untuk melihat emosi di sini.</div>`;
+  }
+  const charId=`jfs-char-${id}`;
+  body.innerHTML=`
+    ${emotionHtml}
+    <div>
+      <textarea class="jfs-ta${id!=='cerita'?' short':''}" id="jfs-ta" placeholder="${cfg.placeholder}" oninput="updateJfsChar()">${W[cfg.field]||''}</textarea>
+      <div class="jfs-char" id="${charId}"></div>
+    </div>
+    ${cfg.hasPhoto?`
+    <div>
+      <div class="jfs-label">Foto <span style="color:var(--text4);font-weight:400">(opsional, maks 6)</span></div>
+      <div class="jfs-photo-row">
+        <label class="jfs-photo-btn" for="jfs-photo-input">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Tambah foto
+        </label>
+        <input type="file" id="jfs-photo-input" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)"/>
+        <span class="jfs-photo-hint" id="jfs-photo-hint">${photos.length>0?photos.length+'/6 foto':'Dikompres otomatis'}</span>
+      </div>
+      <div class="jfs-photo-grid" id="jfs-photo-grid"></div>
+    </div>`:''}`;
+  if(cfg.hasPhoto)renderJfsPhotos();
+  updateJfsChar();
+  const fs=document.getElementById('journal-fullscreen');
+  fs.style.display='flex';
+  requestAnimationFrame(()=>{fs.style.transform='translateY(0)';fs.style.transition='transform .35s cubic-bezier(.32,.72,0,1)'});
+  document.getElementById('jfs-ta').focus();
+}
+function closeJournal(){
+  const fs=document.getElementById('journal-fullscreen');
+  fs.style.transform='translateY(100%)';
+  setTimeout(()=>{fs.style.display='none'},350);
+  currentJournalOpen=null;
+}
+function saveJournalEntry(){
+  if(!currentJournalOpen)return;
+  const cfg=JFS_CONFIG[currentJournalOpen];
+  const val=document.getElementById('jfs-ta').value;
+  W[cfg.field]=val;
+  sv('inarte_wellness_'+TODAY,W);
+  updateJournalPreviews();
+  closeJournal();
+  showToast('Tersimpan (◕ᴗ◕✿)');
+}
+function updateJfsChar(){
+  const ta=document.getElementById('jfs-ta');
+  const el=document.getElementById(`jfs-char-${currentJournalOpen}`);
+  if(ta&&el) el.textContent=ta.value.length>0?`${ta.value.length} karakter`:'';
+}
+function updateJournalPreviews(){
+  const fields={cerita:'journalText',syukur:'gratText',harapan:'hopeText'};
+  Object.entries(fields).forEach(([tab,field])=>{
+    const dot=document.getElementById('jdot-'+tab);
+    if(dot) dot.classList.toggle('filled',!!(W[field]||'').trim());
+  });
+}
+
+// ══ PHOTOS ══
+async function handlePhotos(input){
+  const files=Array.from(input.files);if(!files.length)return;
+  showToast('Mengompres foto...');
+  for(const f of files){
+    if(photos.length>=6){showToast('Maksimal 6 foto ya');break}
+    photos.push(await compressPhoto(f));
+  }
+  W.photos=photos;sv('inarte_wellness_'+TODAY,W);
+  renderJfsPhotos();
+  const hint=document.getElementById('jfs-photo-hint');
+  if(hint)hint.textContent=photos.length+'/6 foto';
+  input.value='';
+  showToast(files.length+' foto ditambahkan!');
+}
+function compressPhoto(file){
+  return new Promise(r=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const c=document.createElement('canvas');
+        const MAX=1200;let w=img.width,h=img.height;
+        if(w>h){if(w>MAX){h=h*(MAX/w);w=MAX}}else{if(h>MAX){w=w*(MAX/h);h=MAX}}
+        c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        r(c.toDataURL('image/jpeg',.78));
+      };img.src=e.target.result;
+    };reader.readAsDataURL(file);
+  });
+}
+function renderJfsPhotos(){
+  const grid=document.getElementById('jfs-photo-grid');if(!grid)return;
+  grid.innerHTML='';
+  photos.forEach((src,i)=>{
+    const item=document.createElement('div');item.className='photo-item';
+    item.innerHTML=`<img src="${src}" loading="lazy"/><button class="photo-del" onclick="deletePhoto(${i})">✕</button>`;
+    grid.appendChild(item);
+  });
+}
+function deletePhoto(i){photos.splice(i,1);W.photos=photos;renderJfsPhotos();sv('inarte_wellness_'+TODAY,W);const h=document.getElementById('jfs-photo-hint');if(h)h.textContent=photos.length>0?photos.length+'/6 foto':'Dikompres otomatis'}
+
+// ══ RESTORE ══
+function restoreWellness(){
+  if(W.sleepStart){const el=document.getElementById('sleep-start');if(el)el.value=W.sleepStart}
+  if(W.sleepEnd){const el=document.getElementById('sleep-end');if(el)el.value=W.sleepEnd}
+  if(W.emotions?.length){selectedEmotions=W.emotions;buildWheelCompact()}
+  updateJournalPreviews();
+}
+
+// ══ SAVE ALL ══
+async function saveWellness(){
+  W.savedAt=Date.now();
+  sv('inarte_wellness_'+TODAY,W);
+  const el=document.getElementById('nara-response');
+  const txt=document.getElementById('nara-resp-txt');
+  el.classList.add('on');
+  txt.innerHTML='<div class="nara-dots"><span></span><span></span><span></span></div>';
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  const ctx=[
+    W.sleepHrs?`Tidur ${W.sleepHrs.toFixed(1)} jam`:'',
+    selectedEmotions.length?`Emosi: ${selectedEmotions.join(', ')}`:'',
+    W.journalText?`Cerita: ${W.journalText.slice(0,150)}`:'',
+    W.gratText?`Syukur: ${W.gratText}`:'',
+    W.hopeText?`Harapan: ${W.hopeText}`:'',
+    W.energyFisik?`Energi fisik ${W.energyFisik}/5, mental ${W.energyMental||'?'}/5`:'',
+  ].filter(Boolean).join('. ');
+  const sys=`Kamu adalah Nara, companion wellness yang hangat dalam INARTE.
+Nama user: ${P.name||'teman'}, usia ${P.age||'?'} tahun.
+Tulis respons wellness yang genuinely personal — seperti surat pendek dari sahabat yang benar-benar baca semua yang diceritakan.
+Bahasa Indonesia natural, sesekali kaomoji (◕ᴗ◕✿) (ꈍᴗꈍ). 3-4 kalimat mengalir, BUKAN bullet points.
+Urutan: validasi perasaan → acknowledge hal spesifik → tutup dengan sesuatu yang warm.`;
+  let reply;
+  try{
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'gemini-2.0-flash',max_tokens:500,system:sys,messages:[{role:'user',content:ctx||'User baru menyimpan catatan wellness hari ini.'}]}),
+      signal:AbortSignal.timeout(14000)});
+    if(res.ok){const d=await res.json();reply=d.content?.[0]?.text}
+  }catch(e){}
+  if(!reply){
+    const n=P.name?` ${P.name}`:'';
+    const parts=[];
+    if(selectedEmotions.some(e=>['Sedih','Cemas','Marah','Takut','Kesepian'].includes(e)))
+      parts.push(`Terima kasih sudah mau cerita hari ini${n}. Hari yang berat itu valid — tidak harus kuat terus.`);
+    else if(selectedEmotions.some(e=>['Bahagia','Bersyukur','Tenang','Puas'].includes(e)))
+      parts.push(`Senang banget denger kamu baik-baik${n}! (◕ᴗ◕✿)`);
+    else parts.push(`Terima kasih sudah meluangkan waktu untuk check in dengan dirimu sendiri${n}.`);
+    if(W.gratText)parts.push(`"${W.gratText.slice(0,50)}" — sekecil apapun itu, kamu notice. Itu indah banget.`);
+    if(W.hopeText)parts.push(`Harapanmu untuk besok sudah Nara catat. Semoga terwujud ya (ꈍᴗꈍ)`);
+    if(!parts[1])parts.push(`Istirahat yang cukup ya. Sampai besok! (◕ᴗ◕✿)`);
+    reply=parts.join(' ');
+  }
+  txt.innerHTML=`<p>${reply}</p>`;
+  showToast('Catatan tersimpan (◕ᴗ◕✿)');
+}
+
+// ══ SHEETS ══
+function openSheet(id){
+  closeSheet(true);
+  if(id==='emotion')buildWheelSheet();
+  if(id==='sleep'){if(W.sleepStart)document.getElementById('sleep-start').value=W.sleepStart;if(W.sleepEnd)document.getElementById('sleep-end').value=W.sleepEnd;}
+  const sheet=document.getElementById('sheet-'+id);
+  const overlay=document.getElementById('sheet-overlay');
+  if(!sheet)return;
+  overlay.classList.add('on');
+  requestAnimationFrame(()=>sheet.classList.add('open'));
+}
+function closeSheet(immediate){
+  document.querySelectorAll('.bottom-sheet.open').forEach(s=>s.classList.remove('open'));
+  document.getElementById('sheet-overlay').classList.remove('on');
+}
+
+function showToast(msg,d=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),d)}
+</script>
+
+<script>
+const PAGES={today:'today.html',wellness:'wellness.html',finance:'finance.html',progress:'progress.html'};
+function navTo(tab){if(document.body.dataset.page===tab)return;window.location.href=PAGES[tab];}
+function setActiveNav(){
+  const cur=document.body.dataset.page;
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('nav-'+cur);
+  if(btn)btn.classList.add('active');
+}
+window.addEventListener('DOMContentLoaded',setActiveNav);
+<\/script>
+</body>
+</html>
