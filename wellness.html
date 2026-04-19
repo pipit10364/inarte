@@ -676,24 +676,101 @@ function setEnergySheet(type,val){
   else{W.energyMental=val;document.getElementById('esp-mental').innerHTML=buildSheetPipHTML('mental',val);document.getElementById('esv-mental').textContent='Level '+val+' dari 5';}
   buildEPInner();sv('inarte_wellness_'+TODAY,W);
 }
+function getPeriodDays(){
+  // Get all dates marked as period days from localStorage
+  const days=[];
+  for(let i=0;i<180;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const k=d.toISOString().split('T')[0];
+    const h=ld('inarte_haid_'+k);
+    if(h?.isPeriod) days.push(k);
+  }
+  return days.sort().reverse();
+}
+function togglePeriodDay(dateStr){
+  const existing=ld('inarte_haid_'+dateStr)||{};
+  if(existing.isPeriod){
+    // Remove
+    delete existing.isPeriod;
+    sv('inarte_haid_'+dateStr,Object.keys(existing).length?existing:null);
+    localStorage.removeItem('inarte_haid_'+dateStr);
+  } else {
+    existing.isPeriod=true;
+    sv('inarte_haid_'+dateStr,existing);
+  }
+  buildPeriodSheet(null,null);
+  buildEPInner();
+}
 function buildPeriodSheet(day,pct){
-  const daysLeft=Math.max(0,28-day);
+  // Recalculate from actual period days
+  const periodDays=getPeriodDays();
+
+  // Find last period start (first day of most recent consecutive run)
+  let lastStart=null;
+  if(periodDays.length>0){
+    // Sort ascending to find runs
+    const sorted=[...periodDays].sort();
+    let runStart=sorted[0];
+    for(let i=1;i<sorted.length;i++){
+      const prev=new Date(sorted[i-1]);const curr=new Date(sorted[i]);
+      const diff=(curr-prev)/(86400000);
+      if(diff>1) runStart=sorted[i]; // new run
+    }
+    lastStart=runStart;
+  }
+  const calcDay=lastStart?Math.floor((new Date()-new Date(lastStart))/(86400000))+1:null;
+  const calcPct=calcDay?Math.min(calcDay/28*100,100):0;
+  const daysLeft=calcDay?Math.max(0,28-calcDay):null;
+
+  const MONTHS_SHORT=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
   document.getElementById('ep-sheet-body').innerHTML=`
+    ${calcDay?`
     <div class="period-day-display">
-      <div class="period-day-num">${day}</div>
-      <div class="period-day-sub">hari ke-${day} dari siklus 28 hari</div>
+      <div class="period-day-num">${calcDay}</div>
+      <div class="period-day-sub">hari ke-${calcDay} siklus ini</div>
     </div>
-    <div class="period-strip"><div class="period-strip-fill" style="width:${pct}%"></div></div>
+    <div class="period-strip"><div class="period-strip-fill" style="width:${calcPct}%"></div></div>
     <div class="period-markers"><span>Haid</span><span>Ovulasi</span><span>PMS</span><span>Haid</span></div>
-    <div class="period-next-lbl">Perkiraan haid berikutnya: ~${daysLeft} hari lagi</div>
-    <div class="period-section-lbl">Intensitas hari ini</div>
-    <div class="period-int-row">
-      ${['ringan','sedang','berat'].map(v=>`<button class="period-int-btn${W.periodInt===v?' sel':''}" onclick="setPeriodInt(this,'${v}')">${v.charAt(0).toUpperCase()+v.slice(1)}</button>`).join('')}
+    <div class="period-next-lbl" style="margin-bottom:1rem">Perkiraan haid berikutnya: ~${daysLeft} hari lagi</div>`:''}
+
+    <div class="period-section-lbl">Tandai hari haid</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:8px;line-height:1.55">Pilih tanggal yang kamu haid — bisa retroaktif. Tap lagi untuk hapus.</div>
+    <div style="display:flex;gap:7px;margin-bottom:10px;align-items:center">
+      <input type="date" id="period-date-pick" style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none"
+        value="${TODAY}" max="${TODAY}"/>
+      <button onclick="togglePeriodDay(document.getElementById('period-date-pick').value)"
+        style="padding:9px 16px;background:var(--rose);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">
+        Tandai / Hapus
+      </button>
     </div>
+
+    <div class="period-section-lbl">Hari haid tercatat</div>
+    ${periodDays.length===0?`<div style="font-size:12px;color:var(--text4);font-style:italic;padding:4px 0">Belum ada hari haid yang ditandai.</div>`:`
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1rem">
+      ${periodDays.slice(0,30).map(d=>{
+        const dt=new Date(d);
+        return `<span onclick="togglePeriodDay('${d}')" style="padding:4px 10px;border-radius:20px;background:var(--rose-p);color:var(--rose);border:1px solid var(--rose-l);font-size:11px;font-weight:500;cursor:pointer" title="Tap untuk hapus">
+          ${dt.getDate()} ${MONTHS_SHORT[dt.getMonth()]}
+        </span>`;
+      }).join('')}
+    </div>`}
+
     <div class="period-section-lbl">Gejala hari ini</div>
     <div class="period-gejala-grid">
       ${['Nyeri perut','Sakit pinggang','Sakit kepala','Mood tidak stabil','Kembung','Mudah lelah','Ngidam','Susah tidur','Jerawat'].map(g=>`<button class="period-gejala-btn${(W.periodGejala||[]).includes(g)?' sel':''}" onclick="togglePeriodGejala(this,'${g}')">${g}</button>`).join('')}
     </div>`;
+}
+// Update checkHasPeriod to also check new isPeriod format
+const _origCheckHasPeriod = checkHasPeriod;
+function checkHasPeriod(){
+  // Check new isPeriod format first
+  for(let i=0;i<90;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const h=ld('inarte_haid_'+d.toISOString().split('T')[0]);
+    if(h?.isPeriod||h?.status) return true;
+  }
+  return ld('inarte_day_'+TODAY)?.conditions?.includes('haid')||false;
 }
 function setPeriodInt(btn,val){document.querySelectorAll('.period-int-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');W.periodInt=val;sv('inarte_wellness_'+TODAY,W)}
 function togglePeriodGejala(btn,val){btn.classList.toggle('sel');if(!W.periodGejala)W.periodGejala=[];if(btn.classList.contains('sel')){if(!W.periodGejala.includes(val))W.periodGejala.push(val)}else W.periodGejala=W.periodGejala.filter(x=>x!==val);sv('inarte_wellness_'+TODAY,W)}
