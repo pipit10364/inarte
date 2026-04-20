@@ -232,21 +232,45 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .energy-why-inp:focus{border-color:var(--moss)}
 .energy-why-inp::placeholder{color:var(--text4);font-style:italic}
 
-/* Period sheet */
-.period-day-display{text-align:center;margin-bottom:1rem}
-.period-day-num{font-size:2.5rem;font-weight:700;color:var(--rose);line-height:1;font-family:'Cormorant Garamond',serif}
-.period-day-sub{font-size:12px;color:var(--text3);margin-top:3px}
-.period-strip{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:6px}
+/* Period tracker sheet — full redesign */
+.period-header{text-align:center;margin-bottom:1rem}
+.period-cycle-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:500;color:var(--rose);line-height:1}
+.period-cycle-sub{font-size:12px;color:var(--text3);margin-top:3px}
+.period-strip{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin:8px 0 4px}
 .period-strip-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--rose),var(--rose-l));transition:width .5s ease}
-.period-markers{display:flex;justify-content:space-between;font-size:9px;color:var(--text4);margin-bottom:1rem}
-.period-next-lbl{font-size:12px;color:var(--text3);text-align:center;margin-bottom:1rem;font-style:italic}
+.period-markers{display:flex;justify-content:space-between;font-size:9px;color:var(--text4);margin-bottom:4px}
+.period-next{font-size:11px;color:var(--text3);text-align:center;font-style:italic;margin-bottom:1rem}
+
+/* Period calendar in sheet */
+.period-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.period-cal-nav{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:13px;color:var(--text3);display:flex;align-items:center;justify-content:center;transition:all .12s;line-height:1}
+.period-cal-nav:hover{border-color:var(--rose-l);color:var(--rose)}
+.period-cal-month{font-size:12px;font-weight:600;color:var(--text2)}
+.period-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:.875rem}
+.period-cal-dlbl{text-align:center;font-size:9px;font-weight:600;color:var(--text4);padding:2px 0}
+.period-cal-cell{aspect-ratio:1;border-radius:6px;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--text3);transition:all .15s;display:flex;align-items:center;justify-content:center}
+.period-cal-cell:hover{background:var(--rose-p)}
+.period-cal-cell.today{color:var(--rose);font-weight:700;border:1.5px solid var(--rose-l)}
+.period-cal-cell.is-period{background:var(--rose);color:#fff;font-weight:700}
+.period-cal-cell.is-period:hover{background:var(--rose)}
+.period-cal-cell.empty{pointer-events:none}
+.period-cal-cell.future{opacity:.35;pointer-events:none}
+
+/* Range input section */
+.period-range-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.75rem}
+.period-range-field{}
+.period-range-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text4);margin-bottom:4px}
+.period-range-inp{width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.period-range-inp:focus{border-color:var(--rose)}
+.period-save-btn{width:100%;padding:11px;background:var(--rose);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;margin-bottom:.875rem}
+.period-save-btn:hover{background:#6A2E40}
+
+/* Symptoms */
 .period-section-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:7px}
-.period-int-row{display:flex;gap:6px;margin-bottom:1rem}
-.period-int-btn{flex:1;padding:8px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;text-align:center;transition:all .12s}
-.period-int-btn.sel{border-color:var(--rose);background:var(--rose-p);color:var(--rose)}
-.period-gejala-grid{display:flex;flex-wrap:wrap;gap:6px}
+.period-gejala-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.5rem}
 .period-gejala-btn{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .12s}
 .period-gejala-btn.sel{border-color:var(--rose);background:var(--rose-p);color:var(--rose)}
+.period-clear-btn{font-size:11px;color:var(--rose);background:none;border:none;cursor:pointer;text-decoration:underline;padding:2px 0}
 
 /* Emotion wheel sheet */
 .wheel-zones{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
@@ -454,6 +478,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="sheet-handle"></div>
   <div class="sheet-head">
     <span class="sheet-title" id="ep-sheet-title">⚡ Energi hari ini</span>
+    <button id="ep-sheet-save" onclick="saveEPSheet()" style="display:none;padding:6px 14px;background:var(--rose);color:#fff;border:none;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;margin-right:6px">Simpan</button>
     <button class="sheet-close" onclick="closeSheet()">✕</button>
   </div>
   <div class="sheet-body" id="ep-sheet-body">
@@ -579,51 +604,82 @@ function calcSleep(){
   else if(hrs>9){fb.className='sleep-feedback on ok';fb.textContent=`${h} jam — sedikit lebih dari ideal. Tidak apa-apa kalau badan butuh istirahat.`}
 }
 
-// ══ ENERGY / PERIOD ══
-function checkHasPeriod(){
-  for(let i=0;i<90;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const h=ld(`inarte_haid_${d.toISOString().split('T')[0]}`);
-    if(h?.status)return true;
-  }
-  return ld('inarte_day_'+TODAY)?.conditions?.includes('haid')||false;
+// ══ PERIOD / ENERGY TRACKER ══
+// Data: localStorage 'inarte_period_log' = {dates:['2025-01-01',...], gejala:{}, intensity:{}}
+function getPeriodLog(){return ld('inarte_period_log')||{dates:[],gejala:{},intensity:{}};}
+function savePeriodLog(log){
+  sv('inarte_period_log',log);
+  // Sync today's haid condition to tab Today
+  const todayD=ld('inarte_day_'+TODAY)||{};
+  const isHaidToday=log.dates.includes(TODAY);
+  if(!todayD.conditions)todayD.conditions=[];
+  if(isHaidToday&&!todayD.conditions.includes('haid'))todayD.conditions.push('haid');
+  else if(!isHaidToday)todayD.conditions=todayD.conditions.filter(c=>c!=='haid');
+  sv('inarte_day_'+TODAY,todayD);
+  // Also update logs
+  const logs=ld('inarte_logs')||{};
+  if(logs[TODAY])logs[TODAY].conditions=todayD.conditions;
+  sv('inarte_logs',logs);
 }
+
+function shouldShowPeriod(){
+  const profile=JSON.parse(localStorage.getItem('inarte_profile')||'{}');
+  // Hide for males
+  if(profile.gender==='Laki-laki') return false;
+  // Hide for elderly (≥60)
+  if(profile.age&&parseInt(profile.age)>=60) return false;
+  // Hide for pregnant (from today's conditions)
+  const todayD=ld('inarte_day_'+TODAY)||{};
+  if((todayD.conditions||[]).includes('hamil')) return false;
+  return true;
+}
+
 function buildEPInner(){
-  const hasPeriod=checkHasPeriod();
   const inner=document.getElementById('ep-inner');
-  if(hasPeriod){
-    // Find last period start
-    let lastStart=null;
-    for(let i=0;i<90;i++){const d=new Date();d.setDate(d.getDate()-i);const h=ld(`inarte_haid_${d.toISOString().split('T')[0]}`);if(h?.status==='mulai'){lastStart=d;break}}
-    const day=lastStart?Math.floor((new Date()-lastStart)/(86400000))+1:1;
-    const pct=Math.min(day/28*100,100);
+  const showPeriod=shouldShowPeriod();
+
+  if(showPeriod){
     document.getElementById('ep-sheet-title').textContent='🌸 Siklus haid';
-    inner.innerHTML=`
-      <div class="tracker-label">Siklus</div>
-      <div style="text-align:center;width:100%">
-        <div style="font-size:1.6rem;font-weight:700;color:var(--rose);font-family:'Cormorant Garamond',serif;line-height:1">${day}</div>
-        <div style="font-size:9px;color:var(--text4);margin-bottom:6px">hari ke-${day}</div>
-        <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:3px">
-          <div style="width:${pct}%;height:100%;background:var(--rose);border-radius:2px;transition:width .5s ease"></div>
+    const log=getPeriodLog();
+    const stats=getPeriodStats(log);
+    const isHaidToday=log.dates.includes(TODAY);
+
+    if(!stats&&!isHaidToday){
+      inner.innerHTML=`
+        <div class="tracker-label">Siklus</div>
+        <div style="width:100%;text-align:center;padding:4px 0">
+          <div style="font-size:24px;margin-bottom:4px">🌸</div>
+          <div style="font-size:9px;color:var(--text4);line-height:1.4">Tap untuk mulai catat siklus</div>
         </div>
-        <div style="font-size:8px;color:var(--text4)">${Math.max(0,28-day)} hari lagi</div>
-      </div>
-      <div class="tracker-nara">${day<=5?'Lagi haid, jaga diri ya (ꈍᴗꈍ)':day<=14?'Fase folikuler — energi cenderung meningkat.':day<=21?'Sekitar ovulasi sekarang.':'Fase luteal, PMS mungkin muncul.'}</div>`;
-    buildPeriodSheet(day,pct);
+        <div class="tracker-nara">Belum ada data siklus.</div>`;
+    } else {
+      const dayOfCycle=stats?stats.dayOfCycle:1;
+      const pct=Math.min(dayOfCycle/28*100,100);
+      const naraMsg=dayOfCycle<=5?'Lagi haid, jaga diri ya (ꈍᴗꈍ)':dayOfCycle<=14?'Fase folikuler.':dayOfCycle<=21?'Sekitar ovulasi.':'Fase luteal, PMS mungkin muncul.';
+      inner.innerHTML=`
+        <div class="tracker-label">Siklus${isHaidToday?' 🩸':''}</div>
+        <div style="text-align:center;width:100%">
+          <div style="font-size:1.6rem;font-weight:700;color:var(--rose);font-family:'Cormorant Garamond',serif;line-height:1">${dayOfCycle}</div>
+          <div style="font-size:9px;color:var(--text4);margin-bottom:5px">hari ke-${dayOfCycle}</div>
+          <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;background:var(--rose);border-radius:2px"></div>
+          </div>
+          ${stats?.nextPeriod?`<div style="font-size:8px;color:var(--text4);margin-top:3px">~${stats.nextPeriod} hari lagi</div>`:''}
+        </div>
+        <div class="tracker-nara">${naraMsg}</div>`;
+    }
+    buildPeriodSheet(log);
   } else {
+    // Energy tracker
     document.getElementById('ep-sheet-title').textContent='⚡ Energi hari ini';
-    const fisik=W.energyFisik||0;
-    const mental=W.energyMental||0;
-    // Nara microcopy
+    const fisik=W.energyFisik||0,mental=W.energyMental||0;
     let naraMsg='Tubuh dan pikiran lagi di level berapa?';
     if(fisik>0&&mental>0){
       const avg=(fisik+mental)/2;
       if(avg>=4)naraMsg='Energimu bagus hari ini! (◕ᴗ◕✿)';
       else if(avg>=2.5)naraMsg='Energi sedang-sedang — wajar banget.';
       else naraMsg='Energi lagi rendah, boleh istirahat ya.';
-    } else if(fisik>0||mental>0){
-      naraMsg='Isi yang satu lagi ya (◕ᴗ◕✿)';
-    }
+    } else if(fisik>0||mental>0){naraMsg='Isi yang satu lagi ya (◕ᴗ◕✿)';}
     inner.innerHTML=`
       <div class="tracker-label">Energi</div>
       <div class="energy-wrap" style="width:100%">
@@ -640,6 +696,34 @@ function buildEPInner(){
     buildEnergySheet();
   }
 }
+
+function getPeriodStats(log){
+  const dates=(log?.dates||[]).sort();
+  if(!dates.length) return null;
+  // Find last period block start
+  let lastStart=dates[dates.length-1];
+  for(let i=dates.length-2;i>=0;i--){
+    const curr=new Date(dates[i+1]),prev=new Date(dates[i]);
+    if((curr-prev)/86400000<=1.5) lastStart=dates[i];
+    else break;
+  }
+  const dayOfCycle=Math.floor((new Date(TODAY)-new Date(lastStart))/86400000)+1;
+  // Avg cycle length from start dates
+  const starts=[lastStart];
+  for(let i=dates.length-2;i>=0;i--){
+    const curr=new Date(dates[i+1]),prev=new Date(dates[i]);
+    if((curr-prev)/86400000>3) starts.unshift(dates[i]);
+  }
+  let avgCycle=28;
+  if(starts.length>=2){
+    const diffs=[];
+    for(let i=1;i<starts.length;i++) diffs.push(Math.round((new Date(starts[i])-new Date(starts[i-1]))/86400000));
+    avgCycle=Math.round(diffs.reduce((a,b)=>a+b,0)/diffs.length);
+  }
+  const nextPeriod=Math.max(0,avgCycle-dayOfCycle);
+  return {dayOfCycle,lastStart,avgCycle,nextPeriod};
+}
+
 function buildPipHTML(type,val){
   let h='';
   for(let i=1;i<=5;i++) h+=`<div class="epip${i<=val?' filled-'+type:''}" onclick="setEnergyQuick('${type}',${i});event.stopPropagation()"></div>`;
@@ -666,9 +750,8 @@ function buildEnergySheet(){
     <textarea class="energy-why-inp" id="energy-why" placeholder="Kurang tidur, banyak kerjaan, habis olahraga...">${W.energyWhy||''}</textarea>`;
 }
 function buildSheetPipHTML(type,val){
-  const labels=['1','2','3','4','5'];
   let h='';
-  for(let i=1;i<=5;i++) h+=`<div class="energy-sheet-pip${i<=val?' filled-'+type:''}" onclick="setEnergySheet('${type}',${i})">${labels[i-1]}</div>`;
+  for(let i=1;i<=5;i++) h+=`<div class="energy-sheet-pip${i<=val?' filled-'+type:''}" onclick="setEnergySheet('${type}',${i})">${i}</div>`;
   return h;
 }
 function setEnergySheet(type,val){
@@ -676,105 +759,186 @@ function setEnergySheet(type,val){
   else{W.energyMental=val;document.getElementById('esp-mental').innerHTML=buildSheetPipHTML('mental',val);document.getElementById('esv-mental').textContent='Level '+val+' dari 5';}
   buildEPInner();sv('inarte_wellness_'+TODAY,W);
 }
-function getPeriodDays(){
-  // Get all dates marked as period days from localStorage
-  const days=[];
-  for(let i=0;i<180;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const k=d.toISOString().split('T')[0];
-    const h=ld('inarte_haid_'+k);
-    if(h?.isPeriod) days.push(k);
+
+// Period sheet — full calendar-based editor
+let pCalY=new Date().getFullYear(),pCalM=new Date().getMonth();
+function buildPeriodSheet(log){
+  const body=document.getElementById('ep-sheet-body');
+  const stats=getPeriodStats(log);
+  const MONTHS=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+  // Summary
+  let summaryHTML='';
+  if(stats){
+    summaryHTML=`
+      <div style="background:var(--rose-p);border:1px solid var(--rose-l);border-radius:var(--rxs);padding:10px 12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center">
+        <div><div style="font-size:1.25rem;font-weight:700;color:var(--rose);font-family:'Cormorant Garamond',serif">${stats.dayOfCycle}</div><div style="font-size:9px;color:var(--text4)">hari ke-</div></div>
+        <div><div style="font-size:1.25rem;font-weight:700;color:var(--rose);font-family:'Cormorant Garamond',serif">${stats.avgCycle}</div><div style="font-size:9px;color:var(--text4)">rata siklus</div></div>
+        <div><div style="font-size:1.25rem;font-weight:700;color:var(--text2);font-family:'Cormorant Garamond',serif">${stats.nextPeriod}</div><div style="font-size:9px;color:var(--text4)">hari lagi</div></div>
+      </div>`;
   }
-  return days.sort().reverse();
-}
-function togglePeriodDay(dateStr){
-  const existing=ld('inarte_haid_'+dateStr)||{};
-  if(existing.isPeriod){
-    // Remove
-    delete existing.isPeriod;
-    sv('inarte_haid_'+dateStr,Object.keys(existing).length?existing:null);
-    localStorage.removeItem('inarte_haid_'+dateStr);
-  } else {
-    existing.isPeriod=true;
-    sv('inarte_haid_'+dateStr,existing);
-  }
-  buildPeriodSheet(null,null);
-  buildEPInner();
-}
-function buildPeriodSheet(day,pct){
-  // Recalculate from actual period days
-  const periodDays=getPeriodDays();
 
-  // Find last period start (first day of most recent consecutive run)
-  let lastStart=null;
-  if(periodDays.length>0){
-    // Sort ascending to find runs
-    const sorted=[...periodDays].sort();
-    let runStart=sorted[0];
-    for(let i=1;i<sorted.length;i++){
-      const prev=new Date(sorted[i-1]);const curr=new Date(sorted[i]);
-      const diff=(curr-prev)/(86400000);
-      if(diff>1) runStart=sorted[i]; // new run
-    }
-    lastStart=runStart;
-  }
-  const calcDay=lastStart?Math.floor((new Date()-new Date(lastStart))/(86400000))+1:null;
-  const calcPct=calcDay?Math.min(calcDay/28*100,100):0;
-  const daysLeft=calcDay?Math.max(0,28-calcDay):null;
+  // Quick date range input
+  const pLog=getPeriodLog();
+  const sortedDates=(pLog.dates||[]).sort();
+  const lastBlock=getLastPeriodBlock(pLog.dates||[]);
 
-  const MONTHS_SHORT=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  body.innerHTML=`
+    ${summaryHTML}
+    <div style="font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.6">Tap tanggal untuk tandai hari haid. Tap lagi untuk hapus.</div>
 
-  document.getElementById('ep-sheet-body').innerHTML=`
-    ${calcDay?`
-    <div class="period-day-display">
-      <div class="period-day-num">${calcDay}</div>
-      <div class="period-day-sub">hari ke-${calcDay} siklus ini</div>
-    </div>
-    <div class="period-strip"><div class="period-strip-fill" style="width:${calcPct}%"></div></div>
-    <div class="period-markers"><span>Haid</span><span>Ovulasi</span><span>PMS</span><span>Haid</span></div>
-    <div class="period-next-lbl" style="margin-bottom:1rem">Perkiraan haid berikutnya: ~${daysLeft} hari lagi</div>`:''}
-
-    <div class="period-section-lbl">Tandai hari haid</div>
-    <div style="font-size:11px;color:var(--text3);margin-bottom:8px;line-height:1.55">Pilih tanggal yang kamu haid — bisa retroaktif. Tap lagi untuk hapus.</div>
-    <div style="display:flex;gap:7px;margin-bottom:10px;align-items:center">
-      <input type="date" id="period-date-pick" style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none"
-        value="${TODAY}" max="${TODAY}"/>
-      <button onclick="togglePeriodDay(document.getElementById('period-date-pick').value)"
-        style="padding:9px 16px;background:var(--rose);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">
-        Tandai / Hapus
-      </button>
+    <!-- Quick range input -->
+    <div style="background:var(--bg2);border-radius:var(--rsm);padding:10px 12px;margin-bottom:12px">
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:8px">Input cepat tanggal mulai & selesai</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="flex:1;min-width:110px">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Mulai</div>
+          <input type="date" id="p-start-inp" value="${lastBlock.start||''}"
+            style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rxs);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--surface);outline:none"/>
+        </div>
+        <div style="color:var(--text4);font-size:14px;padding-top:16px">→</div>
+        <div style="flex:1;min-width:110px">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Selesai</div>
+          <input type="date" id="p-end-inp" value="${lastBlock.end||''}"
+            style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rxs);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--surface);outline:none"/>
+        </div>
+      </div>
+      <button onclick="applyPeriodRange()" style="width:100%;margin-top:8px;padding:9px;background:var(--rose);color:#fff;border:none;border-radius:var(--rxs);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">Simpan rentang ini</button>
     </div>
 
-    <div class="period-section-lbl">Hari haid tercatat</div>
-    ${periodDays.length===0?`<div style="font-size:12px;color:var(--text4);font-style:italic;padding:4px 0">Belum ada hari haid yang ditandai.</div>`:`
-    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1rem">
-      ${periodDays.slice(0,30).map(d=>{
-        const dt=new Date(d);
-        return `<span onclick="togglePeriodDay('${d}')" style="padding:4px 10px;border-radius:20px;background:var(--rose-p);color:var(--rose);border:1px solid var(--rose-l);font-size:11px;font-weight:500;cursor:pointer" title="Tap untuk hapus">
-          ${dt.getDate()} ${MONTHS_SHORT[dt.getMonth()]}
-        </span>`;
-      }).join('')}
-    </div>`}
+    <!-- Calendar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <button onclick="pCalChange(-1)" style="width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:13px;color:var(--text3);display:flex;align-items:center;justify-content:center;line-height:1">‹</button>
+      <span style="font-size:13px;font-weight:600;color:var(--text2)" id="p-cal-lbl">${MONTHS[pCalM]} ${pCalY}</span>
+      <button onclick="pCalChange(1)" style="width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:13px;color:var(--text3);display:flex;align-items:center;justify-content:center;line-height:1">›</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px" id="p-day-lbls"></div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px" id="p-cal-grid"></div>
 
-    <div class="period-section-lbl">Gejala hari ini</div>
-    <div class="period-gejala-grid">
-      ${['Nyeri perut','Sakit pinggang','Sakit kepala','Mood tidak stabil','Kembung','Mudah lelah','Ngidam','Susah tidur','Jerawat'].map(g=>`<button class="period-gejala-btn${(W.periodGejala||[]).includes(g)?' sel':''}" onclick="togglePeriodGejala(this,'${g}')">${g}</button>`).join('')}
+    <!-- Gejala -->
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-l)">
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:8px">Gejala hari ini</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px" id="p-gejala-wrap"></div>
     </div>`;
-}
-// Update checkHasPeriod to also check new isPeriod format
-const _origCheckHasPeriod = checkHasPeriod;
-function checkHasPeriod(){
-  // Check new isPeriod format first
-  for(let i=0;i<90;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const h=ld('inarte_haid_'+d.toISOString().split('T')[0]);
-    if(h?.isPeriod||h?.status) return true;
-  }
-  return ld('inarte_day_'+TODAY)?.conditions?.includes('haid')||false;
-}
-function setPeriodInt(btn,val){document.querySelectorAll('.period-int-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');W.periodInt=val;sv('inarte_wellness_'+TODAY,W)}
-function togglePeriodGejala(btn,val){btn.classList.toggle('sel');if(!W.periodGejala)W.periodGejala=[];if(btn.classList.contains('sel')){if(!W.periodGejala.includes(val))W.periodGejala.push(val)}else W.periodGejala=W.periodGejala.filter(x=>x!==val);sv('inarte_wellness_'+TODAY,W)}
 
+  // Day labels
+  const dlbl=document.getElementById('p-day-lbls');
+  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d=>{
+    const el=document.createElement('div');
+    el.style.cssText='text-align:center;font-size:9px;font-weight:600;color:var(--text4);padding:2px 0';
+    el.textContent=d;dlbl.appendChild(el);
+  });
+
+  renderPeriodCal(pLog);
+  renderGejalaChips(pLog);
+}
+
+function getLastPeriodBlock(dates){
+  if(!dates||!dates.length) return {start:'',end:''};
+  const sorted=[...dates].sort();
+  // Find last consecutive block
+  let end=sorted[sorted.length-1];
+  let start=end;
+  for(let i=sorted.length-2;i>=0;i--){
+    const curr=new Date(sorted[i+1]),prev=new Date(sorted[i]);
+    if((curr-prev)/86400000<=1.5) start=sorted[i];
+    else break;
+  }
+  return {start,end};
+}
+
+function renderPeriodCal(log){
+  const grid=document.getElementById('p-cal-grid');
+  const lbl=document.getElementById('p-cal-lbl');
+  if(!grid)return;
+  const MONTHS=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  lbl.textContent=`${MONTHS[pCalM]} ${pCalY}`;
+  grid.innerHTML='';
+
+  const firstDay=new Date(pCalY,pCalM,1).getDay();
+  const dim=new Date(pCalY,pCalM+1,0).getDate();
+  const periodDates=new Set(log.dates||[]);
+
+  // Empty
+  for(let i=0;i<firstDay;i++){
+    const el=document.createElement('div');grid.appendChild(el);
+  }
+  for(let d=1;d<=dim;d++){
+    const ds=`${pCalY}-${String(pCalM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isPeriod=periodDates.has(ds);
+    const isToday=ds===TODAY;
+    const btn=document.createElement('button');
+    btn.style.cssText=`aspect-ratio:1;border-radius:7px;border:${isToday?'1.5px solid var(--rose-l)':'1px solid var(--border-l)'};background:${isPeriod?'var(--rose)':'transparent'};color:${isPeriod?'#fff':'var(--text2)'};font-size:11px;font-weight:${isToday?'700':'400'};cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center`;
+    btn.textContent=d;
+    btn.title=ds;
+    btn.onclick=()=>togglePeriodDate(ds);
+    grid.appendChild(btn);
+  }
+}
+
+function renderGejalaChips(log){
+  const wrap=document.getElementById('p-gejala-wrap');
+  if(!wrap)return;
+  const gejalaOpts=['Nyeri perut','Sakit pinggang','Sakit kepala','Mood tidak stabil','Kembung','Mudah lelah','Ngidam','Susah tidur','Jerawat'];
+  const todayGejala=(log.gejala||{})[TODAY]||[];
+  wrap.innerHTML='';
+  gejalaOpts.forEach(g=>{
+    const sel=todayGejala.includes(g);
+    const btn=document.createElement('button');
+    btn.style.cssText=`padding:5px 11px;border-radius:20px;border:1.5px solid ${sel?'var(--rose)':'var(--border)'};background:${sel?'var(--rose-p)':'transparent'};font-family:'DM Sans',sans-serif;font-size:11px;color:${sel?'var(--rose)':'var(--text2)'};cursor:pointer;transition:all .12s`;
+    btn.textContent=g;
+    btn.onclick=()=>{
+      const l=getPeriodLog();
+      if(!l.gejala)l.gejala={};
+      if(!l.gejala[TODAY])l.gejala[TODAY]=[];
+      if(l.gejala[TODAY].includes(g)) l.gejala[TODAY]=l.gejala[TODAY].filter(x=>x!==g);
+      else l.gejala[TODAY].push(g);
+      savePeriodLog(l);renderGejalaChips(l);
+    };
+    wrap.appendChild(btn);
+  });
+}
+
+function togglePeriodDate(ds){
+  const log=getPeriodLog();
+  if(log.dates.includes(ds)) log.dates=log.dates.filter(d=>d!==ds);
+  else log.dates.push(ds);
+  savePeriodLog(log);
+  renderPeriodCal(log);
+  buildEPInner(); // update dashboard card
+  showToast(log.dates.includes(ds)?'🩸 Hari haid ditandai':'Tanda dihapus');
+}
+
+function applyPeriodRange(){
+  const start=document.getElementById('p-start-inp')?.value;
+  const end=document.getElementById('p-end-inp')?.value;
+  if(!start){showToast('Isi tanggal mulai dulu ya');return;}
+  const log=getPeriodLog();
+  const endDate=end||start;
+  // Generate all dates between start and end
+  const s=new Date(start),e=new Date(endDate);
+  if(s>e){showToast('Tanggal mulai harus sebelum selesai');return;}
+  const newDates=new Set(log.dates||[]);
+  const cur=new Date(s);
+  while(cur<=e){
+    newDates.add(cur.toISOString().split('T')[0]);
+    cur.setDate(cur.getDate()+1);
+  }
+  log.dates=[...newDates].sort();
+  savePeriodLog(log);
+  renderPeriodCal(log);
+  buildEPInner();
+  showToast(`🌸 Rentang haid disimpan!`);
+}
+
+function pCalChange(delta){
+  pCalM+=delta;
+  if(pCalM>11){pCalM=0;pCalY++;}
+  if(pCalM<0){pCalM=11;pCalY--;}
+  renderPeriodCal(getPeriodLog());
+}
+
+// ══ EMOTION WHEEL ══
 // ══ EMOTION WHEEL ══
 // Based on Plutchik's 8 primary emotions with Indonesian turunan
 const ZONES=[
