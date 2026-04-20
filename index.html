@@ -150,18 +150,31 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <input class="ob-inp" id="ob-name" placeholder="Nama panggilanmu..." maxlength="30" onkeydown="if(event.key==='Enter')obNext()"/>
       <button class="ob-btn" onclick="obNext()">Lanjut →</button>
     </div>
-    <!-- Step 1: Usia -->
+    <!-- Step 1: Gender -->
     <div id="ob1" class="ob-step">
-      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div></div>
+      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div></div>
+      <div class="ob-q">Kamu mengidentifikasi sebagai?</div>
+      <div class="ob-hint">Ini membantu Nara menyesuaikan fitur yang relevan untukmu.</div>
+      <div class="ob-chips" id="chips-gender">
+        <button class="ob-chip" onclick="chipSolo(this,'gender')">Perempuan</button>
+        <button class="ob-chip" onclick="chipSolo(this,'gender')">Laki-laki</button>
+        <button class="ob-chip" onclick="chipSolo(this,'gender')">Prefer tidak menyebutkan</button>
+      </div>
+      <button class="ob-btn" onclick="obNext()">Lanjut →</button>
+      <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
+    </div>
+    <!-- Step 2: Usia -->
+    <div id="ob3" class="ob-step">
+      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div></div>
       <div class="ob-q">Berapa umurmu sekarang?</div>
       <div class="ob-hint">Membantu Nara kasih rekomendasi yang sesuai kondisimu.</div>
       <input class="ob-inp-num" id="ob-age" type="number" min="7" max="99" placeholder="—" onkeydown="if(event.key==='Enter')obNext()"/>
       <button class="ob-btn" onclick="obNext()">Lanjut →</button>
       <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
     </div>
-    <!-- Step 2: Goals -->
-    <div id="ob2" class="ob-step">
-      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div></div></div>
+    <!-- Step 3: Goals -->
+    <div id="ob3" class="ob-step">
+      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div></div></div>
       <div class="ob-q">Apa yang paling ingin kamu jaga?</div>
       <div class="ob-hint">Boleh pilih lebih dari satu.</div>
       <div class="ob-chips" id="chips-goal">
@@ -177,8 +190,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
     </div>
     <!-- Step 3: Keseharian -->
-    <div id="ob3" class="ob-step">
-      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div></div></div>
+    <div id="ob4" class="ob-step">
+      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div></div></div>
       <div class="ob-q">Keseharian kamu seperti apa?</div>
       <div class="ob-hint">Pilih yang paling mendekati.</div>
       <div class="ob-chips" id="chips-act">
@@ -193,8 +206,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
     </div>
     <!-- Step 4: Situasi rumah + makan -->
-    <div id="ob4" class="ob-step">
-      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div></div></div>
+    <div id="ob5" class="ob-step">
+      <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div></div></div>
       <div class="ob-q">Situasi di rumah?</div>
       <div class="ob-hint">Berpengaruh ke rekomendasi menu harianmu.</div>
       <div class="ob-chips" id="chips-home">
@@ -215,7 +228,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
     </div>
     <!-- Step 5: Done -->
-    <div id="ob5" class="ob-step">
+    <div id="ob6" class="ob-step">
       <div style="text-align:center;padding:.5rem 0">
         <div style="font-size:48px;margin-bottom:1rem">🌿</div>
         <div class="ob-q" style="text-align:center">Hai, <span id="ob-preview">kamu</span>!</div>
@@ -367,7 +380,7 @@ function continueAsGuest(){
 
 // ══ ONBOARDING ══
 let obStep=0;
-const obData={name:'',age:'',goals:[],act:'',home:'',budget:''};
+const obData={name:'',gender:'',age:'',goals:[],act:'',home:'',budget:''};
 
 function showOnboarding(){
   document.getElementById('onboarding').classList.add('show');
@@ -375,10 +388,11 @@ function showOnboarding(){
 
 function obNext(){
   if(obStep===0){const v=document.getElementById('ob-name').value.trim();if(!v){document.getElementById('ob-name').focus();return;}obData.name=v;document.getElementById('ob-preview').textContent=v;}
-  if(obStep===1){const v=document.getElementById('ob-age').value;obData.age=v?parseInt(v):'';}
-  if(obStep===2){obData.goals=[...document.querySelectorAll('#chips-goal .ob-chip.sel')].map(c=>c.textContent.trim());}
-  if(obStep===3){const s=document.querySelector('#chips-act .ob-chip.sel');obData.act=s?s.textContent.trim():'';}
-  if(obStep===4){
+  if(obStep===1){const s=document.querySelector('#chips-gender .ob-chip.sel');obData.gender=s?s.textContent.trim():'';}
+  if(obStep===2){const v=document.getElementById('ob-age').value;obData.age=v?parseInt(v):'';}
+  if(obStep===3){obData.goals=[...document.querySelectorAll('#chips-goal .ob-chip.sel')].map(c=>c.textContent.trim());}
+  if(obStep===4){const s=document.querySelector('#chips-act .ob-chip.sel');obData.act=s?s.textContent.trim():'';}
+  if(obStep===5){
     const h=document.querySelector('#chips-home .ob-chip.sel');obData.home=h?h.textContent.trim():'';
     const b=document.querySelector('#chips-budget .ob-chip.sel');obData.budget=b?b.textContent.trim():'';
   }
@@ -406,7 +420,7 @@ async function doneOnboarding(){
     try{
       await SB.from('profiles').upsert({
         id:currentUser.id,name:profile.name,age:profile.age?parseInt(profile.age):null,
-        act:profile.act,home:profile.home,budget:profile.budget,
+        gender:profile.gender||'',act:profile.act,home:profile.home,budget:profile.budget,
         goals:profile.goals||[],avatar_color:profile.avatarColor
       });
     }catch(e){}
