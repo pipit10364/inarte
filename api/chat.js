@@ -37,10 +37,11 @@ PRINSIP UTAMA:
 1. Baca konteks pesan dulu. Kalau user curhat atau cerita masalah NON-kesehatan, JANGAN langsung bahas makan/olahraga.
 2. Jadilah pendengar yang baik — validasi perasaan dulu, baru kalau relevan kasih saran.
 3. Jawab sesuai topik: kerjaan → bahas kerjaan, hubungan → dengerin, makan/kesehatan → baru bahas itu.
-4. Respons pendek dan natural seperti chat — maksimal 3-4 kalimat.
-5. Gunakan kaomoji sesekali: (◕ᴗ◕✿) (ꈍᴗꈍ) (≧▽≦) — jangan lebih dari satu per pesan.
+4. Respons natural seperti chat — 3-5 kalimat. Kalau topiknya perlu lebih panjang, boleh sampai 6-7 kalimat tapi tetap mengalir, bukan list.
+5. Gunakan kaomoji sesekali: (◕ᴗ◕✿) (ꈍᴗꈍ) (≧▽≦) — maksimal satu per pesan, dan hanya kalau momennya tepat.
 6. JANGAN selalu akhiri dengan topik makan atau olahraga kalau tidak relevan.
-7. Kalau user butuh bantuan profesional, arahkan dengan hangat.
+7. JANGAN potong kalimat di tengah — selalu selesaikan pikiran sebelum berhenti.
+8. Kalau user butuh bantuan profesional, arahkan dengan hangat tanpa terkesan mendorong pergi.
 
 ${system || ''}
 `.trim();
@@ -54,9 +55,12 @@ ${system || ''}
       systemInstruction: { parts: [{ text: enhancedSystem }] },
       contents,
       generationConfig: {
-        maxOutputTokens: Math.min(max_tokens || 400, 800),
-        temperature: 0.9,
-        topP: 0.95,
+        // Default 600 — cukup untuk 4-6 kalimat mengalir tanpa terpotong
+        // Cap 1200 untuk progress insight yang lebih panjang
+        maxOutputTokens: Math.min(max_tokens || 600, 1200),
+        // 0.75: natural tapi konsisten, tidak melantur
+        temperature: 0.75,
+        topP: 0.92,
       },
       safetySettings: [
         { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
@@ -68,11 +72,11 @@ ${system || ''}
 
     const apiKey = process.env.GEMINI_API_KEY;
 
-    // Models confirmed available from API key's model list
+    // Terbaru duluan, stable sebagai fallback
     const models = [
-      'gemini-2.0-flash-001',  // stable version, most reliable
-      'gemini-2.0-flash',      // latest 2.0
-      'gemini-2.5-flash',      // newest, might have higher rate limits
+      'gemini-2.5-flash',      // terbaru, terbaik untuk conversation
+      'gemini-2.0-flash',      // stable fallback
+      'gemini-2.0-flash-001',  // pinned version kalau yang lain rate-limited
     ];
 
     const errors = [];
@@ -101,11 +105,26 @@ ${system || ''}
         }
 
         const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+
+        // Kalau terpotong di tengah kalimat, trim ke kalimat terakhir yang selesai
+        const finishReason = data.candidates?.[0]?.finishReason;
+        let text = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
 
         if (!text) {
           errors.push(`${model}: empty response`);
           continue;
+        }
+
+        if (finishReason === 'MAX_TOKENS') {
+          const lastPunct = Math.max(
+            text.lastIndexOf('.'),
+            text.lastIndexOf('!'),
+            text.lastIndexOf('?'),
+            text.lastIndexOf('~'),
+          );
+          if (lastPunct > text.length * 0.6) {
+            text = text.slice(0, lastPunct + 1).trim();
+          }
         }
 
         return new Response(
