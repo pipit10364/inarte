@@ -307,6 +307,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 [data-theme="dark"] .bottom-sheet,[data-theme="dark"] .profile-panel,[data-theme="dark"] .nara-chat{background:var(--surface)}
 
 /* ══ DARK TOGGLE ══ */
+
+/* dark toggle in topbar */
+.topbar-dark-btn{width:30px;height:30px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.topbar-dark-btn:hover{border-color:var(--nara-l);background:var(--nara-p)}
+.topbar-dark-btn svg{width:14px;height:14px;stroke:var(--text3);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.topbar-dark-btn:hover svg{stroke:var(--nara-d)}
+
+
+/* profile accordion */
+.pp-accordion{border:1px solid var(--border-l);border-radius:var(--rsm);overflow:hidden;margin-bottom:8px}
+.pp-acc-head{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;cursor:pointer;background:var(--bg);transition:background .15s;user-select:none}
+.pp-acc-head:hover{background:var(--bg2)}
+.pp-acc-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);display:flex;align-items:center;gap:7px}
+.pp-acc-summary{font-size:11px;color:var(--text4);font-style:italic;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pp-acc-chevron{width:14px;height:14px;stroke:var(--text4);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;flex-shrink:0}
+.pp-accordion.open .pp-acc-chevron{transform:rotate(180deg)}
+.pp-acc-body{display:none;padding:10px 13px 13px;border-top:1px solid var(--border-l);background:var(--surface)}
+.pp-accordion.open .pp-acc-body{display:block}
+/* PWA install button */
+.pp-install-btn{width:100%;padding:9px 13px;background:var(--nara-p);border:1.5px solid var(--nara-l);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--nara-d);font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;margin-bottom:6px}
+.pp-install-btn:hover{background:var(--nara);color:#fff}
+.pp-install-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
 .dark-btn{width:32px;height:32px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .dark-btn:hover{border-color:var(--moss-l);background:var(--moss-p)}
 .dark-btn svg{width:15px;height:15px;stroke:var(--text3);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -367,6 +390,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="topbar-logo">IN<em>arte</em></div>
   <div class="topbar-r">
     <span class="topbar-date" id="tb-date"></span>
+    <button class="topbar-dark-btn" id="topbar-dark-btn" onclick="toggleDark()" title="Ganti tema" aria-label="Ganti mode gelap terang">
+      <svg id="topbar-dark-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
     <button class="av-btn" id="av-btn" onclick="openProfile()">P</button>
   </div>
 </div>
@@ -546,54 +572,109 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="pp-avatar-sub" id="pp-avatar-sub">Edit profilmu di sini</div>
       </div>
     </div>
-    <div class="pp-section-lbl">Identitas</div>
-    <div class="pp-field"><div class="pp-field-lbl">Nama panggilan</div><input class="pp-inp" id="pp-name" type="text" placeholder="Namamu..." maxlength="30"/></div>
-    <div class="pp-field"><div class="pp-field-lbl">Usia</div><input class="pp-inp" id="pp-age" type="number" placeholder="Umurmu..." min="7" max="99" style="width:100px"/></div>
-    <div class="pp-field"><div class="pp-field-lbl">Gender</div>
-      <div class="pp-chips" id="pp-gender-chips">
-        <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Perempuan</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Laki-laki</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Prefer tidak menyebutkan</button>
+
+    <!-- ACCORDION: Identitas -->
+    <div class="pp-accordion open" id="ppa-identitas">
+      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-identitas')">
+        <span class="pp-acc-title">👤 Identitas</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="pp-acc-summary" id="ppa-identitas-summary"></span>
+          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="pp-acc-body">
+        <div class="pp-field"><div class="pp-field-lbl">Nama panggilan</div><input class="pp-inp" id="pp-name" type="text" placeholder="Namamu..." maxlength="30"/></div>
+        <div class="pp-field"><div class="pp-field-lbl">Usia</div><input class="pp-inp" id="pp-age" type="number" placeholder="Umurmu..." min="7" max="99" style="width:100px"/></div>
+        <div class="pp-field"><div class="pp-field-lbl">Gender</div>
+          <div class="pp-chips" id="pp-gender-chips">
+            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Perempuan</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Laki-laki</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Prefer tidak menyebutkan</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="pp-section-lbl">Keseharian</div>
-    <div class="pp-field"><div class="pp-field-lbl">Aktivitas</div>
-      <div class="pp-chips" id="pp-act-chips">
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja kantoran</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja lapangan</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Mahasiswa / pelajar</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Kerja dari rumah</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Ibu rumah tangga</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Lainnya</button>
+
+    <!-- ACCORDION: Keseharian -->
+    <div class="pp-accordion" id="ppa-keseharian">
+      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-keseharian')">
+        <span class="pp-acc-title">🏠 Keseharian</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="pp-acc-summary" id="ppa-keseharian-summary"></span>
+          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="pp-acc-body">
+        <div class="pp-field"><div class="pp-field-lbl">Aktivitas</div>
+          <div class="pp-chips" id="pp-act-chips">
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja kantoran</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja lapangan</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Mahasiswa / pelajar</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Kerja dari rumah</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Ibu rumah tangga</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Lainnya</button>
+          </div>
+        </div>
+        <div class="pp-field"><div class="pp-field-lbl">Situasi rumah</div>
+          <div class="pp-chips" id="pp-home-chips">
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Sendiri</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama orang tua</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan + anak</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Ada lansia di rumah</button>
+          </div>
+        </div>
+        <div class="pp-field"><div class="pp-field-lbl">Budget makan / hari</div>
+          <div class="pp-chips" id="pp-budget-chips">
+            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di bawah Rp 50rb</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 50-100rb</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 100-200rb</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di atas Rp 200rb</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="pp-field"><div class="pp-field-lbl">Situasi rumah</div>
-      <div class="pp-chips" id="pp-home-chips">
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Sendiri</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama orang tua</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan + anak</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Ada lansia di rumah</button>
+
+    <!-- ACCORDION: Goals -->
+    <div class="pp-accordion" id="ppa-goals">
+      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-goals')">
+        <span class="pp-acc-title">🎯 Goals</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="pp-acc-summary" id="ppa-goals-summary"></span>
+          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="pp-acc-body">
+        <div class="pp-chips" id="pp-goals-chips">
+          <button class="pp-chip" onclick="ppChipToggle(this)">Berat badan stabil</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Pola makan lebih sehat</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Energi lebih stabil</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Tidur lebih baik</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Lebih aktif bergerak</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Kesehatan mental</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Keuangan lebih tertata</button>
+        </div>
       </div>
     </div>
-    <div class="pp-field"><div class="pp-field-lbl">Budget makan / hari</div>
-      <div class="pp-chips" id="pp-budget-chips">
-        <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di bawah Rp 50rb</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 50-100rb</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 100-200rb</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di atas Rp 200rb</button>
+
+    <!-- ACCORDION: Pengaturan -->
+    <div class="pp-accordion" id="ppa-settings">
+      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-settings')">
+        <span class="pp-acc-title">⚙️ Pengaturan</span>
+        <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="pp-acc-body">
+        <button class="pp-install-btn" id="pp-install-btn" onclick="triggerInstall()" style="display:none">
+          <svg viewBox="0 0 24 24"><path d="M12 2v13M8 11l4 4 4-4"/><path d="M20 17v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
+          Tambah ke layar utama
+        </button>
+        <button class="pp-install-btn" id="pp-manual-install-btn" onclick="showInstallGuide()" style="margin-bottom:0">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Cara pasang di HP / laptop
+        </button>
       </div>
     </div>
-    <div class="pp-section-lbl">Goals</div>
-    <div class="pp-chips" id="pp-goals-chips">
-      <button class="pp-chip" onclick="ppChipToggle(this)">Berat badan stabil</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Pola makan lebih sehat</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Energi lebih stabil</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Tidur lebih baik</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Lebih aktif bergerak</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Kesehatan mental</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Keuangan lebih tertata</button>
-    </div>
+
     <button class="pp-save-btn" onclick="saveProfile()">Simpan perubahan</button>
     <button class="pp-logout-btn" onclick="logoutUser()">Keluar dari akun</button>
   </div>
@@ -1112,6 +1193,7 @@ function openProfile(){
   document.querySelectorAll('#pp-goals-chips .pp-chip').forEach(c=>c.classList.toggle('sel',goals.includes(c.textContent.trim())));
   document.getElementById('profile-overlay').classList.add('on');
   document.getElementById('profile-panel').classList.add('open');
+  setTimeout(ppUpdateSummaries, 50);
 }
 function closeProfile(){
   document.getElementById('profile-overlay').classList.remove('on');
@@ -1185,14 +1267,13 @@ function toggleDark(){
   _updateDarkUI(next === 'dark');
 }
 function _updateDarkUI(isDark){
+  const sunPath = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+  const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
   const icons = document.querySelectorAll('.dark-icon-moon, .dark-icon-sun, #dark-icon');
-  icons.forEach(el => {
-    if(el.id === 'dark-icon' || el.classList.contains('dark-icon-moon') || el.classList.contains('dark-icon-sun')){
-      el.innerHTML = isDark
-        ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
-        : '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-    }
-  });
+  icons.forEach(el => { el.innerHTML = isDark ? sunPath : moonPath; });
+  // also update topbar icon
+  const ti = document.getElementById('topbar-dark-icon');
+  if(ti) ti.innerHTML = isDark ? sunPath : moonPath;
   const dsLbl = document.getElementById('ds-dark-label');
   if(dsLbl) dsLbl.textContent = isDark ? 'Mode Terang' : 'Mode Gelap';
 }
