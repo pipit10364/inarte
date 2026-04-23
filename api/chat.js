@@ -57,7 +57,7 @@ ${system || ''}
       generationConfig: {
         // Default 600 — cukup untuk 4-6 kalimat mengalir tanpa terpotong
         // Cap 1200 untuk progress insight yang lebih panjang
-        maxOutputTokens: Math.min(max_tokens || 600, 1200),
+        maxOutputTokens: Math.min(max_tokens || 700, 1500),
         // 0.75: natural tapi konsisten, tidak melantur
         temperature: 0.75,
         topP: 0.92,
@@ -121,8 +121,10 @@ ${system || ''}
             text.lastIndexOf('!'),
             text.lastIndexOf('?'),
             text.lastIndexOf('~'),
+            text.lastIndexOf(')'),
+            text.lastIndexOf('✿'),
           );
-          if (lastPunct > text.length * 0.6) {
+          if (lastPunct > text.length * 0.75) {
             text = text.slice(0, lastPunct + 1).trim();
           }
         }
