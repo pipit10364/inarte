@@ -503,17 +503,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* ══ DESKTOP LAYOUT ══ */
 @media(min-width:1024px){
-  body{display:grid;grid-template-columns:240px 1fr;grid-template-rows:auto 1fr;min-height:100vh}
+  body{display:grid;grid-template-columns:var(--sidebar-w,240px) 1fr;grid-template-rows:auto 1fr;min-height:100vh;transition:grid-template-columns .25s cubic-bezier(.4,0,.2,1)}
   .topbar{grid-column:1/-1}
   .bnav{display:none}
-  .desktop-sidebar{display:flex!important;flex-direction:column;border-right:1px solid var(--border-l);padding:1.25rem 1rem;background:var(--surface);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+  .desktop-sidebar{display:flex!important;flex-direction:column;border-right:1px solid var(--border-l);padding:1.25rem 1rem;background:var(--surface);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;overflow-x:hidden;transition:padding .25s}
 
   /* ── Today: 2-column reflow ── */
   .today-scroll{
     display:grid;
     grid-template-columns:1fr 1fr;
-    align-items:start;
-    gap:12px;
+    align-items:stretch;
+    column-gap:14px;
+    row-gap:12px;
     padding:1.75rem 1.75rem 2.5rem;
     max-width:none;
     width:100%;
@@ -527,8 +528,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .menu-card{grid-column:2;grid-row:2}
   .action-row{grid-column:2;grid-row:3;grid-template-columns:1fr;gap:10px}
   .nara-message{grid-column:1/-1;grid-row:4}
-  .ds-habit-wrap{display:flex;flex-direction:column;gap:10px}
-  .ds-status-wrap{display:flex;flex-direction:column;gap:10px}
+  .ds-habit-wrap{display:flex;flex-direction:column;gap:10px;height:100%}
+  .ds-status-wrap{display:flex;flex-direction:column;gap:10px;height:100%}
   .ds-habit-wrap > .section-divider,.ds-status-wrap > .section-divider{display:none}
   .nara-float{display:none}
 
@@ -562,6 +563,35 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ds-dark-btn{width:100%;padding:8px 12px;border-radius:var(--rsm);background:transparent;border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
 .ds-dark-btn:hover{border-color:var(--moss-l);color:var(--moss)}
 .ds-dark-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round}
+
+/* ── Sidebar collapse toggle button ── */
+.ds-toggle{width:100%;padding:7px 10px;border-radius:var(--rsm);background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-end;color:var(--text4);transition:color .15s;margin-bottom:4px}
+.ds-toggle:hover{color:var(--moss)}
+.ds-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+.ds-nav-lbl{transition:opacity .2s,width .2s;white-space:nowrap;overflow:hidden}
+.ds-streak-info{transition:opacity .2s;overflow:hidden}
+.ds-logo-full{transition:opacity .2s}
+
+/* Collapsed state */
+body.sidebar-collapsed{--sidebar-w:64px}
+body.sidebar-collapsed .desktop-sidebar{padding:.875rem .625rem;align-items:center}
+body.sidebar-collapsed .ds-logo{display:none}
+body.sidebar-collapsed .ds-nav-btn{justify-content:center;padding:10px;width:40px;height:40px;border-radius:50%}
+body.sidebar-collapsed .ds-nav-lbl{display:none}
+body.sidebar-collapsed .ds-nav-btn svg{width:18px;height:18px;opacity:1}
+body.sidebar-collapsed .ds-streak-box{padding:.625rem .25rem}
+body.sidebar-collapsed .ds-streak-num{font-size:1.4rem}
+body.sidebar-collapsed .ds-streak-lbl{display:none}
+body.sidebar-collapsed .ds-streak-badge{font-size:1.2rem}
+body.sidebar-collapsed .ds-dark-btn{padding:8px;width:40px;height:40px;border-radius:50%;justify-content:center}
+body.sidebar-collapsed .ds-dark-btn span{display:none}
+body.sidebar-collapsed .ds-toggle{justify-content:center}
+body.sidebar-collapsed .ds-toggle svg{transform:rotate(180deg)}
+
+/* Tooltip on hover when collapsed */
+body.sidebar-collapsed .ds-nav-btn{position:relative}
+body.sidebar-collapsed .ds-nav-btn::after{content:attr(data-label);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:var(--text);color:var(--surface);font-size:11px;font-weight:600;padding:4px 9px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:500}
+body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
 
 /* ══ TIPS HARIAN ══ */
 .tips-card{background:linear-gradient(135deg,var(--moss-p),var(--bg));border:1px solid var(--moss-l);border-radius:var(--r);padding:.875rem 1.125rem;position:relative;overflow:hidden;cursor:pointer}
@@ -686,19 +716,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <!-- DESKTOP SIDEBAR -->
 <aside class="desktop-sidebar" id="desktop-sidebar">
   <div class="ds-logo">IN<em>arte</em></div>
+  <button class="ds-toggle" onclick="toggleSidebar()" title="Perkecil sidebar">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
   <ul class="ds-nav">
-    <li><button class="ds-nav-btn" id="ds-today" onclick="navTo('today')">
+    <li><button class="ds-nav-btn" id="ds-today" onclick="navTo('today')" data-label="Hari Ini">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      Hari Ini</button></li>
-    <li><button class="ds-nav-btn" id="ds-wellness" onclick="navTo('wellness')">
+      <span class="ds-nav-lbl">Hari Ini</span></button></li>
+    <li><button class="ds-nav-btn" id="ds-wellness" onclick="navTo('wellness')" data-label="Wellness">
       <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-      Wellness</button></li>
-    <li><button class="ds-nav-btn" id="ds-finance" onclick="navTo('finance')">
+      <span class="ds-nav-lbl">Wellness</span></button></li>
+    <li><button class="ds-nav-btn" id="ds-finance" onclick="navTo('finance')" data-label="Keuangan">
       <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-      Keuangan</button></li>
-    <li><button class="ds-nav-btn" id="ds-progress" onclick="navTo('progress')">
+      <span class="ds-nav-lbl">Keuangan</span></button></li>
+    <li><button class="ds-nav-btn" id="ds-progress" onclick="navTo('progress')" data-label="Progres">
       <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Progres</button></li>
+      <span class="ds-nav-lbl">Progres</span></button></li>
   </ul>
   <div class="ds-bottom">
     <div class="ds-streak-box">
@@ -1757,7 +1790,7 @@ async function sendNara(){
   let reply;
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'gemini-2.0-flash',max_tokens:400,system:sys,messages:_chatHistory.slice(-10)}),
+      body:JSON.stringify({model:'gemini-2.5-flash',max_tokens:700,system:sys,messages:_chatHistory.slice(-12)}),
       signal:AbortSignal.timeout(12000)});
     if(r.ok){const d=await r.json();reply=d.content?.[0]?.text;}
   }catch(e){}
@@ -1909,6 +1942,17 @@ function toggleDark(){
   localStorage.setItem('inarte_theme', next);
   _updateDarkUI(next === 'dark');
 }
+// ── Sidebar collapse toggle ──
+function toggleSidebar(){
+  const collapsed = document.body.classList.toggle('sidebar-collapsed');
+  localStorage.setItem('inarte_sidebar','collapsed:'+ collapsed);
+}
+// Restore sidebar state on load
+(function(){
+  const saved = localStorage.getItem('inarte_sidebar');
+  if(saved === 'collapsed:true') document.body.classList.add('sidebar-collapsed');
+})();
+
 function _updateDarkUI(isDark){
   const sunPath = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
   const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
