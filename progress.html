@@ -413,6 +413,36 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
+<!-- DESKTOP SIDEBAR -->
+<aside class="desktop-sidebar" id="desktop-sidebar">
+  <div class="ds-logo">IN<em>arte</em></div>
+  <ul class="ds-nav">
+    <li><button class="ds-nav-btn" id="ds-today" onclick="navTo('today')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      Hari Ini</button></li>
+    <li><button class="ds-nav-btn" id="ds-wellness" onclick="navTo('wellness')">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      Wellness</button></li>
+    <li><button class="ds-nav-btn" id="ds-finance" onclick="navTo('finance')">
+      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Keuangan</button></li>
+    <li><button class="ds-nav-btn" id="ds-progress" onclick="navTo('progress')">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Progres</button></li>
+  </ul>
+  <div class="ds-bottom">
+    <div class="ds-streak-box">
+      <span class="ds-streak-badge" id="ds-streak-badge">🌱</span>
+      <div class="ds-streak-num" id="ds-streak-num">0</div>
+      <div class="ds-streak-lbl">hari beruntun</div>
+    </div>
+    <button class="ds-dark-btn" onclick="toggleDark()">
+      <svg viewBox="0 0 24 24" id="dark-icon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <span id="ds-dark-label">Mode Gelap</span>
+    </button>
+  </div>
+</aside>
+
 <div class="p-scroll">
 
   <div class="page-header">
@@ -726,23 +756,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
     </div>
 
-    <!-- ACCORDION: Pengaturan -->
-    <div class="pp-accordion" id="ppa-settings">
-      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-settings')">
-        <span class="pp-acc-title">⚙️ Pengaturan</span>
-        <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="pp-acc-body">
-        <button class="pp-install-btn" id="pp-install-btn" onclick="triggerInstall()" style="display:none">
-          <svg viewBox="0 0 24 24"><path d="M12 2v13M8 11l4 4 4-4"/><path d="M20 17v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
-          Tambah ke layar utama
-        </button>
-        <button class="pp-install-btn" id="pp-manual-install-btn" onclick="showInstallGuide()" style="margin-bottom:0">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Cara pasang di HP / laptop
-        </button>
-      </div>
-    </div>
+    <!-- Install shortcuts -->
+    <button class="pp-install-btn" id="pp-install-btn" onclick="triggerInstall()" style="display:none">
+      <svg viewBox="0 0 24 24"><path d="M12 2v13M8 11l4 4 4-4"/><path d="M20 17v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
+      Tambah ke layar utama
+    </button>
+    <button class="pp-install-btn" id="pp-manual-install-btn" onclick="showInstallGuide()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Cara pasang di HP / laptop
+    </button>
 
     <button class="pp-save-btn" onclick="saveProfile()">Simpan perubahan</button>
     <button class="pp-logout-btn" onclick="logoutUser()">Keluar dari akun</button>
@@ -1377,6 +1399,52 @@ function closeProfile(){
   document.getElementById('profile-overlay').classList.remove('on');
   document.getElementById('profile-panel').classList.remove('open');
 }
+
+// ══ PROFILE ACCORDION ══
+function ppToggleAcc(id){
+  document.getElementById(id).classList.toggle('open');
+  ppUpdateSummaries();
+}
+function ppUpdateSummaries(){
+  const name = (document.getElementById('pp-name')||{}).value||'';
+  const age  = (document.getElementById('pp-age')||{}).value||'';
+  const idSum = document.getElementById('ppa-identitas-summary');
+  if(idSum) idSum.textContent = name ? name.split(' ')[0]+(age?' · '+age+' thn':'') : '';
+  const act  = (document.querySelector('#pp-act-chips .pp-chip.sel')||{}).textContent||'';
+  const home = (document.querySelector('#pp-home-chips .pp-chip.sel')||{}).textContent||'';
+  const kSum = document.getElementById('ppa-keseharian-summary');
+  if(kSum) kSum.textContent = act||home ? [act,home].filter(Boolean).join(' · ') : '';
+  const goals = [...document.querySelectorAll('#pp-goals-chips .pp-chip.sel')].map(c=>c.textContent);
+  const gSum = document.getElementById('ppa-goals-summary');
+  if(gSum) gSum.textContent = goals.length ? goals.length+' dipilih' : '';
+}
+
+// ══ PWA INSTALL ══
+let _installPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); _installPrompt = e;
+  const btn = document.getElementById('pp-install-btn');
+  if(btn) btn.style.display = 'flex';
+});
+function triggerInstall(){
+  if(!_installPrompt) return;
+  _installPrompt.prompt();
+  _installPrompt.userChoice.then(() => {
+    _installPrompt = null;
+    const b = document.getElementById('pp-install-btn');
+    if(b) b.style.display = 'none';
+  });
+}
+function showInstallGuide(){
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  let msg = '';
+  if(isIOS && isSafari) msg = 'Di Safari: ketuk ikon Bagikan (□↑) lalu pilih "Tambahkan ke Layar Utama"';
+  else if(isIOS) msg = 'Buka di Safari, ketuk ikon Bagikan → "Tambahkan ke Layar Utama"';
+  else msg = 'Di Chrome: ketuk menu ⋮ → "Tambahkan ke layar utama". Di laptop: klik ikon ⊕ di address bar.';
+  showToast(msg, 5000);
+}
+
 function ppChipSolo(btn,key){
   btn.closest('.pp-chips').querySelectorAll('.pp-chip').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');_ppData[key]=btn.textContent.trim();
