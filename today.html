@@ -444,6 +444,35 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 [data-theme="dark"] .bnav{background:rgba(26,24,20,.97);border-top-color:rgba(58,52,44,.5)}
 [data-theme="dark"] .bottom-sheet,[data-theme="dark"] .profile-panel,[data-theme="dark"] .nara-chat{background:var(--surface)}
 
+/* ══ NARA WELCOME OVERLAY ══ */
+.nara-welcome-overlay{position:fixed;inset:0;z-index:1500;display:flex;align-items:flex-end;justify-content:center;padding:0 0 env(safe-area-inset-bottom);pointer-events:none;opacity:0;transition:opacity .35s ease}
+.nara-welcome-overlay.show{opacity:1;pointer-events:auto}
+.nara-welcome-overlay.hiding{opacity:0;transition:opacity .4s ease}
+.nara-welcome-bg{position:absolute;inset:0;background:rgba(28,24,16,.32);backdrop-filter:blur(4px)}
+.nara-welcome-card{position:relative;width:100%;max-width:480px;background:var(--surface);border-radius:28px 28px 0 0;padding:1.5rem 1.375rem 2rem;box-shadow:0 -12px 48px rgba(28,24,16,.15);transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1)}
+.nara-welcome-overlay.show .nara-welcome-card{transform:translateY(0)}
+.nara-welcome-overlay.hiding .nara-welcome-card{transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,1,1)}
+@media(min-width:640px){
+  .nara-welcome-card{border-radius:28px;margin-bottom:2rem;max-width:420px}
+}
+.nw-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.25rem}
+.nw-head{display:flex;align-items:center;gap:10px;margin-bottom:.875rem}
+.nw-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--nara),var(--nara-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(196,114,78,.3)}
+.nw-name{font-size:12px;font-weight:700;color:var(--nara-d);letter-spacing:.04em}
+.nw-time{font-size:11px;color:var(--text4);margin-left:auto}
+.nw-msg{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:1.125rem;min-height:48px}
+.nw-msg .nw-dots{display:flex;gap:5px;align-items:center;padding:4px 0}
+.nw-msg .nw-dot{width:7px;height:7px;border-radius:50%;background:var(--nara-l);animation:bounceDot 1.2s infinite}
+.nw-msg .nw-dot:nth-child(2){animation-delay:.2s}
+.nw-msg .nw-dot:nth-child(3){animation-delay:.4s}
+.nw-actions{display:flex;gap:8px;flex-wrap:wrap}
+.nw-quick{padding:8px 14px;border-radius:20px;border:1.5px solid var(--nara-l);background:var(--nara-p);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--nara-d);cursor:pointer;transition:all .15s;white-space:nowrap}
+.nw-quick:hover{background:var(--nara);color:#fff;border-color:var(--nara)}
+.nw-dismiss{margin-left:auto;padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text4);cursor:pointer;transition:all .15s;white-space:nowrap}
+.nw-dismiss:hover{border-color:var(--text3);color:var(--text2)}
+[data-theme="dark"] .nara-welcome-bg{background:rgba(0,0,0,.5)}
+[data-theme="dark"] .nara-welcome-card{background:var(--surface)}
+
 /* ══ DARK TOGGLE ══ */
 
 /* dark toggle in topbar */
@@ -478,11 +507,37 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .topbar{grid-column:1/-1}
   .bnav{display:none}
   .desktop-sidebar{display:flex!important;flex-direction:column;border-right:1px solid var(--border-l);padding:1.25rem 1rem;background:var(--surface);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
-  .today-scroll,.page-scroll{padding:1.75rem 2rem 2.5rem;max-width:900px}
+
+  /* ── Today: 2-column reflow ── */
+  .today-scroll{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:start;
+    gap:12px;
+    padding:1.75rem 1.75rem 2.5rem;
+    max-width:none;
+    width:100%;
+    box-sizing:border-box;
+  }
+  .today-scroll > .section-divider{display:none}
+  .greeting{grid-column:1;grid-row:1}
+  .tips-card{grid-column:1;grid-row:2}
+  .ds-habit-wrap{grid-column:1;grid-row:3}
+  .ds-status-wrap{grid-column:2;grid-row:1}
+  .menu-card{grid-column:2;grid-row:2}
+  .action-row{grid-column:2;grid-row:3;grid-template-columns:1fr;gap:10px}
+  .nara-message{grid-column:1/-1;grid-row:4}
+  .ds-habit-wrap{display:flex;flex-direction:column;gap:10px}
+  .ds-status-wrap{display:flex;flex-direction:column;gap:10px}
+  .ds-habit-wrap > .section-divider,.ds-status-wrap > .section-divider{display:none}
+  .nara-float{display:none}
+
+  /* page-scroll for other pages */
+  .page-scroll{padding:1.75rem 2rem 2.5rem;max-width:900px}
 }
 @media(min-width:1440px){
-  .today-scroll,.page-scroll{max-width:1080px}
-  .nara-float{bottom:24px;right:24px}
+  .today-scroll{padding:2rem 2.5rem 3rem;gap:14px}
+  .page-scroll{max-width:1080px}
   .nara-chat{bottom:90px;right:24px;width:360px}
 }
 @media(max-width:1023px){
@@ -695,6 +750,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 
   <!-- 2. HABITS -->
+  <div class="ds-habit-wrap">
   <div class="section-divider">Kebiasaan Hari Ini</div>
   <div class="section-card">
     <div class="section-head">
@@ -726,8 +782,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
     </div>
   </div>
+  </div><!-- end ds-habit-wrap -->
 
   <!-- 3. QUICK ROW -->
+  <div class="ds-status-wrap">
   <div class="section-divider">Status Hari Ini</div>
   <div class="quick-row">
 
@@ -796,6 +854,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
 
   </div><!-- end quick-row -->
+  </div><!-- end ds-status-wrap -->
 
   <!-- 4. MENU REKOMENDASI -->
   <div class="section-divider">Menu Hari Ini</div>
@@ -917,6 +976,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <ul class="move-list" id="move-list"></ul>
     <div class="move-summary-bar" id="move-summary-bar"></div>
+  </div>
+</div>
+
+<!-- NARA WELCOME OVERLAY -->
+<div class="nara-welcome-overlay" id="nara-welcome" aria-live="polite">
+  <div class="nara-welcome-bg" onclick="dismissWelcome()"></div>
+  <div class="nara-welcome-card">
+    <div class="nw-handle"></div>
+    <div class="nw-head">
+      <div class="nw-av">N</div>
+      <span class="nw-name">NARA</span>
+      <span class="nw-time" id="nw-time"></span>
+    </div>
+    <div class="nw-msg" id="nw-msg">
+      <div class="nw-dots"><div class="nw-dot"></div><div class="nw-dot"></div><div class="nw-dot"></div></div>
+    </div>
+    <div class="nw-actions" id="nw-actions"></div>
   </div>
 </div>
 
@@ -2441,5 +2517,346 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
+
+<script>
+// ══════════════════════════════════════════════
+// INARTE NARA CONTEXT SYSTEM
+// Auto-summarizes data per halaman, persists ke
+// localStorage, di-inject ke setiap call Nara.
+// ══════════════════════════════════════════════
+
+const NARA_CTX_KEY = 'inarte_nara_context';
+
+// Baca context
+function naraCtxGet() {
+  try { return JSON.parse(localStorage.getItem(NARA_CTX_KEY) || '{}'); }
+  catch { return {}; }
+}
+
+// Tulis / merge context
+function naraCtxSet(patch) {
+  const current = naraCtxGet();
+  const updated = { ...current, ...patch, updatedAt: new Date().toISOString() };
+  localStorage.setItem(NARA_CTX_KEY, JSON.stringify(updated));
+}
+
+// Build summary dari data today.html dan simpan ke context
+function naraCtxRefreshToday() {
+  const today = new Date().toISOString().split('T')[0];
+  const dd = JSON.parse(localStorage.getItem('inarte_day_' + today) || '{}');
+  const habitLog = JSON.parse(localStorage.getItem('inarte_habitlog_' + today) || '{}');
+  const habitTemplate = JSON.parse(localStorage.getItem('inarte_habits_template') || '[]');
+  const doneHabits = habitTemplate.filter(h => habitLog[h.id]).map(h => h.name || h.text || '');
+  const totalHabits = habitTemplate.length;
+
+  const summary = {
+    today,
+    water: dd.water || 0,
+    mood: dd.mood || null,
+    moodEmoji: dd.moodEmoji || null,
+    sleep: dd.sleep || null,
+    energyFisik: dd.energyFisik || null,
+    energyMental: dd.energyMental || null,
+    habitDone: doneHabits.length,
+    habitTotal: totalHabits,
+    habitNames: doneHabits,
+    totalCal: dd.totalCal || 0,
+    conditions: dd.conditions || [],
+  };
+
+  naraCtxSet({ todaySummary: summary });
+}
+
+// Build system prompt injection string dari context
+function naraCtxBuildInjection() {
+  const ctx = naraCtxGet();
+  const parts = [];
+
+  if (ctx.todaySummary) {
+    const t = ctx.todaySummary;
+    const habitStr = t.habitTotal > 0
+      ? `${t.habitDone}/${t.habitTotal} habit selesai${t.habitNames.length ? ' ('+t.habitNames.join(', ')+')' : ''}`
+      : 'belum ada habit';
+    parts.push(`[Hari ini: air ${t.water}/8 gelas, mood "${t.mood || 'belum'}", tidur ${t.sleep ? t.sleep+' jam' : 'belum dicatat'}, energi fisik ${t.energyFisik || '-'}/5, ${habitStr}]`);
+  }
+
+  if (ctx.wellnessSummary) {
+    const w = ctx.wellnessSummary;
+    parts.push(`[Wellness terakhir (${w.date || '?'}): tidur ${w.sleep || '-'} jam, energi fisik ${w.energyFisik || '-'}/5 mental ${w.energyMental || '-'}/5, emosi "${w.emotion || '-'}"]`);
+  }
+
+  if (ctx.financeSummary) {
+    const f = ctx.financeSummary;
+    parts.push(`[Keuangan bulan ini: pemasukan ${f.income || 0}, pengeluaran ${f.expense || 0}, sisa ${(f.income||0)-(f.expense||0)}]`);
+  }
+
+  if (ctx.lastChatSummary) {
+    parts.push(`[Obrolan terakhir dengan Nara: "${ctx.lastChatSummary}"]`);
+  }
+
+  if (ctx.recentHighlight) {
+    parts.push(`[Catatan Nara: ${ctx.recentHighlight}]`);
+  }
+
+  return parts.length ? '\n\nKONTEKS USER:\n' + parts.join('\n') : '';
+}
+
+// Simpan ringkasan obrolan terakhir (dipanggil setelah user selesai chat)
+function naraCtxSaveChat(userMsg, naraReply) {
+  // Simpan snippet singkat: maksimal 120 char dari pesan user
+  const snippet = userMsg.slice(0, 120);
+  naraCtxSet({ lastChatSummary: snippet, lastChatDate: new Date().toISOString().split('T')[0] });
+}
+
+// Auto-refresh context setiap kali ada perubahan data penting
+// Di-hook ke: selectMood, adjustWater, saveDay, addHabit, toggleHabit
+const _origSaveDay = typeof saveDay === 'function' ? saveDay : null;
+
+// Patch saveDay agar auto-refresh context
+window.addEventListener('DOMContentLoaded', function() {
+  // Refresh sekali saat load
+  naraCtxRefreshToday();
+
+  // Override saveDay
+  const origSaveFn = window.saveDay;
+  if (typeof origSaveFn === 'function') {
+    window.saveDay = function() {
+      origSaveFn.apply(this, arguments);
+      naraCtxRefreshToday();
+    };
+  }
+});
+
+// Patch selectMood agar context update real-time
+const _origSelectMood = window.selectMood;
+if (typeof _origSelectMood === 'function') {
+  window.selectMood = function(mood, emoji, label, sub) {
+    _origSelectMood.apply(this, arguments);
+    setTimeout(naraCtxRefreshToday, 100);
+  };
+}
+
+// Patch adjustWater
+const _origAdjustWater = window.adjustWater;
+if (typeof _origAdjustWater === 'function') {
+  window.adjustWater = function(delta) {
+    _origAdjustWater.apply(this, arguments);
+    setTimeout(naraCtxRefreshToday, 100);
+  };
+}
+
+</script>
+
+<script>
+// ══════════════════════════════════════════════
+// NARA WELCOME OVERLAY — sekali per hari
+// Muncul tiap buka app, isi berubah sesuai context
+// ══════════════════════════════════════════════
+
+(async function initNaraWelcome() {
+  const TODAY = new Date().toISOString().split('T')[0];
+  const WELCOME_KEY = 'inarte_welcome_shown';
+  const lastShown = localStorage.getItem(WELCOME_KEY);
+
+  // Sudah muncul hari ini? Skip.
+  if (lastShown === TODAY) return;
+
+  const profile = JSON.parse(localStorage.getItem('inarte_profile') || '{}');
+  const name = profile.name || '';
+  const goals = profile.goals || [];
+
+  const h = new Date().getHours();
+  const waktu = h < 11 ? 'pagi' : h < 15 ? 'siang' : h < 18 ? 'sore' : 'malam';
+  const waktuLabel = h < 11 ? 'Selamat pagi' : h < 15 ? 'Selamat siang' : h < 18 ? 'Selamat sore' : 'Selamat malam';
+
+  // Update timestamp di card
+  const timeEl = document.getElementById('nw-time');
+  if (timeEl) timeEl.textContent = waktuLabel;
+
+  // Tampilkan overlay dulu (dengan loading dots)
+  const overlay = document.getElementById('nara-welcome');
+  if (!overlay) return;
+
+  // Delay kecil supaya page udah render
+  await new Promise(r => setTimeout(r, 900));
+  overlay.classList.add('show');
+  localStorage.setItem(WELCOME_KEY, TODAY);
+
+  // Build context untuk Nara
+  const ctx = naraCtxGet();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const ykKey = 'inarte_day_' + yesterday.toISOString().split('T')[0];
+  const yd = JSON.parse(localStorage.getItem(ykKey) || '{}');
+
+  const isFirstEver = !localStorage.getItem('inarte_logs') && !yd.mood;
+  const ctxInjection = naraCtxBuildInjection();
+
+  // Build system prompt
+  const sys = `Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${name || 'teman'}.
+Waktu sekarang: ${waktu}.
+${isFirstEver ? 'Ini adalah pertama kali user membuka app — sapa dengan hangat dan antusias, perkenalkan diri singkat, tanya kabar dengan satu pertanyaan yang spesifik dan hangat.' : `User sudah pernah pakai app ini. Sapa dengan hangat berdasarkan konteks. Goals user: ${goals.join(', ') || 'belum diisi'}.`}
+${ctxInjection}
+PENTING: Balas HANYA JSON dengan format:
+{"message":"[pesan Nara, 2-3 kalimat hangat, bahasa Indonesia santai, boleh satu kaomoji]","quickReplies":["[opsi reply 1]","[opsi reply 2]","[opsi reply 3]"]}
+Quick replies: 3 opsi pendek (max 4 kata) yang natural sebagai respons user. Contoh: "Baik dong!", "Lumayan capek sih", "Mau cerita dulu".
+JANGAN tambahkan teks apapun di luar JSON.`;
+
+  const prompt = isFirstEver
+    ? `Sapa user baru dengan hangat. Waktu: ${waktu}.`
+    : `Sapa user yang baru buka app hari ini. Waktu: ${waktu}. Data kemarin: mood ${yd.mood || 'tidak dicatat'}, air ${yd.water || 0} gelas, tidur ${yd.sleep || 'tidak dicatat'}.`;
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gemini-2.5-flash',
+        max_tokens: 200,
+        system: sys,
+        messages: [{ role: 'user', content: prompt }]
+      }),
+      signal: AbortSignal.timeout(10000)
+    });
+
+    if (r.ok) {
+      const data = await r.json();
+      let raw = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(raw);
+
+      if (parsed.message) {
+        _renderWelcomeMsg(parsed.message, parsed.quickReplies || []);
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // Fallback jika API gagal
+  const fallbacks = [
+    { message: `Hei${name ? ' '+name : ''}! Selamat ${waktu} ya (◕ᴗ◕✿) Gimana kondisi hari ini?`, quickReplies: ['Baik-baik aja!', 'Lumayan capek sih', 'Mau cerita dulu'] },
+    { message: `${name || 'Hei'}! Nara seneng kamu buka app hari ini. Ada yang mau diceritain?`, quickReplies: ['Ada nih', 'Nggak ada, biasa aja', 'Mau langsung catat'] },
+  ];
+  const fb = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+  _renderWelcomeMsg(fb.message, fb.quickReplies);
+})();
+
+function _renderWelcomeMsg(message, quickReplies) {
+  const msgEl = document.getElementById('nw-msg');
+  const actionsEl = document.getElementById('nw-actions');
+  if (!msgEl) return;
+
+  msgEl.textContent = message;
+
+  if (actionsEl) {
+    actionsEl.innerHTML = '';
+
+    // Quick reply buttons
+    (quickReplies || []).forEach(qr => {
+      const btn = document.createElement('button');
+      btn.className = 'nw-quick';
+      btn.textContent = qr;
+      btn.onclick = () => _welcomeQuickReply(qr);
+      actionsEl.appendChild(btn);
+    });
+
+    // Dismiss button
+    const dismiss = document.createElement('button');
+    dismiss.className = 'nw-dismiss';
+    dismiss.textContent = 'Tutup';
+    dismiss.onclick = dismissWelcome;
+    actionsEl.appendChild(dismiss);
+  }
+}
+
+function _welcomeQuickReply(text) {
+  // Simpan ke context
+  naraCtxSaveChat(text, '');
+
+  // Dismiss welcome, buka Nara chat dengan pesan ini
+  dismissWelcome();
+  setTimeout(() => {
+    if (typeof toggleNaraChat === 'function') {
+      // Buka chat
+      const chat = document.getElementById('nara-chat');
+      if (chat && !chat.classList.contains('on')) toggleNaraChat();
+      // Pre-fill dan kirim pesan
+      const inp = document.getElementById('nc-inp');
+      if (inp) {
+        inp.value = text;
+        if (typeof sendNara === 'function') sendNara();
+      }
+    }
+  }, 400);
+}
+
+function dismissWelcome() {
+  const overlay = document.getElementById('nara-welcome');
+  if (!overlay) return;
+  overlay.classList.add('hiding');
+  setTimeout(() => {
+    overlay.classList.remove('show', 'hiding');
+  }, 450);
+}
+
+// Patch sendNara untuk simpan context chat
+window.addEventListener('DOMContentLoaded', function() {
+  const origSendNara = window.sendNara;
+  if (typeof origSendNara === 'function') {
+    window.sendNara = async function() {
+      const inp = document.getElementById('nc-inp');
+      const txt = inp ? inp.value.trim() : '';
+      await origSendNara.apply(this, arguments);
+      if (txt) naraCtxSaveChat(txt, '');
+    };
+  }
+});
+
+// Inject context ke sendNara system prompt
+// Override _ctxToday di sendNara agar pakai naraCtxBuildInjection
+// (Ini dilakukan dengan memperluas system prompt yang ada)
+window.addEventListener('DOMContentLoaded', function() {
+  // Patch: tambahkan context injection ke setiap call Nara chat
+  // Caranya: override fetch untuk /api/chat agar append context ke system
+  const origFetch = window.fetch;
+  window.fetch = async function(url, options, ...rest) {
+    if (typeof url === 'string' && url.includes('/api/chat') && options?.body) {
+      try {
+        const body = JSON.parse(options.body);
+        if (body.system && body.messages) {
+          const ctxStr = naraCtxBuildInjection();
+          if (ctxStr && !body.system.includes('KONTEKS USER:')) {
+            body.system = body.system + ctxStr;
+            options = { ...options, body: JSON.stringify(body) };
+          }
+        }
+      } catch(e) {}
+    }
+    return origFetch.call(this, url, options, ...rest);
+  };
+
+  // Real-time context refresh hooks
+  // selectMood
+  const _sm = window.selectMood;
+  if (typeof _sm === 'function') {
+    window.selectMood = function() { _sm.apply(this, arguments); setTimeout(naraCtxRefreshToday, 150); };
+  }
+  // adjustWater
+  const _aw = window.adjustWater;
+  if (typeof _aw === 'function') {
+    window.adjustWater = function() { _aw.apply(this, arguments); setTimeout(naraCtxRefreshToday, 150); };
+  }
+  // toggleHabit — patch global
+  const _th = window.toggleHabit;
+  if (typeof _th === 'function') {
+    window.toggleHabit = function() { _th.apply(this, arguments); setTimeout(naraCtxRefreshToday, 150); };
+  }
+  // saveDay
+  const _sd = window.saveDay;
+  if (typeof _sd === 'function') {
+    window.saveDay = function() { _sd.apply(this, arguments); setTimeout(naraCtxRefreshToday, 150); };
+  }
+});
+</script>
+
 </body>
 </html>
