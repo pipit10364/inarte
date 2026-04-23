@@ -45,7 +45,7 @@
   --nara:#E8A882;--nara-d:#C4724E;--nara-l:#F0C4A8;--nara-p:#FBF0E9;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
 /* ══ TOPBAR ══ */
 .topbar{position:sticky;top:0;z-index:100;background:rgba(244,239,232,.93);backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(226,217,204,.5);padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
@@ -445,6 +445,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 [data-theme="dark"] .bottom-sheet,[data-theme="dark"] .profile-panel,[data-theme="dark"] .nara-chat{background:var(--surface)}
 
 /* ══ DARK TOGGLE ══ */
+
+/* dark toggle in topbar */
+.topbar-dark-btn{width:30px;height:30px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.topbar-dark-btn:hover{border-color:var(--nara-l);background:var(--nara-p)}
+.topbar-dark-btn svg{width:14px;height:14px;stroke:var(--text3);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.topbar-dark-btn:hover svg{stroke:var(--nara-d)}
+
+
+/* profile accordion */
+.pp-accordion{border:1px solid var(--border-l);border-radius:var(--rsm);overflow:hidden;margin-bottom:8px}
+.pp-acc-head{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;cursor:pointer;background:var(--bg);transition:background .15s;user-select:none}
+.pp-acc-head:hover{background:var(--bg2)}
+.pp-acc-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);display:flex;align-items:center;gap:7px}
+.pp-acc-summary{font-size:11px;color:var(--text4);font-style:italic;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pp-acc-chevron{width:14px;height:14px;stroke:var(--text4);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;flex-shrink:0}
+.pp-accordion.open .pp-acc-chevron{transform:rotate(180deg)}
+.pp-acc-body{display:none;padding:10px 13px 13px;border-top:1px solid var(--border-l);background:var(--surface)}
+.pp-accordion.open .pp-acc-body{display:block}
+/* PWA install button */
+.pp-install-btn{width:100%;padding:9px 13px;background:var(--nara-p);border:1.5px solid var(--nara-l);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--nara-d);font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;margin-bottom:6px}
+.pp-install-btn:hover{background:var(--nara);color:#fff}
+.pp-install-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
 .dark-btn{width:32px;height:32px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .dark-btn:hover{border-color:var(--moss-l);background:var(--moss-p)}
 .dark-btn svg{width:15px;height:15px;stroke:var(--text3);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -598,6 +621,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="topbar-logo">IN<em>arte</em></div>
   <div class="topbar-r">
     <span class="topbar-date" id="tb-date"></span>
+    <button class="topbar-dark-btn" id="topbar-dark-btn" onclick="toggleDark()" title="Ganti tema" aria-label="Ganti mode gelap terang">
+      <svg id="topbar-dark-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
     <button class="av-btn" id="av-btn" onclick="openProfile()">P</button>
   </div>
 </div>
@@ -904,54 +930,109 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="pp-avatar-sub" id="pp-avatar-sub">Edit profilmu di sini</div>
       </div>
     </div>
-    <div class="pp-section-lbl">Identitas</div>
-    <div class="pp-field"><div class="pp-field-lbl">Nama panggilan</div><input class="pp-inp" id="pp-name" type="text" placeholder="Namamu..." maxlength="30"/></div>
-    <div class="pp-field"><div class="pp-field-lbl">Usia</div><input class="pp-inp" id="pp-age" type="number" placeholder="Umurmu..." min="7" max="99" style="width:100px"/></div>
-    <div class="pp-field"><div class="pp-field-lbl">Gender</div>
-      <div class="pp-chips" id="pp-gender-chips">
-        <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Perempuan</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Laki-laki</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Prefer tidak menyebutkan</button>
+
+    <!-- ACCORDION: Identitas -->
+    <div class="pp-accordion open" id="ppa-identitas">
+      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-identitas')">
+        <span class="pp-acc-title">👤 Identitas</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="pp-acc-summary" id="ppa-identitas-summary"></span>
+          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="pp-acc-body">
+        <div class="pp-field"><div class="pp-field-lbl">Nama panggilan</div><input class="pp-inp" id="pp-name" type="text" placeholder="Namamu..." maxlength="30"/></div>
+        <div class="pp-field"><div class="pp-field-lbl">Usia</div><input class="pp-inp" id="pp-age" type="number" placeholder="Umurmu..." min="7" max="99" style="width:100px"/></div>
+        <div class="pp-field"><div class="pp-field-lbl">Gender</div>
+          <div class="pp-chips" id="pp-gender-chips">
+            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Perempuan</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Laki-laki</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Prefer tidak menyebutkan</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="pp-section-lbl">Keseharian</div>
-    <div class="pp-field"><div class="pp-field-lbl">Aktivitas</div>
-      <div class="pp-chips" id="pp-act-chips">
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja kantoran</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja lapangan</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Mahasiswa / pelajar</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Kerja dari rumah</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Ibu rumah tangga</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'act')">Lainnya</button>
+
+    <!-- ACCORDION: Keseharian -->
+    <div class="pp-accordion" id="ppa-keseharian">
+      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-keseharian')">
+        <span class="pp-acc-title">🏠 Keseharian</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="pp-acc-summary" id="ppa-keseharian-summary"></span>
+          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="pp-acc-body">
+        <div class="pp-field"><div class="pp-field-lbl">Aktivitas</div>
+          <div class="pp-chips" id="pp-act-chips">
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja kantoran</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja lapangan</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Mahasiswa / pelajar</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Kerja dari rumah</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Ibu rumah tangga</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Lainnya</button>
+          </div>
+        </div>
+        <div class="pp-field"><div class="pp-field-lbl">Situasi rumah</div>
+          <div class="pp-chips" id="pp-home-chips">
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Sendiri</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama orang tua</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan + anak</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Ada lansia di rumah</button>
+          </div>
+        </div>
+        <div class="pp-field"><div class="pp-field-lbl">Budget makan / hari</div>
+          <div class="pp-chips" id="pp-budget-chips">
+            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di bawah Rp 50rb</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 50-100rb</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 100-200rb</button>
+            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di atas Rp 200rb</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="pp-field"><div class="pp-field-lbl">Situasi rumah</div>
-      <div class="pp-chips" id="pp-home-chips">
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Sendiri</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama orang tua</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan + anak</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'home')">Ada lansia di rumah</button>
+
+    <!-- ACCORDION: Goals -->
+    <div class="pp-accordion" id="ppa-goals">
+      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-goals')">
+        <span class="pp-acc-title">🎯 Goals</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="pp-acc-summary" id="ppa-goals-summary"></span>
+          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="pp-acc-body">
+        <div class="pp-chips" id="pp-goals-chips">
+          <button class="pp-chip" onclick="ppChipToggle(this)">Berat badan stabil</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Pola makan lebih sehat</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Energi lebih stabil</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Tidur lebih baik</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Lebih aktif bergerak</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Kesehatan mental</button>
+          <button class="pp-chip" onclick="ppChipToggle(this)">Keuangan lebih tertata</button>
+        </div>
       </div>
     </div>
-    <div class="pp-field"><div class="pp-field-lbl">Budget makan / hari</div>
-      <div class="pp-chips" id="pp-budget-chips">
-        <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di bawah Rp 50rb</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 50-100rb</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 100-200rb</button>
-        <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di atas Rp 200rb</button>
+
+    <!-- ACCORDION: Pengaturan -->
+    <div class="pp-accordion" id="ppa-settings">
+      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-settings')">
+        <span class="pp-acc-title">⚙️ Pengaturan</span>
+        <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="pp-acc-body">
+        <button class="pp-install-btn" id="pp-install-btn" onclick="triggerInstall()" style="display:none">
+          <svg viewBox="0 0 24 24"><path d="M12 2v13M8 11l4 4 4-4"/><path d="M20 17v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
+          Tambah ke layar utama
+        </button>
+        <button class="pp-install-btn" id="pp-manual-install-btn" onclick="showInstallGuide()" style="margin-bottom:0">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Cara pasang di HP / laptop
+        </button>
       </div>
     </div>
-    <div class="pp-section-lbl">Goals</div>
-    <div class="pp-chips" id="pp-goals-chips">
-      <button class="pp-chip" onclick="ppChipToggle(this)">Berat badan stabil</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Pola makan lebih sehat</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Energi lebih stabil</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Tidur lebih baik</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Lebih aktif bergerak</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Kesehatan mental</button>
-      <button class="pp-chip" onclick="ppChipToggle(this)">Keuangan lebih tertata</button>
-    </div>
+
     <button class="pp-save-btn" onclick="saveProfile()">Simpan perubahan</button>
     <button class="pp-logout-btn" onclick="logoutUser()">Keluar dari akun</button>
   </div>
@@ -1611,6 +1692,7 @@ function openProfile(){
   document.querySelectorAll('#pp-goals-chips .pp-chip').forEach(c=>c.classList.toggle('sel',goals.includes(c.textContent.trim())));
   document.getElementById('profile-overlay').classList.add('on');
   document.getElementById('profile-panel').classList.add('open');
+  setTimeout(ppUpdateSummaries, 50);
 }
 function closeProfile(){
   document.getElementById('profile-overlay').classList.remove('on');
@@ -1684,14 +1766,13 @@ function toggleDark(){
   _updateDarkUI(next === 'dark');
 }
 function _updateDarkUI(isDark){
+  const sunPath = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+  const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
   const icons = document.querySelectorAll('.dark-icon-moon, .dark-icon-sun, #dark-icon');
-  icons.forEach(el => {
-    if(el.id === 'dark-icon' || el.classList.contains('dark-icon-moon') || el.classList.contains('dark-icon-sun')){
-      el.innerHTML = isDark
-        ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
-        : '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-    }
-  });
+  icons.forEach(el => { el.innerHTML = isDark ? sunPath : moonPath; });
+  // also update topbar icon
+  const ti = document.getElementById('topbar-dark-icon');
+  if(ti) ti.innerHTML = isDark ? sunPath : moonPath;
   const dsLbl = document.getElementById('ds-dark-label');
   if(dsLbl) dsLbl.textContent = isDark ? 'Mode Terang' : 'Mode Gelap';
 }
@@ -1700,64 +1781,249 @@ window.addEventListener('DOMContentLoaded', function(){
   _updateDarkUI(isDark);
 });
 
-// ══ DAILY TIPS ══
+// ══ DAILY TIPS — HYBRID (local pool + Nara AI kontekstual) ══
+
 const DAILY_TIPS = [
-  {icon:'💧',tag:'Hidrasi',text:'Minum 1 gelas air sebelum kopi pagi bisa bantu metabolisme lebih aktif dari awal hari.'},
-  {icon:'🌅',tag:'Pagi',text:'Paparan cahaya matahari 10 menit di pagi hari membantu mengatur ritme sirkadian dan mood sepanjang hari.'},
-  {icon:'🥦',tag:'Nutrisi',text:'Makan sayur atau buah dulu sebelum makanan utama — ini membantu menstabilkan lonjakan gula darah.'},
-  {icon:'🧘',tag:'Mental',text:'Napas 4-7-8: hirup 4 detik, tahan 7 detik, hembuskan 8 detik. Coba 2 kali saat overthinking.'},
-  {icon:'🚶',tag:'Gerak',text:'Jalan kaki 10 menit setelah makan lebih efektif menurunkan gula darah daripada duduk langsung.'},
-  {icon:'😴',tag:'Tidur',text:'Suhu kamar 18–20°C adalah kondisi ideal untuk tidur nyenyak. Kipas angin bisa bantu!'},
-  {icon:'🍽️',tag:'Makan',text:'Kunyah lebih lambat — 20 menit itu waktu yang dibutuhkan otak untuk menyadari kamu sudah kenyang.'},
-  {icon:'📵',tag:'Digital',text:'Coba 30 menit tanpa HP sebelum tidur. Cahaya biru dari layar menunda produksi melatonin hingga 1,5 jam.'},
-  {icon:'🌿',tag:'Kebiasaan',text:'Mulai dari yang paling mudah dulu. Kebiasaan kecil yang konsisten jauh lebih powerful dari yang besar tapi jarang.'},
-  {icon:'💪',tag:'Energi',text:'Merasa ngantuk setelah makan siang? Coba jalan 5 menit — lebih efektif dari kafein untuk energi singkat.'},
-  {icon:'🫁',tag:'Stres',text:'Saat stres, tubuhmu butuh magnesium lebih banyak. Cokelat hitam, kacang, dan bayam bisa bantu memulihkannya.'},
-  {icon:'🫶',tag:'Diri Sendiri',text:'Progress itu tidak selalu kelihatan setiap hari — tapi itu tidak berarti tidak terjadi. Terus lanjut.'},
-  {icon:'🕐',tag:'Waktu Makan',text:'Makan malam lebih awal (sebelum jam 7) memberi tubuh waktu lebih panjang untuk proses makanan sebelum tidur.'},
-  {icon:'🧴',tag:'Kulit',text:'Dehidrasi ringan pun bisa bikin kulit tampak lebih kusam. Minum cukup air itu skincare paling murah!'},
-  {icon:'🎯',tag:'Fokus',text:'Coba teknik Pomodoro: 25 menit fokus, 5 menit istirahat. Otak butuh jeda untuk tetap tajam.'},
+  // TIDUR (15 tips)
+  {icon:'😴',tag:'Tidur',text:'Suhu kamar 18–20°C adalah kondisi ideal untuk tidur nyenyak. Kipas angin sederhana sudah cukup.'},
+  {icon:'😴',tag:'Tidur',text:'Coba 30 menit tanpa layar sebelum tidur. Cahaya biru menunda produksi melatonin hingga 1,5 jam.'},
+  {icon:'😴',tag:'Tidur',text:'Waktu tidur yang konsisten lebih penting dari durasinya. Tubuh lebih mudah pulih kalau ritmenya terjaga.'},
+  {icon:'😴',tag:'Tidur',text:'Tidur 7–9 jam bukan kemewahan — itu kebutuhan biologis. Kurang tidur kronis setara dengan mabuk ringan.'},
+  {icon:'😴',tag:'Tidur',text:'Kamar yang gelap total bantu produksi melatonin lebih optimal. Lampu tidur redup lebih baik dari yang terang.'},
+  {icon:'😴',tag:'Tidur',text:'Mandi air hangat 1–2 jam sebelum tidur bantu tubuh menurunkan suhu inti, sinyal alami untuk mengantuk.'},
+  {icon:'😴',tag:'Tidur',text:'Kalau susah tidur, jangan paksa. Bangun sebentar, lakukan sesuatu yang tenang, baru kembali ke tempat tidur.'},
+  {icon:'😴',tag:'Tidur',text:'Kafein bertahan 5–7 jam di tubuhmu. Kopi jam 3 sore masih bisa ganggu tidur jam 10 malam.'},
+  {icon:'😴',tag:'Tidur',text:'Tidur siang 20 menit (power nap) cukup untuk memulihkan fokus. Lebih dari 30 menit bisa bikin groggy.'},
+  {icon:'😴',tag:'Tidur',text:'Pikiran penuh sebelum tidur? Tulis semua yang mengganggu di kertas — otak jadi lebih mudah melepaskan.'},
+  {icon:'😴',tag:'Tidur',text:'Alkohol memang bikin mengantuk, tapi menurunkan kualitas tidur REM — kamu bangun lebih lelah.'},
+  {icon:'😴',tag:'Tidur',text:'Posisi tidur miring ke kiri bantu sistem limfatik membersihkan limbah otak lebih efisien.'},
+  {icon:'😴',tag:'Tidur',text:'Bantal yang terlalu tinggi atau terlalu rendah bisa ganggu kualitas tidur dan bikin leher pegal pagi hari.'},
+  {icon:'😴',tag:'Tidur',text:'Jadwalkan waktu tidur seperti jadwal meeting — masuk kalender, ada pengingat, tidak mudah ditunda.'},
+  {icon:'😴',tag:'Tidur',text:'Kurang tidur satu malam bisa dipulihkan. Kurang tidur seminggu penuh butuh lebih dari semalaman untuk recover.'},
+
+  // HIDRASI (10 tips)
+  {icon:'💧',tag:'Hidrasi',text:'Minum 1 gelas air sebelum kopi pagi bantu metabolisme lebih aktif sejak awal hari.'},
+  {icon:'💧',tag:'Hidrasi',text:'Rasa lapar sering ternyata rasa haus. Coba minum segelas air dulu sebelum langsung makan.'},
+  {icon:'💧',tag:'Hidrasi',text:'Urine berwarna kuning pucat = hidrasi baik. Kuning gelap = minum lebih banyak.'},
+  {icon:'💧',tag:'Hidrasi',text:'Dehidrasi ringan sudah bisa menurunkan konsentrasi hingga 10%. Simpan botol air di meja kerja.'},
+  {icon:'💧',tag:'Hidrasi',text:'Air putih adalah skincare paling murah. Dehidrasi ringan bikin kulit tampak lebih kusam dan pori lebih terlihat.'},
+  {icon:'💧',tag:'Hidrasi',text:'Tambah irisan lemon atau mint ke air putih kalau bosan — tetap lebih baik dari minuman manis.'},
+  {icon:'💧',tag:'Hidrasi',text:'Olahraga 30 menit butuh tambahan 300–500ml air. Minum sebelum, selama, dan setelah bergerak.'},
+  {icon:'💧',tag:'Hidrasi',text:'Cuaca panas dan AC justru bikin tubuh kehilangan lebih banyak cairan tanpa kita sadari.'},
+  {icon:'💧',tag:'Hidrasi',text:'Teh tanpa gula dan air kelapa termasuk minuman yang menghidrasi. Kopi masih oke asal tidak berlebihan.'},
+  {icon:'💧',tag:'Hidrasi',text:'Jadikan minum air sebagai ritual — pagi setelah bangun, sebelum makan, setelah olahraga, sebelum tidur.'},
+
+  // NUTRISI & MAKAN (15 tips)
+  {icon:'🥦',tag:'Nutrisi',text:'Makan sayur atau buah sebelum makanan utama bantu menstabilkan lonjakan gula darah setelah makan.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Kunyah lebih lambat — otak butuh 20 menit untuk menyadari kamu sudah kenyang. Makan cepat = mudah kekenyangan berlebih.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Makan malam lebih awal (sebelum jam 8) beri tubuh waktu cukup untuk proses makanan sebelum tidur.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Protein di sarapan bantu kamu kenyang lebih lama dan kurangi craving siang hari.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Makanan fermentasi (tempe, yogurt, kimchi) bantu keseimbangan bakteri usus yang pengaruhi mood dan imunitas.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Warna warni di piringmu = variasi nutrisi. Coba isi minimal 3 warna sayur/buah setiap hari.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Makan di depan layar bikin kita tidak sadar seberapa banyak yang sudah masuk. Coba makan dengan sadar, tanpa distraksi.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Serat membantu kenyang lebih lama dan jaga kesehatan usus. Ada di sayur, buah, biji-bijian, dan kacang.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Gula tersembunyi ada di saus, kecap manis, minuman kemasan, bahkan roti. Baca label sebelum beli.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Tidak ada makanan yang "haram" sepenuhnya — porsi dan frekuensi yang menentukan. Makan dengan sadar, bukan bersalah.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Saat stres, tubuh butuh magnesium lebih banyak. Cokelat hitam, kacang, dan bayam bisa bantu.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Omega-3 dari ikan, kenari, atau biji chia bantu fungsi otak dan kurangi peradangan di tubuh.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Sarapan tidak harus besar — yang penting ada protein dan karbohidrat kompleks untuk energi pagi.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Makan bersama orang lain, tanpa gadget, terbukti meningkatkan rasa puas dan koneksi sosial.'},
+  {icon:'🥦',tag:'Nutrisi',text:'Jangan terlalu lama menahan lapar — gula darah drop bisa bikin keputusan makan jadi impulsif.'},
+
+  // GERAK & OLAHRAGA (12 tips)
+  {icon:'🚶',tag:'Gerak',text:'Jalan kaki 10 menit setelah makan lebih efektif menurunkan gula darah daripada langsung duduk.'},
+  {icon:'🚶',tag:'Gerak',text:'Merasa ngantuk setelah makan siang? Jalan 5 menit lebih efektif dari kafein untuk energi singkat.'},
+  {icon:'🚶',tag:'Gerak',text:'Tidak ada waktu olahraga? 3x10 menit tersebar sepanjang hari hampir sama efektifnya dengan 30 menit sekaligus.'},
+  {icon:'🚶',tag:'Gerak',text:'Olahraga ringan (jalan, yoga, sepeda santai) justru lebih efektif mengurangi stres daripada tidak bergerak sama sekali.'},
+  {icon:'🚶',tag:'Gerak',text:'Duduk terlalu lama berbahaya meskipun kamu olahraga. Berdiri atau jalan setiap 45–60 menit penting.'},
+  {icon:'🚶',tag:'Gerak',text:'Mulai dari yang kamu suka — olahraga terbaik adalah yang kamu lakukan secara konsisten, bukan yang paling keras.'},
+  {icon:'🚶',tag:'Gerak',text:'Peregangan 5 menit setiap pagi bantu tubuh lebih siap bergerak dan kurangi risiko cedera sepanjang hari.'},
+  {icon:'🚶',tag:'Gerak',text:'Naik tangga, parkir lebih jauh, jalan ke warung — gerakan non-olahraga tetap dihitung dan terakumulasi.'},
+  {icon:'🚶',tag:'Gerak',text:'Setelah olahraga berat, tubuh butuh 48 jam untuk recovery otot. Istirahat bukan kemalasan.'},
+  {icon:'🚶',tag:'Gerak',text:'Olahraga di pagi hari bantu mood dan produktivitas sepanjang hari melalui pelepasan endorfin.'},
+  {icon:'🚶',tag:'Gerak',text:'Musik yang kamu suka terbukti secara ilmiah meningkatkan performa dan stamina saat olahraga.'},
+  {icon:'🚶',tag:'Gerak',text:'Kaki adalah jantung kedua — kontraksi otot kaki bantu pompa darah kembali ke atas. Banyak berdiri dan jalan itu sehat.'},
+
+  // MENTAL & EMOSI (15 tips)
+  {icon:'🧘',tag:'Mental',text:'Napas 4-7-8: hirup 4 detik, tahan 7, hembuskan 8. Coba 2 kali saat overthinking atau panik.'},
+  {icon:'🧘',tag:'Mental',text:'Rasa cemas tentang masa depan adalah tanda bahwa kamu peduli. Tarik napas, fokus pada satu langkah terdekat.'},
+  {icon:'🧘',tag:'Mental',text:'Menulis 3 hal yang berjalan baik hari ini — sekecil apapun — terbukti menggeser fokus otak dari ancaman ke kemungkinan.'},
+  {icon:'🧘',tag:'Mental',text:'Kamu tidak harus selalu produktif. Istirahat yang nyata (bukan scrolling) itu bagian dari performa.'},
+  {icon:'🧘',tag:'Mental',text:'Membandingkan diri sendiri di media sosial itu tidak fair — kamu membandingkan hari-harimu dengan highlight orang lain.'},
+  {icon:'🧘',tag:'Mental',text:'Self-compassion bukan berarti malas. Memperlakukan diri sendiri seperti kamu memperlakukan teman terbaik — itu kekuatan.'},
+  {icon:'🧘',tag:'Mental',text:'Batasi berita negatif bukan berarti tidak peduli. Otak butuh jeda dari input ancaman untuk tetap berfungsi baik.'},
+  {icon:'🧘',tag:'Mental',text:'Emosi yang ditekan tidak hilang — ia tersimpan. Memberi nama pada perasaan sudah cukup untuk melepas sebagian bebannya.'},
+  {icon:'🧘',tag:'Mental',text:'Tidak semua pikiran perlu dipercaya. Pikiran negatif adalah data, bukan fakta tentang siapa kamu.'},
+  {icon:'🧘',tag:'Mental',text:'Hubungan sosial yang sehat adalah salah satu prediktor terkuat kesehatan jangka panjang — lebih dari diet atau olahraga.'},
+  {icon:'🧘',tag:'Mental',text:'Minta bantuan bukan tanda kelemahan. Justru menunjukkan kamu tahu batas diri dan menghargai energimu.'},
+  {icon:'🧘',tag:'Mental',text:'Rutinitas kecil yang menenangkan (teh, buku, musik) adalah jangkar — bantu otak tahu kapan waktunya istirahat.'},
+  {icon:'🧘',tag:'Mental',text:'Perfeksionisme sering kali adalah cara otak menunda — karena dimulai berarti bisa gagal. Mulai dengan "cukup baik".'},
+  {icon:'🧘',tag:'Mental',text:'Marah itu bukan salah — yang penting adalah apa yang kamu lakukan dengan rasa marah itu. Kenali dulu, baru respons.'},
+  {icon:'🧘',tag:'Mental',text:'Kamu tidak bisa menuangkan dari cangkir yang kosong. Merawat diri sendiri bukan egois — itu prasyarat.'},
+
+  // DIGITAL & FOKUS (10 tips)
+  {icon:'📵',tag:'Digital',text:'Notifikasi yang terus-menerus melatih otak untuk tidak pernah masuk ke mode fokus dalam. Coba mode senyap 2 jam sehari.'},
+  {icon:'📵',tag:'Digital',text:'Cek HP di pagi hari sebelum melakukan hal lain menempatkan agenda orang lain di depan agenda hidupmu.'},
+  {icon:'📵',tag:'Digital',text:'Teknik Pomodoro: 25 menit fokus, 5 menit istirahat. Otak butuh jeda untuk tetap tajam sepanjang hari.'},
+  {icon:'📵',tag:'Digital',text:'Multitasking itu mitos — otak hanya berganti-ganti cepat antara tugas, dan setiap pergantian itu menguras energi.'},
+  {icon:'📵',tag:'Digital',text:'Tulis satu hal terpenting yang harus selesai hari ini sebelum membuka HP. Itu jadikan kompass harianmu.'},
+  {icon:'📵',tag:'Digital',text:'Layar terlalu dekat (kurang dari 50cm) dan terlalu lama bisa menyebabkan mata lelah dan sakit kepala.'},
+  {icon:'📵',tag:'Digital',text:'Setiap jam di depan layar, lihat objek jauh selama 20 detik — bantu kurangi ketegangan otot mata (aturan 20-20-20).'},
+  {icon:'📵',tag:'Digital',text:'Aplikasi yang paling sering kamu buka adalah yang paling banyak membentuk cara berpikirmu. Pilih dengan sadar.'},
+  {icon:'📵',tag:'Digital',text:'Scrolling tanpa tujuan memberi ilusi istirahat, tapi otak tetap aktif memproses. Istirahat sejati butuh ketenangan.'},
+  {icon:'📵',tag:'Digital',text:'Zona bebas HP di meja makan dan kamar tidur membantu membangun batas yang melindungi fokus dan kualitas tidurmu.'},
+
+  // KEBIASAAN & PERTUMBUHAN (13 tips)
+  {icon:'🌿',tag:'Kebiasaan',text:'Kebiasaan kecil yang konsisten jauh lebih powerful dari perubahan besar yang tidak tahan lama.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Hubungkan kebiasaan baru dengan yang sudah ada (habit stacking): setelah sikat gigi → minum air.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Progress tidak selalu kelihatan setiap hari. Tapi akumulasi hari-hari biasa itu yang akhirnya mengubah segalanya.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Jangan tunggu motivasi — mulai dulu, motivasi biasanya muncul setelah kamu sudah mulai bergerak.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Identitas mendahului perilaku: bukan "aku sedang belajar olahraga", tapi "aku orang yang bergerak setiap hari".'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Satu hari melewatkan kebiasaan tidak merusaknya. Dua hari berturut-turut yang mulai memutus benang.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Buat kebiasaan baru semudah mungkin dijalankan — siapkan semuanya dari malam sebelumnya.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Rayakan kemenangan kecil. Otak belajar dari reward — apresiasi diri sendiri itu bukan berlebihan.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Lingkungan membentuk kebiasaan lebih kuat dari niat. Ubah lingkungan, kebiasaan ikut berubah.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Belajar sesuatu yang baru setiap hari — sesederhana satu kata atau satu fakta — menjaga otak tetap plastis.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Tanya dirimu setiap malam: apa satu hal yang berjalan baik hari ini? Otak butuh dilatih untuk melihat progres.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Kesabaran bukan menunggu — itu terus melangkah sambil menerima bahwa hasilnya tidak selalu segera terlihat.'},
+  {icon:'🌿',tag:'Kebiasaan',text:'Kamu tidak perlu menjadi orang yang berbeda untuk memulai. Mulai dari siapa kamu sekarang, dengan apa yang kamu punya.'},
 ];
 
+// ── HYBRID TIPS SYSTEM ──
 let _tipIdx = -1;
-function buildDailyTip(){
+let _tipIsAI = false;
+
+async function buildDailyTip() {
   const el = document.getElementById('tips-card');
-  if(!el) return;
-  const saved = localStorage.getItem('inarte_tip_date');
+  if (!el) return;
+
   const today = new Date().toISOString().split('T')[0];
-  let idx = parseInt(localStorage.getItem('inarte_tip_idx') || '-1');
-  if(saved !== today || idx < 0){
-    idx = new Date().getDate() % DAILY_TIPS.length;
-    localStorage.setItem('inarte_tip_date', today);
-    localStorage.setItem('inarte_tip_idx', idx);
+  const savedDate = localStorage.getItem('inarte_tip_date');
+  const savedTip = localStorage.getItem('inarte_tip_today');
+
+  // Kalau hari ini sudah ada tip (AI atau local), pakai itu
+  if (savedDate === today && savedTip) {
+    try {
+      const parsed = JSON.parse(savedTip);
+      _tipIsAI = parsed.isAI || false;
+      _renderTipObj(parsed);
+      return;
+    } catch(e) {}
   }
-  _tipIdx = idx;
-  _renderTip(idx);
+
+  // Hari baru — render local tip dulu (instant), lalu coba generate AI
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  _tipIdx = dayOfYear % DAILY_TIPS.length;
+  _renderTipObj(DAILY_TIPS[_tipIdx]);
+
+  // Coba generate Nara tip yang kontekstual (AI)
+  _tryGenerateNaraTip(today);
 }
-function rotateTip(){
+
+async function _tryGenerateNaraTip(today) {
+  try {
+    const dd = JSON.parse(localStorage.getItem('inarte_day_' + today) || '{}');
+    const yd_key = (() => { const d = new Date(); d.setDate(d.getDate()-1); return 'inarte_day_'+d.toISOString().split('T')[0]; })();
+    const yd = JSON.parse(localStorage.getItem(yd_key) || '{}');
+    const habitLog = JSON.parse(localStorage.getItem('inarte_habitlog_' + today) || '{}');
+    const habitTemplate = JSON.parse(localStorage.getItem('inarte_habits_template') || '[]');
+    const doneHabits = habitTemplate.filter(h => habitLog[h.id]).map(h => h.name || h.text || '');
+
+    // Build context
+    const ctx = [
+      yd.sleep ? `tidur semalam ${parseFloat(yd.sleep).toFixed(1)} jam` : '',
+      yd.mood ? `mood kemarin: ${yd.mood}` : '',
+      dd.water > 0 ? `minum air hari ini: ${dd.water} gelas` : 'belum minum air hari ini',
+      dd.mood ? `mood hari ini: ${dd.mood}` : '',
+      doneHabits.length ? `habit selesai: ${doneHabits.join(', ')}` : '',
+      dd.energyFisik ? `energi fisik: ${dd.energyFisik}/5` : '',
+      dd.energyMental ? `energi mental: ${dd.energyMental}/5` : '',
+    ].filter(Boolean).join(', ');
+
+    const h = new Date().getHours();
+    const waktu = h < 11 ? 'pagi' : h < 15 ? 'siang' : h < 18 ? 'sore' : 'malam';
+    const userName = P?.name || '';
+
+    const sys = `Kamu adalah Nara, companion wellness yang hangat di INARTE.
+Buat SATU tips kesehatan harian yang personal, spesifik, dan berbasis bukti.
+Format respons harus HANYA JSON: {"icon":"emoji","tag":"Kategori","text":"Teks tips"}
+Kategori pilihan: Tidur, Hidrasi, Nutrisi, Gerak, Mental, Digital, Kebiasaan
+Teks tips: 1-2 kalimat, bahasa Indonesia santai, ada fakta atau angka spesifik, TIDAK generik.
+Jangan gunakan kata: "penting", "pastikan", "jangan lupa", "ingat untuk".
+Tips harus relevan dengan konteks user hari ini.`;
+
+    const prompt = `${userName ? 'User: '+userName+'. ' : ''}Waktu: ${waktu}. Konteks: ${ctx || 'belum ada data hari ini'}.`;
+
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gemini-2.5-flash',
+        max_tokens: 120,
+        system: sys,
+        messages: [{ role: 'user', content: prompt }]
+      }),
+      signal: AbortSignal.timeout(10000)
+    });
+
+    if (!r.ok) return;
+    const data = await r.json();
+    let raw = data.content?.[0]?.text || '';
+
+    // Strip markdown fences kalau ada
+    raw = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(raw);
+
+    if (parsed.icon && parsed.tag && parsed.text && parsed.text.length > 20) {
+      const tipObj = { ...parsed, isAI: true };
+      localStorage.setItem('inarte_tip_date', today);
+      localStorage.setItem('inarte_tip_today', JSON.stringify(tipObj));
+      _tipIsAI = true;
+      _renderTipObj(tipObj, true); // animate ke AI tip
+    }
+  } catch(e) {
+    // Gagal generate AI — simpan local tip supaya tidak re-call besok juga
+    const today2 = new Date().toISOString().split('T')[0];
+    if (!localStorage.getItem('inarte_tip_today')) {
+      const fallback = { ...DAILY_TIPS[_tipIdx], isAI: false };
+      localStorage.setItem('inarte_tip_date', today2);
+      localStorage.setItem('inarte_tip_today', JSON.stringify(fallback));
+    }
+  }
+}
+
+function rotateTip() {
+  // Manual refresh: generate AI tip baru hari ini (hapus cache)
+  localStorage.removeItem('inarte_tip_today');
+  _tipIsAI = false;
+  // Langsung ke local tip berikutnya sambil tunggu AI
   _tipIdx = (_tipIdx + 1) % DAILY_TIPS.length;
-  localStorage.setItem('inarte_tip_idx', _tipIdx);
-  _renderTip(_tipIdx, true);
+  _renderTipObj(DAILY_TIPS[_tipIdx], true);
+  _tryGenerateNaraTip(new Date().toISOString().split('T')[0]);
 }
-function _renderTip(idx, animate){
-  const tip = DAILY_TIPS[idx];
+
+function _renderTipObj(tip, animate) {
   const textEl = document.getElementById('tips-text');
   const iconEl = document.getElementById('tips-icon');
   const tagEl = document.getElementById('tips-tag');
-  if(!textEl) return;
-  if(animate){ textEl.style.opacity='0'; textEl.style.transform='translateY(4px)'; }
-  setTimeout(()=>{
-    if(iconEl) iconEl.textContent = tip.icon;
+  const nextEl = document.getElementById('tips-next');
+  if (!textEl) return;
+  if (animate) { textEl.style.opacity = '0'; textEl.style.transform = 'translateY(4px)'; }
+  setTimeout(() => {
+    if (iconEl) iconEl.textContent = tip.icon || '💡';
     textEl.textContent = tip.text;
-    if(tagEl) tagEl.textContent = '#' + tip.tag;
-    if(animate){
-      textEl.style.transition='opacity .25s,transform .25s';
-      textEl.style.opacity='1';
-      textEl.style.transform='translateY(0)';
-      setTimeout(()=>textEl.style.transition='',300);
+    if (tagEl) tagEl.textContent = '#' + (tip.tag || 'Tips');
+    // Label refresh: kalau AI, tunjukkan "diperbarui Nara"
+    if (nextEl) nextEl.textContent = _tipIsAI ? '↺ tips lain' : 'tips lain ›';
+    if (animate) {
+      textEl.style.transition = 'opacity .3s,transform .3s';
+      textEl.style.opacity = '1';
+      textEl.style.transform = 'translateY(0)';
+      setTimeout(() => textEl.style.transition = '', 350);
     }
   }, animate ? 80 : 0);
 }
+
 
 </script>
 
