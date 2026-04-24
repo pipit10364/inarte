@@ -309,6 +309,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 [data-theme="dark"] .bnav{background:rgba(26,24,20,.97);border-top-color:rgba(58,52,44,.5)}
 [data-theme="dark"] .bottom-sheet,[data-theme="dark"] .profile-panel,[data-theme="dark"] .nara-chat{background:var(--surface)}
 
+/* ══ NARA WELCOME OVERLAY ══ */
+.nara-welcome-overlay{position:fixed;inset:0;z-index:1500;display:flex;align-items:flex-end;justify-content:center;padding:0 0 env(safe-area-inset-bottom);pointer-events:none;opacity:0;transition:opacity .35s ease}
+.nara-welcome-overlay.show{opacity:1;pointer-events:auto}
+.nara-welcome-overlay.hiding{opacity:0;transition:opacity .4s ease}
+.nara-welcome-bg{position:absolute;inset:0;background:rgba(28,24,16,.32);backdrop-filter:blur(4px)}
+.nara-welcome-card{position:relative;width:100%;max-width:480px;background:var(--surface);border-radius:28px 28px 0 0;padding:1.5rem 1.375rem 2rem;box-shadow:0 -12px 48px rgba(28,24,16,.15);transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1)}
+.nara-welcome-overlay.show .nara-welcome-card{transform:translateY(0)}
+.nara-welcome-overlay.hiding .nara-welcome-card{transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,1,1)}
+@media(min-width:640px){.nara-welcome-card{border-radius:28px;margin-bottom:2rem;max-width:420px}}
+.nw-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.25rem}
+.nw-head{display:flex;align-items:center;gap:10px;margin-bottom:.875rem}
+.nw-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--nara),var(--nara-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(196,114,78,.3)}
+.nw-name{font-size:12px;font-weight:700;color:var(--nara-d);letter-spacing:.04em}
+.nw-time{font-size:11px;color:var(--text4);margin-left:auto}
+.nw-msg{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:1.125rem;min-height:48px}
+.nw-msg .nw-dots{display:flex;gap:5px;align-items:center;padding:4px 0}
+.nw-msg .nw-dot{width:7px;height:7px;border-radius:50%;background:var(--nara-l);animation:bounceDot 1.2s infinite}
+.nw-msg .nw-dot:nth-child(2){animation-delay:.2s}
+.nw-msg .nw-dot:nth-child(3){animation-delay:.4s}
+.nw-actions{display:flex;gap:8px;flex-wrap:wrap}
+.nw-quick{padding:8px 14px;border-radius:20px;border:1.5px solid var(--nara-l);background:var(--nara-p);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--nara-d);cursor:pointer;transition:all .15s;white-space:nowrap}
+.nw-quick:hover{background:var(--nara);color:#fff;border-color:var(--nara)}
+.nw-dismiss{margin-left:auto;padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text4);cursor:pointer;transition:all .15s}
+.nw-dismiss:hover{border-color:var(--text3);color:var(--text2)}
+[data-theme="dark"] .nara-welcome-bg{background:rgba(0,0,0,.5)}
+[data-theme="dark"] .nara-welcome-card{background:var(--surface)}
+
 /* ══ DARK TOGGLE ══ */
 
 /* dark toggle in topbar */
@@ -339,13 +366,61 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* ══ DESKTOP LAYOUT ══ */
 @media(min-width:1024px){
-  body{display:grid;grid-template-columns:240px 1fr;grid-template-rows:auto 1fr;min-height:100vh}
+  body{display:grid;grid-template-columns:var(--sidebar-w,240px) 1fr;grid-template-rows:auto 1fr;min-height:100vh;transition:grid-template-columns .25s cubic-bezier(.4,0,.2,1)}
   .topbar{grid-column:1/-1}
   .bnav{display:none}
-  .desktop-sidebar{display:flex!important;flex-direction:column;border-right:1px solid var(--border-l);padding:1.25rem 1rem;background:var(--surface);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
-  .today-scroll,.page-scroll{padding:1.75rem 2rem 2.5rem;max-width:800px}
+  .desktop-sidebar{display:flex!important;flex-direction:column;border-right:1px solid var(--border-l);padding:1.25rem 1rem;background:var(--surface);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;overflow-x:hidden;transition:padding .25s}
+
+  /* ── Progress: 2-column reflow ── */
+  .p-scroll{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:start;
+    column-gap:14px;
+    row-gap:12px;
+    padding:1.75rem 1.75rem 2.5rem;
+    max-width:none;
+    width:100%;
+    box-sizing:border-box;
+  }
+  .p-scroll > .section-divider{display:none}
+
+  /* Left col: header + streak + calendar + nara insight — sticky */
+  .page-header   {grid-column:1;grid-row:1}
+  .pg-left-col   {grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:12px;position:sticky;top:1.75rem;align-self:start}
+
+  /* Right col: all expand sections + diary btn */
+  .pg-right-col  {grid-column:2;grid-row:1/3;display:flex;flex-direction:column;gap:12px}
+
+  /* Right col: expand sections always open on desktop */
+  .pg-right-col .expand-toggle{display:none}
+  .pg-right-col .expand-body{display:block!important;padding-top:0;max-height:none}
+  .pg-right-col .expand-section{border-radius:var(--r);border:1px solid var(--border-l);background:var(--surface);padding:.875rem;overflow:visible}
+
+  /* Sidebar collapse */
+  body.sidebar-collapsed{--sidebar-w:64px}
+  body.sidebar-collapsed .desktop-sidebar{padding:.875rem .625rem;align-items:center}
+  body.sidebar-collapsed .ds-logo{display:none}
+  body.sidebar-collapsed .ds-nav-btn{justify-content:center;padding:10px;width:40px;height:40px;border-radius:50%}
+  body.sidebar-collapsed .ds-nav-lbl{display:none}
+  body.sidebar-collapsed .ds-nav-btn svg{width:18px;height:18px;opacity:1}
+  body.sidebar-collapsed .ds-streak-box{padding:.625rem .25rem}
+  body.sidebar-collapsed .ds-streak-num{font-size:1.4rem}
+  body.sidebar-collapsed .ds-streak-lbl{display:none}
+  body.sidebar-collapsed .ds-streak-badge{font-size:1.2rem}
+  body.sidebar-collapsed .ds-dark-btn{padding:8px;width:40px;height:40px;border-radius:50%;justify-content:center}
+  body.sidebar-collapsed .ds-dark-btn span{display:none}
+  body.sidebar-collapsed .ds-toggle{justify-content:center}
+  body.sidebar-collapsed .ds-toggle svg{transform:rotate(180deg)}
+  body.sidebar-collapsed .ds-nav-btn{position:relative}
+  body.sidebar-collapsed .ds-nav-btn::after{content:attr(data-label);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:var(--text);color:var(--surface);font-size:11px;font-weight:600;padding:4px 9px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:500}
+  body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
+
   .nara-float{bottom:24px;right:24px}
   .nara-chat{bottom:90px;right:24px;width:360px}
+}
+@media(min-width:1440px){
+  .p-scroll{padding:2rem 2.5rem 3rem;column-gap:18px}
 }
 @media(max-width:1023px){
   .desktop-sidebar{display:none!important}
@@ -369,6 +444,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ds-dark-btn{width:100%;padding:8px 12px;border-radius:var(--rsm);background:transparent;border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
 .ds-dark-btn:hover{border-color:var(--moss-l);color:var(--moss)}
 .ds-dark-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round}
+.ds-toggle{width:100%;padding:7px 10px;border-radius:var(--rsm);background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-end;color:var(--text4);transition:color .15s;margin-bottom:4px}
+.ds-toggle:hover{color:var(--moss)}
+.ds-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+.ds-nav-lbl{white-space:nowrap;overflow:hidden}
 
 /* ══ TIPS HARIAN ══ */
 .tips-card{background:linear-gradient(135deg,var(--moss-p),var(--bg));border:1px solid var(--moss-l);border-radius:var(--r);padding:.875rem 1.125rem;position:relative;overflow:hidden;cursor:pointer}
@@ -416,19 +495,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <!-- DESKTOP SIDEBAR -->
 <aside class="desktop-sidebar" id="desktop-sidebar">
   <div class="ds-logo">IN<em>arte</em></div>
+  <button class="ds-toggle" onclick="toggleSidebar()" title="Perkecil sidebar">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
   <ul class="ds-nav">
-    <li><button class="ds-nav-btn" id="ds-today" onclick="navTo('today')">
+    <li><button class="ds-nav-btn" id="ds-today" onclick="navTo('today')" data-label="Hari Ini">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      Hari Ini</button></li>
-    <li><button class="ds-nav-btn" id="ds-wellness" onclick="navTo('wellness')">
+      <span class="ds-nav-lbl">Hari Ini</span></button></li>
+    <li><button class="ds-nav-btn" id="ds-wellness" onclick="navTo('wellness')" data-label="Wellness">
       <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-      Wellness</button></li>
-    <li><button class="ds-nav-btn" id="ds-finance" onclick="navTo('finance')">
+      <span class="ds-nav-lbl">Wellness</span></button></li>
+    <li><button class="ds-nav-btn" id="ds-finance" onclick="navTo('finance')" data-label="Keuangan">
       <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-      Keuangan</button></li>
-    <li><button class="ds-nav-btn" id="ds-progress" onclick="navTo('progress')">
+      <span class="ds-nav-lbl">Keuangan</span></button></li>
+    <li><button class="ds-nav-btn" id="ds-progress" onclick="navTo('progress')" data-label="Progres">
       <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Progres</button></li>
+      <span class="ds-nav-lbl">Progres</span></button></li>
   </ul>
   <div class="ds-bottom">
     <div class="ds-streak-box">
@@ -450,6 +532,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="page-sub">Setiap hari yang kamu isi adalah bukti kamu peduli pada dirimu sendiri.</div>
   </div>
 
+  <!-- LEFT COL: streak + calendar + nara insight -->
+  <div class="pg-left-col">
   <!-- STREAK CARD -->
   <div class="streak-card">
     <div>
@@ -527,6 +611,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
+  </div><!-- end pg-left-col -->
+
+  <!-- RIGHT COL: habit, mood, sleep, water, finance, diary -->
+  <div class="pg-right-col">
   <!-- HABIT CONSISTENCY -->
   <div class="expand-section" id="ex-habit">
     <button class="expand-toggle" onclick="toggleExpand('habit')">
@@ -618,6 +706,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     Lihat catatan harian
   </button>
 
+  </div><!-- end pg-right-col -->
+
 </div>
 
 <!-- DIARY FULLSCREEN -->
@@ -628,6 +718,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="diary-fs-body" id="diary-fs-body">
     <!-- built by JS -->
+  </div>
+</div>
+
+<!-- NARA WELCOME OVERLAY -->
+<div class="nara-welcome-overlay" id="nara-welcome" aria-live="polite">
+  <div class="nara-welcome-bg" onclick="dismissWelcome()"></div>
+  <div class="nara-welcome-card">
+    <div class="nw-handle"></div>
+    <div class="nw-head">
+      <div class="nw-av">N</div>
+      <span class="nw-name">NARA</span>
+      <span class="nw-time" id="nw-time"></span>
+    </div>
+    <div class="nw-msg" id="nw-msg">
+      <div class="nw-dots"><div class="nw-dot"></div><div class="nw-dot"></div><div class="nw-dot"></div></div>
+    </div>
+    <div class="nw-actions" id="nw-actions"></div>
   </div>
 </div>
 
@@ -777,15 +884,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <svg class="bnav-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
     <span class="bnav-lbl">Hari Ini</span>
   </button>
-  <button class="bnav-btn" id="nav-wellness" onclick="navTo('wellness')">
+  <button class="bnav-btn" id="nav-wellness" onclick="navTo('wellness')" data-label="Wellness">
     <svg class="bnav-svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
     <span class="bnav-lbl">Wellness</span>
   </button>
-  <button class="bnav-btn" id="nav-finance" onclick="navTo('finance')">
+  <button class="bnav-btn" id="nav-finance" onclick="navTo('finance')" data-label="Keuangan">
     <svg class="bnav-svg" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
     <span class="bnav-lbl">Keuangan</span>
   </button>
-  <button class="bnav-btn" id="nav-progress" onclick="navTo('progress')">
+  <button class="bnav-btn" id="nav-progress" onclick="navTo('progress')" data-label="Progres">
     <svg class="bnav-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     <span class="bnav-lbl">Progres</span>
   </button>
@@ -1321,8 +1428,14 @@ function toggleNaraChat(){
     if(badge)badge.classList.remove('on');
     document.getElementById('nc-inp').focus();
     if(!_chatInited){
-      _addNaraMsg('Hei '+(_P.name||'kamu')+'! Aku Nara (◕ᴗ◕✿)');
-      setTimeout(()=>_addNaraMsg('Mau ngobrol soal apa aja ya — makan, olahraga, curhat, atau tanya apapun!'),400);
+      const _todayKey=new Date().toISOString().split('T')[0];
+      const _welcomeShown=localStorage.getItem('inarte_welcome_shown')===_todayKey;
+      if(_welcomeShown){
+        _addNaraMsg('Nara di sini'+(_P.name?' buat '+_P.name:'')+' (◕ᴗ◕✿) Mau ngobrolin progresmu?');
+      } else {
+        _addNaraMsg('Hei '+(_P.name||'kamu')+'! Aku Nara (◕ᴗ◕✿)');
+        setTimeout(()=>_addNaraMsg('Mau ngobrolin perjalananmu, atau ada yang mau diceritain?'),400);
+      }
       _chatInited=true;
     }
   }
@@ -1604,5 +1717,203 @@ function updateDesktopStreakWidget(streak){
 }
 
 </script>
+
+<script>
+// ══════════════════════════════════════════════
+// INARTE NARA CONTEXT SYSTEM — progress.html
+// ══════════════════════════════════════════════
+
+const NARA_CTX_KEY = 'inarte_nara_context';
+
+function naraCtxGet() {
+  try { return JSON.parse(localStorage.getItem(NARA_CTX_KEY) || '{}'); }
+  catch { return {}; }
+}
+function naraCtxSet(patch) {
+  const current = naraCtxGet();
+  const updated = { ...current, ...patch, updatedAt: new Date().toISOString() };
+  localStorage.setItem(NARA_CTX_KEY, JSON.stringify(updated));
+}
+
+function naraCtxBuildInjection() {
+  const ctx = naraCtxGet();
+  const parts = [];
+  if (ctx.todaySummary) {
+    const t = ctx.todaySummary;
+    parts.push(`[Hari Ini: air ${t.water}/8 gelas, mood "${t.mood||'belum'}", ${t.habitDone||0}/${t.habitTotal||0} habit selesai]`);
+  }
+  if (ctx.wellnessSummary) {
+    const w = ctx.wellnessSummary;
+    parts.push(`[Wellness: tidur ${w.sleep||'-'} jam, energi fisik ${w.energyFisik||'-'}/5 mental ${w.energyMental||'-'}/5, emosi "${w.emotions||'-'}"]`);
+  }
+  if (ctx.financeSummary) {
+    const f = ctx.financeSummary;
+    const sisa = (f.income||0) - (f.expense||0);
+    parts.push(`[Keuangan: pemasukan ${(f.income||0).toLocaleString('id')}, pengeluaran ${(f.expense||0).toLocaleString('id')}, ${sisa>=0?'surplus':'defisit'} ${Math.abs(sisa).toLocaleString('id')}]`);
+  }
+  if (ctx.lastChatSummary) {
+    parts.push(`[Obrolan terakhir: "${ctx.lastChatSummary}"]`);
+  }
+  return parts.length ? '\n\nKONTEKS USER:\n' + parts.join('\n') : '';
+}
+
+function naraCtxSaveChat(userMsg) {
+  naraCtxSet({ lastChatSummary: userMsg.slice(0, 120), lastChatDate: new Date().toISOString().split('T')[0] });
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  // Inject context ke semua /api/chat calls
+  const origFetch = window.fetch;
+  window.fetch = async function(url, options, ...rest) {
+    if (typeof url === 'string' && url.includes('/api/chat') && options?.body) {
+      try {
+        const body = JSON.parse(options.body);
+        if (body.system && body.messages) {
+          const ctxStr = naraCtxBuildInjection();
+          if (ctxStr && !body.system.includes('KONTEKS USER:')) {
+            body.system = body.system + ctxStr;
+            options = { ...options, body: JSON.stringify(body) };
+          }
+        }
+      } catch(e) {}
+    }
+    return origFetch.call(this, url, options, ...rest);
+  };
+
+  // Patch sendNara
+  const _sn = window.sendNara;
+  if (typeof _sn === 'function') {
+    window.sendNara = async function() {
+      const inp = document.getElementById('nc-inp');
+      const txt = inp ? inp.value.trim() : '';
+      await _sn.apply(this, arguments);
+      if (txt) naraCtxSaveChat(txt);
+    };
+  }
+});
+</script>
+
+<script>
+// ══════════════════════════════════════════════
+// NARA WELCOME OVERLAY — progress.html
+// Tone: reflektif, apresiasi perjalanan user
+// ══════════════════════════════════════════════
+
+(async function initNaraWelcome() {
+  const TODAY = new Date().toISOString().split('T')[0];
+  const WELCOME_KEY = 'inarte_welcome_shown';
+  if (localStorage.getItem(WELCOME_KEY) === TODAY) return;
+
+  const profile = JSON.parse(localStorage.getItem('inarte_profile') || '{}');
+  const name = profile.name || '';
+  const h = new Date().getHours();
+  const waktu = h < 11 ? 'pagi' : h < 15 ? 'siang' : h < 18 ? 'sore' : 'malam';
+  const waktuLabel = h < 11 ? 'Selamat pagi' : h < 15 ? 'Selamat siang' : h < 18 ? 'Selamat sore' : 'Selamat malam';
+
+  const timeEl = document.getElementById('nw-time');
+  if (timeEl) timeEl.textContent = waktuLabel;
+
+  const overlay = document.getElementById('nara-welcome');
+  if (!overlay) return;
+
+  await new Promise(r => setTimeout(r, 900));
+  overlay.classList.add('show');
+  localStorage.setItem(WELCOME_KEY, TODAY);
+
+  // Hitung streak dari logs untuk konteks sapaan
+  const logs = JSON.parse(localStorage.getItem('inarte_logs') || '{}');
+  const totalDays = Object.keys(logs).length;
+  let streak = 0;
+  const d = new Date();
+  while (streak < 400) {
+    const k = 'inarte_day_' + d.toISOString().split('T')[0];
+    const day = JSON.parse(localStorage.getItem(k) || 'null');
+    const ok = day && (day.water > 0 || day.mood || (day.meals && day.meals.length) || (day.habits && day.habits.length));
+    if (ok) { streak++; d.setDate(d.getDate() - 1); } else break;
+  }
+
+  const ctxInjection = naraCtxBuildInjection();
+
+  const sys = `Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${name || 'teman'}.
+User sedang membuka halaman Progres — tempat melihat perjalanan dan pencapaian mereka.
+Waktu: ${waktu}. Streak saat ini: ${streak} hari. Total hari tercatat: ${totalDays}.
+Tone sapaan: apresiasi perjalanan, hangat, tidak berlebihan. Fokus pada usaha, bukan angka.
+${streak === 0 ? 'Belum ada streak — ajak mulai dengan ringan dan tanpa tekanan.' : streak >= 7 ? `Streak ${streak} hari itu pencapaian nyata — apresiasi dengan tulus.` : `Streak ${streak} hari — acknowledge usaha kecil yang konsisten.`}
+${ctxInjection}
+PENTING: Balas HANYA JSON:
+{"message":"[2-3 kalimat hangat tentang progres/perjalanan, bahasa Indonesia santai]","quickReplies":["[opsi 1]","[opsi 2]","[opsi 3]"]}
+Quick replies yang pas: lihat pola, ngobrol soal progres, atau cerita ke Nara.
+JANGAN tambahkan teks apapun di luar JSON.`;
+
+  const prompt = `User membuka halaman progres. Streak: ${streak} hari, total ${totalDays} hari tercatat. Waktu: ${waktu}.`;
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gemini-2.5-flash',
+        max_tokens: 180,
+        system: sys,
+        messages: [{ role: 'user', content: prompt }]
+      }),
+      signal: AbortSignal.timeout(10000)
+    });
+    if (r.ok) {
+      const data = await r.json();
+      let raw = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(raw);
+      if (parsed.message) { _renderWelcomeMsg(parsed.message, parsed.quickReplies || []); return; }
+    }
+  } catch(e) {}
+
+  // Fallback
+  const fallbacks = streak === 0
+    ? [{ message: `Hei${name?' '+name:''}! Setiap perjalanan dimulai dari hari pertama (◕ᴗ◕✿) Yuk mulai catat harianmu.`, quickReplies: ['Oke, mulai sekarang!', 'Tanya dulu', 'Lihat-lihat dulu'] }]
+    : [{ message: `${name||'Hei'}! ${streak} hari beruntun — itu bukan hal kecil. Nara bangga lihat kamu konsisten (◕ᴗ◕✿)`, quickReplies: ['Makasih Nara!', 'Mau lihat pola', 'Mau cerita'] }];
+  _renderWelcomeMsg(fallbacks[0].message, fallbacks[0].quickReplies);
+})();
+
+function _renderWelcomeMsg(message, quickReplies) {
+  const msgEl = document.getElementById('nw-msg');
+  const actionsEl = document.getElementById('nw-actions');
+  if (!msgEl) return;
+  msgEl.textContent = message;
+  if (actionsEl) {
+    actionsEl.innerHTML = '';
+    (quickReplies || []).forEach(qr => {
+      const btn = document.createElement('button');
+      btn.className = 'nw-quick';
+      btn.textContent = qr;
+      btn.onclick = () => _welcomeQuickReply(qr);
+      actionsEl.appendChild(btn);
+    });
+    const dismiss = document.createElement('button');
+    dismiss.className = 'nw-dismiss';
+    dismiss.textContent = 'Tutup';
+    dismiss.onclick = dismissWelcome;
+    actionsEl.appendChild(dismiss);
+  }
+}
+
+function _welcomeQuickReply(text) {
+  naraCtxSaveChat(text);
+  dismissWelcome();
+  setTimeout(() => {
+    const chat = document.getElementById('nara-chat');
+    if (chat && !chat.classList.contains('on') && typeof toggleNaraChat === 'function') toggleNaraChat();
+    const inp = document.getElementById('nc-inp');
+    if (inp) { inp.value = text; if (typeof sendNara === 'function') sendNara(); }
+  }, 400);
+}
+
+function dismissWelcome() {
+  const overlay = document.getElementById('nara-welcome');
+  if (!overlay) return;
+  overlay.classList.add('hiding');
+  setTimeout(() => overlay.classList.remove('show', 'hiding'), 450);
+}
+</script>
+
 </body>
 </html>
