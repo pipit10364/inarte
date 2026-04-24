@@ -390,8 +390,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .diagram-card   {grid-column:1;grid-row:4}
   .fin-left-tx    {grid-column:1;grid-row:5}
 
-  /* Right col: form always open, fixed expenses */
-  .fin-right-col  {grid-column:2;grid-row:1/6;display:flex;flex-direction:column;gap:12px;position:sticky;top:1.75rem;align-self:start}
+  /* Right col: sticky, spans all rows */
+  .fin-right-col  {grid-column:2;grid-row:1/6;display:flex;flex-direction:column;gap:12px;position:sticky;top:1.75rem;align-self:start;max-height:calc(100vh - 90px);overflow-y:auto}
 
   /* On desktop: form always visible — no accordion toggle */
   .fin-right-col .expand-toggle{display:none}
@@ -577,6 +577,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div id="diagram-bars"><div class="diagram-empty">Belum ada pengeluaran.</div></div>
   </div>
 
+  <!-- TRANSAKSI LIST — left col on desktop -->
+  <div class="fin-left-tx expand-section" id="ex-tx">
+    <button class="expand-toggle" onclick="toggleExpand('tx')">
+      <div class="expand-toggle-left">
+        <svg class="si" style="color:var(--moss)" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="expand-title">Transaksi bulan ini</span>
+        <span class="expand-preview" id="tx-preview">0 transaksi</span>
+      </div>
+      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="expand-body"><div id="tx-wrap"><div class="list-empty">Belum ada transaksi.</div></div></div>
+  </div>
+
   <!-- RIGHT COL: form + pengeluaran tetap -->
   <div class="fin-right-col">
   <div class="fin-right-header">
@@ -619,19 +632,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <button class="submit-btn" onclick="submitTx()">Simpan</button>
       </div>
     </div>
-  </div>
-
-  <!-- TRANSAKSI LIST (left col on desktop) -->
-  <div class="fin-left-tx expand-section" id="ex-tx">
-    <button class="expand-toggle" onclick="toggleExpand('tx')">
-      <div class="expand-toggle-left">
-        <svg class="si" style="color:var(--moss)" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="expand-title">Transaksi bulan ini</span>
-        <span class="expand-preview" id="tx-preview">0 transaksi</span>
-      </div>
-      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="expand-body"><div id="tx-wrap"><div class="list-empty">Belum ada transaksi.</div></div></div>
   </div>
 
   <!-- PENGELUARAN TETAP EXPAND -->
