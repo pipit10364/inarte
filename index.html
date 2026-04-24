@@ -365,19 +365,22 @@ async function handleLogin(user,nameOverride=null){
   const localProfile=ld('inarte_profile');
 
   if(profile?.name){
+    // Profil lengkap dari Supabase
     sv('inarte_profile',{name:profile.name,age:profile.age||'',act:profile.act||'',home:profile.home||'',budget:profile.budget||'',goals:profile.goals||[],avatarColor:profile.avatar_color||'#3D6147'});
     goToApp();
   } else if(localProfile?.name){
+    // Ada profil lokal
     goToApp();
   } else {
-    const authName=nameOverride||user.user_metadata?.full_name||user.user_metadata?.name||'';
-    if(authName){
-      sv('inarte_profile',{name:authName,avatarColor:'#3D6147'});
-      try{await SB.from('profiles').upsert({id:user.id,name:authName,avatar_color:'#3D6147'});}catch(e){}
-      goToApp();
-    } else {
-      showOnboarding();
-    }
+    // Tidak ada profil — pakai fallback supaya user pasti bisa masuk
+    const authName = nameOverride
+      || user.user_metadata?.full_name
+      || user.user_metadata?.name
+      || (user.email ? user.email.split('@')[0] : '')
+      || 'Kamu';
+    sv('inarte_profile',{name:authName,avatarColor:'#3D6147'});
+    try{await SB.from('profiles').upsert({id:user.id,name:authName,avatar_color:'#3D6147'});}catch(e){}
+    goToApp();
   }
 }
 
