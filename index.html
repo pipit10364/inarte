@@ -253,16 +253,18 @@ window.addEventListener('DOMContentLoaded',async()=>{
   // Hide splash after 800ms
   setTimeout(()=>document.getElementById('splash').classList.add('hidden'),800);
 
+  // Init Supabase FIRST — always needed, even after logout
+  try{SB=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);}catch(e){SB=null;}
+
   // Handle logout
   if(sessionStorage.getItem('inarte_logout')){
     sessionStorage.removeItem('inarte_logout');
     localStorage.clear();
+    // Sign out from Supabase too so session cookie ikut bersih
+    if(SB){try{await SB.auth.signOut();}catch(e){}}
     setTimeout(()=>showAuth(),900);
     return;
   }
-
-  // Init Supabase
-  try{SB=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);}catch(e){SB=null;}
 
   // Check if already has profile → go to app
   const profile=ld('inarte_profile');
