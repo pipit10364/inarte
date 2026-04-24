@@ -369,7 +369,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .desktop-sidebar{display:flex!important;flex-direction:column;border-right:1px solid var(--border-l);padding:1.25rem 1rem;background:var(--surface);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;overflow-x:hidden;transition:padding .25s}
 
   /* ── Finance: 60/40 layout ── */
-  .page-scroll{
+  .f-scroll{
     display:grid;
     grid-template-columns:3fr 2fr;
     grid-template-rows:auto;
@@ -381,7 +381,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     width:100%;
     box-sizing:border-box;
   }
-  .page-scroll > .section-divider{display:none}
+  .f-scroll > .section-divider{display:none}
 
   /* Left col: header, month nav, summary, diagram, tx list */
   .page-header    {grid-column:1;grid-row:1}
@@ -429,7 +429,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .nara-chat{bottom:90px;right:24px;width:360px}
 }
 @media(min-width:1440px){
-  .page-scroll{padding:2rem 2.5rem 3rem;column-gap:20px}
+  .f-scroll{padding:2rem 2.5rem 3rem;column-gap:20px}
 }
 @media(max-width:1023px){
   .desktop-sidebar{display:none!important}
