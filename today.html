@@ -422,6 +422,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .pp-save-btn:hover{background:var(--moss-d)}
 .pp-logout-btn{width:100%;padding:10px;background:transparent;color:var(--text3);border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;margin-top:.625rem}
 .pp-logout-btn:hover{border-color:var(--rose-l);color:var(--rose)}
+/* Feedback */
+.pp-feedback-btn{width:100%;padding:10px;background:transparent;color:var(--text3);border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:6px}
+.pp-feedback-btn:hover{border-color:var(--amber);color:var(--amber)}
+.pp-feedback-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pp-feedback-wrap{display:none;margin-top:.875rem;padding:.875rem;background:var(--bg);border-radius:var(--rsm);border:1px solid var(--border-l)}
+.pp-feedback-wrap.open{display:block}
+.pp-feedback-lbl{font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:500}
+.pp-feedback-area{width:100%;min-height:80px;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--surface);outline:none;resize:vertical;transition:border-color .2s;line-height:1.6}
+.pp-feedback-area:focus{border-color:var(--amber)}
+.pp-feedback-send{width:100%;margin-top:8px;padding:9px;background:var(--amber);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.pp-feedback-send:hover{opacity:.88}
+.pp-feedback-send:disabled{opacity:.5;cursor:not-allowed}
 
 
 /* ══ DARK MODE ══ */
@@ -1222,6 +1234,17 @@ body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
 
     <button class="pp-save-btn" onclick="saveProfile()">Simpan perubahan</button>
     <button class="pp-logout-btn" onclick="logoutUser()">Keluar / ganti akun</button>
+
+    <!-- FEEDBACK -->
+    <button class="pp-feedback-btn" onclick="ppToggleFeedback()">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Kasih feedback ke developer
+    </button>
+    <div class="pp-feedback-wrap" id="pp-feedback-wrap">
+      <div class="pp-feedback-lbl">Ada saran, bug, atau apapun yang mau kamu sampaikan?</div>
+      <textarea class="pp-feedback-area" id="pp-feedback-txt" placeholder="Tulis di sini... semua masukan sangat berarti (◕ᴗ◕✿)" maxlength="1000"></textarea>
+      <button class="pp-feedback-send" id="pp-feedback-send" onclick="sendFeedback()">Kirim →</button>
+    </div>
   </div>
 </div>
 
@@ -2019,6 +2042,58 @@ function saveProfile(){
   if(typeof showToast==='function')showToast('Profil tersimpan (◕ᴗ◕✿)');
   else alert('Profil tersimpan!');
 }
+// ══ FEEDBACK ══
+function ppToggleFeedback(){
+  const wrap = document.getElementById('pp-feedback-wrap');
+  if(!wrap) return;
+  wrap.classList.toggle('open');
+  if(wrap.classList.contains('open')){
+    setTimeout(()=>document.getElementById('pp-feedback-txt').focus(), 100);
+  }
+}
+
+async function sendFeedback(){
+  const txt = (document.getElementById('pp-feedback-txt').value||'').trim();
+  if(!txt){ document.getElementById('pp-feedback-txt').focus(); return; }
+
+  const btn = document.getElementById('pp-feedback-send');
+  btn.disabled = true;
+  btn.textContent = 'Mengirim...';
+
+  const profile = JSON.parse(localStorage.getItem('inarte_profile')||'{}');
+  const payload = {
+    nama: profile.name || 'Anonim',
+    pesan: txt,
+    halaman: document.body.dataset.page || 'today',
+    waktu: new Date().toLocaleString('id-ID'),
+  };
+
+  try {
+    // ⚠️ GANTI URL INI dengan endpoint Formspree kamu
+    const FORMSPREE_URL = 'https://formspree.io/f/GANTI_INI';
+
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if(res.ok){
+      document.getElementById('pp-feedback-txt').value = '';
+      document.getElementById('pp-feedback-wrap').classList.remove('open');
+      btn.disabled = false;
+      btn.textContent = 'Kirim →';
+      if(typeof showToast === 'function') showToast('Feedback terkirim! Makasih ya (◕ᴗ◕✿)');
+    } else {
+      throw new Error('Server error');
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Kirim →';
+    if(typeof showToast === 'function') showToast('Gagal kirim, coba lagi ya.');
+  }
+}
+
 async function logoutUser(){
   if(!confirm('Yakin mau keluar dari akun?'))return;
   try{
