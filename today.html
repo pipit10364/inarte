@@ -741,6 +741,7 @@ body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="sync.js"></script>
 </head>
 <body data-page="today">
@@ -1414,6 +1415,25 @@ function _buildNaraGreeting(h){
   if(h<15) return 'Jangan lupa makan siang'+n+' — tubuhmu perlu energi!';
   if(h<18) return 'Sore sudah'+n+'. Sempat bergerak hari ini?';
   return 'Malam ini'+n+', yuk luangin sedikit waktu untuk dirimu sendiri.';
+}
+
+// ══ TOAST ══
+function showToast(msg, duration){
+  let t = document.getElementById('_toast');
+  if(!t){
+    t = document.createElement('div');
+    t.id = '_toast';
+    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--surface);padding:10px 18px;border-radius:20px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=>{
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(20px)';
+  }, duration || 2500);
 }
 
 // ══ HABITS ══
@@ -2480,8 +2500,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <div class="sp-level normal" id="sp-level">🌱 Tunas</div>
     <div class="sp-freeze" id="sp-freeze">🛡️ <span id="sp-freeze-txt"></span></div>
     <div class="sp-next" id="sp-next"></div>
-    <button class="sp-btn" id="sp-btn" onclick="closeStreakPopup()">Lanjut →</button>
-    <button class="sp-skip" onclick="closeStreakPopup()">Tutup</button>
+    <button class="sp-btn" id="sp-btn" onclick="closeStreakPopup()">Tutup ✕</button>
   </div>
 </div>
 
@@ -2761,7 +2780,7 @@ function _renderStreakPopup(streak, freezeUsed) {
     nextEl.textContent = '🎉 Kamu sudah melampaui semua yang pernah kami bayangkan!';
   }
 
-  document.getElementById('sp-btn').textContent = isMilestone ? 'Rayakan! →' : 'Lanjut →';
+  document.getElementById('sp-btn').textContent = 'Tutup ✕';
   document.getElementById('sp-btn').className = 'sp-btn';
 }
 
