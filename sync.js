@@ -118,7 +118,7 @@ const InarteSync = (() => {
       habits: doneHabits,
     }, { onConflict: 'user_id,date' });
 
-    if (error) console.warn('[InarteSync] pushDaily error:', error.message);
+    if (error) console.warn('[InarteSync] pushDaily error:', error.message, error.details, error.hint);
   }
 
   // ── HABITS TEMPLATE ──
@@ -239,32 +239,22 @@ const InarteSync = (() => {
   }
 
   // ── FINANCE ──
+  // Finance data disimpan di tabel achievements dengan jsonb items
+  // year_month format: "fin_2026_4" untuk April 2026
   async function _pullFinance() {
-    // Pull 6 bulan terakhir
-    const months = [];
-    const now = new Date();
-    for (let i = 0; i < 6; i++) {
-      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      months.push(`${d.getFullYear()}_${d.getMonth() + 1}`);
-    }
+    const { data, error } = await _sb
+      .from('achievements')
+      .select('*')
+      .eq('user_id', _uid)
+      .like('year_month', 'fin_%');
 
-    for (const ym of months) {
-      const [y, m] = ym.split('_').map(Number);
-      // Finance disimpan per bulan di localStorage sebagai inarte_fin_YYYY_M
-      const key = `inarte_fin_${y}_${m}`;
+    if (error || !data) return;
 
-      // Finance tidak punya tabel sendiri di schema — pakai daily_logs wellness field
-      // atau kita simpan di achievements table dengan prefix 'fin_'
-      const { data, error } = await _sb
-        .from('achievements')
-        .select('*')
-        .eq('user_id', _uid)
-        .eq('year_month', `fin_${ym}`)
-        .single();
-
-      if (error || !data) continue;
-      _sv(key, data.items);
-    }
+    data.forEach(row => {
+      // "fin_2026_4" → inarte_fin_2026_4
+      const key = 'inarte_' + row.year_month;
+      _sv(key, row.items);
+    });
   }
 
   async function pushFinance(year, month) {
