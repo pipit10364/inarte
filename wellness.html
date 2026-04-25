@@ -1015,7 +1015,18 @@ function toggleSidebar(){
     document.body.classList.add('sidebar-collapsed');
 })();
 
-window.addEventListener('DOMContentLoaded',()=>{
+window.addEventListener('DOMContentLoaded', async ()=>{
+  // Init Supabase sync
+  if(typeof InarteSync!=='undefined'){
+    try{
+      const _sbTmp=supabase.createClient(
+        'https://dcolcdwybmwkpovmorse.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE'
+      );
+      const {data:{session}}=await _sbTmp.auth.getSession();
+      if(session?.user) await InarteSync.init(_sbTmp, session.user.id);
+    }catch(e){ console.warn('Sync init failed:', e); }
+  }
   buildTopbar(); buildEPInner(); buildWheelCompact();
   buildAchSection(); restoreWellness();
   if(W.sleepHrs) updateSleepArc(W.sleepHrs);
@@ -1558,7 +1569,7 @@ const NARA_ACH={
 let activeAchTheme=null;
 function getAchKey(){const d=new Date();return `inarte_ach_${d.getFullYear()}_${d.getMonth()+1}`}
 function loadAch(){return ld(getAchKey())||{items:[]}}
-function saveAch(d){sv(getAchKey(),d)}
+function saveAch(d){sv(getAchKey(),d);if(typeof InarteSync!=='undefined'&&InarteSync.ready){const _ym=getAchKey().replace('inarte_ach_','');InarteSync.pushAchievements(_ym);}}
 
 function buildAchSection(){
   const months=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
@@ -1797,6 +1808,7 @@ function restoreWellness(){
 async function saveWellness(){
   W.savedAt=Date.now();
   sv('inarte_wellness_'+TODAY,W);
+  if(typeof InarteSync!=='undefined'&&InarteSync.ready) InarteSync.pushWellness(TODAY);
   const el=document.getElementById('nara-response');
   const txt=document.getElementById('nara-resp-txt');
   el.classList.add('on');
