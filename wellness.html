@@ -399,6 +399,41 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 }
 [data-theme="dark"] .topbar{background:rgba(26,24,20,.96);border-bottom-color:rgba(58,52,44,.7)}
 [data-theme="dark"] .bnav{background:rgba(26,24,20,.97);border-top-color:rgba(58,52,44,.5)}
+/* ── Profile form clean redesign ── */
+.pp-section-divider{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);margin:1.25rem 0 .625rem;padding-bottom:6px;border-bottom:1px solid var(--border-l)}
+.pp-section-divider:first-of-type{margin-top:0}
+.pp-row{display:flex;align-items:center;min-height:40px;border-bottom:1px solid var(--border-l);padding:6px 0;gap:8px}
+.pp-row:last-of-type{border-bottom:none}
+.pp-row-lbl{font-size:11px;color:var(--text3);font-weight:500;width:88px;flex-shrink:0}
+.pp-row-val{flex:1;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pp-row-inp{flex:1;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;padding:2px 0}
+.pp-row-inp::placeholder{color:var(--text4);font-style:italic}
+.pp-row-inp:focus{color:var(--moss)}
+.pp-selected-val{font-size:13px;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-selected-val.empty{color:var(--text4);font-style:italic;font-size:12px}
+.pp-dd-toggle{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;color:var(--text3)}
+.pp-dd-toggle:hover{border-color:var(--moss);color:var(--moss);background:var(--moss-p)}
+.pp-dd-toggle svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.pp-dd-toggle.open svg{transform:rotate(180deg)}
+.pp-dd-chips{display:none;flex-wrap:wrap;gap:5px;padding:8px 0 4px;width:100%}
+.pp-dd-chips.open{display:flex}
+.pp-dd-chip{padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s;white-space:nowrap}
+.pp-dd-chip:hover{background:var(--bg2)}
+.pp-dd-chip.sel{border-color:var(--moss);background:var(--moss-p);color:var(--moss);font-weight:600}
+.pp-goals-wrap{display:flex;flex-wrap:wrap;gap:5px;padding:6px 0}
+.pp-goals-chip{padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
+.pp-goals-chip.sel{border-color:var(--moss);background:var(--moss-p);color:var(--moss);font-weight:600}
+.pp-feedback-btn{width:100%;padding:10px;background:transparent;color:var(--text3);border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:6px}
+.pp-feedback-btn:hover{border-color:var(--amber);color:var(--amber)}
+.pp-feedback-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pp-feedback-wrap{display:none;margin-top:.875rem;padding:.875rem;background:var(--bg);border-radius:var(--rsm);border:1px solid var(--border-l)}
+.pp-feedback-wrap.open{display:block}
+.pp-feedback-lbl{font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:500}
+.pp-feedback-area{width:100%;min-height:80px;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--surface);outline:none;resize:vertical;transition:border-color .2s;line-height:1.6}
+.pp-feedback-area:focus{border-color:var(--amber)}
+.pp-feedback-send{width:100%;margin-top:8px;padding:9px;background:var(--amber);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.pp-feedback-send:hover{opacity:.88}
+.pp-feedback-send:disabled{opacity:.5;cursor:not-allowed}
 [data-theme="dark"] .bottom-sheet,[data-theme="dark"] .profile-panel,[data-theme="dark"] .nara-chat{background:var(--surface)}
 
 /* ══ NARA WELCOME OVERLAY ══ */
@@ -865,98 +900,95 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="pp-body">
     <div class="pp-avatar-row">
-      <div class="pp-avatar" id="pp-avatar">P</div>
+      <div class="pp-avatar" id="pp-avatar" style="cursor:pointer" onclick="ppCycleColor()" title="Ganti warna">P</div>
       <div>
         <div class="pp-avatar-name" id="pp-avatar-name">&#8212;</div>
-        <div class="pp-avatar-sub" id="pp-avatar-sub">Edit profilmu di sini</div>
+        <div class="pp-avatar-sub">Ketuk avatar untuk ganti warna</div>
       </div>
     </div>
-
-    <!-- ACCORDION: Identitas -->
-    <div class="pp-accordion open" id="ppa-identitas">
-      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-identitas')">
-        <span class="pp-acc-title">👤 Identitas</span>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="pp-acc-summary" id="ppa-identitas-summary"></span>
-          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
-      <div class="pp-acc-body">
-        <div class="pp-field"><div class="pp-field-lbl">Nama panggilan</div><input class="pp-inp" id="pp-name" type="text" placeholder="Namamu..." maxlength="30"/></div>
-        <div class="pp-field"><div class="pp-field-lbl">Usia</div><input class="pp-inp" id="pp-age" type="number" placeholder="Umurmu..." min="7" max="99" style="width:100px"/></div>
-        <div class="pp-field"><div class="pp-field-lbl">Gender</div>
-          <div class="pp-chips" id="pp-gender-chips">
-            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Perempuan</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Laki-laki</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'gender')">Prefer tidak menyebutkan</button>
-          </div>
-        </div>
-      </div>
+    <div class="pp-section-divider">Identitas</div>
+    <div class="pp-row">
+      <span class="pp-row-lbl">Nama</span>
+      <div class="pp-row-val"><input class="pp-row-inp" id="pp-name" type="text" placeholder="nama panggilanmu..." maxlength="30"/></div>
     </div>
-
-    <!-- ACCORDION: Keseharian -->
-    <div class="pp-accordion" id="ppa-keseharian">
-      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-keseharian')">
-        <span class="pp-acc-title">🏠 Keseharian</span>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="pp-acc-summary" id="ppa-keseharian-summary"></span>
-          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    <div class="pp-row">
+      <span class="pp-row-lbl">Usia</span>
+      <div class="pp-row-val"><input class="pp-row-inp" id="pp-age" type="number" placeholder="tahun" min="7" max="99" style="width:60px"/></div>
+    </div>
+    <div class="pp-row" id="pp-row-gender">
+      <span class="pp-row-lbl">Gender</span>
+      <div class="pp-row-val" style="flex-direction:column;align-items:flex-start">
+        <div style="display:flex;align-items:center;width:100%">
+          <span class="pp-selected-val empty" id="pp-gender-val">pilih...</span>
+          <button class="pp-dd-toggle" id="pp-gender-toggle" onclick="ppToggleDd('gender')" title="Pilih gender"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
         </div>
-      </div>
-      <div class="pp-acc-body">
-        <div class="pp-field"><div class="pp-field-lbl">Aktivitas</div>
-          <div class="pp-chips" id="pp-act-chips">
-            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja kantoran</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Pekerja lapangan</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Mahasiswa / pelajar</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Kerja dari rumah</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Ibu rumah tangga</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'act')">Lainnya</button>
-          </div>
-        </div>
-        <div class="pp-field"><div class="pp-field-lbl">Situasi rumah</div>
-          <div class="pp-chips" id="pp-home-chips">
-            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Sendiri</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama orang tua</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Bersama pasangan + anak</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'home')">Ada lansia di rumah</button>
-          </div>
-        </div>
-        <div class="pp-field"><div class="pp-field-lbl">Budget makan / hari</div>
-          <div class="pp-chips" id="pp-budget-chips">
-            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di bawah Rp 50rb</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 50-100rb</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Rp 100-200rb</button>
-            <button class="pp-chip" onclick="ppChipSolo(this,'budget')">Di atas Rp 200rb</button>
-          </div>
+        <div class="pp-dd-chips" id="pp-gender-chips">
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'gender')">Perempuan</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'gender')">Laki-laki</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'gender')">Prefer tidak menyebutkan</button>
         </div>
       </div>
     </div>
-
-    <!-- ACCORDION: Goals -->
-    <div class="pp-accordion" id="ppa-goals">
-      <div class="pp-acc-head" onclick="ppToggleAcc('ppa-goals')">
-        <span class="pp-acc-title">🎯 Goals</span>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="pp-acc-summary" id="ppa-goals-summary"></span>
-          <svg class="pp-acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    <div class="pp-section-divider">Keseharian</div>
+    <div class="pp-row" id="pp-row-act">
+      <span class="pp-row-lbl">Aktivitas</span>
+      <div class="pp-row-val" style="flex-direction:column;align-items:flex-start">
+        <div style="display:flex;align-items:center;width:100%">
+          <span class="pp-selected-val empty" id="pp-act-val">pilih...</span>
+          <button class="pp-dd-toggle" id="pp-act-toggle" onclick="ppToggleDd('act')" title="Pilih aktivitas"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
         </div>
-      </div>
-      <div class="pp-acc-body">
-        <div class="pp-chips" id="pp-goals-chips">
-          <button class="pp-chip" onclick="ppChipToggle(this)">Berat badan stabil</button>
-          <button class="pp-chip" onclick="ppChipToggle(this)">Pola makan lebih sehat</button>
-          <button class="pp-chip" onclick="ppChipToggle(this)">Energi lebih stabil</button>
-          <button class="pp-chip" onclick="ppChipToggle(this)">Tidur lebih baik</button>
-          <button class="pp-chip" onclick="ppChipToggle(this)">Lebih aktif bergerak</button>
-          <button class="pp-chip" onclick="ppChipToggle(this)">Kesehatan mental</button>
-          <button class="pp-chip" onclick="ppChipToggle(this)">Keuangan lebih tertata</button>
+        <div class="pp-dd-chips" id="pp-act-chips">
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'act')">Pekerja kantoran</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'act')">Pekerja lapangan</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'act')">Mahasiswa / pelajar</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'act')">Kerja dari rumah</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'act')">Ibu rumah tangga</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'act')">Lainnya</button>
         </div>
       </div>
     </div>
-
-    <!-- Install shortcuts -->
+    <div class="pp-row" id="pp-row-home">
+      <span class="pp-row-lbl">Situasi rumah</span>
+      <div class="pp-row-val" style="flex-direction:column;align-items:flex-start">
+        <div style="display:flex;align-items:center;width:100%">
+          <span class="pp-selected-val empty" id="pp-home-val">pilih...</span>
+          <button class="pp-dd-toggle" id="pp-home-toggle" onclick="ppToggleDd('home')" title="Pilih situasi"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+        </div>
+        <div class="pp-dd-chips" id="pp-home-chips">
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'home')">Sendiri</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'home')">Bersama orang tua</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'home')">Bersama pasangan</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'home')">Bersama pasangan + anak</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'home')">Ada lansia di rumah</button>
+        </div>
+      </div>
+    </div>
+    <div class="pp-row" id="pp-row-budget">
+      <span class="pp-row-lbl">Budget makan</span>
+      <div class="pp-row-val" style="flex-direction:column;align-items:flex-start">
+        <div style="display:flex;align-items:center;width:100%">
+          <span class="pp-selected-val empty" id="pp-budget-val">pilih...</span>
+          <button class="pp-dd-toggle" id="pp-budget-toggle" onclick="ppToggleDd('budget')" title="Pilih budget"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+        </div>
+        <div class="pp-dd-chips" id="pp-budget-chips">
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'budget')">Di bawah Rp 50rb</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'budget')">Rp 50–100rb</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'budget')">Rp 100–200rb</button>
+          <button class="pp-dd-chip" onclick="ppDdSolo(this,'budget')">Di atas Rp 200rb</button>
+        </div>
+      </div>
+    </div>
+    <div class="pp-section-divider">Goals</div>
+    <div class="pp-goals-wrap" id="pp-goals-chips">
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Berat badan stabil</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Pola makan sehat</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Energi lebih stabil</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Tidur lebih baik</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Lebih aktif bergerak</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Kesehatan mental</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Keuangan tertata</button>
+    </div>
+    <div class="pp-section-divider">Akun</div>
     <button class="pp-install-btn" id="pp-install-btn" onclick="triggerInstall()" style="display:none">
       <svg viewBox="0 0 24 24"><path d="M12 2v13M8 11l4 4 4-4"/><path d="M20 17v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
       Tambah ke layar utama
@@ -965,9 +997,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       Cara pasang di HP / laptop
     </button>
-
     <button class="pp-save-btn" onclick="saveProfile()">Simpan perubahan</button>
-    <button class="pp-logout-btn" onclick="logoutUser()">Keluar dari akun</button>
+    <button class="pp-logout-btn" onclick="logoutUser()">Keluar / ganti akun</button>
+    <button class="pp-feedback-btn" onclick="ppToggleFeedback()">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Kasih feedback ke developer
+    </button>
+    <div class="pp-feedback-wrap" id="pp-feedback-wrap">
+      <div class="pp-feedback-lbl">Ada saran, bug, atau apapun yang mau kamu sampaikan?</div>
+      <textarea class="pp-feedback-area" id="pp-feedback-txt" placeholder="Tulis di sini... semua masukan sangat berarti (◕ᴗ◕✿)" maxlength="1000"></textarea>
+      <button class="pp-feedback-send" id="pp-feedback-send" onclick="sendFeedback()">Kirim →</button>
+    </div>
   </div>
 </div>
 
@@ -1950,105 +1990,144 @@ async function sendNara(){
 }
 // Profile panel
 let _ppData={};
+<script>
+let _ppData={};
+const PP_AVATAR_COLORS=['#3D6147','#7D3E2C','#2E5F7A','#7A3E50','#9B6E2A','#4A6B7A','#6B4A7A'];
+let _ppColorIdx=0;
+
+function ppCycleColor(){
+  _ppColorIdx=(_ppColorIdx+1)%PP_AVATAR_COLORS.length;
+  const av=document.getElementById('pp-avatar');
+  if(av){av.style.background=PP_AVATAR_COLORS[_ppColorIdx];_ppData.avatarColor=PP_AVATAR_COLORS[_ppColorIdx];}
+}
+function _ppSetVal(key,val){
+  const el=document.getElementById('pp-'+key+'-val');
+  if(el){el.textContent=val||'pilih...';el.className=val?'pp-selected-val':'pp-selected-val empty';}
+  document.querySelectorAll('#pp-'+key+'-chips .pp-dd-chip').forEach(c=>c.classList.toggle('sel',c.textContent.trim()===val));
+}
+function ppToggleDd(key){
+  const chips=document.getElementById('pp-'+key+'-chips');
+  const toggle=document.getElementById('pp-'+key+'-toggle');
+  if(!chips)return;
+  const isOpen=chips.classList.contains('open');
+  document.querySelectorAll('.pp-dd-chips.open').forEach(el=>el.classList.remove('open'));
+  document.querySelectorAll('.pp-dd-toggle.open').forEach(el=>el.classList.remove('open'));
+  if(!isOpen){chips.classList.add('open');if(toggle)toggle.classList.add('open');}
+}
+function ppDdSolo(btn,key){
+  const val=btn.textContent.trim();
+  _ppData[key]=val;_ppSetVal(key,val);
+  const chips=document.getElementById('pp-'+key+'-chips');
+  const toggle=document.getElementById('pp-'+key+'-toggle');
+  if(chips)chips.classList.remove('open');
+  if(toggle)toggle.classList.remove('open');
+}
+function ppGoalToggle(btn){
+  btn.classList.toggle('sel');
+  _ppData.goals=[...document.querySelectorAll('#pp-goals-chips .pp-goals-chip.sel')].map(c=>c.textContent.trim());
+}
 function openProfile(){
-  _ppData={...JSON.parse(localStorage.getItem('inarte_profile')||'{}')};
+  _ppData={...(JSON.parse(localStorage.getItem('inarte_profile')||'{}'))};
   document.getElementById('pp-name').value=_ppData.name||'';
   document.getElementById('pp-age').value=_ppData.age||'';
-  document.getElementById('pp-avatar').textContent=(_ppData.name||'P').charAt(0).toUpperCase();
+  const av=document.getElementById('pp-avatar');
+  if(av){
+    av.textContent=(_ppData.name||'P').charAt(0).toUpperCase();
+    av.style.background=_ppData.avatarColor||'#3D6147';
+    _ppColorIdx=PP_AVATAR_COLORS.indexOf(_ppData.avatarColor||'#3D6147');
+    if(_ppColorIdx<0)_ppColorIdx=0;
+  }
   document.getElementById('pp-avatar-name').textContent=_ppData.name||'Belum diisi';
-  document.getElementById('pp-avatar-sub').textContent=_ppData.age?_ppData.age+' tahun':'Edit profilmu';
-  const sc=(wid,val)=>document.querySelectorAll('#'+wid+' .pp-chip').forEach(c=>c.classList.toggle('sel',c.textContent.trim()===val));
-  sc('pp-gender-chips',_ppData.gender);sc('pp-act-chips',_ppData.act);
-  sc('pp-home-chips',_ppData.home);sc('pp-budget-chips',_ppData.budget);
+  _ppSetVal('gender',_ppData.gender||'');
+  _ppSetVal('act',_ppData.act||'');
+  _ppSetVal('home',_ppData.home||'');
+  _ppSetVal('budget',_ppData.budget||'');
   const goals=_ppData.goals||[];
-  document.querySelectorAll('#pp-goals-chips .pp-chip').forEach(c=>c.classList.toggle('sel',goals.includes(c.textContent.trim())));
+  document.querySelectorAll('#pp-goals-chips .pp-goals-chip').forEach(c=>{
+    c.classList.toggle('sel',goals.some(g=>g===c.textContent.trim()||c.textContent.trim().includes(g.split(' ')[0])));
+  });
   document.getElementById('profile-overlay').classList.add('on');
   document.getElementById('profile-panel').classList.add('open');
-  setTimeout(ppUpdateSummaries, 50);
 }
 function closeProfile(){
   document.getElementById('profile-overlay').classList.remove('on');
   document.getElementById('profile-panel').classList.remove('open');
+  document.querySelectorAll('.pp-dd-chips.open').forEach(el=>el.classList.remove('open'));
+  document.querySelectorAll('.pp-dd-toggle.open').forEach(el=>el.classList.remove('open'));
 }
-
-// ══ PROFILE ACCORDION ══
-function ppToggleAcc(id){
-  document.getElementById(id).classList.toggle('open');
-  ppUpdateSummaries();
-}
-function ppUpdateSummaries(){
-  const name = (document.getElementById('pp-name')||{}).value||'';
-  const age  = (document.getElementById('pp-age')||{}).value||'';
-  const idSum = document.getElementById('ppa-identitas-summary');
-  if(idSum) idSum.textContent = name ? name.split(' ')[0]+(age?' · '+age+' thn':'') : '';
-  const act  = (document.querySelector('#pp-act-chips .pp-chip.sel')||{}).textContent||'';
-  const home = (document.querySelector('#pp-home-chips .pp-chip.sel')||{}).textContent||'';
-  const kSum = document.getElementById('ppa-keseharian-summary');
-  if(kSum) kSum.textContent = act||home ? [act,home].filter(Boolean).join(' · ') : '';
-  const goals = [...document.querySelectorAll('#pp-goals-chips .pp-chip.sel')].map(c=>c.textContent);
-  const gSum = document.getElementById('ppa-goals-summary');
-  if(gSum) gSum.textContent = goals.length ? goals.length+' dipilih' : '';
-}
-
-// ══ PWA INSTALL ══
-let _installPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault(); _installPrompt = e;
-  const btn = document.getElementById('pp-install-btn');
-  if(btn) btn.style.display = 'flex';
-});
-function triggerInstall(){
-  if(!_installPrompt) return;
-  _installPrompt.prompt();
-  _installPrompt.userChoice.then(() => {
-    _installPrompt = null;
-    const b = document.getElementById('pp-install-btn');
-    if(b) b.style.display = 'none';
-  });
-}
-function showInstallGuide(){
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  let msg = '';
-  if(isIOS && isSafari) msg = 'Di Safari: ketuk ikon Bagikan (□↑) lalu pilih "Tambahkan ke Layar Utama"';
-  else if(isIOS) msg = 'Buka di Safari, ketuk ikon Bagikan → "Tambahkan ke Layar Utama"';
-  else msg = 'Di Chrome: ketuk menu ⋮ → "Tambahkan ke layar utama". Di laptop: klik ikon ⊕ di address bar.';
-  showToast(msg, 5000);
-}
-
-function ppChipSolo(btn,key){
-  btn.closest('.pp-chips').querySelectorAll('.pp-chip').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');_ppData[key]=btn.textContent.trim();
-}
-function ppChipToggle(btn){
-  btn.classList.toggle('sel');
-  _ppData.goals=[...btn.closest('.pp-chips').querySelectorAll('.pp-chip.sel')].map(c=>c.textContent.trim());
-}
+function ppToggleAcc(id){document.getElementById(id)?.classList.toggle('open');}
+function ppChipSolo(btn,key){ppDdSolo(btn,key);}
+function ppChipToggle(btn){ppGoalToggle(btn);}
+function ppUpdateSummaries(){}
 function saveProfile(){
   const name=document.getElementById('pp-name').value.trim();
   if(!name){document.getElementById('pp-name').focus();return;}
   _ppData.name=name;
   const age=document.getElementById('pp-age').value;
   if(age)_ppData.age=parseInt(age);
-  const sg=document.querySelector('#pp-gender-chips .pp-chip.sel');if(sg)_ppData.gender=sg.textContent.trim();
-  const sa=document.querySelector('#pp-act-chips .pp-chip.sel');if(sa)_ppData.act=sa.textContent.trim();
-  const sh=document.querySelector('#pp-home-chips .pp-chip.sel');if(sh)_ppData.home=sh.textContent.trim();
-  const sb=document.querySelector('#pp-budget-chips .pp-chip.sel');if(sb)_ppData.budget=sb.textContent.trim();
-  _ppData.goals=[...document.querySelectorAll('#pp-goals-chips .pp-chip.sel')].map(c=>c.textContent.trim());
+  _ppData.goals=[...document.querySelectorAll('#pp-goals-chips .pp-goals-chip.sel')].map(c=>c.textContent.trim());
   localStorage.setItem('inarte_profile',JSON.stringify(_ppData));
-  _P=_ppData;
+  if(typeof _P!=='undefined')_P={..._ppData};
   const avBtn=document.getElementById('av-btn');
   if(avBtn)avBtn.textContent=name.charAt(0).toUpperCase();
   closeProfile();
   if(typeof showToast==='function')showToast('Profil tersimpan (◕ᴗ◕✿)');
-  else alert('Profil tersimpan!');
 }
-function logoutUser(){
-  if(!confirm('Yakin mau keluar?'))return;
-  window.location.href='index.html';
+// PWA
+let _installPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_installPrompt=e;const b=document.getElementById('pp-install-btn');if(b)b.style.display='flex';});
+function triggerInstall(){if(!_installPrompt)return;_installPrompt.prompt();_installPrompt.userChoice.then(()=>{_installPrompt=null;const b=document.getElementById('pp-install-btn');if(b)b.style.display='none';});}
+function showInstallGuide(){const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);let msg='';if(isIOS&&isSafari)msg='Di Safari: ketuk ikon Bagikan (□↑) lalu pilih "Tambahkan ke Layar Utama"';else if(isIOS)msg='Buka di Safari, ketuk ikon Bagikan → "Tambahkan ke Layar Utama"';else msg='Di Chrome: ketuk menu ⋮ → "Tambahkan ke layar utama". Di laptop: klik ikon ⊕ di address bar.';if(typeof showToast==='function')showToast(msg,5000);}
+
+// Feedback → Supabase
+function ppToggleFeedback(){
+  const wrap=document.getElementById('pp-feedback-wrap');
+  if(!wrap)return;
+  wrap.classList.toggle('open');
+  if(wrap.classList.contains('open'))setTimeout(()=>document.getElementById('pp-feedback-txt').focus(),100);
+}
+async function sendFeedback(){
+  const txt=(document.getElementById('pp-feedback-txt').value||'').trim();
+  if(!txt){document.getElementById('pp-feedback-txt').focus();return;}
+  const btn=document.getElementById('pp-feedback-send');
+  btn.disabled=true;btn.textContent='Mengirim...';
+  const profile=JSON.parse(localStorage.getItem('inarte_profile')||'{}');
+  try{
+    const SB=supabase.createClient(
+      'https://dcolcdwybmwkpovmorse.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE'
+    );
+    const {error}=await SB.from('feedback').insert({
+      user_name:profile.name||'Anonim',
+      message:txt,
+      page:document.body.dataset.page||window.location.pathname,
+    });
+    if(error)throw error;
+    document.getElementById('pp-feedback-txt').value='';
+    document.getElementById('pp-feedback-wrap').classList.remove('open');
+    if(typeof showToast==='function')showToast('Feedback terkirim! Makasih ya (◕ᴗ◕✿)');
+  }catch(e){
+    console.warn('Feedback error:',e);
+    if(typeof showToast==='function')showToast('Gagal kirim, coba lagi ya.');
+  }finally{
+    btn.disabled=false;btn.textContent='Kirim →';
+  }
 }
 
-const PAGES={today:'today.html',wellness:'wellness.html',finance:'finance.html',progress:'progress.html'};
+async function logoutUser(){
+  if(!confirm('Yakin mau keluar dari akun?'))return;
+  sessionStorage.setItem('inarte_logout','1');
+  localStorage.clear();
+  try{
+    if(typeof supabase!=='undefined'){
+      const SB=supabase.createClient('https://dcolcdwybmwkpovmorse.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE');
+      SB.auth.signOut().catch(()=>{});
+    }
+  }catch(e){}
+  window.location.replace('index.html');
+}
+</script>
+
 function navTo(tab){if(document.body.dataset.page===tab)return;window.location.href=PAGES[tab];}
 function setActiveNav(){
   const cur=document.body.dataset.page;
