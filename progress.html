@@ -1724,7 +1724,7 @@ function renderStreakBadge(streak, containerId){
       <div class="streak-badge-info">
         <div class="streak-badge-title">\${streak} hari — \${badge.title}</div>
         <div class="streak-badge-sub">\${streak === 0 ? 'Mulai hari ini!' : 'Kamu sudah konsisten sejauh ini.'}</div>
-        \${next ? `<div class="streak-badge-next">→ \${next.badge} \${next.title} dalam \${next.days - streak} hari lagi</div>` : '<div class="streak-badge-next">🎉 Semua milestone tercapai!</div>'}
+        \${next ? '<div class="streak-badge-next">→ ' + next.badge + ' ' + next.title + ' dalam ' + (next.days - streak) + ' hari lagi</div>' : '<div class="streak-badge-next">🎉 Semua milestone tercapai!</div>'}
       </div>
     </div>
     <div class="streak-milestones">\${milestoneHTML}</div>
