@@ -2078,8 +2078,25 @@ function saveProfile(){
   _ppData.goals=[...document.querySelectorAll('#pp-goals-chips .pp-goals-chip.sel')].map(c=>c.textContent.trim());
   localStorage.setItem('inarte_profile',JSON.stringify(_ppData));
   _P={..._ppData};
+  P={..._ppData};
   const avBtn=document.getElementById('av-btn');
-  if(avBtn)avBtn.textContent=name.charAt(0).toUpperCase();
+  if(avBtn){avBtn.textContent=name.charAt(0).toUpperCase();avBtn.style.background=_ppData.avatarColor||'#3D6147';}
+  // Sync ke Supabase jika login
+  (async()=>{
+    try{
+      if(typeof supabase!=='undefined'){
+        const SB=supabase.createClient('https://dcolcdwybmwkpovmorse.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE');
+        const{data:{session}}=await SB.auth.getSession();
+        if(session?.user){
+          await SB.from('profiles').upsert({
+            id:session.user.id,name:_ppData.name,age:_ppData.age?parseInt(_ppData.age):null,
+            gender:_ppData.gender||'',act:_ppData.act||'',home:_ppData.home||'',budget:_ppData.budget||'',
+            goals:_ppData.goals||[],avatar_color:_ppData.avatarColor||'#3D6147'
+          });
+        }
+      }
+    }catch(e){console.warn('Profile sync error:',e);}
+  })();
   closeProfile();
   if(typeof showToast==='function')showToast('Profil tersimpan (◕ᴗ◕✿)');
   else alert('Profil tersimpan!');
