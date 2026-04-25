@@ -2110,29 +2110,23 @@ async function sendFeedback(){
     waktu: new Date().toLocaleString('id-ID'),
   };
 
-  try {
-    // ⚠️ GANTI URL INI dengan endpoint Formspree kamu
-    const FORMSPREE_URL = 'https://formspree.io/f/GANTI_INI';
-
-    const res = await fetch(FORMSPREE_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload),
+  try{
+    const SB=supabase.createClient(
+      'https://dcolcdwybmwkpovmorse.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE'
+    );
+    const {error}=await SB.from('feedback').insert({
+      user_name:payload.nama,
+      message:payload.pesan,
+      page:payload.halaman,
     });
-
-    if(res.ok){
-      document.getElementById('pp-feedback-txt').value = '';
-      document.getElementById('pp-feedback-wrap').classList.remove('open');
-      btn.disabled = false;
-      btn.textContent = 'Kirim →';
-      if(typeof showToast === 'function') showToast('Feedback terkirim! Makasih ya (◕ᴗ◕✿)');
-    } else {
-      throw new Error('Server error');
-    }
-  } catch(e) {
-    btn.disabled = false;
-    btn.textContent = 'Kirim →';
-    if(typeof showToast === 'function') showToast('Gagal kirim, coba lagi ya.');
+    if(error)throw error;
+    document.getElementById('pp-feedback-txt').value='';
+    document.getElementById('pp-feedback-wrap').classList.remove('open');
+    if(typeof showToast==='function')showToast('Feedback terkirim! Makasih ya (◕ᴗ◕✿)');
+  }catch(e){
+    console.warn('Feedback error:',e);
+    if(typeof showToast==='function')showToast('Gagal kirim, coba lagi ya.');
   }
 }
 
