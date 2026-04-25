@@ -1988,145 +1988,7 @@ async function sendNara(){
   msgs.removeChild(typing);_addNaraMsg(reply,'nara');
   _chatHistory.push({role:'assistant',content:reply});
 }
-// Profile panel
-let _ppData={};
-<script>
-let _ppData={};
-const PP_AVATAR_COLORS=['#3D6147','#7D3E2C','#2E5F7A','#7A3E50','#9B6E2A','#4A6B7A','#6B4A7A'];
-let _ppColorIdx=0;
 
-function ppCycleColor(){
-  _ppColorIdx=(_ppColorIdx+1)%PP_AVATAR_COLORS.length;
-  const av=document.getElementById('pp-avatar');
-  if(av){av.style.background=PP_AVATAR_COLORS[_ppColorIdx];_ppData.avatarColor=PP_AVATAR_COLORS[_ppColorIdx];}
-}
-function _ppSetVal(key,val){
-  const el=document.getElementById('pp-'+key+'-val');
-  if(el){el.textContent=val||'pilih...';el.className=val?'pp-selected-val':'pp-selected-val empty';}
-  document.querySelectorAll('#pp-'+key+'-chips .pp-dd-chip').forEach(c=>c.classList.toggle('sel',c.textContent.trim()===val));
-}
-function ppToggleDd(key){
-  const chips=document.getElementById('pp-'+key+'-chips');
-  const toggle=document.getElementById('pp-'+key+'-toggle');
-  if(!chips)return;
-  const isOpen=chips.classList.contains('open');
-  document.querySelectorAll('.pp-dd-chips.open').forEach(el=>el.classList.remove('open'));
-  document.querySelectorAll('.pp-dd-toggle.open').forEach(el=>el.classList.remove('open'));
-  if(!isOpen){chips.classList.add('open');if(toggle)toggle.classList.add('open');}
-}
-function ppDdSolo(btn,key){
-  const val=btn.textContent.trim();
-  _ppData[key]=val;_ppSetVal(key,val);
-  const chips=document.getElementById('pp-'+key+'-chips');
-  const toggle=document.getElementById('pp-'+key+'-toggle');
-  if(chips)chips.classList.remove('open');
-  if(toggle)toggle.classList.remove('open');
-}
-function ppGoalToggle(btn){
-  btn.classList.toggle('sel');
-  _ppData.goals=[...document.querySelectorAll('#pp-goals-chips .pp-goals-chip.sel')].map(c=>c.textContent.trim());
-}
-function openProfile(){
-  _ppData={...(JSON.parse(localStorage.getItem('inarte_profile')||'{}'))};
-  document.getElementById('pp-name').value=_ppData.name||'';
-  document.getElementById('pp-age').value=_ppData.age||'';
-  const av=document.getElementById('pp-avatar');
-  if(av){
-    av.textContent=(_ppData.name||'P').charAt(0).toUpperCase();
-    av.style.background=_ppData.avatarColor||'#3D6147';
-    _ppColorIdx=PP_AVATAR_COLORS.indexOf(_ppData.avatarColor||'#3D6147');
-    if(_ppColorIdx<0)_ppColorIdx=0;
-  }
-  document.getElementById('pp-avatar-name').textContent=_ppData.name||'Belum diisi';
-  _ppSetVal('gender',_ppData.gender||'');
-  _ppSetVal('act',_ppData.act||'');
-  _ppSetVal('home',_ppData.home||'');
-  _ppSetVal('budget',_ppData.budget||'');
-  const goals=_ppData.goals||[];
-  document.querySelectorAll('#pp-goals-chips .pp-goals-chip').forEach(c=>{
-    c.classList.toggle('sel',goals.some(g=>g===c.textContent.trim()||c.textContent.trim().includes(g.split(' ')[0])));
-  });
-  document.getElementById('profile-overlay').classList.add('on');
-  document.getElementById('profile-panel').classList.add('open');
-}
-function closeProfile(){
-  document.getElementById('profile-overlay').classList.remove('on');
-  document.getElementById('profile-panel').classList.remove('open');
-  document.querySelectorAll('.pp-dd-chips.open').forEach(el=>el.classList.remove('open'));
-  document.querySelectorAll('.pp-dd-toggle.open').forEach(el=>el.classList.remove('open'));
-}
-function ppToggleAcc(id){document.getElementById(id)?.classList.toggle('open');}
-function ppChipSolo(btn,key){ppDdSolo(btn,key);}
-function ppChipToggle(btn){ppGoalToggle(btn);}
-function ppUpdateSummaries(){}
-function saveProfile(){
-  const name=document.getElementById('pp-name').value.trim();
-  if(!name){document.getElementById('pp-name').focus();return;}
-  _ppData.name=name;
-  const age=document.getElementById('pp-age').value;
-  if(age)_ppData.age=parseInt(age);
-  _ppData.goals=[...document.querySelectorAll('#pp-goals-chips .pp-goals-chip.sel')].map(c=>c.textContent.trim());
-  localStorage.setItem('inarte_profile',JSON.stringify(_ppData));
-  if(typeof _P!=='undefined')_P={..._ppData};
-  const avBtn=document.getElementById('av-btn');
-  if(avBtn)avBtn.textContent=name.charAt(0).toUpperCase();
-  closeProfile();
-  if(typeof showToast==='function')showToast('Profil tersimpan (◕ᴗ◕✿)');
-}
-// PWA
-let _installPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_installPrompt=e;const b=document.getElementById('pp-install-btn');if(b)b.style.display='flex';});
-function triggerInstall(){if(!_installPrompt)return;_installPrompt.prompt();_installPrompt.userChoice.then(()=>{_installPrompt=null;const b=document.getElementById('pp-install-btn');if(b)b.style.display='none';});}
-function showInstallGuide(){const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);let msg='';if(isIOS&&isSafari)msg='Di Safari: ketuk ikon Bagikan (□↑) lalu pilih "Tambahkan ke Layar Utama"';else if(isIOS)msg='Buka di Safari, ketuk ikon Bagikan → "Tambahkan ke Layar Utama"';else msg='Di Chrome: ketuk menu ⋮ → "Tambahkan ke layar utama". Di laptop: klik ikon ⊕ di address bar.';if(typeof showToast==='function')showToast(msg,5000);}
-
-// Feedback → Supabase
-function ppToggleFeedback(){
-  const wrap=document.getElementById('pp-feedback-wrap');
-  if(!wrap)return;
-  wrap.classList.toggle('open');
-  if(wrap.classList.contains('open'))setTimeout(()=>document.getElementById('pp-feedback-txt').focus(),100);
-}
-async function sendFeedback(){
-  const txt=(document.getElementById('pp-feedback-txt').value||'').trim();
-  if(!txt){document.getElementById('pp-feedback-txt').focus();return;}
-  const btn=document.getElementById('pp-feedback-send');
-  btn.disabled=true;btn.textContent='Mengirim...';
-  const profile=JSON.parse(localStorage.getItem('inarte_profile')||'{}');
-  try{
-    const SB=supabase.createClient(
-      'https://dcolcdwybmwkpovmorse.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE'
-    );
-    const {error}=await SB.from('feedback').insert({
-      user_name:profile.name||'Anonim',
-      message:txt,
-      page:document.body.dataset.page||window.location.pathname,
-    });
-    if(error)throw error;
-    document.getElementById('pp-feedback-txt').value='';
-    document.getElementById('pp-feedback-wrap').classList.remove('open');
-    if(typeof showToast==='function')showToast('Feedback terkirim! Makasih ya (◕ᴗ◕✿)');
-  }catch(e){
-    console.warn('Feedback error:',e);
-    if(typeof showToast==='function')showToast('Gagal kirim, coba lagi ya.');
-  }finally{
-    btn.disabled=false;btn.textContent='Kirim →';
-  }
-}
-
-async function logoutUser(){
-  if(!confirm('Yakin mau keluar dari akun?'))return;
-  sessionStorage.setItem('inarte_logout','1');
-  localStorage.clear();
-  try{
-    if(typeof supabase!=='undefined'){
-      const SB=supabase.createClient('https://dcolcdwybmwkpovmorse.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE');
-      SB.auth.signOut().catch(()=>{});
-    }
-  }catch(e){}
-  window.location.replace('index.html');
-}
-</script>
 
 function navTo(tab){if(document.body.dataset.page===tab)return;window.location.href=PAGES[tab];}
 function setActiveNav(){
@@ -2135,6 +1997,32 @@ function setActiveNav(){
   const btn=document.getElementById('nav-'+cur);
   if(btn)btn.classList.add('active');
 }
+</script>
+<script>
+let _ppData={};
+const PP_AVATAR_COLORS=['#3D6147','#7D3E2C','#2E5F7A','#7A3E50','#9B6E2A','#4A6B7A','#6B4A7A'];
+let _ppColorIdx=0;
+function ppCycleColor(){_ppColorIdx=(_ppColorIdx+1)%PP_AVATAR_COLORS.length;const av=document.getElementById('pp-avatar');if(av){av.style.background=PP_AVATAR_COLORS[_ppColorIdx];_ppData.avatarColor=PP_AVATAR_COLORS[_ppColorIdx];}}
+function _ppSetVal(key,val){const el=document.getElementById('pp-'+key+'-val');if(el){el.textContent=val||'pilih...';el.className=val?'pp-selected-val':'pp-selected-val empty';}document.querySelectorAll('#pp-'+key+'-chips .pp-dd-chip').forEach(c=>c.classList.toggle('sel',c.textContent.trim()===val));}
+function ppToggleDd(key){const chips=document.getElementById('pp-'+key+'-chips');const toggle=document.getElementById('pp-'+key+'-toggle');if(!chips)return;const isOpen=chips.classList.contains('open');document.querySelectorAll('.pp-dd-chips.open').forEach(el=>el.classList.remove('open'));document.querySelectorAll('.pp-dd-toggle.open').forEach(el=>el.classList.remove('open'));if(!isOpen){chips.classList.add('open');if(toggle)toggle.classList.add('open');}}
+function ppDdSolo(btn,key){const val=btn.textContent.trim();_ppData[key]=val;_ppSetVal(key,val);const chips=document.getElementById('pp-'+key+'-chips');const toggle=document.getElementById('pp-'+key+'-toggle');if(chips)chips.classList.remove('open');if(toggle)toggle.classList.remove('open');}
+function ppGoalToggle(btn){btn.classList.toggle('sel');_ppData.goals=[...document.querySelectorAll('#pp-goals-chips .pp-goals-chip.sel')].map(c=>c.textContent.trim());}
+function openProfile(){_ppData={...(JSON.parse(localStorage.getItem('inarte_profile')||'{}'))};document.getElementById('pp-name').value=_ppData.name||'';document.getElementById('pp-age').value=_ppData.age||'';const av=document.getElementById('pp-avatar');if(av){av.textContent=(_ppData.name||'P').charAt(0).toUpperCase();av.style.background=_ppData.avatarColor||'#3D6147';_ppColorIdx=PP_AVATAR_COLORS.indexOf(_ppData.avatarColor||'#3D6147');if(_ppColorIdx<0)_ppColorIdx=0;}document.getElementById('pp-avatar-name').textContent=_ppData.name||'Belum diisi';_ppSetVal('gender',_ppData.gender||'');_ppSetVal('act',_ppData.act||'');_ppSetVal('home',_ppData.home||'');_ppSetVal('budget',_ppData.budget||'');const goals=_ppData.goals||[];document.querySelectorAll('#pp-goals-chips .pp-goals-chip').forEach(c=>{c.classList.toggle('sel',goals.some(g=>g===c.textContent.trim()||c.textContent.trim().includes(g.split(' ')[0])));});document.getElementById('profile-overlay').classList.add('on');document.getElementById('profile-panel').classList.add('open');}
+function closeProfile(){document.getElementById('profile-overlay').classList.remove('on');document.getElementById('profile-panel').classList.remove('open');document.querySelectorAll('.pp-dd-chips.open').forEach(el=>el.classList.remove('open'));document.querySelectorAll('.pp-dd-toggle.open').forEach(el=>el.classList.remove('open'));}
+function ppToggleAcc(id){document.getElementById(id)?.classList.toggle('open');}
+function ppChipSolo(btn,key){ppDdSolo(btn,key);}
+function ppChipToggle(btn){ppGoalToggle(btn);}
+function ppUpdateSummaries(){}
+function saveProfile(){const name=document.getElementById('pp-name').value.trim();if(!name){document.getElementById('pp-name').focus();return;}_ppData.name=name;const age=document.getElementById('pp-age').value;if(age)_ppData.age=parseInt(age);_ppData.goals=[...document.querySelectorAll('#pp-goals-chips .pp-goals-chip.sel')].map(c=>c.textContent.trim());localStorage.setItem('inarte_profile',JSON.stringify(_ppData));if(typeof _P!=='undefined')_P={..._ppData};const avBtn=document.getElementById('av-btn');if(avBtn)avBtn.textContent=name.charAt(0).toUpperCase();closeProfile();if(typeof showToast==='function')showToast('Profil tersimpan (◕ᴗ◕✿)');}
+let _installPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_installPrompt=e;const b=document.getElementById('pp-install-btn');if(b)b.style.display='flex';});
+function triggerInstall(){if(!_installPrompt)return;_installPrompt.prompt();}
+function showInstallGuide(){if(typeof showToast==='function')showToast('Di Safari: ketuk ikon Bagikan lalu Tambahkan ke Layar Utama',5000);}
+function ppToggleFeedback(){const wrap=document.getElementById('pp-feedback-wrap');if(!wrap)return;wrap.classList.toggle('open');if(wrap.classList.contains('open'))setTimeout(()=>document.getElementById('pp-feedback-txt').focus(),100);}
+async function sendFeedback(){const txt=(document.getElementById('pp-feedback-txt').value||'').trim();if(!txt){document.getElementById('pp-feedback-txt').focus();return;}const btn=document.getElementById('pp-feedback-send');btn.disabled=true;btn.textContent='Mengirim...';const profile=JSON.parse(localStorage.getItem('inarte_profile')||'{}');try{const SB=supabase.createClient('https://dcolcdwybmwkpovmorse.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE');const{error}=await SB.from('feedback').insert({user_name:profile.name||'Anonim',message:txt,page:'wellness'});if(error)throw error;document.getElementById('pp-feedback-txt').value='';document.getElementById('pp-feedback-wrap').classList.remove('open');if(typeof showToast==='function')showToast('Feedback terkirim! Makasih ya (◕ᴗ◕✿)');}catch(e){if(typeof showToast==='function')showToast('Gagal kirim, coba lagi ya.');}finally{btn.disabled=false;btn.textContent='Kirim →';}}
+async function logoutUser(){if(!confirm('Yakin mau keluar dari akun?'))return;sessionStorage.setItem('inarte_logout','1');localStorage.clear();try{if(typeof supabase!=='undefined'){const SB=supabase.createClient('https://dcolcdwybmwkpovmorse.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE');SB.auth.signOut().catch(()=>{});}}catch(e){}window.location.replace('index.html');}
+</script>
+<script>
 window.addEventListener('DOMContentLoaded',setActiveNav);
 </script>
 
