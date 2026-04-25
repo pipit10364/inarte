@@ -1554,9 +1554,6 @@ async function sendNara(){
   _chatHistory.push({role:'assistant',content:reply});
 }
 // Profile panel
-let _ppData={};
-<script>
-let _ppData={};
 const PP_AVATAR_COLORS=['#3D6147','#7D3E2C','#2E5F7A','#7A3E50','#9B6E2A','#4A6B7A','#6B4A7A'];
 let _ppColorIdx=0;
 
@@ -1693,6 +1690,7 @@ async function logoutUser(){
 }
 </script>
 
+<script>
 function navTo(tab){if(document.body.dataset.page===tab)return;window.location.href=PAGES[tab];}
 function setActiveNav(){
   const cur=document.body.dataset.page;
