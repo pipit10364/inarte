@@ -741,6 +741,7 @@ body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
 </script>
+<script src="sync.js"></script>
 </head>
 <body data-page="today">
 
@@ -1306,13 +1307,32 @@ const MOVE_OPTS=[
 ];
 
 // ══ BOOT ══
-window.addEventListener('DOMContentLoaded',()=>{
+window.addEventListener('DOMContentLoaded', async ()=>{
   buildDailyTip();
   buildTopbar(); buildGreeting(); buildHabitSection();
   buildWaterVisual(); restoreQuickRow();
   buildMenuGrid(); renderMeals(); renderMoves();
   buildFoodSuggs(); buildMoveGrid();
   maybeShowNaraMsg();
+
+  // Init Supabase sync
+  if(typeof InarteSync!=='undefined'){
+    try{
+      const _sbTmp=supabase.createClient(
+        'https://dcolcdwybmwkpovmorse.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE'
+      );
+      const {data:{session}}=await _sbTmp.auth.getSession();
+      if(session?.user) await InarteSync.init(_sbTmp, session.user.id);
+    }catch(e){ console.warn('Sync init failed:', e); }
+  }
+});
+
+// Re-render when Supabase data arrives
+window.addEventListener('inarte-sync-ready', ()=>{
+  D=JSON.parse(localStorage.getItem('inarte_day_'+TODAY)||'{"water":0,"mood":null,"meals":[],"moves":[],"habits":[],"conditions":[],"totalCal":0,"totalMoveCal":0}');
+  buildGreeting(); buildHabitSection(); buildWaterVisual();
+  restoreQuickRow(); renderMeals(); renderMoves();
 });
 
 // ══ TOPBAR ══
@@ -1398,7 +1418,7 @@ function _buildNaraGreeting(h){
 
 // ══ HABITS ══
 function loadHabitTemplate(){return ld('inarte_habits_template')||[]}
-function saveHabitTemplate(arr){sv('inarte_habits_template',arr)}
+function saveHabitTemplate(arr){sv('inarte_habits_template',arr);if(typeof InarteSync!=='undefined'&&InarteSync.ready)InarteSync.pushHabits();}
 let activeTheme=null;
 
 function buildHabitSection(){
@@ -1796,6 +1816,8 @@ function saveDay(){
   sv('inarte_logs',logs);
   maybeShowNaraMsg();
   maybeShowStreakPopup();
+  // Sync to Supabase
+  if(typeof InarteSync!=='undefined'&&InarteSync.ready) InarteSync.pushDaily(TODAY);
 }
 
 // ══ SHEETS ══
