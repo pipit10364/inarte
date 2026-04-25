@@ -480,6 +480,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
 </script>
+<script src="sync.js"></script>
 </head>
 <body data-page="progress">
 
@@ -927,7 +928,17 @@ function toggleSidebar(){
     document.body.classList.add('sidebar-collapsed');
 })();
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  if(typeof InarteSync!=='undefined'){
+    try{
+      const _sbTmp=supabase.createClient(
+        'https://dcolcdwybmwkpovmorse.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE'
+      );
+      const {data:{session}}=await _sbTmp.auth.getSession();
+      if(session?.user) await InarteSync.init(_sbTmp, session.user.id);
+    }catch(e){ console.warn('Sync init failed:', e); }
+  }
   buildTopbar();
   buildStreakCard();
   buildCalendar();
@@ -1926,5 +1937,11 @@ function dismissWelcome() {
 }
 </script>
 
+<script>
+window.addEventListener('inarte-sync-ready', ()=>{
+  if(typeof buildAll==='function') buildAll();
+  else if(typeof calcStreakNow==='function') calcStreakNow();
+});
+</script>
 </body>
 </html>
