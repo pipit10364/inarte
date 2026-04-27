@@ -548,6 +548,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .streak-milestone.unlocked{border-color:var(--amber-l);color:var(--amber);background:var(--amber-p)}
 .streak-milestone.current{border-color:var(--moss);color:var(--moss);background:var(--moss-p);font-weight:700}
 
+.offline-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:#7A3E50;color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
+.offline-banner.show{display:flex}
+.offline-banner svg{width:13px;height:13px;min-width:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.offline-banner-txt{}
+.online-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
+.online-banner.show{display:flex}
 </style>
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
@@ -2042,23 +2048,24 @@ function naraCtxSet(patch) {
     if(b)b.classList.remove("show");
     if(ob){
       ob.classList.add("show");
-      // Auto-hide after 3 detik
       setTimeout(()=>ob.classList.remove("show"),3000);
     }
-    // Trigger sync ulang kalau InarteSync tersedia
     if(typeof InarteSync!=="undefined"&&InarteSync.ready){
       const today=new Date().toISOString().split("T")[0];
       try{InarteSync.pushDaily&&InarteSync.pushDaily(today);}catch(e){}
       try{InarteSync.pushWellness&&InarteSync.pushWellness(today);}catch(e){}
     }
   }
-  // Cek status awal
-  if(!navigator.onLine) showOffline();
-  // Listen perubahan status
-  window.addEventListener("online",showOnline);
-  window.addEventListener("offline",showOffline);
-  // Juga cek saat InarteSync init gagal
-  window.addEventListener("inarte-sync-failed",showOffline);
+  // Tunggu DOMContentLoaded dulu baru cek — hindari false positive saat load awal
+  window.addEventListener("DOMContentLoaded",()=>{
+    // Delay 1.5 detik sebelum cek — browser kadang butuh waktu confirm status online
+    setTimeout(()=>{
+      if(!navigator.onLine) showOffline();
+    }, 1500);
+  });
+  window.addEventListener("online", showOnline);
+  window.addEventListener("offline", showOffline);
+  window.addEventListener("inarte-sync-failed", showOffline);
 })();
 
 // ══ NARA SMART FALLBACK ══
