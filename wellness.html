@@ -1051,15 +1051,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <script>
 // ══ STATE ══
 const TODAY = new Date().toISOString().split('T')[0];
-let P = JSON.parse(localStorage.getItem('inarte_profile')||'{"name":"Pipit","age":25}');
+let P = JSON.parse(localStorage.getItem('inarte_profile')||'{"name":"","age":null}');
 let W = JSON.parse(localStorage.getItem('inarte_wellness_'+TODAY)||'{}');
 let selectedEmotions = W.emotions || [];
 let photos = W.photos || [];
 let activeJournalTab = 'cerita';
 let currentJournalOpen = null;
 
-function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function ld(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
+// sv/ld: delegate ke InarteSync (didefinisikan di sync.js)
+function sv(k,v){ InarteSync.sv(k,v); }
+function ld(k){ return InarteSync.ld(k); }
 
 // ══ BOOT ══
 // ── Sidebar collapse toggle ──
