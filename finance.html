@@ -1080,13 +1080,14 @@ const CATS=[
 ];
 
 // ══ STATE ══
-let P=JSON.parse(localStorage.getItem('inarte_profile')||'{"name":"Pipit"}');
+let P=JSON.parse(localStorage.getItem('inarte_profile')||'{"name":""}');
 let curCode=localStorage.getItem('inarte_currency')||'IDR';
 let viewY=new Date().getFullYear(),viewM=new Date().getMonth();
 let selType='income',selCat='makan';
 
-function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function ld(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
+// sv/ld: delegate ke InarteSync (didefinisikan di sync.js)
+function sv(k,v){ InarteSync.sv(k,v); }
+function ld(k){ return InarteSync.ld(k); }
 function getCur(){return CURRENCIES.find(c=>c.code===curCode)||CURRENCIES[0]}
 function getKey(y,m){return `inarte_fin_${y}_${m+1}`}
 // ══ SAVING DATA ══
