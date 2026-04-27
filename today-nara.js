@@ -1033,42 +1033,9 @@ function naraCtxSaveChat(userMsg, naraReply) {
   naraCtxSet({ lastChatSummary: snippet, lastChatDate: new Date().toISOString().split('T')[0] });
 }
 
-// Auto-refresh context setiap kali ada perubahan data penting
-// Di-hook ke: selectMood, adjustWater, saveDay, addHabit, toggleHabit
-const _origSaveDay = typeof saveDay === 'function' ? saveDay : null;
-
-// Patch saveDay agar auto-refresh context
-window.addEventListener('DOMContentLoaded', function() {
-  // Refresh sekali saat load
-  naraCtxRefreshToday();
-
-  // Override saveDay
-  const origSaveFn = window.saveDay;
-  if (typeof origSaveFn === 'function') {
-    window.saveDay = function() {
-      origSaveFn.apply(this, arguments);
-      naraCtxRefreshToday();
-    };
-  }
-});
-
-// Patch selectMood agar context update real-time
-const _origSelectMood = window.selectMood;
-if (typeof _origSelectMood === 'function') {
-  window.selectMood = function(mood, emoji, label, sub) {
-    _origSelectMood.apply(this, arguments);
-    setTimeout(naraCtxRefreshToday, 100);
-  };
-}
-
-// Patch adjustWater
-const _origAdjustWater = window.adjustWater;
-if (typeof _origAdjustWater === 'function') {
-  window.adjustWater = function(delta) {
-    _origAdjustWater.apply(this, arguments);
-    setTimeout(naraCtxRefreshToday, 100);
-  };
-}
+// Auto-refresh context setiap kali ada perubahan data penting.
+// Semua patches dikumpulkan di satu DOMContentLoaded di bawah (bersama fetch override).
+// Jangan tambah patch di luar listener itu — supaya tidak double-wrap.
 
 
 // ══════════════════════════════════════════════
@@ -1308,23 +1275,22 @@ window.addEventListener('DOMContentLoaded', function() {
     window.__inarteFetchPatched = true;
   }
 
-  // Real-time context refresh hooks
-  // selectMood
+  // Refresh context sekali saat halaman load
+  naraCtxRefreshToday();
+
+  // Real-time context refresh hooks — satu tempat, tidak double-wrap
   const _sm = window.selectMood;
   if (typeof _sm === 'function') {
     window.selectMood = function() { _sm.apply(this, arguments); setTimeout(naraCtxRefreshToday, 150); };
   }
-  // adjustWater
   const _aw = window.adjustWater;
   if (typeof _aw === 'function') {
     window.adjustWater = function() { _aw.apply(this, arguments); setTimeout(naraCtxRefreshToday, 150); };
   }
-  // toggleHabit — patch global
   const _th = window.toggleHabit;
   if (typeof _th === 'function') {
     window.toggleHabit = function() { _th.apply(this, arguments); setTimeout(naraCtxRefreshToday, 150); };
   }
-  // saveDay
   const _sd = window.saveDay;
   if (typeof _sd === 'function') {
     window.saveDay = function() { _sd.apply(this, arguments); setTimeout(naraCtxRefreshToday, 150); };
