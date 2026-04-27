@@ -739,6 +739,12 @@ body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
 .conf-p{position:absolute;border-radius:2px;opacity:0;animation:confDrop linear forwards}
 @keyframes confDrop{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(300px) rotate(540deg) scale(.3)}}
 
+.offline-banner{display:none;align-items:center;gap:8px;padding:6px 1rem;background:#7A3E50;color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:sticky;top:0;z-index:9999;width:100%;box-sizing:border-box;overflow:hidden}
+.offline-banner.show{display:flex}
+.offline-banner svg{width:13px;height:13px;min-width:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.offline-banner-txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.online-banner{display:none;align-items:center;gap:8px;padding:6px 1rem;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:sticky;top:0;z-index:9999;width:100%;box-sizing:border-box;overflow:hidden}
+.online-banner.show{display:flex}
 </style>
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
@@ -761,11 +767,11 @@ body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
 </div>
 
 <div class="offline-banner" id="offline-banner">
-  <svg viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0119 12.55M5 12.55a10.94 10.94 0 015.17-2.39M10.71 5.05A16 16 0 0122.56 9M1.42 9a15.91 15.91 0 014.7-2.88M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+  <svg width="13" height="13" viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0119 12.55M5 12.55a10.94 10.94 0 015.17-2.39M10.71 5.05A16 16 0 0122.56 9M1.42 9a15.91 15.91 0 014.7-2.88M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
   <span class="offline-banner-txt">Kamu sedang offline — data tersimpan lokal, akan sync otomatis saat online</span>
 </div>
 <div class="online-banner" id="online-banner">
-  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <svg width="13" height="13" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
   <span>Kembali online — data sedang disync...</span>
 </div>
 <!-- DESKTOP SIDEBAR -->
@@ -1956,23 +1962,24 @@ function maybeShowNaraMsg(){
     if(b)b.classList.remove("show");
     if(ob){
       ob.classList.add("show");
-      // Auto-hide after 3 detik
       setTimeout(()=>ob.classList.remove("show"),3000);
     }
-    // Trigger sync ulang kalau InarteSync tersedia
     if(typeof InarteSync!=="undefined"&&InarteSync.ready){
       const today=new Date().toISOString().split("T")[0];
       try{InarteSync.pushDaily&&InarteSync.pushDaily(today);}catch(e){}
       try{InarteSync.pushWellness&&InarteSync.pushWellness(today);}catch(e){}
     }
   }
-  // Cek status awal
-  if(!navigator.onLine) showOffline();
-  // Listen perubahan status
-  window.addEventListener("online",showOnline);
-  window.addEventListener("offline",showOffline);
-  // Juga cek saat InarteSync init gagal
-  window.addEventListener("inarte-sync-failed",showOffline);
+  // Tunggu DOMContentLoaded dulu baru cek — hindari false positive saat load awal
+  window.addEventListener("DOMContentLoaded",()=>{
+    // Delay 1.5 detik sebelum cek — browser kadang butuh waktu confirm status online
+    setTimeout(()=>{
+      if(!navigator.onLine) showOffline();
+    }, 1500);
+  });
+  window.addEventListener("online", showOnline);
+  window.addEventListener("offline", showOffline);
+  window.addEventListener("inarte-sync-failed", showOffline);
 })();
 
 // ══ UNIFIED STREAK HELPER ══
