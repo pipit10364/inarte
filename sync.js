@@ -328,5 +328,13 @@ const InarteSync = (() => {
     pushHaid,
     pullAll: _pullAll,
     get ready() { return _ready; },
+    // Utils: gunakan ini di semua halaman, jangan define ulang
+    ld: _ld,
+    sv: _sv,
   };
 })();
+
+// Global shorthand — tersedia di semua halaman yang load sync.js
+// Pakai: window.inarteLD(key) / window.inarteSV(key, val)
+window.inarteLD = InarteSync.ld;
+window.inarteSV = InarteSync.sv;
