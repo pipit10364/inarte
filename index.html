@@ -165,7 +165,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <button class="ob-ghost" onclick="obNext()">Lewati dulu</button>
     </div>
     <!-- Step 2: Usia -->
-    <div id="ob3" class="ob-step">
+    <div id="ob2" class="ob-step">
       <div class="ob-nav"><button class="ob-back" onclick="obBack()">← Kembali</button><div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div></div>
       <div class="ob-q">Berapa umurmu sekarang?</div>
       <div class="ob-hint">Membantu Nara kasih rekomendasi yang sesuai kondisimu.</div>
@@ -246,6 +246,8 @@ const SUPABASE_URL='https://dcolcdwybmwkpovmorse.supabase.co';
 const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjb2xjZHd5Ym13a3Bvdm1vcnNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MzU5ODAsImV4cCI6MjA5MTIxMTk4MH0.sh3WgGi95qM0Q5XUKjJcwfUy36NCJKbMV5cH70iyhxE';
 let SB=null,currentUser=null;
 
+// sv/ld di sini standalone karena sync.js belum tersedia sebelum login.
+// Setelah user masuk, semua halaman lain delegate ke InarteSync.sv / InarteSync.ld.
 function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
 function ld(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
 
