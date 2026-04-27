@@ -82,17 +82,46 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .cal-cell.logged-partial:hover{background:var(--moss-l)}
 .cal-cell.today.logged-full{border-color:var(--moss-d)}
 
-/* ══ EXPAND SECTIONS ══ */
+/* ══ RANGE SELECTOR ══ */
+.range-bar{display:flex;gap:6px;align-items:center;background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);padding:.5rem .75rem;box-shadow:var(--sh)}
+.range-btn{padding:5px 13px;border-radius:20px;border:1.5px solid transparent;background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--text3);cursor:pointer;transition:all .15s;white-space:nowrap}
+.range-btn.active{background:var(--moss);color:#fff;border-color:var(--moss);font-weight:600}
+.range-btn:hover:not(.active){background:var(--moss-p);color:var(--moss)}
+.range-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-right:2px}
+
+/* ══ STAT PILLS ══ */
+.stat-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat-pill{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--rsm);padding:.625rem .75rem;box-shadow:var(--sh);text-align:center}
+.stat-pill-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;line-height:1;margin-bottom:2px}
+.stat-pill-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text4)}
+.stat-pill-sub{font-size:9px;color:var(--text4);margin-top:1px}
+
+/* ══ OPEN SECTION CARDS ══ */
+.pg-section{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:.875rem 1rem;overflow:hidden}
+.pg-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:.75rem;display:flex;align-items:center;gap:7px}
+.pg-section-title svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* ══ WATER MONTHLY ══ */
+.water-month-row{display:flex;align-items:center;gap:10px;margin-bottom:.5rem}
+.water-month-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.water-month-fill{height:100%;background:var(--sky);border-radius:4px;transition:width .5s ease}
+.water-month-stat{font-size:11px;font-weight:600;color:var(--sky);min-width:52px;text-align:right}
+.water-month-sub{display:flex;justify-content:space-between;font-size:10px;color:var(--text4);margin-top:4px}
+
+/* ══ MOOD MONTHLY ══ */
+.mood-month-grid{display:flex;gap:5px;align-items:flex-end;height:72px;margin-bottom:8px}
+.mood-month-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+.mood-month-bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height .5s ease}
+.mood-month-em{font-size:13px;line-height:1}
+.mood-month-cnt{font-size:9px;color:var(--text4)}
+
+/* ══ REMOVE OLD EXPAND ══ */
 .expand-section{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.expand-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;background:transparent;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:left;transition:background .15s}
-.expand-toggle:hover{background:var(--bg2)}
-.expand-left{display:flex;align-items:center;gap:8px}
-.expand-title{font-size:12px;font-weight:600;color:var(--text2)}
-.expand-preview{font-size:11px;color:var(--text4);margin-left:4px}
-.expand-chevron{width:16px;height:16px;stroke:var(--text4);fill:none;stroke-width:1.75;stroke-linecap:round;transition:transform .25s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
-.expand-section.open .expand-chevron{transform:rotate(180deg)}
-.expand-body{display:none;border-top:1px solid var(--border-l);padding:.875rem 1rem 1rem;animation:fadeUp .2s ease}
-.expand-section.open .expand-body{display:block}
+.expand-toggle{display:none}
+.expand-body{display:block;padding:.875rem 1rem 1rem}
+.expand-body.has-pad-top{padding-top:.875rem}
+
+
 
 /* ══ NARA PATTERN INSIGHT ══ */
 .nara-pattern-head{display:none}
@@ -167,6 +196,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .fin-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text3)}
 .fin-legend-dot{width:8px;height:8px;border-radius:2px}
 .fin-empty{font-size:11px;color:var(--text4);font-style:italic}
+.weekly-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:.875rem}
+.weekly-stat{text-align:center;padding:.5rem;background:var(--bg2);border-radius:var(--rsm)}
+.weekly-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;line-height:1;margin-bottom:2px}
+.weekly-stat-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text4)}
+.weekly-nara{margin-top:.75rem;padding:.75rem;background:var(--moss-p);border-radius:var(--rsm);font-size:13px;color:var(--text2);line-height:1.7;border-left:3px solid var(--moss-l)}
+.weekly-habit-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.weekly-habit-name{font-size:12px;color:var(--text2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.weekly-habit-track{width:80px;height:5px;background:var(--border);border-radius:3px;flex-shrink:0;overflow:hidden}
+.weekly-habit-fill{height:100%;background:var(--moss);border-radius:3px}
+.weekly-habit-cnt{font-size:10px;color:var(--text3);min-width:28px;text-align:right}
 
 /* ══ DIARY FULLSCREEN ══ */
 .diary-fullscreen{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)}
@@ -420,19 +459,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   }
   .p-scroll > .section-divider{display:none}
 
-  /* Left col: header + streak + calendar + nara insight — sticky */
-  .page-header   {grid-column:1;grid-row:1}
-  .pg-left-col   {grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:12px;position:sticky;top:1.75rem;align-self:start}
+  /* LEFT col: range selector, stat pills, calendar, nara insight — sticky */
+  .pg-range-row   {grid-column:1;grid-row:1}
+  .pg-stat-pills  {grid-column:1;grid-row:2}
+  .pg-left-col    {grid-column:1;grid-row:3;display:flex;flex-direction:column;gap:12px;position:sticky;top:1.75rem;align-self:start}
 
-  /* Right col: all expand sections + diary btn */
-  .pg-right-col  {grid-column:2;grid-row:1/3;display:flex;flex-direction:column;gap:12px;min-width:0}
-  .mood-bars{overflow:hidden;width:100%}
-  .mood-bars .mood-bar-wrap{min-width:0;flex-shrink:1}
+  /* RIGHT col: all charts, habit, finance, diary — scrollable */
+  .pg-right-col   {grid-column:2;grid-row:1/4;display:flex;flex-direction:column;gap:12px;min-width:0}
 
-  /* Right col: expand sections always open on desktop */
-  .pg-right-col .expand-toggle{display:none}
-  .pg-right-col .expand-body{display:block!important;padding-top:0;max-height:none}
-  .pg-right-col .expand-section{border-radius:var(--r);border:1px solid var(--border-l);background:var(--surface);padding:.875rem;overflow:visible}
+  /* On desktop all sections are always visible */
+  .expand-toggle{display:none!important}
+  .expand-body{display:block!important;padding-top:.5rem}
 
   /* Sidebar collapse */
   body.sidebar-collapsed{--sidebar-w:64px}
@@ -531,6 +568,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
+<div class="offline-banner" id="offline-banner">
+  <svg width="13" height="13" viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0119 12.55M5 12.55a10.94 10.94 0 015.17-2.39M10.71 5.05A16 16 0 0122.56 9M1.42 9a15.91 15.91 0 014.7-2.88M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+  <span class="offline-banner-txt">Kamu sedang offline — data tersimpan lokal, akan sync otomatis saat online</span>
+</div>
+<div class="online-banner" id="online-banner">
+  <svg width="13" height="13" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span>Kembali online — data sedang disync...</span>
+</div>
 <!-- DESKTOP SIDEBAR -->
 <aside class="desktop-sidebar" id="desktop-sidebar">
   <div class="ds-logo">IN<em>arte</em></div>
@@ -566,42 +611,38 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <div class="p-scroll">
 
-  <div class="page-header">
-    <div class="page-title">Progres <em>kamu</em></div>
-    <div class="page-sub">Setiap hari yang kamu isi adalah bukti kamu peduli pada dirimu sendiri.</div>
+  <!-- RANGE SELECTOR — spans full width on mobile, left col on desktop -->
+  <div class="pg-range-row">
+    <div class="range-bar">
+      <span class="range-lbl">Tampilkan</span>
+      <button class="range-btn active" id="range-30" onclick="setRange(30)">30 hari</button>
+      <button class="range-btn" id="range-90" onclick="setRange(90)">3 bulan</button>
+      <button class="range-btn" id="range-180" onclick="setRange(180)">6 bulan</button>
+      <button class="range-btn" id="range-0" onclick="setRange(0)">Semua</button>
+    </div>
   </div>
 
-  <!-- LEFT COL: streak + calendar + nara insight -->
+  <!-- STAT PILLS -->
+  <div class="pg-stat-pills stat-pills">
+    <div class="stat-pill">
+      <div class="stat-pill-num" id="streak-num" style="color:var(--moss)">0</div>
+      <div class="stat-pill-lbl">Streak</div>
+      <div class="stat-pill-sub" id="streak-nara">hari beruntun</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-pill-num" id="total-days" style="color:var(--dusk)">0</div>
+      <div class="stat-pill-lbl">Total hari</div>
+      <div class="stat-pill-sub">tercatat</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-pill-num" id="avg-water" style="color:var(--sky)">—</div>
+      <div class="stat-pill-lbl">Avg air</div>
+      <div class="stat-pill-sub">gelas/hari</div>
+    </div>
+  </div>
+
+  <!-- LEFT COL: kalender + Nara insight -->
   <div class="pg-left-col">
-  <!-- STREAK CARD -->
-  <div class="streak-card">
-    <div>
-      <div class="streak-main">
-        <span class="streak-num" id="streak-num">0</span>
-        <span class="streak-unit">hari</span>
-      </div>
-
-  <!-- GAMIFICATION BADGE -->
-  <div id="streak-gamif"></div>
-      <div class="streak-lbl">beruntun</div>
-    </div>
-    <div class="streak-divider"></div>
-    <div class="streak-stats">
-      <div class="streak-stat">
-        <div class="streak-stat-num" id="total-days">0</div>
-        <div class="streak-stat-lbl">Total hari</div>
-      </div>
-      <div class="streak-stat">
-        <div class="streak-stat-num" id="avg-water">—</div>
-        <div class="streak-stat-lbl">Rata-rata air</div>
-      </div>
-      <div class="streak-stat">
-        <div class="streak-stat-num" id="active-days">—</div>
-        <div class="streak-stat-lbl">Hari aktif</div>
-      </div>
-    </div>
-    <div class="streak-nara" id="streak-nara-wrap" style="display:none"><div class="nara-surface"><div class="nara-av">N</div><div class="nara-voice"><div class="nara-voice-lbl">Nara</div><div class="nara-voice-txt" id="streak-nara"></div></div></div></div>
-  </div>
 
   <!-- COMPACT CALENDAR -->
   <div class="cal-card">
@@ -627,120 +668,94 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 
-  <!-- NARA PATTERN INSIGHT -->
-  <div class="expand-section" id="ex-nara">
-    <button class="expand-toggle" onclick="toggleExpand('nara')">
-      <div class="expand-left">
-        <div style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">N</div>
-        <span class="expand-title">Pola yang Nara lihat</span>
-        <span class="expand-preview">30 hari terakhir</span>
-      </div>
-      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="expand-body">
-      <div class="nara-surface">
-        <div class="nara-av">N</div>
-        <div class="nara-voice">
-          <div class="nara-voice-lbl">Nara</div>
-          <div class="nara-voice-txt nara-pattern-body" id="nara-pattern-body">
-            <div class="nara-dots"><span></span><span></span><span></span></div>
-          </div>
+  <!-- NARA INSIGHT -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <div style="width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">N</div>
+      Pola yang Nara lihat
+    </div>
+    <div class="nara-surface">
+      <div class="nara-av">N</div>
+      <div class="nara-voice">
+        <div class="nara-voice-lbl">Nara</div>
+        <div class="nara-voice-txt" id="nara-pattern-body">
+          <div class="nara-dots"><span></span><span></span><span></span></div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- GAMIFICATION BADGE -->
+  <div id="streak-gamif"></div>
+
   </div><!-- end pg-left-col -->
 
-  <!-- RIGHT COL: habit, mood, sleep, water, finance, diary -->
+  <!-- RIGHT COL: semua chart dan data -->
   <div class="pg-right-col">
-  <!-- HABIT CONSISTENCY -->
-  <div class="expand-section" id="ex-habit">
-    <button class="expand-toggle" onclick="toggleExpand('habit')">
-      <div class="expand-left">
-        <svg class="si" style="color:var(--moss)" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        <span class="expand-title">Konsistensi habit</span>
-        <span class="expand-preview" id="habit-preview">bulan ini</span>
-      </div>
-      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="expand-body">
-      <div id="habit-cons-wrap"></div>
+
+  <!-- WEEKLY REVIEW CARD -->
+  <div class="pg-section" id="weekly-review-card" style="display:none">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Ringkasan minggu ini
+      <span id="weekly-review-range" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
     </div>
+    <div id="weekly-review-body"></div>
   </div>
 
   <!-- MOOD DISTRIBUTION -->
-  <div class="expand-section" id="ex-mood">
-    <button class="expand-toggle" onclick="toggleExpand('mood')">
-      <div class="expand-left">
-        <svg class="si" style="color:var(--dusk)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-        <span class="expand-title">Distribusi mood</span>
-        <span class="expand-preview" id="mood-preview">30 hari</span>
-      </div>
-      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="expand-body">
-      <div class="mood-bars" id="mood-bars"></div>
-      <div class="mood-legend" id="mood-legend"></div>
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      Mood <span id="mood-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">bulan ini</span>
     </div>
+    <div class="mood-month-grid" id="mood-bars"></div>
+    <div class="mood-legend" id="mood-legend"></div>
   </div>
 
-  <!-- SLEEP & ENERGY -->
-  <div class="expand-section" id="ex-sleep">
-    <button class="expand-toggle" onclick="toggleExpand('sleep')">
-      <div class="expand-left">
-        <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        <span class="expand-title">Tidur & energi</span>
-        <span class="expand-preview" id="sleep-preview">rata-rata</span>
-      </div>
-      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="expand-body">
-      <div class="sleep-energy-row" id="sleep-energy-row"></div>
+  <!-- TIDUR & ENERGI -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      Tidur & Energi
     </div>
+    <div class="sleep-energy-row" id="sleep-energy-row"></div>
   </div>
 
-  <!-- WATER -->
-  <div class="expand-section" id="ex-water">
-    <button class="expand-toggle" onclick="toggleExpand('water')">
-      <div class="expand-left">
-        <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><path d="M12 2C6 9 4 13 4 16a8 8 0 0016 0c0-3-2-7-8-14z"/></svg>
-        <span class="expand-title">Konsistensi air minum</span>
-        <span class="expand-preview" id="water-preview">7 hari terakhir</span>
-      </div>
-      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="expand-body">
-      <div class="water-week-chart" id="water-chart"></div>
-      <div style="display:flex;justify-content:space-between" id="water-chart-lbls"></div>
+  <!-- AIR MINUM -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6 9 4 13 4 16a8 8 0 0016 0c0-3-2-7-8-14z"/></svg>
+      Air minum <span id="water-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
     </div>
+    <div id="water-chart-wrap"></div>
   </div>
 
-  <!-- FINANCE SUMMARY -->
-  <div class="expand-section" id="ex-finance">
-    <button class="expand-toggle" onclick="toggleExpand('finance')">
-      <div class="expand-left">
-        <svg class="si" style="color:var(--amber)" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-        <span class="expand-title">Ringkasan keuangan</span>
-        <span class="expand-preview" id="finance-preview">3 bulan terakhir</span>
-      </div>
-      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="expand-body">
-      <div class="fin-legend">
-        <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--moss-l)"></div>Pemasukan</div>
-        <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--clay-l)"></div>Pengeluaran</div>
-      </div>
-      <div class="fin-month-bars" id="fin-bars"></div>
-      <div style="display:flex;justify-content:space-around" id="fin-labels"></div>
+  <!-- HABIT CONSISTENCY -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Konsistensi habit <span id="habit-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">bulan ini</span>
     </div>
+    <div id="habit-cons-wrap"></div>
   </div>
 
-  <!-- DIARY BUTTON -->
-  <button style="width:100%;padding:11px;background:transparent;color:var(--moss);border:1.5px solid var(--moss-l);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px"
-    onclick="openDiary()"
-    onmouseover="this.style.background='var(--moss-p)'"
-    onmouseout="this.style.background='transparent'">
+  <!-- KEUANGAN -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Keuangan <span id="finance-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">3 bulan terakhir</span>
+    </div>
+    <div class="fin-legend">
+      <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--moss-l)"></div>Pemasukan</div>
+      <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--clay-l)"></div>Pengeluaran</div>
+    </div>
+    <div class="fin-month-bars" id="fin-bars"></div>
+    <div style="display:flex;justify-content:space-around" id="fin-labels"></div>
+  </div>
+
+  <!-- CATATAN HARIAN -->
+  <button class="diary-open-btn" onclick="openDiary()">
     <svg class="si" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
     Lihat catatan harian
   </button>
@@ -898,6 +913,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Lebih aktif bergerak</button>
       <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Kesehatan mental</button>
       <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Keuangan tertata</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Mulai menabung</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Kurangi pengeluaran</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Bebas hutang</button>
+      <button class="pp-goals-chip" onclick="ppGoalToggle(this)">Dana darurat</button>
     </div>
     <div class="pp-section-divider">Akun</div>
     <button class="pp-install-btn" id="pp-install-btn" onclick="triggerInstall()" style="display:none">
@@ -969,6 +988,47 @@ function toggleSidebar(){
     document.body.classList.add('sidebar-collapsed');
 })();
 
+// ══ RANGE STATE ══
+let currentRange = 30;
+
+function setRange(days){
+  currentRange = days;
+  document.querySelectorAll('.range-btn').forEach(b=>b.classList.remove('active'));
+  const id = 'range-'+(days===0?'0':days);
+  const btn=document.getElementById(id);
+  if(btn)btn.classList.add('active');
+  buildStreakCard();
+  buildMoodChart();
+  buildSleepEnergy();
+  buildWaterChart();
+  buildHabitConsistency();
+  buildNaraPattern();
+  buildFinanceChart();
+}
+
+function getRangeDays(){
+  if(currentRange===0){
+    const logs=ld('inarte_logs')||{};
+    const keys=Object.keys(logs).sort();
+    if(!keys.length) return 90;
+    const first=new Date(keys[0]);
+    const diff=Math.ceil((new Date()-first)/(1000*60*60*24));
+    return Math.max(diff,1);
+  }
+  return currentRange;
+}
+
+function getRangeDates(){
+  const days=getRangeDays();
+  const dates=[];
+  const d=new Date();
+  for(let i=0;i<days;i++){
+    dates.push(d.toISOString().split('T')[0]);
+    d.setDate(d.getDate()-1);
+  }
+  return dates;
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   if(typeof InarteSync!=='undefined'){
     try{
@@ -989,6 +1049,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   buildSleepEnergy();
   buildWaterChart();
   buildFinanceChart();
+  buildWeeklyReviewCard(); // selalu tampil, bukan hanya hari Minggu
 });
 
 function buildTopbar(){
@@ -999,44 +1060,190 @@ function buildTopbar(){
 }
 
 // ══ STREAK ══
+// ══ WEEKLY REVIEW CARD ══
+function getWeekKey(){
+  const d=new Date();
+  const jan1=new Date(d.getFullYear(),0,1);
+  const week=Math.ceil(((d-jan1)/86400000+jan1.getDay()+1)/7);
+  return `${d.getFullYear()}-W${String(week).padStart(2,'0')}`;
+}
+
+async function buildWeeklyReviewCard(){
+  const card=document.getElementById('weekly-review-card');
+  const body=document.getElementById('weekly-review-body');
+  const rangeEl=document.getElementById('weekly-review-range');
+  if(!card||!body) return;
+
+  // Kumpulkan data 7 hari terakhir
+  const logs=ld('inarte_logs')||{};
+  const dates=[];
+  const d=new Date();
+  for(let i=6;i>=0;i--){
+    const dd=new Date(d);dd.setDate(d.getDate()-i);
+    dates.push(dd.toISOString().split('T')[0]);
+  }
+
+  // Format range label: "20–26 Apr"
+  const fmt2=(ds)=>{const d=new Date(ds);return `${d.getDate()} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][d.getMonth()]}`;};
+  rangeEl.textContent=`${fmt2(dates[0])} – ${fmt2(dates[6])}`;
+
+  let activeDays=0,totalWater=0,waterDays=0,totalSleep=0,sleepDays=0;
+  const moods={};
+  const template=JSON.parse(localStorage.getItem('inarte_habits_template')||'[]');
+  const habitCounts={};
+  const waterTarget=typeof getWaterTarget==='function'?getWaterTarget():8;
+
+  dates.forEach(k=>{
+    if(_isDayActive(k)) activeDays++;
+    const day=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
+    const w=JSON.parse(localStorage.getItem('inarte_wellness_'+k)||'null');
+    const log=logs[k]||{};
+    const water=log.water??day?.water??0;
+    if(water>0){totalWater+=water;waterDays++;}
+    const sleep=w?.sleepHrs||0;
+    if(sleep>0){totalSleep+=sleep;sleepDays++;}
+    const mood=log.mood||day?.mood;
+    if(mood) moods[mood]=(moods[mood]||0)+1;
+    const habitLog=ld(`inarte_habitlog_${k}`)||{};
+    template.forEach(h=>{if(habitLog[h.id])habitCounts[h.id]=(habitCounts[h.id]||0)+1;});
+  });
+
+  const avgWater=waterDays?(totalWater/waterDays).toFixed(1):'—';
+  const avgSleep=sleepDays?(totalSleep/sleepDays).toFixed(1):'—';
+  const topMood=Object.entries(moods).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+  const moodMap={senang:'😊',netral:'😐',lelah:'😮‍💨',berat:'😔',semangat:'🔥'};
+
+  // Render stats
+  body.innerHTML=`
+    <div class="weekly-stat-row">
+      <div class="weekly-stat">
+        <div class="weekly-stat-num" style="color:var(--moss)">${activeDays}<span style="font-size:.9rem">/7</span></div>
+        <div class="weekly-stat-lbl">Hari aktif</div>
+      </div>
+      <div class="weekly-stat">
+        <div class="weekly-stat-num" style="color:var(--sky)">${avgWater}</div>
+        <div class="weekly-stat-lbl">Avg air</div>
+      </div>
+      <div class="weekly-stat">
+        <div class="weekly-stat-num" style="color:var(--dusk)">${avgSleep}</div>
+        <div class="weekly-stat-lbl">Avg tidur</div>
+      </div>
+    </div>
+    ${topMood?`<div style="font-size:12px;color:var(--text3);margin-bottom:.75rem">Mood dominan: ${moodMap[topMood]||''} ${topMood}</div>`:''}
+    ${template.length?`
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text4);margin-bottom:6px">Habit</div>
+    ${template.slice(0,4).map(h=>{
+      const cnt=habitCounts[h.id]||0;
+      const pct=Math.round(cnt/7*100);
+      return `<div class="weekly-habit-row">
+        <span class="weekly-habit-name">${h.text}</span>
+        <div class="weekly-habit-track"><div class="weekly-habit-fill" style="width:${pct}%"></div></div>
+        <span class="weekly-habit-cnt">${cnt}/7</span>
+      </div>`;
+    }).join('')}`:''}
+    <div class="weekly-nara" id="weekly-nara-txt">
+      <div class="nara-dots"><span></span><span></span><span></span></div>
+    </div>`;
+
+  card.style.display='block';
+
+  // Generate Nara insight untuk weekly review
+  const P=JSON.parse(localStorage.getItem('inarte_profile')||'{}');
+  const summary=`aktif ${activeDays}/7 hari, rata-rata air ${avgWater} gelas, rata-rata tidur ${avgSleep} jam, mood dominan: ${topMood||'beragam'}`;
+  const sys=`Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${P.name||'teman'}.${P.goals?.length?' Goals: '+P.goals.join(', ')+'.':''}
+Tulis ringkasan minggu yang personal — 2 kalimat. Acknowledge satu hal positif spesifik dan satu area untuk minggu depan. Bahasa Indonesia santai, satu kaomoji.`;
+
+  try{
+    const r=await fetch('/api/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'gemini-2.5-flash',max_tokens:150,system:sys,
+        messages:[{role:'user',content:`Data minggu ini: ${summary}`}]}),
+      signal:AbortSignal.timeout(10000)
+    });
+    if(r.ok){
+      const data=await r.json();
+      const txt=data.content?.[0]?.text||'';
+      if(txt){document.getElementById('weekly-nara-txt').textContent=txt;return;}
+    }
+  }catch(e){}
+
+  // Fallback
+  const naraEl=document.getElementById('weekly-nara-txt');
+  if(activeDays>=5) naraEl.textContent=`${activeDays} hari aktif minggu ini${P.name?' '+P.name:''}! Konsistensi kayak gini yang bikin perubahan nyata. Semangat terus minggu depan (◕ᴗ◕✿)`;
+  else if(activeDays>0) naraEl.textContent=`${activeDays} hari tercatat minggu ini${P.name?' '+P.name:''}. Setiap langkah kecil itu berarti — minggu depan bisa lebih (◕ᴗ◕✿)`;
+  else naraEl.textContent=`Belum banyak tercatat minggu ini${P.name?' '+P.name:''} — tidak apa-apa, minggu depan bisa mulai lagi dari hari pertama (◕ᴗ◕✿)`;
+}
+
+
+function _isDayActive(dateStr){
+  const logs=JSON.parse(localStorage.getItem('inarte_logs')||'{}');
+  if(logs[dateStr]?.logged) return true;
+  const day=JSON.parse(localStorage.getItem('inarte_day_'+dateStr)||'null');
+  if(day&&(day.water>0||day.mood||(day.meals&&day.meals.length>0)||(day.habits&&day.habits.length>0)||(day.moves&&day.moves.length>0))) return true;
+  const w=JSON.parse(localStorage.getItem('inarte_wellness_'+dateStr)||'null');
+  if(w&&(w.sleepHrs||w.emotions?.length||w.journalText)) return true;
+  return false;
+}
+
 function buildStreakCard(){
   const logs = ld('inarte_logs')||{};
-  const allKeys = Object.keys(logs).filter(k=>logs[k].logged).sort();
+  // Total hari aktif = gabungan dari semua sumber (logs + inarte_day_* + inarte_wellness_*)
+  // Kumpulkan semua key yang pernah ada di localStorage
+  const allActiveKeys = new Set();
+  Object.keys(logs).forEach(k=>{ if(logs[k].logged) allActiveKeys.add(k); });
+  // Scan inarte_day_* keys
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);
+    if(key&&key.startsWith('inarte_day_')){
+      const dateStr=key.replace('inarte_day_','');
+      if(_isDayActive(dateStr)) allActiveKeys.add(dateStr);
+    }
+    if(key&&key.startsWith('inarte_wellness_')){
+      const dateStr=key.replace('inarte_wellness_','');
+      if(_isDayActive(dateStr)) allActiveKeys.add(dateStr);
+    }
+  }
 
-  // Streak
+  // Streak — pakai _isDayActive (unified)
   let streak=0; const dd=new Date();
   while(streak<365){
     const k=dd.toISOString().split('T')[0];
-    if(logs[k]?.logged){streak++;dd.setDate(dd.getDate()-1);}else break;
+    if(_isDayActive(k)){streak++;dd.setDate(dd.getDate()-1);}else break;
   }
   document.getElementById('streak-num').textContent=streak;
-  document.getElementById('total-days').textContent=allKeys.length;
+  document.getElementById('total-days').textContent=allActiveKeys.size;
 
-  // Avg water (last 30 days)
-  const last30=[]; const d30=new Date();
-  for(let i=0;i<30;i++){
-    const k=d30.toISOString().split('T')[0];
-    if(logs[k]?.logged) last30.push(logs[k].water||0);
-    d30.setDate(d30.getDate()-1);
-  }
+  // Avg water — dari range yang dipilih
+  const dates=getRangeDates();
+  const last30=[]; 
+  dates.forEach(k=>{
+    const waterFromLog=logs[k]?.water;
+    const dayData=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
+    const water=waterFromLog??dayData?.water??0;
+    if(_isDayActive(k)) last30.push(water);
+  });
   const avgW=last30.length?(last30.reduce((a,b)=>a+b,0)/last30.length).toFixed(1):'—';
   document.getElementById('avg-water').textContent=avgW;
 
-  // Active days this month
+  // Active days this month — cek move dari logs atau inarte_day_*
   const now=new Date();
   let activeDays=0;
   for(let d=1;d<=now.getDate();d++){
     const k=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    if(logs[k]?.move>0) activeDays++;
+    const moveFromLog=logs[k]?.move;
+    const dayData=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
+    const hasMove=(moveFromLog>0)||(dayData?.moves?.length>0);
+    if(hasMove) activeDays++;
   }
   document.getElementById('active-days').textContent=activeDays+' hr';
 
   // Nara streak message
-  const naraEl=document.getElementById('streak-nara');const naraWrap=document.getElementById('streak-nara-wrap');
+  const naraEl=document.getElementById('streak-nara');
+  if(!naraEl) return;
   if(streak===0) naraEl.textContent='Mulai hari ini (◕ᴗ◕✿)';
   else if(streak===1) naraEl.textContent='Hari pertama! Lanjutkan!';
   else if(streak<7) naraEl.textContent=`${streak} hari beruntun. Bagus!`;
-  else if(streak<30) naraEl.textContent=`${streak} hari! Konsistensim luar biasa.`;
+  else if(streak<30) naraEl.textContent=`${streak} hari! Konsistensimu luar biasa.`;
   else naraEl.textContent=`${streak} hari beruntun. Nara bangga (≧▽≦)`;
 }
 
@@ -1063,9 +1270,9 @@ function buildCalendar(){
     const cell=document.createElement('button');
     let cls='cal-cell';
     if(isToday) cls+=' today';
-    if(log?.logged){
+    if(_isDayActive(ds)){
       // Full = water>=6 AND habits done AND mood
-      const score=(log.water>=6?1:0)+(log.mood?1:0)+(log.meals>0?1:0);
+      const score=(log?.water>=6?1:0)+(log?.mood?1:0)+(log?.meals>0?1:0);
       cls+=score>=2?' logged-full':' logged-partial';
     }
     cell.className=cls;
@@ -1091,25 +1298,24 @@ function toggleExpand(id){
 // ══ NARA PATTERN ══
 async function buildNaraPattern(){
   const logs=ld('inarte_logs')||{};
-  const keys=Object.keys(logs).filter(k=>logs[k].logged).sort().reverse().slice(0,30);
-  if(keys.length<5){
+  const dates=getRangeDates();
+  const keys=dates.filter(k=>_isDayActive(k));
+  if(keys.length<3){
     document.getElementById('nara-pattern-body').innerHTML='<p>Isi terus ya! Setelah beberapa hari, Nara akan punya gambaran yang lebih utuh (◕ᴗ◕✿)</p>';
     return;
   }
-
-  // Build stats
-  const moods=keys.map(k=>logs[k].mood).filter(Boolean);
+  const moods=keys.map(k=>{const d=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');return logs[k]?.mood||d?.mood;}).filter(Boolean);
   const moodFreq={};moods.forEach(m=>{moodFreq[m]=(moodFreq[m]||0)+1});
   const topMood=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
-  const avgW=(keys.reduce((s,k)=>s+(logs[k].water||0),0)/keys.length).toFixed(1);
-  const activeDays=keys.filter(k=>logs[k].move>0).length;
-  const consistency=Math.round(keys.length/30*100);
+  const avgW=(keys.reduce((s,k)=>{const d=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');return s+(logs[k]?.water||d?.water||0);},0)/keys.length).toFixed(1);
+  const consistency=Math.round(keys.length/getRangeDays()*100);
+  const rangeLabel=currentRange===0?'semua waktu':getRangeDays()+' hari terakhir';
 
   // Try AI
-  const sys=`Kamu adalah Nara, companion wellness yang hangat. Nama user: ${P.name||'teman'}, usia ${P.age||'?'} tahun.
+  const sys=`Kamu adalah Nara, companion wellness yang hangat. Nama user: ${P.name||'teman'}, usia ${P.age||'?'} tahun.${P.goals&&P.goals.length?'\nGoals user: '+P.goals.join(', ')+' — sesuaikan insight dengan goals ini.':''}
 Tulis 2-3 kalimat insight personal berdasarkan data 30 hari terakhir user. Seperti teman yang genuinely memperhatikan.
 Bahasa Indonesia natural, sesekali kaomoji. BUKAN bullet points, BUKAN template. Spesifik dan personal.`;
-  const ctx=`Data 30 hari terakhir: ${keys.length} hari tercatat (konsistensi ${consistency}%), rata-rata minum air ${avgW} gelas/hari, ${activeDays} hari aktif bergerak, mood dominan: ${topMood||'beragam'}.`;
+  const ctx=`Data ${rangeLabel}: ${keys.length} hari tercatat (konsistensi ${consistency}%), rata-rata minum air ${avgW} gelas/hari, mood dominan: ${topMood||'beragam'}. Goals user: ${P.goals?.join(', ')||'belum diset'}.`;
 
   let reply;
   try{
@@ -1120,12 +1326,7 @@ Bahasa Indonesia natural, sesekali kaomoji. BUKAN bullet points, BUKAN template.
   }catch(e){}
 
   if(!reply){
-    const parts=[];
-    if(parseFloat(avgW)>=6) parts.push(`Rata-rata ${avgW} gelas air per hari — hidrasi kamu konsisten banget!`);
-    else parts.push(`Rata-rata air ${avgW} gelas/hari. Coba tingkatkan sedikit lagi ya.`);
-    if(activeDays>=keys.length*0.5) parts.push(`${activeDays} dari ${keys.length} hari kamu aktif bergerak — itu konsistensi yang patut diapresiasi.`);
-    if(topMood) parts.push(`Mood dominan bulan ini: ${topMood}. ${topMood==='berat'?'Nara di sini kalau mau cerita ya (ꈍᴗꈍ)':'Semoga terus terjaga ya (◕ᴗ◕✿)'}`);
-    reply=parts.join(' ');
+    reply = naraSmartFallback('', 'progress');
   }
   document.getElementById('nara-pattern-body').innerHTML=`<p>${reply}</p>`;
 }
@@ -1138,29 +1339,23 @@ function buildHabitConsistency(){
     wrap.innerHTML='<div class="habit-cons-empty">Belum ada habit yang dicatat.</div>';
     return;
   }
-
-  // Count per habit this month
-  const now=new Date();
-  const y=now.getFullYear(),m=now.getMonth();
-  const daysInMonth=now.getDate(); // up to today
-
+  const dates=getRangeDates();
+  const daysInRange=dates.length;
   const counts={};
-  for(let d=1;d<=daysInMonth;d++){
-    const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  dates.forEach(ds=>{
     const log=ld(`inarte_habitlog_${ds}`)||{};
     template.forEach(h=>{if(log[h.id])counts[h.id]=(counts[h.id]||0)+1;});
-  }
-
-  // Sort by consistency desc
+  });
   const sorted=[...template].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0));
-  const done=template.filter(h=>(counts[h.id]||0)===daysInMonth).length;
-  document.getElementById('habit-preview').textContent=`${done}/${template.length} perfect`;
-
+  const done=template.filter(h=>(counts[h.id]||0)===daysInRange).length;
+  const days=getRangeDays();
+  const lbl=currentRange===0?'semua waktu':days+' hari';
+  document.getElementById('habit-preview').textContent=`${done}/${template.length} perfect · ${lbl}`;
   wrap.innerHTML='';
   const list=document.createElement('div');list.className='habit-cons-list';
   sorted.forEach(h=>{
     const cnt=counts[h.id]||0;
-    const pct=Math.round(cnt/daysInMonth*100);
+    const pct=Math.round(cnt/daysInRange*100);
     const streak=calcHabitStreak(h.id);
     const row=document.createElement('div');row.className='habit-cons-row';
     row.innerHTML=`
@@ -1194,16 +1389,17 @@ function buildMoodChart(){
     semangat:{em:'🔥',label:'Semangat',color:'#3D6147'},
   };
   const counts={senang:0,netral:0,lelah:0,berat:0,semangat:0};
-  const d30=new Date();
-  for(let i=0;i<30;i++){
-    const k=d30.toISOString().split('T')[0];
-    const m=logs[k]?.mood;
+  const dates=getRangeDates();
+  dates.forEach(k=>{
+    const day=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
+    const m=logs[k]?.mood||day?.mood;
     if(m&&counts[m]!==undefined)counts[m]++;
-    d30.setDate(d30.getDate()-1);
-  }
+  });
   const total=Object.values(counts).reduce((a,b)=>a+b,0);
   const maxV=Math.max(...Object.values(counts),1);
-  document.getElementById('mood-preview').textContent=`${total} hari tercatat`;
+  const days=getRangeDays();
+  const lbl=currentRange===0?'semua waktu':days+' hari terakhir';
+  document.getElementById('mood-preview').textContent=`${total} hari · ${lbl}`;
 
   const barsEl=document.getElementById('mood-bars');
   const legendEl=document.getElementById('mood-legend');
@@ -1211,14 +1407,13 @@ function buildMoodChart(){
 
   Object.entries(moodDef).forEach(([id,def])=>{
     const cnt=counts[id];
-    const pct=Math.round(cnt/maxV*100);
-    const wrap=document.createElement('div');wrap.className='mood-bar-wrap';
-    wrap.innerHTML=`
-      <div class="mood-bar" style="height:${Math.max(pct*0.56,4)}px;background:${def.color}44;border-radius:3px 3px 0 0"></div>
-      <div class="mood-bar-em">${def.em}</div>
-      <div class="mood-bar-count">${cnt>0?cnt:''}</div>`;
-    barsEl.appendChild(wrap);
-
+    const pct=maxV>0?Math.round(cnt/maxV*100):0;
+    const col=document.createElement('div');col.className='mood-month-col';
+    col.innerHTML=`
+      <div class="mood-month-bar" style="height:${Math.max(pct*0.68,4)}px;background:${def.color}55"></div>
+      <div class="mood-month-em">${def.em}</div>
+      <div class="mood-month-cnt">${cnt>0?cnt:''}</div>`;
+    barsEl.appendChild(col);
     if(cnt>0){
       const li=document.createElement('div');li.className='mood-legend-item';
       li.innerHTML=`<div class="mood-legend-dot" style="background:${def.color}66"></div>${def.label}: ${cnt} hari`;
@@ -1230,24 +1425,17 @@ function buildMoodChart(){
 // ══ SLEEP & ENERGY ══
 function buildSleepEnergy(){
   const wrap=document.getElementById('sleep-energy-row');
-  const d30=new Date();
+  const dates=getRangeDates();
   const sleepVals=[],fisikVals=[],mentalVals=[];
-
-  for(let i=0;i<30;i++){
-    const k=d30.toISOString().split('T')[0];
+  dates.forEach(k=>{
     const w=ld('inarte_wellness_'+k);
     if(w?.sleepHrs) sleepVals.push(w.sleepHrs);
     if(w?.energyFisik) fisikVals.push(w.energyFisik);
     if(w?.energyMental) mentalVals.push(w.energyMental);
-    d30.setDate(d30.getDate()-1);
-  }
-
+  });
   const avgSleep=sleepVals.length?(sleepVals.reduce((a,b)=>a+b,0)/sleepVals.length).toFixed(1):null;
   const avgFisik=fisikVals.length?(fisikVals.reduce((a,b)=>a+b,0)/fisikVals.length).toFixed(1):null;
   const avgMental=mentalVals.length?(mentalVals.reduce((a,b)=>a+b,0)/mentalVals.length).toFixed(1):null;
-
-  document.getElementById('sleep-preview').textContent=avgSleep?`rata-rata ${avgSleep} jam`:'belum ada data';
-
   wrap.innerHTML=`
     <div class="se-card">
       <div class="se-lbl">Rata-rata tidur</div>
@@ -1258,14 +1446,8 @@ function buildSleepEnergy(){
     <div class="se-card">
       <div class="se-lbl">Rata-rata energi</div>
       <div style="display:flex;gap:10px;margin-top:2px">
-        <div>
-          <div class="se-num" style="color:var(--moss)">${avgFisik||'—'}</div>
-          <div class="se-sub">fisik /5</div>
-        </div>
-        <div>
-          <div class="se-num" style="color:var(--dusk)">${avgMental||'—'}</div>
-          <div class="se-sub">mental /5</div>
-        </div>
+        <div><div class="se-num" style="color:var(--moss)">${avgFisik||'—'}</div><div class="se-sub">fisik /5</div></div>
+        <div><div class="se-num" style="color:var(--dusk)">${avgMental||'—'}</div><div class="se-sub">mental /5</div></div>
       </div>
       ${avgFisik?`<div class="se-bar" style="margin-top:6px"><div class="se-bar-fill" style="width:${parseFloat(avgFisik)/5*100}%;background:var(--moss)"></div></div>`:''}
     </div>`;
@@ -1274,38 +1456,41 @@ function buildSleepEnergy(){
 // ══ WATER CHART ══
 function buildWaterChart(){
   const logs=ld('inarte_logs')||{};
-  const chartEl=document.getElementById('water-chart');
-  const lblEl=document.getElementById('water-chart-lbls');
-  chartEl.innerHTML='';lblEl.innerHTML='';
-
-  const days=[];
-  const d=new Date();
-  for(let i=6;i>=0;i--){
-    const dd=new Date(d);dd.setDate(d.getDate()-i);
-    days.push({key:dd.toISOString().split('T')[0],lbl:['Min','Sen','Sel','Rab','Kam','Jum','Sab'][dd.getDay()]});
-  }
-
-  const maxW=8;
-  const waters=days.map(d=>logs[d.key]?.water||0);
-  document.getElementById('water-preview').textContent=`rata-rata ${(waters.reduce((a,b)=>a+b,0)/7).toFixed(1)} gelas`;
-
-  days.forEach((day,i)=>{
-    const w=waters[i];
-    const pct=w/maxW*100;
-    const bar=document.createElement('div');
-    bar.className='water-week-bar'+(w>=8?' full':'');
-    bar.style.height=`${Math.max(pct*0.44,3)}px`;
-    bar.style.width='100%';
-    bar.style.flexShrink='0';
-    bar.style.flex='1';
-    bar.title=`${day.key}: ${w} gelas`;
-    chartEl.appendChild(bar);
-
-    const lbl=document.createElement('div');
-    lbl.style.cssText='font-size:9px;color:var(--text4);text-align:center;flex:1';
-    lbl.textContent=day.lbl;
-    lblEl.appendChild(lbl);
+  const dates=getRangeDates();
+  const waterTarget=typeof getWaterTarget==='function'?getWaterTarget():8;
+  const waters=dates.map(k=>{
+    const day=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
+    return logs[k]?.water??day?.water??0;
   });
+  const activeDays=waters.filter(w=>w>0).length;
+  const avg=activeDays?(waters.reduce((a,b)=>a+b,0)/activeDays).toFixed(1):0;
+  const metTarget=waters.filter(w=>w>=waterTarget).length;
+  const days=getRangeDays();
+  const lbl=currentRange===0?'semua waktu':days+' hari';
+  document.getElementById('water-preview').textContent=`avg ${avg} gelas · ${metTarget} hari capai target`;
+
+  const wrap=document.getElementById('water-chart-wrap');
+  wrap.innerHTML='';
+
+  // Avg progress bar
+  const avgPct=Math.min(parseFloat(avg)/waterTarget*100,100);
+  const div=document.createElement('div');
+  div.innerHTML=`
+    <div class="water-month-row">
+      <span style="font-size:11px;color:var(--text3);min-width:72px">Rata-rata</span>
+      <div class="water-month-track"><div class="water-month-fill" style="width:${avgPct}%"></div></div>
+      <span class="water-month-stat">${avg} <span style="font-weight:400;color:var(--text4)">/ ${waterTarget}</span></span>
+    </div>
+    <div class="water-month-row">
+      <span style="font-size:11px;color:var(--text3);min-width:72px">Capai target</span>
+      <div class="water-month-track"><div class="water-month-fill" style="width:${dates.length?metTarget/dates.length*100:0}%;background:var(--moss)"></div></div>
+      <span class="water-month-stat" style="color:var(--moss)">${metTarget} <span style="font-weight:400;color:var(--text4)">hari</span></span>
+    </div>
+    <div class="water-month-sub">
+      <span>${activeDays} hari ada catatan</span>
+      <span>${lbl}</span>
+    </div>`;
+  wrap.appendChild(div);
 }
 
 // ══ FINANCE CHART ══
@@ -1532,7 +1717,7 @@ async function sendNara(){
     _doneHabits.length?'Habit selesai: '+_doneHabits.join(', '):'Belum ada habit yang selesai',
     _journalSnippet?'Jurnal hari ini: "'+_journalSnippet+'"':'Belum ada jurnal hari ini',
   ].join('. ');
-  const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'. DATA HARI INI ('+_TODAY+'): '+_ctxToday+'. PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.';
+  const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' DATA HARI INI ('+_TODAY+'): '+_ctxToday+'. PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.';
   let reply;
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -1541,14 +1726,7 @@ async function sendNara(){
     if(r.ok){const d=await r.json();reply=d.content?.[0]?.text;}
   }catch(e){}
   if(!reply){
-    const q=txt.toLowerCase();const n=_P.name?' '+_P.name:'';
-    if(q.match(/^(hei|hai|halo|hi)/))reply='Hei'+n+'! (◕ᴗ◕✿) Mau ngobrol apa hari ini?';
-    else if(q.includes('capek')||q.includes('lelah'))reply='Capek itu wajar'+n+' — istirahat bukan kelemahan (ꈍᴗꈍ)';
-    else if(q.includes('sedih')||q.includes('berat'))reply='Makasih udah mau cerita'+n+'. Perasaan itu valid banget (ꈍᴗꈍ)';
-    else if(q.includes('senang')||q.includes('bahagia'))reply='Wah ikut seneng'+n+'! (≧▽≦)';
-    else if(q.includes('makan'))reply='Cek menu rekomendasi di tab Hari Ini ya'+n+' (◕ᴗ◕✿)';
-    else if(q.includes('olahraga')||q.includes('gerak'))reply='Mulai dari yang kamu suka'+n+'. 10 menit jalan kaki sudah bagus!';
-    else reply='Aku dengerin'+n+' (◕ᴗ◕✿) Mau cerita lebih?';
+    reply = naraSmartFallback(txt, 'chat');
   }
   msgs.removeChild(typing);_addNaraMsg(reply,'nara');
   _chatHistory.push({role:'assistant',content:reply});
@@ -1793,10 +1971,8 @@ function calcOverallStreak(){
   let s = 0;
   const d = new Date();
   while(s < 400){
-    const k = 'inarte_day_' + d.toISOString().split('T')[0];
-    const day = JSON.parse(localStorage.getItem(k) || 'null');
-    const logged = day && (day.water > 0 || day.mood || (day.meals && day.meals.length) || (day.habits && day.habits.length));
-    if(logged){ s++; d.setDate(d.getDate()-1); }
+    const k = d.toISOString().split('T')[0];
+    if(_isDayActive(k)){ s++; d.setDate(d.getDate()-1); }
     else break;
   }
   return s;
@@ -1852,9 +2028,258 @@ function naraCtxSet(patch) {
   localStorage.setItem(NARA_CTX_KEY, JSON.stringify(updated));
 }
 
+// ══ OFFLINE FALLBACK ══
+(function initOfflineDetection(){
+  function showOffline(){
+    const b=document.getElementById("offline-banner");
+    const ob=document.getElementById("online-banner");
+    if(b)b.classList.add("show");
+    if(ob)ob.classList.remove("show");
+  }
+  function showOnline(){
+    const b=document.getElementById("offline-banner");
+    const ob=document.getElementById("online-banner");
+    if(b)b.classList.remove("show");
+    if(ob){
+      ob.classList.add("show");
+      // Auto-hide after 3 detik
+      setTimeout(()=>ob.classList.remove("show"),3000);
+    }
+    // Trigger sync ulang kalau InarteSync tersedia
+    if(typeof InarteSync!=="undefined"&&InarteSync.ready){
+      const today=new Date().toISOString().split("T")[0];
+      try{InarteSync.pushDaily&&InarteSync.pushDaily(today);}catch(e){}
+      try{InarteSync.pushWellness&&InarteSync.pushWellness(today);}catch(e){}
+    }
+  }
+  // Cek status awal
+  if(!navigator.onLine) showOffline();
+  // Listen perubahan status
+  window.addEventListener("online",showOnline);
+  window.addEventListener("offline",showOffline);
+  // Juga cek saat InarteSync init gagal
+  window.addEventListener("inarte-sync-failed",showOffline);
+})();
+
+// ══ NARA SMART FALLBACK ══
+// Dipanggil saat API gagal — generate respons personal dari data lokal
+// context: 'chat' | 'wellness' | 'finance' | 'progress'
+function naraSmartFallback(query, context){
+  const P=JSON.parse(localStorage.getItem('inarte_profile')||'{}');
+  const n=P.name?' '+P.name:'';
+  const goals=P.goals||[];
+  const today=new Date().toISOString().split('T')[0];
+  const D=JSON.parse(localStorage.getItem('inarte_day_'+today)||'{}');
+  const W=JSON.parse(localStorage.getItem('inarte_wellness_'+today)||'{}');
+  const q=(query||'').toLowerCase();
+
+  // Helper: pilih satu dari array secara random
+  const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+
+  // ── Data points dari hari ini ──
+  const mood=D.mood||'';
+  const water=D.water||0;
+  const waterTarget=typeof getWaterTarget==='function'?getWaterTarget():8;
+  const sleepHrs=W.sleepHrs||D.sleepHrs||0;
+  const energi=W.energyFisik||0;
+  const emotions=W.emotions||[];
+  const habits=D.habits||[];
+  const habitTemplate=JSON.parse(localStorage.getItem('inarte_habits_template')||'[]');
+  const habitDone=habits.length;
+  const habitTotal=habitTemplate.length;
+
+  // ── Finance ──
+  const now=new Date();
+  const finKey=`inarte_fin_${now.getFullYear()}_${now.getMonth()+1}`;
+  const fin=JSON.parse(localStorage.getItem(finKey)||'{"tx":[],"fixed":[]}');
+  const income=(fin.tx||[]).filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expense=(fin.tx||[]).filter(t=>t.type!=='income').reduce((s,t)=>s+t.amount,0);
+  const sisa=income-expense;
+
+  // ── Konteks emosi negatif/positif ──
+  const emosiNegatif=['Sedih','Cemas','Marah','Takut','Kesepian','Frustrasi','Bosan'];
+  const emosiPositif=['Bahagia','Bersyukur','Tenang','Puas','Semangat','Gembira'];
+  const adaEmosiNegatif=emotions.some(e=>emosiNegatif.includes(e));
+  const adaEmosiPositif=emotions.some(e=>emosiPositif.includes(e));
+
+  // ════════════════════════════════
+  // CHAT FALLBACK — berbasis query
+  // ════════════════════════════════
+  if(context==='chat'){
+
+    // Salam
+    if(q.match(/^(hei|hai|halo|hi|hello|hey)\b/)){
+      const options=[];
+      if(mood==='lelah'||mood==='berat')
+        options.push(`Hei${n} (ꈍᴗꈍ) Nara lihat kamu lagi ${mood} hari ini — mau cerita?`);
+      if(mood==='senang'||mood==='semangat')
+        options.push(`Hei${n}! Seneng lihat kamu ${mood} hari ini (≧▽≦) Ada yang mau diobrolin?`);
+      if(sleepHrs&&sleepHrs<6)
+        options.push(`Hei${n}! Tidurmu tadi malam cuma ${sleepHrs.toFixed(1)} jam ya — gimana kondisi sekarang?`);
+      if(water===0)
+        options.push(`Hei${n}! Sudah minum air hari ini belum? (◕ᴗ◕✿)`);
+      if(habitDone===habitTotal&&habitTotal>0)
+        options.push(`Hei${n}! Semua habit sudah selesai hari ini — Nara bangga! (≧▽≦)`);
+      if(options.length) return pick(options);
+      return `Hei${n}! (◕ᴗ◕✿) Mau ngobrol apa hari ini?`;
+    }
+
+    // Capek / lelah
+    if(q.includes('capek')||q.includes('lelah')||q.includes('exhausted')){
+      if(sleepHrs&&sleepHrs<6)
+        return `Wajar banget capek${n} — tidur ${sleepHrs.toFixed(1)} jam itu kurang. Tubuh kamu minta istirahat, dan itu valid banget (ꈍᴗꈍ)`;
+      if(energi&&energi<=2)
+        return `Energimu memang lagi rendah hari ini${n}. Tidak harus dipaksakan — istirahat itu produktif juga (ꈍᴗꈍ)`;
+      return `Capek itu wajar${n} — istirahat bukan kelemahan. Sudah minum air? Kadang dehidrasi bikin makin lelah (ꈍᴗꈍ)`;
+    }
+
+    // Sedih / berat
+    if(q.includes('sedih')||q.includes('berat')||q.includes('nangis')||q.includes('down')){
+      if(adaEmosiNegatif&&emotions.length)
+        return `Nara baca kamu tadi catat "${emotions[0]}" — makasih sudah jujur sama diri sendiri${n}. Mau cerita lebih? (ꈍᴗꈍ)`;
+      return `Makasih sudah mau cerita${n}. Perasaan itu valid banget — tidak perlu buru-buru baik-baik (ꈍᴗꈍ)`;
+    }
+
+    // Senang / bahagia
+    if(q.includes('senang')||q.includes('bahagia')||q.includes('happy')||q.includes('alhamdulillah')){
+      if(adaEmosiPositif)
+        return `Wah${n} ikut seneng banget! Kamu juga catat "${emotions.find(e=>emosiPositif.includes(e))}" tadi — bagus banget (≧▽≦)`;
+      return `Wah ikut seneng${n}! Semoga terus terjaga ya (≧▽≦)`;
+    }
+
+    // Air / minum
+    if(q.includes('minum')||q.includes('air')||q.includes('water')){
+      if(water>=waterTarget)
+        return `Target air sudah tercapai hari ini${n} — ${water} gelas! Tubuhmu pasti happy (≧▽≦)`;
+      if(water===0)
+        return `Belum ada catatan minum air hari ini nih${n}. Yuk mulai dari satu gelas dulu — pelan-pelan (◕ᴗ◕✿)`;
+      return `Udah ${water} dari ${waterTarget} gelas hari ini${n}! ${waterTarget-water} lagi ya (◕ᴗ◕✿)`;
+    }
+
+    // Tidur / sleep
+    if(q.includes('tidur')||q.includes('sleep')||q.includes('istirahat')){
+      if(sleepHrs&&sleepHrs>=7)
+        return `Tidurmu kemarin ${sleepHrs.toFixed(1)} jam${n} — sudah cukup! Semoga hari ini lebih berenergi (◕ᴗ◕✿)`;
+      if(sleepHrs&&sleepHrs<6)
+        return `Tidurmu baru ${sleepHrs.toFixed(1)} jam kemarin${n}. Kalau bisa, coba tidur lebih awal malam ini — tubuh kamu butuh recharge (ꈍᴗꈍ)`;
+      return `Tidur yang cukup itu salah satu self-care paling underrated${n}. Semoga malam ini lebih nyenyak ya (◕ᴗ◕✿)`;
+    }
+
+    // Makan / makanan
+    if(q.includes('makan')||q.includes('lapar')||q.includes('menu')){
+      const budget=P.budget||'';
+      if(budget)
+        return `Cek rekomendasi menu di tab Hari Ini ya${n} — Nara sudah sesuaikan dengan budget kamu (◕ᴗ◕✿)`;
+      return `Cek menu rekomendasi di tab Hari Ini ya${n} (◕ᴗ◕✿) Jangan skip makan!`;
+    }
+
+    // Olahraga / gerak
+    if(q.includes('olahraga')||q.includes('gerak')||q.includes('gym')||q.includes('jalan')){
+      if(goals.includes('Lebih aktif bergerak'))
+        return `Ini salah satu goals kamu${n}! Mulai dari yang ringan aja — 10-15 menit jalan kaki sudah bagus banget (◕ᴗ◕✿)`;
+      return `Mulai dari yang kamu suka${n} — 10 menit jalan kaki aja sudah bagus! Konsisten lebih penting dari intensitas (◕ᴗ◕✿)`;
+    }
+
+    // Finance
+    if(q.includes('uang')||q.includes('duit')||q.includes('keuangan')||q.includes('nabung')||q.includes('hemat')){
+      if(goals.some(g=>['Keuangan tertata','Mulai menabung','Kurangi pengeluaran','Bebas hutang','Dana darurat'].includes(g)))
+        return `Ini goals keuangan kamu${n}! Catat transaksi dulu di tab Keuangan — dari situ Nara bisa kasih insight yang lebih pas (◕ᴗ◕✿)`;
+      if(income>0&&sisa>0)
+        return `Keuangan bulan ini surplus${n} — bagus! Sisanya bisa dimasukin ke saving (◕ᴗ◕✿)`;
+      return `Yuk mulai catat di tab Keuangan${n} — tidak harus sempurna, yang penting mulai (◕ᴗ◕✿)`;
+    }
+
+    // Habit
+    if(q.includes('habit')||q.includes('kebiasaan')||q.includes('rutinitas')){
+      if(habitTotal===0)
+        return `Belum ada habit yang diset${n}. Coba tambah satu hal kecil dulu di tab Hari Ini — konsistensi dimulai dari langkah pertama (◕ᴗ◕✿)`;
+      if(habitDone===habitTotal)
+        return `Semua ${habitTotal} habit kamu sudah selesai hari ini${n}! Konsistensi kayak gini yang bikin perubahan nyata (≧▽≦)`;
+      return `${habitDone} dari ${habitTotal} habit selesai hari ini${n}. Pelan-pelan aja, yang penting jalan (◕ᴗ◕✿)`;
+    }
+
+    // Default — berdasarkan kondisi hari ini
+    const defaults=[];
+    if(mood&&mood!=='netral')
+      defaults.push(`Nara lihat mood kamu "${mood}" hari ini${n} — mau cerita lebih? (◕ᴗ◕✿)`);
+    if(water<Math.floor(waterTarget/2)&&water>0)
+      defaults.push(`Jangan lupa minum air ya${n} — baru ${water} gelas nih (◕ᴗ◕✿)`);
+    if(goals.length)
+      defaults.push(`Ingat goals kamu${n}: ${goals[0]}. Pelan-pelan tapi pasti ya (◕ᴗ◕✿)`);
+    defaults.push(`Aku dengerin${n} (◕ᴗ◕✿) Mau cerita apa?`);
+    return pick(defaults);
+  }
+
+  // ════════════════════════════════
+  // WELLNESS SAVE FALLBACK
+  // ════════════════════════════════
+  if(context==='wellness'){
+    const parts=[];
+    if(adaEmosiNegatif)
+      parts.push(`Terima kasih sudah mau cerita hari ini${n}. Hari yang berat itu valid — tidak harus kuat terus (ꈍᴗꈍ)`);
+    else if(adaEmosiPositif)
+      parts.push(`Senang banget lihat kamu baik-baik${n}! (◕ᴗ◕✿)`);
+    else
+      parts.push(`Terima kasih sudah check in dengan dirimu sendiri${n} — itu bukan hal kecil (◕ᴗ◕✿)`);
+    if(sleepHrs&&sleepHrs<6)
+      parts.push(`Tidur ${sleepHrs.toFixed(1)} jam tadi malam — coba istirahat lebih awal malam ini ya.`);
+    else if(sleepHrs&&sleepHrs>=7)
+      parts.push(`Tidur ${sleepHrs.toFixed(1)} jam — bagus! Tubuhmu pasti lebih segar.`);
+    if(W.journalText||W.storyText)
+      parts.push(`Catatan harianmu sudah Nara baca. Terima kasih sudah mau jujur.`);
+    if(W.hopeText)
+      parts.push(`Harapanmu untuk besok sudah Nara catat. Semoga terwujud ya (ꈍᴗꈍ)`);
+    if(goals.some(g=>g==='Tidur lebih baik')&&sleepHrs&&sleepHrs<7)
+      parts.push(`Ingat goals tidurmu${n} — pelan-pelan membaik itu bagus.`);
+    if(parts.length<2) parts.push(`Istirahat yang cukup ya. Sampai besok! (◕ᴗ◕✿)`);
+    return parts.slice(0,2).join(' ');
+  }
+
+  // ════════════════════════════════
+  // FINANCE FALLBACK
+  // ════════════════════════════════
+  if(context==='finance'){
+    if(income===0)
+      return `Belum ada catatan pemasukan bulan ini${n}. Yuk mulai catat dari yang paling mudah dulu (◕ᴗ◕✿)`;
+    if(sisa<0)
+      return `Pengeluaran bulan ini melebihi pemasukan${n}. Tidak apa-apa — dengan mencatat ini kamu sudah selangkah lebih sadar (ꈍᴗꈍ)`;
+    if(sisa>0)
+      return `Bulan ini masih surplus${n}! Sisa ${sisa.toLocaleString('id')} bisa dipertimbangkan buat saving (◕ᴗ◕✿)`;
+    return `Pemasukan dan pengeluaran bulan ini seimbang${n}. Yuk cek detail di bawah (◕ᴗ◕✿)`;
+  }
+
+  // ════════════════════════════════
+  // PROGRESS FALLBACK
+  // ════════════════════════════════
+  if(context==='progress'){
+    const logs=JSON.parse(localStorage.getItem('inarte_logs')||'{}');
+    const totalDays=Object.keys(logs).length;
+    const parts=[];
+    if(totalDays===0)
+      return `Perjalananmu baru dimulai${n} — setiap hari yang kamu catat adalah bukti bahwa kamu peduli pada dirimu sendiri (◕ᴗ◕✿)`;
+    if(totalDays>=30)
+      parts.push(`Sudah ${totalDays} hari kamu check in${n} — konsistensi kayak gini yang bikin perubahan nyata.`);
+    else
+      parts.push(`${totalDays} hari tercatat${n} — setiap satu hari itu artinya kamu niat untuk lebih baik.`);
+    if(goals.length)
+      parts.push(`Goals kamu: ${goals.slice(0,2).join(' dan ')}. Perjalanannya terlihat di sini.`);
+    else
+      parts.push(`Terus lanjutkan ya — sedikit demi sedikit (◕ᴗ◕✿)`);
+    return parts.join(' ');
+  }
+
+  return `Aku dengerin${n} (◕ᴗ◕✿) Mau cerita apa?`;
+}
+
+
 function naraCtxBuildInjection() {
   const ctx = naraCtxGet();
+  const profile = JSON.parse(localStorage.getItem('inarte_profile') || '{}');
+  const goals = profile.goals || [];
   const parts = [];
+  if (goals.length) {
+    parts.push(`[Goals user: ${goals.join(', ')} — prioritaskan insight yang relevan dengan goals ini]`);
+  }
   if (ctx.todaySummary) {
     const t = ctx.todaySummary;
     parts.push(`[Hari Ini: air ${t.water}/8 gelas, mood "${t.mood||'belum'}", ${t.habitDone||0}/${t.habitTotal||0} habit selesai]`);
@@ -1923,6 +2348,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
   const profile = JSON.parse(localStorage.getItem('inarte_profile') || '{}');
   const name = profile.name || '';
+  const goals = profile.goals || [];
   const h = new Date().getHours();
   const waktu = h < 11 ? 'pagi' : h < 15 ? 'siang' : h < 18 ? 'sore' : 'malam';
   const waktuLabel = h < 11 ? 'Selamat pagi' : h < 15 ? 'Selamat siang' : h < 18 ? 'Selamat sore' : 'Selamat malam';
@@ -1954,6 +2380,7 @@ window.addEventListener('DOMContentLoaded', function() {
   const sys = `Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${name || 'teman'}.
 User sedang membuka halaman Progres — tempat melihat perjalanan dan pencapaian mereka.
 Waktu: ${waktu}. Streak saat ini: ${streak} hari. Total hari tercatat: ${totalDays}.
+${goals.length ? 'Goals user: '+goals.join(', ')+' — sesuaikan apresiasi dengan goals ini.' : ''}
 Tone sapaan: apresiasi perjalanan, hangat, tidak berlebihan. Fokus pada usaha, bukan angka.
 ${streak === 0 ? 'Belum ada streak — ajak mulai dengan ringan dan tanpa tekanan.' : streak >= 7 ? `Streak ${streak} hari itu pencapaian nyata — apresiasi dengan tulus.` : `Streak ${streak} hari — acknowledge usaha kecil yang konsisten.`}
 ${ctxInjection}
@@ -1984,11 +2411,12 @@ JANGAN tambahkan teks apapun di luar JSON.`;
     }
   } catch(e) {}
 
-  // Fallback
-  const fallbacks = streak === 0
-    ? [{ message: `Hei${name?' '+name:''}! Setiap perjalanan dimulai dari hari pertama (◕ᴗ◕✿) Yuk mulai catat harianmu.`, quickReplies: ['Oke, mulai sekarang!', 'Tanya dulu', 'Lihat-lihat dulu'] }]
-    : [{ message: `${name||'Hei'}! ${streak} hari beruntun — itu bukan hal kecil. Nara bangga lihat kamu konsisten (◕ᴗ◕✿)`, quickReplies: ['Makasih Nara!', 'Mau lihat pola', 'Mau cerita'] }];
-  _renderWelcomeMsg(fallbacks[0].message, fallbacks[0].quickReplies);
+  // Fallback — pakai naraSmartFallback
+  const fbMsg = naraSmartFallback('', 'progress');
+  const fbReplies = streak === 0
+    ? ['Oke, mulai sekarang!', 'Tanya dulu', 'Lihat-lihat dulu']
+    : ['Makasih Nara!', 'Mau lihat pola', 'Mau cerita'];
+  _renderWelcomeMsg(fbMsg, fbReplies);
 })();
 
 function _renderWelcomeMsg(message, quickReplies) {
