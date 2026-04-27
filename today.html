@@ -739,11 +739,11 @@ body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
 .conf-p{position:absolute;border-radius:2px;opacity:0;animation:confDrop linear forwards}
 @keyframes confDrop{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(300px) rotate(540deg) scale(.3)}}
 
-.offline-banner{display:none;align-items:center;gap:8px;padding:6px 1rem;background:#7A3E50;color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:sticky;top:0;z-index:9999;width:100%;box-sizing:border-box;overflow:hidden}
+.offline-banner{display:none;align-items:center;gap:8px;padding:6px 1rem;background:#7A3E50;color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:420px;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;overflow:hidden}
 .offline-banner.show{display:flex}
 .offline-banner svg{width:13px;height:13px;min-width:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
 .offline-banner-txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.online-banner{display:none;align-items:center;gap:8px;padding:6px 1rem;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:sticky;top:0;z-index:9999;width:100%;box-sizing:border-box;overflow:hidden}
+.online-banner{display:none;align-items:center;gap:8px;padding:6px 1rem;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:420px;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;overflow:hidden}
 .online-banner.show{display:flex}
 </style>
 <script>
