@@ -75,6 +75,82 @@ Pertimbangkan kondisi secara spesifik. Berikan pilihan yang beragam dari menu se
   showToast('Menu diperbarui!');
 }
 
+
+// ══ NARA → MENU INTEGRATION ══
+// Dipanggil oleh sendNara kalau Nara detect user minta rekomendasi makan
+async function naraUpdateMenu(request) {
+  const grid = document.getElementById('menu-grid');
+  const nara = document.getElementById('menu-nara');
+  if (!grid) return;
+
+  // Show loading state di grid
+  grid.innerHTML = '<div class="menu-cell" style="grid-column:1/-1;text-align:center;padding:16px;color:var(--text2);font-size:13px"><div class="nara-dots"><span></span><span></span><span></span></div></div>';
+
+  const age = P.age ? parseInt(P.age) : 25;
+  const conds = (D.conditions || []).join(', ') || 'tidak ada';
+
+  const sys = `Berikan 3 rekomendasi menu berdasarkan permintaan spesifik user dalam format JSON array saja, tanpa penjelasan lain, tanpa markdown.
+Format: [{"time":"Sarapan","name":"nama makanan","cal":angka,"why":"satu kalimat singkat kenapa cocok"},{"time":"Siang",...},{"time":"Malam",...}]
+Profil user: usia ${age} tahun, kondisi: ${conds}, budget: ${P.budget || 'Rp 50-100rb'}, ${P.act || ''}, ${P.cook || ''}.
+Permintaan spesifik user: ${request}
+Sesuaikan menu dengan permintaan — kalau minta bekal, semua menu harus bisa dijadikan bekal. Kalau minta diet, sesuaikan kalori. Tetap praktis dan realistis.`;
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gemini-2.0-flash',
+        max_tokens: 400,
+        system: sys,
+        messages: [{ role: 'user', content: request }]
+      }),
+      signal: AbortSignal.timeout(12000)
+    });
+
+    if (r.ok) {
+      const data = await r.json();
+      const text = data.content?.[0]?.text || '';
+      const clean = text.replace(/```json|```/g, '').trim();
+      const menus = JSON.parse(clean);
+
+      if (Array.isArray(menus) && menus.length >= 3) {
+        grid.innerHTML = '';
+        menus.forEach(m => {
+          const cell = document.createElement('div'); cell.className = 'menu-cell';
+          cell.innerHTML = `<div class="menu-cell-time">${m.time}</div><div class="menu-cell-name">${m.name}</div><div class="menu-cell-cal">~${m.cal} kkal</div><div class="menu-cell-why">${m.why}</div>`;
+          cell.onclick = () => { document.getElementById('meal-inp').value = m.name; openSheet('meals'); };
+          grid.appendChild(cell);
+        });
+
+        // Update subtitle
+        document.getElementById('menu-head-sub').textContent = `Disesuaikan: "${request.slice(0, 40)}${request.length > 40 ? '…' : ''}"`;
+
+        // Show Nara note
+        if (nara) {
+          nara.textContent = 'Menu ini Nara ubah sesuai permintaanmu — tap menu untuk langsung catat! (◕ᴗ◕✿)';
+          nara.classList.add('on');
+        }
+
+        // Scroll ke section menu
+        const menuSection = document.getElementById('menu-grid');
+        if (menuSection) menuSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        return true;
+      }
+    }
+  } catch (e) {
+    console.warn('[INARTE] naraUpdateMenu failed:', e);
+  }
+
+  // Fallback: rebuild default
+  buildMenuGrid();
+  return false;
+}
+
+// Expose globally supaya sendNara bisa panggil
+window.naraUpdateMenu = naraUpdateMenu;
+
 // ══ MEALS ══
 function estCal(name,portion){
   const q=name.toLowerCase().trim();
