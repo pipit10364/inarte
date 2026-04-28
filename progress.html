@@ -972,14 +972,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <script>
 // ══ STATE ══
 const TODAY = new Date().toISOString().split('T')[0];
-let P = JSON.parse(localStorage.getItem('inarte_profile')||'{"name":"Pipit","age":25}');
+let P = JSON.parse(localStorage.getItem('inarte_profile')||'{"name":"","age":null}');
 let calY = new Date().getFullYear(), calM = new Date().getMonth();
 let diaryCalY = new Date().getFullYear(), diaryCalM = new Date().getMonth();
 let diaryView = 'cal'; // 'cal' or 'entry'
 let selectedDiaryDate = null;
 
-function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function ld(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
+// sv/ld: delegate ke InarteSync (didefinisikan di sync.js)
+function sv(k,v){ InarteSync.sv(k,v); }
+function ld(k){ return InarteSync.ld(k); }
 
 const MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
@@ -1155,23 +1156,58 @@ async function buildWeeklyReviewCard(){
 
   // Generate Nara insight untuk weekly review
   const P=JSON.parse(localStorage.getItem('inarte_profile')||'{}');
-  const summary=`aktif ${activeDays}/7 hari, rata-rata air ${avgWater} gelas, rata-rata tidur ${avgSleep} jam, mood dominan: ${topMood||'beragam'}`;
-  const sys=`Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${P.name||'teman'}.${P.goals?.length?' Goals: '+P.goals.join(', ')+'.':''}
-Tulis ringkasan minggu yang personal — 2 kalimat. Acknowledge satu hal positif spesifik dan satu area untuk minggu depan. Bahasa Indonesia santai, satu kaomoji.`;
+
+  // Mood breakdown detail
+  const moodVal={senang:2,semangat:2,netral:0,lelah:-1,berat:-2,cemas:-2};
+  const moodBreakdown=Object.entries(moods).map(([m,c])=>`${m}(${c}x)`).join(', ')||'belum dicatat';
+  const weekScore=dates.reduce((s,k)=>{const d=ld('inarte_day_'+k);const m=logs[k]?.mood||d?.mood||'netral';return s+(moodVal[m]||0);},0);
+  const weekMoodSentiment=weekScore>=4?'positif':weekScore>=-2?'netral-campuran':'berat';
+
+  const habitSummary=template.map(h=>{
+    const cnt=habitCounts[h.id]||0;
+    return `"${h.text}" ${cnt}/7`;
+  }).join(', ')||'tidak ada';
+
+  const now2=new Date();
+  const finKey2=`inarte_fin_${now2.getFullYear()}_${now2.getMonth()+1}`;
+  const fin2=ld(finKey2)||{tx:[]};
+  const weekExpense=(fin2.tx||[])
+    .filter(t=>t.type!=='income'&&dates.includes(t.date))
+    .reduce((s,t)=>s+t.amount,0);
+
+  const weekCtx=[
+    `Periode: ${rangeEl.textContent}`,
+    `Hari aktif: ${activeDays}/7`,
+    `Minum air: rata-rata ${avgWater}/${waterTarget} gelas/hari`,
+    avgSleep!=='—'?`Tidur: rata-rata ${avgSleep} jam/malam`:'',
+    `Mood: ${moodBreakdown} (sentimen keseluruhan: ${weekMoodSentiment})`,
+    template.length?`Habit minggu ini: ${habitSummary}`:'',
+    weekExpense?`Pengeluaran minggu ini: Rp${weekExpense.toLocaleString('id-ID')}`:'',
+    P.goals?.length?`Goals user: ${P.goals.join(', ')}`:'',
+  ].filter(Boolean).join('\n');
+
+  const sys=`Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${P.name||'teman'}${P.age?', usia '+P.age+' tahun':''}.${P.goals?.length?' Goals: '+P.goals.join(', ')+'.':''}
+Tulis ringkasan minggu yang personal — 2-3 kalimat.
+- Sebutkan 1 hal positif spesifik dari data (boleh sebut angkanya)
+- Sebutkan 1 hal yang bisa ditingkatkan minggu depan, dengan nada ringan
+- Kalau sentimen minggu "berat", validasi dulu sebelum kasih semangat
+Bahasa Indonesia santai. Satu kaomoji di akhir.`;
 
   try{
     const r=await fetch('/api/chat',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'gemini-2.5-flash',max_tokens:150,system:sys,
-        messages:[{role:'user',content:`Data minggu ini: ${summary}`}]}),
-      signal:AbortSignal.timeout(10000)
+      body:JSON.stringify({model:'gemini-2.5-flash',max_tokens:200,system:sys,
+        messages:[{role:'user',content:weekCtx}]}),
+      signal:AbortSignal.timeout(12000)
     });
     if(r.ok){
       const data=await r.json();
-      const txt=data.content?.[0]?.text||'';
+      const txt=data.content?.[0]?.text?.trim()||'';
       if(txt){document.getElementById('weekly-nara-txt').textContent=txt;return;}
     }
-  }catch(e){}
+  }catch(e){
+    console.warn('[INARTE] weekly review AI error:', e);
+  }
 
   // Fallback
   const naraEl=document.getElementById('weekly-nara-txt');
@@ -1303,38 +1339,135 @@ function toggleExpand(id){
 
 // ══ NARA PATTERN ══
 async function buildNaraPattern(){
+  const el=document.getElementById('nara-pattern-body');
   const logs=ld('inarte_logs')||{};
   const dates=getRangeDates();
   const keys=dates.filter(k=>_isDayActive(k));
+
   if(keys.length<3){
-    document.getElementById('nara-pattern-body').innerHTML='<p>Isi terus ya! Setelah beberapa hari, Nara akan punya gambaran yang lebih utuh (◕ᴗ◕✿)</p>';
+    el.innerHTML='<p>Isi terus ya! Setelah beberapa hari, Nara akan punya gambaran yang lebih utuh (◕ᴗ◕✿)</p>';
     return;
   }
-  const moods=keys.map(k=>{const d=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');return logs[k]?.mood||d?.mood;}).filter(Boolean);
-  const moodFreq={};moods.forEach(m=>{moodFreq[m]=(moodFreq[m]||0)+1});
-  const topMood=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
-  const avgW=(keys.reduce((s,k)=>{const d=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');return s+(logs[k]?.water||d?.water||0);},0)/keys.length).toFixed(1);
-  const consistency=Math.round(keys.length/getRangeDays()*100);
-  const rangeLabel=currentRange===0?'semua waktu':getRangeDays()+' hari terakhir';
 
-  // Try AI
-  const sys=`Kamu adalah Nara, companion wellness yang hangat. Nama user: ${P.name||'teman'}, usia ${P.age||'?'} tahun.${P.goals&&P.goals.length?'\nGoals user: '+P.goals.join(', ')+' — sesuaikan insight dengan goals ini.':''}
-Tulis 2-3 kalimat insight personal berdasarkan data 30 hari terakhir user. Seperti teman yang genuinely memperhatikan.
-Bahasa Indonesia natural, sesekali kaomoji. BUKAN bullet points, BUKAN template. Spesifik dan personal.`;
-  const ctx=`Data ${rangeLabel}: ${keys.length} hari tercatat (konsistensi ${consistency}%), rata-rata minum air ${avgW} gelas/hari, mood dominan: ${topMood||'beragam'}. Goals user: ${P.goals?.join(', ')||'belum diset'}.`;
+  // Loading state
+  el.innerHTML='<div class="nara-dots"><span></span><span></span><span></span></div>';
+
+  const rangeLabel=currentRange===0?'semua waktu':getRangeDays()+' hari terakhir';
+  const consistency=Math.round(keys.length/getRangeDays()*100);
+
+  // ── Mood analysis ──
+  const moods=keys.map(k=>{const d=ld('inarte_day_'+k);return logs[k]?.mood||d?.mood;}).filter(Boolean);
+  const moodFreq={};moods.forEach(m=>{moodFreq[m]=(moodFreq[m]||0)+1;});
+  const moodSorted=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1]);
+  const topMood=moodSorted[0]?.[0]||'';
+  const moodVariance=moodSorted.length; // berapa banyak jenis mood berbeda
+  // Tren mood: bandingkan separuh awal vs separuh akhir range
+  const half=Math.floor(keys.length/2);
+  const moodVal={senang:2,semangat:2,netral:0,lelah:-1,berat:-2,cemas:-2};
+  const firstHalfScore=keys.slice(0,half).reduce((s,k)=>{const d=ld('inarte_day_'+k);const m=logs[k]?.mood||d?.mood||'netral';return s+(moodVal[m]||0);},0);
+  const secondHalfScore=keys.slice(half).reduce((s,k)=>{const d=ld('inarte_day_'+k);const m=logs[k]?.mood||d?.mood||'netral';return s+(moodVal[m]||0);},0);
+  const moodTrend=secondHalfScore>firstHalfScore?'membaik':secondHalfScore<firstHalfScore?'menurun':'stabil';
+
+  // ── Water analysis ──
+  const waterTarget=typeof getWaterTarget==='function'?getWaterTarget():8;
+  const waterVals=keys.map(k=>{const d=ld('inarte_day_'+k);return logs[k]?.water||d?.water||0;});
+  const avgW=(waterVals.reduce((s,v)=>s+v,0)/waterVals.length).toFixed(1);
+  const waterGoodDays=waterVals.filter(v=>v>=waterTarget).length;
+
+  // ── Habit analysis ──
+  const habitTemplate=ld('inarte_habits_template')||[];
+  const habitData=habitTemplate.map(h=>{
+    const doneDays=keys.filter(k=>{const log=ld('inarte_habitlog_'+k)||{};return log[h.id];}).length;
+    return{text:h.text,pct:Math.round(doneDays/keys.length*100),doneDays};
+  }).sort((a,b)=>b.pct-a.pct);
+  const topHabit=habitData[0];
+  const weakHabit=habitData[habitData.length-1];
+  const perfectHabits=habitData.filter(h=>h.pct===100).length;
+
+  // ── Sleep analysis (dari wellness) ──
+  const sleepVals=keys.map(k=>{const w=ld('inarte_wellness_'+k);return w?.sleepHrs||null;}).filter(v=>v!==null);
+  const avgSleep=sleepVals.length?(sleepVals.reduce((s,v)=>s+v,0)/sleepVals.length).toFixed(1):null;
+
+  // ── Meal & calorie trend ──
+  const calVals=keys.map(k=>{const d=ld('inarte_day_'+k);return d?.totalCal||0;}).filter(v=>v>0);
+  const avgCal=calVals.length?Math.round(calVals.reduce((s,v)=>s+v,0)/calVals.length):null;
+  const daysWithMeal=keys.filter(k=>{const d=ld('inarte_day_'+k);return d?.meals?.length>0;}).length;
+
+  // ── Finance ringkasan ──
+  const now=new Date();
+  const finKey=`inarte_fin_${now.getFullYear()}_${now.getMonth()+1}`;
+  const fin=ld(finKey)||{tx:[],fixed:[]};
+  const income=(fin.tx||[]).filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expense=(fin.tx||[]).filter(t=>t.type!=='income').reduce((s,t)=>s+t.amount,0);
+
+  // ── Day-of-week pattern ──
+  const dowScores={0:0,1:0,2:0,3:0,4:0,5:0,6:0};
+  const dowCount={0:0,1:0,2:0,3:0,4:0,5:0,6:0};
+  keys.forEach(k=>{
+    const dow=new Date(k).getDay();
+    const d=ld('inarte_day_'+k);
+    const m=logs[k]?.mood||d?.mood||'netral';
+    dowScores[dow]+=(moodVal[m]||0);
+    dowCount[dow]++;
+  });
+  const dowAvg=Object.keys(dowScores).map(d=>({day:parseInt(d),avg:dowCount[d]?dowScores[d]/dowCount[d]:null})).filter(d=>d.avg!==null);
+  const bestDow=dowAvg.sort((a,b)=>b.avg-a.avg)[0];
+  const dowNames=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const bestDayName=bestDow?dowNames[bestDow.day]:null;
+
+  // ── Build rich context for Nara ──
+  const ctxLines=[
+    `Periode: ${rangeLabel} (${keys.length} hari aktif dari ${getRangeDays()} hari, konsistensi ${consistency}%)`,
+    `Mood: dominan "${topMood||'beragam'}", tren ${moodTrend}, variasi ${moodVariance} jenis mood berbeda`,
+    `Minum air: rata-rata ${avgW}/${waterTarget} gelas/hari, ${waterGoodDays}/${keys.length} hari memenuhi target`,
+    habitData.length?`Habit (${habitData.length} kebiasaan): terkuat "${topHabit?.text}" ${topHabit?.pct}%, terlemah "${weakHabit?.text}" ${weakHabit?.pct}%, ${perfectHabits} habit dengan konsistensi 100%`:'Belum ada habit tercatat',
+    avgSleep?`Tidur: rata-rata ${avgSleep} jam/malam`:'Data tidur belum lengkap',
+    avgCal?`Makan: dicatat ${daysWithMeal}/${keys.length} hari, rata-rata ${avgCal} kkal/hari`:'',
+    income||expense?`Keuangan bulan ini: pemasukan ${income?'Rp'+income.toLocaleString('id-ID'):'belum dicatat'}, pengeluaran ${expense?'Rp'+expense.toLocaleString('id-ID'):'belum dicatat'}`:'',
+    bestDayName?`Hari terbaik berdasarkan mood: ${bestDayName}`:'',
+    P.goals?.length?`Goals user: ${P.goals.join(', ')}`:'',
+  ].filter(Boolean).join('\n');
+
+  const sys=`Kamu adalah Nara, companion wellness yang hangat dan perhatian (vibes teman dekat, bukan coach).
+Nama user: ${P.name||'teman'}${P.age?', usia '+P.age+' tahun':''}.${P.goals?.length?'\nGoals: '+P.goals.join(', ')+'.':''}
+
+TUGAS: Tulis insight personal 3-4 kalimat berdasarkan data wellness user berikut.
+PRINSIP:
+- Spesifik dan personal — sebutkan angka/fakta aktual dari data, bukan generik
+- Fokus pada 1-2 pola paling menarik (bisa positif atau area yang bisa ditingkatkan)
+- Kalau ada tren negatif, sampaikan dengan empati bukan menghakimi
+- Akhiri dengan satu kalimat dorongan kecil yang relevan dengan data
+- Bahasa Indonesia santai, boleh satu kaomoji di akhir
+- BUKAN bullet points, BUKAN list, BUKAN template motivasi generik`;
 
   let reply;
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'gemini-2.0-flash',max_tokens:350,system:sys,messages:[{role:'user',content:ctx}]}),
-      signal:AbortSignal.timeout(12000)});
-    if(r.ok){const d=await r.json();reply=d.content?.[0]?.text;}
-  }catch(e){}
+    const r=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'gemini-2.0-flash',
+        max_tokens:400,
+        system:sys,
+        messages:[{role:'user',content:ctxLines}]
+      }),
+      signal:AbortSignal.timeout(14000)
+    });
+    if(r.ok){
+      const data=await r.json();
+      reply=data.content?.[0]?.text?.trim();
+    }
+  }catch(e){
+    console.warn('[INARTE] buildNaraPattern fetch error:', e);
+  }
 
   if(!reply){
-    reply = naraSmartFallback('', 'progress');
+    reply=naraSmartFallback('','progress');
   }
-  document.getElementById('nara-pattern-body').innerHTML=`<p>${reply}</p>`;
+
+  // Render — pisahkan paragraf kalau ada newline ganda
+  const paragraphs=reply.split(/\n{2,}/).map(s=>s.trim()).filter(Boolean);
+  el.innerHTML=paragraphs.map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
 }
 
 // ══ HABIT CONSISTENCY ══
@@ -1974,10 +2107,18 @@ function getNextMilestone(days){
 }
 
 function calcOverallStreak(){
+  // Pakai kalkulasi terpusat dari today-streak.js kalau tersedia
+  // supaya angka streak konsisten di semua halaman (termasuk freeze logic)
+  if (typeof window.inarteCalcStreak === 'function') {
+    return window.inarteCalcStreak().streak;
+  }
+  // Fallback lokal — skip hari ini kalau belum diisi, tidak langsung break
   let s = 0;
+  const today = new Date().toISOString().split('T')[0];
   const d = new Date();
   while(s < 400){
     const k = d.toISOString().split('T')[0];
+    if(k === today){ d.setDate(d.getDate()-1); continue; }
     if(_isDayActive(k)){ s++; d.setDate(d.getDate()-1); }
     else break;
   }
