@@ -58,10 +58,40 @@ async function sendNara(){
     _doneHabits.length?'Habit selesai: '+_doneHabits.join(', '):'Belum ada habit yang selesai',
     _journalSnippet?'Jurnal hari ini: "'+_journalSnippet+'"':'Belum ada jurnal hari ini',
   ].join('. ');
-  // Kalau user klik quick reply dari welcome card, inject context sapaan-nya
-  const _welcomeCtxNote = window._naraWelcomeCtx
-    ? ' KONTEKS: Pesan ini adalah respons user dari sapaanmu tadi: "'+window._naraWelcomeCtx.replace(/[\(\)]/g,'').trim()+'". Balas sesuai konteks sapaan itu, bukan sebagai pesan baru.'
-    : '';
+  // Kalau user klik quick reply dari welcome card, inject intent spesifik ke Nara
+  let _welcomeCtxNote = '';
+  if (window._naraWelcomeCtx) {
+    const _wMsg   = window._naraWelcomeCtx.toLowerCase();
+    const _wReply = txt.toLowerCase();
+    const _isWater    = _wMsg.includes('air') || _wMsg.includes('minum');
+    const _isMove     = _wMsg.includes('gerak') || _wMsg.includes('olahraga') || _wMsg.includes('aktif');
+    const _isMood     = _wMsg.includes('kabar') || _wMsg.includes('gimana') || _wMsg.includes('hari ini');
+    const _isSleep    = _wMsg.includes('tidur') || _wMsg.includes('istirahat');
+    const _confirmed  = _wReply.includes('sudah') || _wReply.includes('udah') || _wReply.includes('iya') || _wReply.includes('nih') || _wReply.includes('cukup');
+    const _wantLog    = _wReply.includes('catat') || _wReply.includes('log');
+    const _notYet     = _wReply.includes('belum') || _wReply.includes('capek') || _wReply.includes('kurang');
+
+    if (_isWater && _confirmed) {
+      _welcomeCtxNote = ' KONTEKS: User mengkonfirmasi sudah minum air hari ini. JANGAN tanya "apanya yang sudah" atau tanya ulang — langsung apresiasi dan ajak catat jumlah gelasnya (tap tombol gelas di halaman), singkat dan natural.';
+    } else if (_isWater && _wantLog) {
+      _welcomeCtxNote = ' KONTEKS: User ingin langsung catat minum air. Arahkan ke tombol catat gelas di halaman today, jangan tanya hal lain dulu.';
+    } else if (_isWater && _notYet) {
+      _welcomeCtxNote = ' KONTEKS: User belum minum air hari ini. Ingatkan dengan hangat dan ajak segera minum, singkat saja.';
+    } else if (_isMove && _confirmed) {
+      _welcomeCtxNote = ' KONTEKS: User sudah bergerak/olahraga hari ini. Apresiasi singkat dan tawarkan catat aktivitasnya di log gerak.';
+    } else if (_isMove && _notYet) {
+      _welcomeCtxNote = ' KONTEKS: User belum bergerak hari ini. Kasih semangat ringan, boleh suggest aktivitas kecil.';
+    } else if (_isSleep && _confirmed) {
+      _welcomeCtxNote = ' KONTEKS: User tidurnya cukup. Apresiasi singkat, lanjut natural.';
+    } else if (_isSleep && _notYet) {
+      _welcomeCtxNote = ' KONTEKS: User kurang tidur. Validasi dulu, tanya kondisinya sekarang.';
+    } else if (_isMood) {
+      _welcomeCtxNote = ' KONTEKS: User menjawab sapaan kabar. Kalau positif lanjut hangat; kalau capek/berat, validasi dulu sebelum lanjut.';
+    } else {
+      const _cleanWelcome = window._naraWelcomeCtx.replace(/[\u{1F000}-\u{1FFFF}]/gu, '').replace(/[()]/g, '').trim();
+      _welcomeCtxNote = ' KONTEKS: Ini respons user dari sapaanmu: "' + _cleanWelcome + '". Balas yang nyambung, bukan sebagai topik baru.';
+    }
+  }
   const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' DATA HARI INI ('+_TODAY+'): '+_ctxToday+'.'+_welcomeCtxNote+' PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.';
   let reply;
   try{
