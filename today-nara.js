@@ -92,7 +92,7 @@ async function sendNara(){
       _welcomeCtxNote = ' KONTEKS: Ini respons user dari sapaanmu: "' + _cleanWelcome + '". Balas yang nyambung, bukan sebagai topik baru.';
     }
   }
-  const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' DATA HARI INI ('+_TODAY+'): '+_ctxToday+'.'+_welcomeCtxNote+' PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.';
+  const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' DATA HARI INI ('+_TODAY+'): '+_ctxToday+'.'+_welcomeCtxNote+' PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih. FITUR: Kalau user minta rekomendasi makan/bekal/menu, kamu bisa update section Rekomendasi Menu di halaman — bilang ke user kamu akan update menu sesuai permintaannya, lalu sistem akan otomatis update.';
   let reply;
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -103,8 +103,46 @@ async function sendNara(){
   if(!reply){
     reply = naraSmartFallback(txt, 'chat');
   }
-  msgs.removeChild(typing);_addNaraMsg(reply,'nara');
+  msgs.removeChild(typing);
+
+  // ── Nara → Menu Integration ──
+  // Kalau Nara detect intent rekomendasi makan, trigger naraUpdateMenu
+  const _menuTrigger = _detectMenuRequest(txt, reply);
+  if (_menuTrigger && typeof window.naraUpdateMenu === 'function') {
+    // Tampilin reply Nara dulu
+    _addNaraMsg(reply, 'nara');
+    _chatHistory.push({role:'assistant', content:reply});
+    // Update menu di background, lalu konfirmasi
+    window.naraUpdateMenu(_menuTrigger).then(ok => {
+      if (ok) {
+        setTimeout(() => {
+          _addNaraMsg('Menu di halaman sudah Nara update ya! Tap langsung untuk catat (◕ᴗ◕✿)', 'nara');
+        }, 1200);
+      }
+    });
+    return;
+  }
+
+  _addNaraMsg(reply,'nara');
   _chatHistory.push({role:'assistant',content:reply});
+}
+
+// Detect apakah user minta rekomendasi makan dari chat
+// Returns: string request kalau iya, null kalau tidak
+function _detectMenuRequest(userMsg, naraReply) {
+  const u = userMsg.toLowerCase();
+  const n = (naraReply || '').toLowerCase();
+  // Keywords yang kuat dari user
+  const menuKeywords = ['rekomendasi makan', 'rekomen makan', 'menu bekal', 'bekal hari ini',
+    'makan apa', 'saranin makan', 'rekomendasiin makan', 'menu sehat', 'ide makan',
+    'rekomendasi menu', 'update menu', 'ganti menu', 'menu diet', 'menu buat'];
+  const matched = menuKeywords.find(k => u.includes(k));
+  if (matched) return userMsg; // kirim pesan asli sebagai request
+  // Atau Nara yang menawarkan dan user setuju
+  const naraOffered = n.includes('menu') && (n.includes('ubah') || n.includes('update') || n.includes('sesuaikan') || n.includes('cariin'));
+  const userAgreed = u.includes('iya') || u.includes('boleh') || u.includes('ok') || u.includes('mau') || u === 'oke' || u === 'ya';
+  if (naraOffered && userAgreed) return userMsg;
+  return null;
 }
 // Profile panel
 let _ppData={};
