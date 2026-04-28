@@ -214,7 +214,15 @@ function markDayActive(date, source, extraData){
 
 function saveDay(){
   sv('inarte_day_'+TODAY,D);
-  markDayActive(TODAY,'today',{water:D.water,mood:D.mood,meals:D.meals.length,move:D.moves.length,mealCal:D.totalCal,moveCal:D.totalMoveCal});
+  // Hanya mark aktif kalau ada data meaningful — jangan mark kalau masih kosong semua
+  const hasMeaningfulData = (D.water > 0) || D.mood ||
+    (D.meals && D.meals.length > 0) ||
+    (D.moves && D.moves.length > 0) ||
+    (D.habits && D.habits.length > 0) ||
+    (D.conditions && D.conditions.length > 0);
+  if (hasMeaningfulData) {
+    markDayActive(TODAY,'today',{water:D.water,mood:D.mood,meals:D.meals.length,move:D.moves.length,mealCal:D.totalCal,moveCal:D.totalMoveCal});
+  }
   maybeShowNaraMsg();
   maybeShowStreakPopup();
   if(typeof InarteSync!=='undefined'&&InarteSync.ready) InarteSync.pushDaily(TODAY);
