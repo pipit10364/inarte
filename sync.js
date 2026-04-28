@@ -239,21 +239,19 @@ const InarteSync = (() => {
   }
 
   // ── FINANCE ──
-  // Finance data disimpan di tabel achievements dengan jsonb items
-  // year_month format: "fin_2026_4" untuk April 2026
+  // Tabel: finance (user_id, year_month, data jsonb, updated_at)
+  // year_month format: "2026_4" untuk April 2026
   async function _pullFinance() {
     const { data, error } = await _sb
-      .from('achievements')
+      .from('finance')
       .select('*')
-      .eq('user_id', _uid)
-      .like('year_month', 'fin_%');
+      .eq('user_id', _uid);
 
     if (error || !data) return;
 
     data.forEach(row => {
-      // "fin_2026_4" → inarte_fin_2026_4
-      const key = 'inarte_' + row.year_month;
-      _sv(key, row.items);
+      // "2026_4" → inarte_fin_2026_4
+      _sv(`inarte_fin_${row.year_month}`, row.data);
     });
   }
 
@@ -262,13 +260,15 @@ const InarteSync = (() => {
     const now = new Date();
     const y = year || now.getFullYear();
     const m = month || (now.getMonth() + 1);
-    const data = _ld(`inarte_fin_${y}_${m}`);
+    const ym = `${y}_${m}`;
+    const data = _ld(`inarte_fin_${ym}`);
     if (!data) return;
 
-    const { error } = await _sb.from('achievements').upsert({
+    const { error } = await _sb.from('finance').upsert({
       user_id: _uid,
-      year_month: `fin_${y}_${m}`,
-      items: data,
+      year_month: ym,
+      data: data,
+      updated_at: new Date().toISOString(),
     }, { onConflict: 'user_id,year_month' });
 
     if (error) console.warn('[InarteSync] pushFinance error:', error.message);
