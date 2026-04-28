@@ -559,3 +559,8 @@ function closeStreakPopup() {
 window.addEventListener('DOMContentLoaded', function() {
   buildStreakGreeting();
 });
+
+
+// ── Global export — semua halaman pakai ini, jangan define ulang ──
+// Usage: const { streak, freezeUsed } = window.inarteCalcStreak();
+window.inarteCalcStreak = calcStreakNow;
