@@ -1136,7 +1136,7 @@ ${isFirstEver ? 'Ini adalah pertama kali user membuka app — sapa dengan hangat
 ${ctxInjection}
 PENTING: Balas HANYA JSON dengan format:
 {"message":"[pesan Nara, 2-3 kalimat hangat, bahasa Indonesia santai, boleh satu kaomoji]","quickReplies":["[opsi reply 1]","[opsi reply 2]","[opsi reply 3]"]}
-Quick replies: 3 opsi pendek (max 4 kata) yang natural sebagai respons user. Contoh: "Baik dong!", "Lumayan capek sih", "Mau cerita dulu".
+Quick replies: 3 opsi pendek (max 5 kata) yang RELEVAN dengan isi pesanmu — bukan soal kabar generik. Kalau tanya soal air → pilihan soal air (contoh: "Sudah nih!", "Belum sempat", "Mau catat sekarang"). Kalau tanya kabar → pilihan soal kabar (contoh: "Baik dong!", "Lumayan capek", "Mau cerita dulu"). Sesuaikan selalu dengan topik pesanmu.
 JANGAN tambahkan teks apapun di luar JSON.`;
 
   const prompt = isFirstEver
@@ -1170,7 +1170,14 @@ JANGAN tambahkan teks apapun di luar JSON.`;
 
   // Fallback jika API gagal — pakai naraSmartFallback
   const fbMsg = naraSmartFallback('hei', 'chat');
-  const fbReplies = ['Baik-baik aja!', 'Lumayan capek sih', 'Mau langsung catat'];
+  const fbMsg2 = fbMsg.toLowerCase();
+  const fbReplies = fbMsg2.includes('air') || fbMsg2.includes('minum')
+    ? ['Sudah nih!', 'Belum sempat', 'Mau catat sekarang']
+    : fbMsg2.includes('tidur') || fbMsg2.includes('istirahat')
+    ? ['Tidur cukup kok', 'Kurang tidur nih', 'Mau cerita dulu']
+    : fbMsg2.includes('habit') || fbMsg2.includes('kebiasaan')
+    ? ['Sudah dilakukan!', 'Belum sempat', 'Mau cerita dulu']
+    : ['Baik-baik aja!', 'Lumayan capek', 'Mau cerita dulu'];
   _renderWelcomeMsg(fbMsg, fbReplies);
 })();
 
