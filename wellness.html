@@ -2281,7 +2281,14 @@ window.addEventListener('DOMContentLoaded', function(){
 <script>
 window.addEventListener('DOMContentLoaded', function(){
   // Calc streak for sidebar widget
-  function _calcStrk(){let s=0,d=new Date();while(s<400){const k=d.toISOString().split('T')[0];if(_isDayActive(k)){s++;d.setDate(d.getDate()-1);}else break;}return s;}
+  // Pakai kalkulasi terpusat supaya streak konsisten di semua halaman
+  function _calcStrk(){
+    if (typeof window.inarteCalcStreak === 'function') return window.inarteCalcStreak().streak;
+    let s=0; const today=new Date().toISOString().split('T')[0]; const d=new Date();
+    while(s<400){ const k=d.toISOString().split('T')[0];
+      if(k===today){d.setDate(d.getDate()-1);continue;}
+      if(_isDayActive(k)){s++;d.setDate(d.getDate()-1);}else break;} return s;
+  }
   const streak=_calcStrk();
   const BADGES=[{d:0,b:'🌱'},{d:3,b:'🌿'},{d:7,b:'🌳'},{d:14,b:'✨'},{d:21,b:'🔥'},{d:30,b:'⚡'},{d:50,b:'💎'},{d:100,b:'🏆'},{d:200,b:'👑'}];
   let badge='🌱';for(const m of BADGES){if(streak>=m.d)badge=m.b;}
