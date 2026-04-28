@@ -58,7 +58,11 @@ async function sendNara(){
     _doneHabits.length?'Habit selesai: '+_doneHabits.join(', '):'Belum ada habit yang selesai',
     _journalSnippet?'Jurnal hari ini: "'+_journalSnippet+'"':'Belum ada jurnal hari ini',
   ].join('. ');
-  const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' DATA HARI INI ('+_TODAY+'): '+_ctxToday+'. PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.';
+  // Kalau user klik quick reply dari welcome card, inject context sapaan-nya
+  const _welcomeCtxNote = window._naraWelcomeCtx
+    ? ' KONTEKS: Pesan ini adalah respons user dari sapaanmu tadi: "'+window._naraWelcomeCtx.replace(/[\(\)]/g,'').trim()+'". Balas sesuai konteks sapaan itu, bukan sebagai pesan baru.'
+    : '';
+  const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' DATA HARI INI ('+_TODAY+'): '+_ctxToday+'.'+_welcomeCtxNote+' PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.';
   let reply;
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -1181,7 +1185,11 @@ JANGAN tambahkan teks apapun di luar JSON.`;
   _renderWelcomeMsg(fbMsg, fbReplies);
 })();
 
+// Simpan pesan welcome terakhir agar bisa jadi context di chat
+let _lastWelcomeMsg = '';
+
 function _renderWelcomeMsg(message, quickReplies) {
+  _lastWelcomeMsg = message;
   const msgEl = document.getElementById('nw-msg');
   const actionsEl = document.getElementById('nw-actions');
   if (!msgEl) return;
@@ -1210,21 +1218,27 @@ function _renderWelcomeMsg(message, quickReplies) {
 }
 
 function _welcomeQuickReply(text) {
-  // Simpan ke context
-  naraCtxSaveChat(text, '');
+  // Simpan ke context — sertakan pesan welcome aslinya supaya Nara tahu konteksnya
+  const contextualText = _lastWelcomeMsg
+    ? `[Nara sebelumnya bilang: "${_lastWelcomeMsg.replace(/\(.*?\)/g,'').trim()}"] ${text}`
+    : text;
+  naraCtxSaveChat(contextualText, '');
 
   // Dismiss welcome, buka Nara chat dengan pesan ini
   dismissWelcome();
   setTimeout(() => {
     if (typeof toggleNaraChat === 'function') {
-      // Buka chat
       const chat = document.getElementById('nara-chat');
       if (chat && !chat.classList.contains('on')) toggleNaraChat();
-      // Pre-fill dan kirim pesan
       const inp = document.getElementById('nc-inp');
       if (inp) {
+        // Yang tampil di chat tetap teks aslinya (bersih)
+        // tapi system prompt dapat context-nya
         inp.value = text;
+        // Inject context ke window supaya sendNara bisa pakai
+        window._naraWelcomeCtx = _lastWelcomeMsg;
         if (typeof sendNara === 'function') sendNara();
+        window._naraWelcomeCtx = null;
       }
     }
   }, 400);
