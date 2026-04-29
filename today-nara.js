@@ -35,6 +35,32 @@ function _addNaraMsg(text,who='nara'){
   msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
 }
 function quickChat(text){document.getElementById('nc-inp').value=text;sendNara();}
+// ── fetchWithRetry: handle Vercel cold start (503) otomatis ──
+// Kalau dapat 503, tunggu sebentar lalu coba sekali lagi — invisible ke user
+async function _fetchNara(body, timeoutMs = 14000, attempt = 1) {
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(timeoutMs)
+    });
+    if (r.status === 503 && attempt === 1) {
+      // Cold start — tunggu 1.5 detik lalu retry sekali
+      await new Promise(res => setTimeout(res, 1500));
+      return _fetchNara(body, timeoutMs, 2);
+    }
+    return r;
+  } catch(e) {
+    if (attempt === 1) {
+      // Network error / timeout — satu kali retry
+      await new Promise(res => setTimeout(res, 1000));
+      return _fetchNara(body, timeoutMs, 2).catch(() => null);
+    }
+    return null;
+  }
+}
+
 async function sendNara(){
   const inp=document.getElementById('nc-inp');
   const txt=inp.value.trim();if(!txt)return;
@@ -95,10 +121,8 @@ async function sendNara(){
   const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' DATA HARI INI ('+_TODAY+'): '+_ctxToday+'.'+_welcomeCtxNote+' PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih. FITUR: Kalau user minta rekomendasi makan/bekal/menu, kamu bisa update section Rekomendasi Menu di halaman — bilang ke user kamu akan update menu sesuai permintaannya, lalu sistem akan otomatis update.';
   let reply;
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'gemini-2.5-flash',max_tokens:700,system:sys,messages:_chatHistory.slice(-12)}),
-      signal:AbortSignal.timeout(12000)});
-    if(r.ok){const d=await r.json();reply=d.content?.[0]?.text;}
+    const r=await _fetchNara({model:'gemini-2.5-flash',max_tokens:700,system:sys,messages:_chatHistory.slice(-12)});
+    if(r?.ok){const d=await r.json();reply=d.content?.[0]?.text;}
   }catch(e){}
   if(!reply){
     reply = naraSmartFallback(txt, 'chat');
@@ -614,19 +638,14 @@ Tips harus relevan dengan konteks user hari ini.`;
 
     const prompt = `${userName ? 'User: '+userName+'. ' : ''}Waktu: ${waktu}. Konteks: ${ctx || 'belum ada data hari ini'}.`;
 
-    const r = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const r = await _fetchNara({
         model: 'gemini-2.5-flash',
         max_tokens: 120,
         system: sys,
         messages: [{ role: 'user', content: prompt }]
-      }),
-      signal: AbortSignal.timeout(10000)
-    });
+      });
 
-    if (!r.ok) return;
+    if (!r?.ok) return;
     const data = await r.json();
     let raw = data.content?.[0]?.text || '';
 
@@ -1174,18 +1193,13 @@ Quick replies: reaksi natural terhadap review (contoh: "Makasih Nara!", "Mau cer
 JANGAN tambahkan teks apapun di luar JSON.`;
 
     try {
-      const r = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const r = await _fetchNara({
           model: 'gemini-2.5-flash',
           max_tokens: 250,
           system: weekSys,
           messages: [{ role: 'user', content: `Review minggu ini untuk ${name || 'user'}: ${weekData.summary}` }]
-        }),
-        signal: AbortSignal.timeout(12000)
-      });
-      if (r.ok) {
+        });
+      if (r?.ok) {
         const data = await r.json();
         let raw = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
         const parsed = JSON.parse(raw);
@@ -1216,19 +1230,14 @@ JANGAN tambahkan teks apapun di luar JSON.`;
     : `Sapa user yang baru buka app hari ini. Waktu: ${waktu}. Data kemarin: mood ${yd.mood || 'tidak dicatat'}, air ${yd.water || 0} gelas, tidur ${yd.sleep || 'tidak dicatat'}.`;
 
   try {
-    const r = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const r = await _fetchNara({
         model: 'gemini-2.5-flash',
         max_tokens: 200,
         system: sys,
         messages: [{ role: 'user', content: prompt }]
-      }),
-      signal: AbortSignal.timeout(10000)
-    });
+      });
 
-    if (r.ok) {
+    if (r?.ok) {
       const data = await r.json();
       let raw = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
       const parsed = JSON.parse(raw);
