@@ -1921,10 +1921,11 @@ function _isDayActive(dateStr){
   return false;
 }
 function markDayActive(date,source,extraData){
-  const logs=JSON.parse(localStorage.getItem('inarte_logs')||'{}');
+  const logs=(typeof ld==='function'?ld('inarte_logs'):JSON.parse(localStorage.getItem('inarte_logs')||'{}'))||{};
   const existing=logs[date]||{};
   logs[date]=Object.assign({},existing,{logged:true,lastSource:source,updatedAt:Date.now()},extraData||{});
-  localStorage.setItem('inarte_logs',JSON.stringify(logs));
+  if(typeof sv==='function') sv('inarte_logs',logs);
+  else localStorage.setItem('inarte_logs',JSON.stringify(logs));
 }
 
 async function saveWellness(){
@@ -2745,5 +2746,20 @@ function dismissWelcome() {
 }
 </script>
 
+
+<script>
+// ══ MIDNIGHT RESET — deteksi pergantian hari ══
+(function() {
+  const _bootDate = new Date().toISOString().split('T')[0];
+  function _checkDayChange() {
+    const _nowDate = new Date().toISOString().split('T')[0];
+    if (_nowDate !== _bootDate) window.location.reload();
+  }
+  setInterval(_checkDayChange, 60 * 1000);
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') _checkDayChange();
+  });
+})();
+</script>
 </body>
 </html>
