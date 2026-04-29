@@ -264,7 +264,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .nara-float{position:fixed;bottom:82px;right:16px;z-index:99}
 .nara-fab{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--nara),var(--nara-d));color:#fff;border:none;cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(196,114,78,.35);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
 .nara-fab:hover{transform:scale(1.1)}
-.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border-l);border-radius:50px;padding:9px 18px;font-size:12px;color:var(--text2);box-shadow:var(--sh-md);white-space:nowrap;z-index:1000;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:88vw;text-align:center}
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border-l);border-radius:20px;padding:9px 18px;font-size:12px;color:var(--text2);box-shadow:var(--sh-md);white-space:normal;word-break:keep-all;z-index:1000;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:80vw;text-align:center;line-height:1.4}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 .si{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
@@ -554,6 +554,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .offline-banner-txt{}
 .online-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
 .online-banner.show{display:flex}
+
+/* Catatan Harian button — visible card style */
+.diary-open-btn{
+  display:flex;align-items:center;gap:10px;
+  width:100%;padding:1rem 1.125rem;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  color:var(--text2);cursor:pointer;
+  transition:all .15s;box-shadow:var(--sh-sm);
+  margin-top:4px;
+}
+.diary-open-btn:hover,.diary-open-btn:active{
+  background:var(--surface-2);border-color:var(--moss-l);color:var(--moss);
+}
+.diary-open-btn .si{
+  width:16px;height:16px;stroke:currentColor;fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;
+}
 </style>
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
