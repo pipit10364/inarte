@@ -1036,7 +1036,25 @@ function getRangeDates(){
   return dates;
 }
 
+// Render semua chart & card progress
+function _buildAllCharts() {
+  buildTopbar();
+  buildStreakCard();
+  buildCalendar();
+  buildHabitConsistency();
+  buildMoodChart();
+  buildSleepEnergy();
+  buildWaterChart();
+  buildFinanceChart();
+  buildWeeklyReviewCard();
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
+  // 1. Render dari localStorage dulu — tampil secepatnya
+  _buildAllCharts();
+  buildNaraPattern(); // async, jalan paralel
+
+  // 2. Init Supabase sync di background
   if(typeof InarteSync!=='undefined'){
     try{
       const _sbTmp=supabase.createClient(
@@ -1045,18 +1063,10 @@ window.addEventListener('DOMContentLoaded', async () => {
       );
       const {data:{session}}=await _sbTmp.auth.getSession();
       if(session?.user) await InarteSync.init(_sbTmp, session.user.id);
+      // InarteSync.init akan trigger 'inarte-sync-ready' setelah pull selesai
+      // → chart akan di-render ulang dengan data terbaru dari Supabase
     }catch(e){ console.warn('Sync init failed:', e); }
   }
-  buildTopbar();
-  buildStreakCard();
-  buildCalendar();
-  buildNaraPattern();
-  buildHabitConsistency();
-  buildMoodChart();
-  buildSleepEnergy();
-  buildWaterChart();
-  buildFinanceChart();
-  buildWeeklyReviewCard(); // selalu tampil, bukan hanya hari Minggu
 });
 
 function buildTopbar(){
@@ -2610,8 +2620,9 @@ function dismissWelcome() {
 
 <script>
 window.addEventListener('inarte-sync-ready', ()=>{
-  if(typeof buildAll==='function') buildAll();
-  else if(typeof calcStreakNow==='function') calcStreakNow();
+  // Data dari Supabase sudah masuk localStorage — render ulang semua chart
+  _buildAllCharts();
+  buildNaraPattern(); // refresh insight Nara juga
 });
 </script>
 </body>
