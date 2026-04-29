@@ -244,3 +244,25 @@ function closeSheet(){
 }
 
 // ══ NARA CHAT ══
+
+// ══ MIDNIGHT RESET — deteksi pergantian hari ══
+// Kalau tab masih terbuka melewati jam 00, reload otomatis supaya TODAY fresh
+(function() {
+  const _bootDate = TODAY; // tanggal saat halaman pertama kali load
+
+  function _checkDayChange() {
+    const _nowDate = new Date().toISOString().split('T')[0];
+    if (_nowDate !== _bootDate) {
+      // Hari sudah berganti — reload untuk reset visual
+      window.location.reload();
+    }
+  }
+
+  // Cek setiap menit
+  setInterval(_checkDayChange, 60 * 1000);
+
+  // Cek juga saat tab kembali aktif (user switch dari app lain)
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') _checkDayChange();
+  });
+})();
