@@ -36,6 +36,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* ══ SCROLL ══ */
 .p-scroll{padding:1.125rem 1.125rem 100px;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+/* mobile col order */
+.pg-col-left,.pg-col-mid,.pg-col-right,.pg-nara-row{display:flex;flex-direction:column;gap:8px}
+.pg-col-mid{order:1}.pg-col-left{order:2}.pg-col-right{order:3}.pg-nara-row{order:4}
 
 /* ══ PAGE HEADER ══ */
 .page-header{padding:.25rem 2px .125rem}
@@ -452,27 +455,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   /* ── Progress: 2-column reflow ── */
   .p-scroll{
+  }
+  .p-scroll > .section-divider{display:none}
+
+  /* ── 3-column grid ── */
+  .p-scroll{
     display:grid;
-    grid-template-columns:42fr 58fr;
-    align-items:start;
+    grid-template-columns:30fr 40fr 30fr;
+    grid-template-rows:auto auto 1fr auto;
     column-gap:14px;
     row-gap:12px;
     padding:1.75rem 1.75rem 2.5rem;
     max-width:none;
-    width:100%;
-    box-sizing:border-box;
+    align-items:start;
   }
-  .p-scroll > .section-divider{display:none}
 
-  /* LEFT col: stat pills + kalender + nara */
-  .pg-range-row   {grid-column:1/-1;grid-row:1;margin:-1.75rem -1.75rem 0;padding:.5rem 1.75rem;top:53px}
-  .pg-stat-pills  {grid-column:1;grid-row:2;margin-top:.375rem}
-  .pg-left-col    {grid-column:1;grid-row:3;display:flex;flex-direction:column;gap:12px;align-self:start}
-  .pg-right-col   {grid-column:2;grid-row:2/4;display:flex;flex-direction:column;gap:12px;min-width:0}
-  .pg-nara-row    {display:none}
+  .pg-range-row  {grid-column:1/-1;grid-row:1;margin:-1.75rem -1.75rem 0;padding:.5rem 1.75rem;top:53px}
+  .pg-stat-pills {grid-column:1/-1;grid-row:2;margin-top:.25rem}
+  .pg-col-left   {grid-column:1;grid-row:3;display:flex;flex-direction:column;gap:12px;align-self:start}
+  .pg-col-mid    {grid-column:2;grid-row:3;display:flex;flex-direction:column;gap:12px;min-width:0}
+  .pg-col-right  {grid-column:3;grid-row:3;display:flex;flex-direction:column;gap:12px;min-width:0}
+  .pg-nara-row   {grid-column:1/-1;grid-row:4;display:grid;grid-template-columns:1fr;gap:12px}
 
-  /* paired cards side-by-side inside right col */
-  .pg-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  /* hide old col classes on desktop */
+  .pg-left-col,.pg-right-col,.pg-pair{display:contents}
   .pg-pair > .pg-section{min-width:0}
 
   /* On desktop all sections are always visible */
@@ -675,8 +681,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <!-- LEFT COL: kalender + Nara insight -->
-  <div class="pg-left-col">
+  <!-- LEFT COL: Kalender + Air + Journal -->
+  <div class="pg-col-left">
 
   <!-- COMPACT CALENDAR -->
   <div class="cal-card">
@@ -702,6 +708,109 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 
+  <!-- AIR MINUM compact -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6 9 4 13 4 16a8 8 0 0016 0c0-3-2-7-8-14z"/></svg>
+      Air minum <span id="water-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
+    </div>
+    <div id="water-chart-wrap"></div>
+  </div>
+
+  <!-- CATATAN HARIAN -->
+  <button class="diary-open-btn" onclick="openDiary()">
+    <svg class="si" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Lihat catatan harian
+  </button>
+
+  </div><!-- end pg-col-left -->
+
+  <!-- MID COL: Weekly Review + Tidur/Energi + Mood + Habit -->
+  <div class="pg-col-mid">
+
+  <!-- WEEKLY REVIEW CARD -->
+  <div class="pg-section" id="weekly-review-card" style="display:none">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Ringkasan minggu ini
+      <span id="weekly-review-range" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
+    </div>
+    <div id="weekly-review-body"></div>
+  </div>
+
+  <!-- TIDUR & ENERGI -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      Tidur & Energi
+    </div>
+    <div class="sleep-energy-row" id="sleep-energy-row"></div>
+  </div>
+
+  <!-- MOOD DISTRIBUTION -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      Mood <span id="mood-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">bulan ini</span>
+    </div>
+    <div class="mood-month-grid" id="mood-bars"></div>
+    <div class="mood-legend" id="mood-legend"></div>
+  </div>
+
+  <!-- HABIT CONSISTENCY -->
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Konsistensi habit <span id="habit-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">bulan ini</span>
+    </div>
+    <div id="habit-cons-wrap"></div>
+  </div>
+
+  </div><!-- end pg-col-mid -->
+
+  <!-- RIGHT COL: Finance / Badge+Challenge fallback -->
+  <div class="pg-col-right">
+
+  <!-- KEUANGAN -->
+  <div class="pg-section" id="finance-card">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Keuangan <span id="finance-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">bulan ini</span>
+    </div>
+    <div class="fin-legend">
+      <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--moss-l)"></div>Pemasukan</div>
+      <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--clay-l)"></div>Pengeluaran</div>
+    </div>
+    <div class="fin-month-bars" id="fin-bars"></div>
+    <div style="display:flex;justify-content:space-around" id="fin-labels"></div>
+  </div>
+
+  <!-- GAMIFICATION BADGE -->
+  <div id="streak-gamif"></div>
+
+  <!-- BADGE + CHALLENGE fallback -->
+  <div id="finance-fallback" style="display:none;flex-direction:column;gap:12px">
+    <div class="pg-section">
+      <div class="pg-section-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        Pencapaianmu
+      </div>
+      <div id="badge-wrap"></div>
+    </div>
+    <div class="pg-section">
+      <div class="pg-section-title">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Tantangan dari Nara
+      </div>
+      <div id="challenge-wrap"></div>
+    </div>
+  </div>
+
+  </div><!-- end pg-col-right -->
+
+  <!-- NARA ROW: full width -->
+  <div class="pg-nara-row">
+
   <!-- NARA INSIGHT -->
   <div class="pg-section">
     <div class="pg-section-title">
@@ -719,92 +828,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <!-- GAMIFICATION BADGE -->
-  <div id="streak-gamif"></div>
-
-  </div><!-- end pg-left-col -->
-
-  <!-- RIGHT COL: semua chart dan data -->
-  <div class="pg-right-col">
-
-  <!-- WEEKLY REVIEW CARD -->
-  <div class="pg-section" id="weekly-review-card" style="display:none">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Ringkasan minggu ini
-      <span id="weekly-review-range" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
-    </div>
-    <div id="weekly-review-body"></div>
-  </div>
-
-  <!-- MOOD + TIDUR pair -->
-  <div class="pg-pair">
-
-  <!-- MOOD DISTRIBUTION -->
-  <div class="pg-section">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-      Mood <span id="mood-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">bulan ini</span>
-    </div>
-    <div class="mood-month-grid" id="mood-bars"></div>
-    <div class="mood-legend" id="mood-legend"></div>
-  </div>
-
-  <!-- TIDUR & ENERGI -->
-  <div class="pg-section">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      Tidur & Energi
-    </div>
-    <div class="sleep-energy-row" id="sleep-energy-row"></div>
-  </div>
-
-  </div><!-- end pg-pair -->
-
-  <!-- AIR + HABIT pair -->
-  <div class="pg-pair">
-
-  <!-- AIR MINUM -->
-  <div class="pg-section">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6 9 4 13 4 16a8 8 0 0016 0c0-3-2-7-8-14z"/></svg>
-      Air minum <span id="water-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
-    </div>
-    <div id="water-chart-wrap"></div>
-  </div>
-
-  <!-- HABIT CONSISTENCY -->
-  <div class="pg-section">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Konsistensi habit <span id="habit-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">bulan ini</span>
-    </div>
-    <div id="habit-cons-wrap"></div>
-  </div>
-
-  </div><!-- end pg-pair -->
-
-  <!-- KEUANGAN -->
-  <div class="pg-section">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-      Keuangan <span id="finance-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">3 bulan terakhir</span>
-    </div>
-    <div class="fin-legend">
-      <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--moss-l)"></div>Pemasukan</div>
-      <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--clay-l)"></div>Pengeluaran</div>
-    </div>
-    <div class="fin-month-bars" id="fin-bars"></div>
-    <div style="display:flex;justify-content:space-around" id="fin-labels"></div>
-  </div>
-
-  <!-- CATATAN HARIAN -->
-  <button class="diary-open-btn" onclick="openDiary()">
-    <svg class="si" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    Lihat catatan harian
-  </button>
-
-  </div><!-- end pg-right-col -->
+  </div><!-- end pg-nara-row -->
 
 </div>
 
