@@ -565,6 +565,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .offline-banner-txt{}
 .online-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
 .online-banner.show{display:flex}
+
+.summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:.625rem 0;border-top:1px solid var(--border-l);margin-top:.5rem}
+.summary-saving-row .summary-lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:0}
+.summary-saving-row .summary-num{font-size:1.25rem}
 </style>
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
@@ -657,10 +661,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="summary-num expense" id="sum-out">—</div>
         <div class="summary-sub" id="sum-out-sub">belum ada</div>
       </div>
-      <div class="summary-half">
-        <div class="summary-lbl">Disimpan</div>
+    </div>
+    <div class="summary-saving-row">
+      <div class="summary-lbl">Disimpan bulan ini</div>
+      <div style="display:flex;align-items:baseline;gap:8px">
         <div class="summary-num saving" id="sum-save">—</div>
-        <div class="summary-sub" id="sum-save-sub">total saving</div>
+        <div class="summary-sub" id="sum-save-sub" style="margin-top:0"></div>
       </div>
     </div>
     <div class="summary-bottom">
@@ -686,7 +692,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
     </div>
     <div id="saving-list-wrap"></div>
-    <button class="saving-add-btn" onclick="openSavingAddSheet()">
+    <button class="saving-add-btn" onclick="openWalletAddSheet()">
       <svg class="si" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
       Tambah kategori saving
     </button>
@@ -783,7 +789,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="sheet-handle"></div>
   <div class="sheet-head">
     <span class="sheet-title">Tambah kategori saving</span>
-    <button class="sheet-close" onclick="closeSavingSheet()">✕</button>
+    <button class="sheet-close" onclick="closeWalletSheet()">✕</button>
   </div>
   <div class="sheet-body">
     <div class="sv-field">
@@ -802,7 +808,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="sv-lbl">Target (opsional — kosongkan jika belum ada target)</div>
       <input class="sv-inp" id="sv-target" type="number" min="0" placeholder="mis. 50000000" inputmode="decimal"/>
     </div>
-    <button class="sv-submit-btn" onclick="submitSavingAdd()">Tambah kategori</button>
+    <button class="sv-submit-btn" onclick="submitWalletAdd()">Tambah kategori</button>
   </div>
 </div>
 
@@ -811,12 +817,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="sheet-handle"></div>
   <div class="sheet-head">
     <span class="sheet-title" id="sv-tx-title">Setor / Tarik</span>
-    <button class="sheet-close" onclick="closeSavingSheet()">✕</button>
+    <button class="sheet-close" onclick="closeWalletSheet()">✕</button>
   </div>
   <div class="sheet-body">
     <div class="sv-type-row">
-      <button class="sv-type-btn sel" id="sv-tx-setor" onclick="selectSvTx('setor')">+ Setor</button>
-      <button class="sv-type-btn" id="sv-tx-tarik" onclick="selectSvTx('tarik')">− Tarik</button>
+      <button class="sv-type-btn sel" id="sv-tx-setor" onclick="selectWalletTx('setor')">+ Setor</button>
+      <button class="sv-type-btn" id="sv-tx-tarik" onclick="selectWalletTx('tarik')">− Tarik</button>
     </div>
     <div class="sv-field">
       <div class="sv-lbl">Nominal</div>
@@ -826,12 +832,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="sv-lbl">Catatan (opsional)</div>
       <input class="sv-inp" id="sv-tx-note" placeholder="mis. transfer bulan ini..." maxlength="60"/>
     </div>
-    <button class="sv-submit-btn" onclick="submitSavingTx()">Simpan</button>
+    <button class="sv-submit-btn" onclick="submitWalletTx()">Simpan</button>
   </div>
 </div>
 
 <!-- CURRENCY SHEET -->
-<div class="sheet-overlay" id="sheet-overlay" onclick="closeCurrencySheet();closeSavingSheet()"></div>
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeCurrencySheet();closeWalletSheet()"></div>
 <div class="bottom-sheet" id="sheet-currency">
   <div class="sheet-handle"></div>
   <div class="sheet-head">
@@ -1090,167 +1096,214 @@ function sv(k,v){ InarteSync.sv(k,v); }
 function ld(k){ return InarteSync.ld(k); }
 function getCur(){return CURRENCIES.find(c=>c.code===curCode)||CURRENCIES[0]}
 function getKey(y,m){return `inarte_fin_${y}_${m+1}`}
-// ══ SAVING DATA ══
-const SV_KEY='inarte_savings';
-const SV_EMOJIS=['🏠','🕌','📚','🏥','✈️','💍','🚗','👶','💼','🎓','🌱','💎','🏦','🛡️','🎯'];
-let _svEditId=null; // untuk setor/tarik — id kategori yang sedang aktif
-let _svTxType='setor'; // 'setor' | 'tarik'
 
-function loadSavings(){return JSON.parse(localStorage.getItem(SV_KEY)||'[]');}
-function saveSavings(arr){localStorage.setItem(SV_KEY,JSON.stringify(arr));}
+// ══ WALLET / DOMPET ══
+const WALLET_KEY='inarte_wallets';
+const WALLET_EMOJIS=['💵','🏦','🕌','🏠','📚','🏥','✈️','💍','🚗','👶','💼','🎓','🌱','💎','🛡️','🎯'];
 
-function getTotalSaving(){
-  return loadSavings().reduce((s,sv)=>s+sv.balance,0);
+let _walletEditId=null;
+let _walletTxType='setor';
+
+function loadWallets(){ return ld(WALLET_KEY)||[]; }
+function saveWallets(arr){ sv(WALLET_KEY, arr); }
+
+function getWallet(id){ return loadWallets().find(w=>w.id===id)||null; }
+
+// Hitung saldo wallet dari initialBalance + semua tx history
+function calcWalletBalance(w){
+  const hist = w.history||[];
+  const setor = hist.filter(h=>h.type==='setor').reduce((s,h)=>s+h.amt,0);
+  const tarik = hist.filter(h=>h.type==='tarik').reduce((s,h)=>s+h.amt,0);
+  return (w.initialBalance||0) + setor - tarik;
 }
 
-// ══ RENDER SAVING LIST ══
-function renderSavingList(){
-  const savings=loadSavings();
-  const wrap=document.getElementById('saving-list-wrap');
-  const totalEl=document.getElementById('saving-total-num');
-  const total=savings.reduce((s,sv)=>s+sv.balance,0);
-  totalEl.textContent=total>0?fmt(total):'—';
-  document.getElementById('sum-save').textContent=total>0?fmt(total):'—';
-  document.getElementById('sum-save-sub').textContent=savings.length>0?savings.length+' kategori':'total saving';
+function getTotalSaving(){
+  return loadWallets().reduce((s,w)=> s + calcWalletBalance(w), 0);
+}
 
-  if(!savings.length){
-    wrap.innerHTML='<div class="saving-empty">Belum ada kategori saving. Tambahkan di bawah (◕‿◕✿)</div>';
+// Hitung total setor ke wallet bulan ini (untuk cashflow)
+function getWalletSelorBulanIni(y, m){
+  const wallets = loadWallets();
+  const targetMonth = `${y}-${String(m+1).padStart(2,'0')}`;
+  return wallets.reduce((total, w)=>{
+    const hist = w.history||[];
+    const setor = hist
+      .filter(h=>h.type==='setor' && h.at && h.at.startsWith(targetMonth))
+      .reduce((s,h)=>s+h.amt, 0);
+    const tarik = hist
+      .filter(h=>h.type==='tarik' && h.at && h.at.startsWith(targetMonth))
+      .reduce((s,h)=>s+h.amt, 0);
+    return total + (setor - tarik);
+  }, 0);
+}
+
+// ══ RENDER WALLET LIST ══
+function renderWalletList(){
+  const wallets = loadWallets();
+  const wrap = document.getElementById('saving-list-wrap');
+  const totalEl = document.getElementById('saving-total-num');
+  if(!wrap) return;
+
+  const total = wallets.reduce((s,w)=>s+calcWalletBalance(w), 0);
+  if(totalEl) totalEl.textContent = total>0 ? fmt(total) : '—';
+
+  if(!wallets.length){
+    wrap.innerHTML=`<div class="saving-empty">Belum ada dompet saving. Tambahkan di bawah (◕‿◕✿)</div>`;
     return;
   }
-  wrap.innerHTML='';
-  const list=document.createElement('div');list.className='saving-list';
-  savings.forEach(sv=>{
-    const pct=sv.target?Math.min(100,Math.round(sv.balance/sv.target*100)):null;
-    // Estimasi bulan berdasarkan rata-rata setor
+
+  const list = document.createElement('div'); list.className='saving-list';
+  wallets.forEach(w=>{
+    const bal = calcWalletBalance(w);
+    const hasTarget = w.target>0;
+    const pct = hasTarget ? Math.min(Math.round(bal/w.target*100),100) : 0;
+
+    // ETA
     let etaTxt='';
-    if(sv.target&&sv.balance<sv.target&&sv.history&&sv.history.length>0){
-      const setors=sv.history.filter(h=>h.type==='setor');
-      if(setors.length>0){
-        const avgSetor=setors.reduce((s,h)=>s+h.amt,0)/setors.length;
-        if(avgSetor>0){
-          const bulan=Math.ceil((sv.target-sv.balance)/avgSetor);
-          etaTxt=`≈ ${bulan} bulan lagi jika konsisten`;
-        }
+    if(hasTarget && bal<w.target){
+      const remain = w.target - bal;
+      const hist = w.history||[];
+      const now = new Date();
+      const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+      const avgSetor = hist.length>=2
+        ? hist.filter(h=>h.type==='setor').reduce((s,h)=>s+h.amt,0) / Math.max(1, new Set(hist.filter(h=>h.type==='setor').map(h=>h.at?.slice(0,7))).size)
+        : 0;
+      if(avgSetor>0){
+        const months = Math.ceil(remain/avgSetor);
+        etaTxt = months<=1 ? 'hampir tercapai!' : `~${months} bulan lagi`;
       }
     }
-    const item=document.createElement('div');item.className='saving-item';
+
+    const item = document.createElement('div'); item.className='saving-item';
     item.innerHTML=`
       <div class="saving-item-top">
-        <span class="saving-emoji">${sv.emoji||'💰'}</span>
-        <span class="saving-name">${sv.name}</span>
-        <span class="saving-bal">${fmt(sv.balance)}</span>
+        <span class="saving-emoji">${w.emoji||'💰'}</span>
+        <div class="saving-item-info">
+          <div class="saving-item-name">${w.name}</div>
+          <div class="saving-item-bal">${fmt(bal)}</div>
+        </div>
+        ${hasTarget?`<div class="saving-item-pct">${pct}%</div>`:''}
       </div>
-      ${pct!==null?`
-      <div class="saving-item-mid">
-        <div class="saving-prog-track"><div class="saving-prog-fill" style="width:${pct}%"></div></div>
-        <span class="saving-prog-pct">${pct}%</span>
-      </div>
-      <div class="saving-target-lbl">dari target ${fmt(sv.target)}</div>
-      ${etaTxt?`<div class="saving-eta">${etaTxt}</div>`:''}
+      ${hasTarget?`
+        <div class="saving-progress-wrap">
+          <div class="saving-progress-bar" style="width:${pct}%"></div>
+        </div>
+        <div class="saving-target-lbl">dari target ${fmt(w.target)}</div>
+        ${etaTxt?`<div class="saving-eta">${etaTxt}</div>`:''}
       `:''}
       <div class="saving-item-btns">
-        <button class="saving-btn setor" onclick="openSavingTxSheet('${sv.id}','setor')">+ Setor</button>
-        <button class="saving-btn tarik" onclick="openSavingTxSheet('${sv.id}','tarik')">− Tarik</button>
-        <button class="saving-btn del" onclick="deleteSaving('${sv.id}')">Hapus</button>
+        <button class="saving-btn setor" onclick="openWalletTxSheet('${w.id}','setor')">+ Setor</button>
+        <button class="saving-btn tarik" onclick="openWalletTxSheet('${w.id}','tarik')">− Tarik</button>
+        <button class="saving-btn del" onclick="deleteWallet('${w.id}')">Hapus</button>
       </div>`;
     list.appendChild(item);
   });
-  wrap.appendChild(list);
+  wrap.innerHTML=''; wrap.appendChild(list);
 }
 
-// ══ SAVING SHEET — ADD ══
-function openSavingAddSheet(){
+// ══ WALLET SHEET — ADD ══
+function openWalletAddSheet(){
   document.getElementById('sv-name').value='';
   document.getElementById('sv-initial').value='';
   document.getElementById('sv-target').value='';
-  // Build emoji picker
-  const row=document.getElementById('sv-emoji-row');
+  // build emoji picker
+  const row = document.getElementById('sv-emoji-row');
   row.innerHTML='';
-  let _selEmoji=SV_EMOJIS[0];
-  SV_EMOJIS.forEach((em,i)=>{
-    const btn=document.createElement('button');
-    btn.className='sv-emoji-btn'+(i===0?' sel':'');
-    btn.textContent=em;
-    btn.dataset.em=em;
-    btn.onclick=()=>{
-      row.querySelectorAll('.sv-emoji-btn').forEach(b=>b.classList.remove('sel'));
-      btn.classList.add('sel');
-      _selEmoji=em;
-    };
-    row.appendChild(btn);
+  WALLET_EMOJIS.forEach(e=>{
+    const b=document.createElement('button');b.className='sv-emoji-btn';b.textContent=e;
+    b.onclick=()=>{row.querySelectorAll('.sv-emoji-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
+    row.appendChild(b);
   });
-  openSheet('saving-add');
+  row.querySelector('.sv-emoji-btn')?.classList.add('sel');
+  openSheet('sv-add');
 }
 
-function submitSavingAdd(){
+function submitWalletAdd(){
   const name=document.getElementById('sv-name').value.trim();
-  if(!name){showToast('Tulis nama tujuan dulu ya');return;}
   const initial=parseFloat(document.getElementById('sv-initial').value)||0;
-  const target=parseFloat(document.getElementById('sv-target').value)||null;
-  const emoji=document.querySelector('#sv-emoji-row .sv-emoji-btn.sel')?.dataset.em||'💰';
-  const savings=loadSavings();
-  const now=Date.now();
-  const newSv={id:'sv_'+now,name,emoji,balance:initial,target,addedAt:now,history:[]};
-  if(initial>0) newSv.history.push({type:'setor',amt:initial,note:'Saldo awal',at:now});
-  savings.push(newSv);
-  saveSavings(savings);
-  renderSavingList();
-  closeSavingSheet();
-  showToast('Kategori saving ditambahkan (◕‿◕✿)');
+  const target=parseFloat(document.getElementById('sv-target').value)||0;
+  const emoji=document.querySelector('#sv-emoji-row .sv-emoji-btn.sel')?.textContent||'💰';
+  if(!name){showToast('Nama dompet tidak boleh kosong');return;}
+  const wallets=loadWallets();
+  wallets.push({
+    id:'w'+Date.now(),
+    name, emoji,
+    initialBalance: initial,
+    target: target||0,
+    history:[], // {type:'setor'|'tarik', amt, note, at}
+    createdAt: new Date().toISOString()
+  });
+  saveWallets(wallets);
+  renderWalletList();
+  renderSummary(loadData(viewY,viewM), viewY, viewM);
+  closeSheet('sv-add');
+  showToast('Dompet saving ditambahkan (◕‿◕✿)');
 }
 
-// ══ SAVING SHEET — SETOR / TARIK ══
-function openSavingTxSheet(id,type){
-  _svEditId=id;
-  _svTxType=type;
-  selectSvTx(type);
+// ══ WALLET SHEET — SETOR / TARIK ══
+function openWalletTxSheet(id, type){
+  _walletEditId=id;
+  _walletTxType=type;
+  const w=getWallet(id);
+  if(!w) return;
+  document.getElementById('sv-tx-title').textContent=`${type==='setor'?'Setor ke':'Tarik dari'} ${w.name}`;
+  document.getElementById('sv-tx-setor').classList.toggle('sel',type==='setor');
+  document.getElementById('sv-tx-tarik').classList.toggle('sel',type==='tarik');
   document.getElementById('sv-tx-amt').value='';
   document.getElementById('sv-tx-note').value='';
-  const sv=loadSavings().find(s=>s.id===id);
-  document.getElementById('sv-tx-title').textContent=(sv?.emoji||'💰')+' '+( sv?.name||'Saving');
-  openSheet('saving-tx');
+  openSheet('sv-tx');
 }
 
-function selectSvTx(type){
-  _svTxType=type;
-  document.getElementById('sv-tx-setor').className='sv-type-btn'+(type==='setor'?' sel':'');
-  document.getElementById('sv-tx-tarik').className='sv-type-btn'+(type==='tarik'?' sel':'');
+function selectWalletTx(type){
+  _walletTxType=type;
+  document.getElementById('sv-tx-setor').classList.toggle('sel',type==='setor');
+  document.getElementById('sv-tx-tarik').classList.toggle('sel',type==='tarik');
+  const w=getWallet(_walletEditId);
+  if(w) document.getElementById('sv-tx-title').textContent=`${type==='setor'?'Setor ke':'Tarik dari'} ${w.name}`;
 }
 
-function submitSavingTx(){
-  const amt=parseFloat(document.getElementById('sv-tx-amt').value);
-  if(!amt||amt<=0){showToast('Isi nominal dulu ya');return;}
+function submitWalletTx(){
+  const amt=parseFloat(document.getElementById('sv-tx-amt').value)||0;
   const note=document.getElementById('sv-tx-note').value.trim();
-  const savings=loadSavings();
-  const sv=savings.find(s=>s.id===_svEditId);
-  if(!sv){closeSavingSheet();return;}
-  if(_svTxType==='tarik'&&amt>sv.balance){showToast('Nominal melebihi saldo');return;}
-  sv.balance=_svTxType==='setor'?sv.balance+amt:sv.balance-amt;
-  if(!sv.history)sv.history=[];
-  sv.history.push({type:_svTxType,amt,note,at:Date.now()});
-  saveSavings(savings);
-  renderSavingList();
-  closeSavingSheet();
-  showToast(_svTxType==='setor'?'Setor berhasil (◕‿◕✿)':'Tarik berhasil');
-}
-
-function deleteSaving(id){
-  if(!confirm('Hapus kategori saving ini?')) return;
-  saveSavings(loadSavings().filter(s=>s.id!==id));
-  renderSavingList();
-  showToast('Kategori dihapus');
-}
-
-function closeSavingSheet(){
-  ['sheet-saving-add','sheet-saving-tx'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.classList.remove('open');
+  if(!amt||amt<=0){showToast('Masukkan jumlah yang valid');return;}
+  const wallets=loadWallets();
+  const idx=wallets.findIndex(w=>w.id===_walletEditId);
+  if(idx===-1) return;
+  // Cek saldo kalau tarik
+  const curBal=calcWalletBalance(wallets[idx]);
+  if(_walletTxType==='tarik'&&amt>curBal){
+    showToast('Saldo tidak cukup untuk ditarik');return;
+  }
+  wallets[idx].history=wallets[idx].history||[];
+  wallets[idx].history.push({
+    type:_walletTxType,
+    amt,
+    note: note||(_walletTxType==='setor'?'Setor':'Tarik'),
+    at: new Date().toISOString().slice(0,10) // YYYY-MM-DD — timezone safe
   });
-  const ov=document.getElementById('sheet-overlay');
-  if(ov)ov.classList.remove('on');
+  saveWallets(wallets);
+  renderWalletList();
+  renderSummary(loadData(viewY,viewM), viewY, viewM);
+  closeSheet('sv-tx');
+  showToast(_walletTxType==='setor'?`Rp${fmt(amt)} disetor (◕‿◕✿)`:`Rp${fmt(amt)} ditarik`);
 }
 
-function openSavingAddSheet_wrap(){openSavingAddSheet();}
+function deleteWallet(id){
+  if(!confirm('Hapus dompet saving ini? Data riwayat akan hilang.')) return;
+  const wallets=loadWallets().filter(w=>w.id!==id);
+  saveWallets(wallets);
+  renderWalletList();
+  renderSummary(loadData(viewY,viewM), viewY, viewM);
+  showToast('Dompet dihapus');
+}
+
+function closeWalletSheet(){
+  closeSheet('sv-add');
+  closeSheet('sv-tx');
+}
+
+// Alias untuk backward compat dengan onclick HTML
+function openSavingAddSheet_wrap(){ openWalletAddSheet(); }
 
 function loadData(y,m){return ld(getKey(y,m))||{tx:[],fixed:[]}}
 function saveData(y,m,d){
@@ -1431,7 +1484,7 @@ function submitTx(){
 function renderAll(){
   const data=loadData(viewY,viewM);
   renderSummary(data);
-  renderSavingList();
+  renderWalletList();
   renderDiagram(data);
   renderTxList(data);
   renderFixedList(data);
@@ -1439,7 +1492,10 @@ function renderAll(){
 }
 
 // ══ SUMMARY ══
-function renderSummary(data){
+function renderSummary(data, y, m){
+  // default ke bulan yang sedang dilihat
+  y = y !== undefined ? y : viewY;
+  m = m !== undefined ? m : viewM;
   const tx=data.tx||[];
   const fixed=data.fixed||[];
 
@@ -1450,19 +1506,8 @@ function renderSummary(data){
   const totalOut=daily+monthlyFixed+yearlyFixed;
   const totalSaving=getTotalSaving();
 
-  // Hitung total SETOR saving bulan ini saja (bukan saldo akumulatif)
-  // Supaya sisa = pemasukan - pengeluaran - setor bulan ini
-  const now=new Date();
-  const thisMonthPrefix=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  const savingsBulanIni=loadSavings().reduce((total,sv)=>{
-    const setorBulanIni=(sv.history||[])
-      .filter(h=>h.type==='setor'&&new Date(h.at).toISOString().startsWith(thisMonthPrefix))
-      .reduce((s,h)=>s+h.amt,0);
-    const tarikBulanIni=(sv.history||[])
-      .filter(h=>h.type==='tarik'&&new Date(h.at).toISOString().startsWith(thisMonthPrefix))
-      .reduce((s,h)=>s+h.amt,0);
-    return total+(setorBulanIni-tarikBulanIni);
-  },0);
+  // Hitung total net setor ke wallet bulan ini (timezone-safe: pakai YYYY-MM-DD langsung)
+  const savingsBulanIni = getWalletSelorBulanIni(y, m);
 
   // Sisa = pemasukan - pengeluaran - saving yang dialokasikan bulan ini
   const sisa=income-totalOut-savingsBulanIni;
@@ -1478,12 +1523,11 @@ function renderSummary(data){
   document.getElementById('sum-out-sub').textContent=`${tx.filter(t=>t.type==='daily').length} harian + ${fixed.length} tetap`;
   saveEl.textContent=totalSaving>0?fmt(totalSaving):'—';
   saveEl.className='summary-num saving'+(totalSaving===0?' zero':'');
-  const savings=loadSavings();
-  document.getElementById('sum-save-sub').textContent=savings.length>0?savings.length+' kategori':'belum ada';
-
-  // Update sum-save-sub: tampilkan setor bulan ini kalau ada
-  if(savingsBulanIni>0){
-    document.getElementById('sum-save-sub').textContent=`+${fmt(savingsBulanIni)} bulan ini`;
+  const wallets=loadWallets();
+  const saveSubEl=document.getElementById('sum-save-sub');
+  if(saveSubEl){
+    if(savingsBulanIni>0) saveSubEl.textContent=`+${fmt(savingsBulanIni)} bulan ini`;
+    else saveSubEl.textContent=wallets.length>0?wallets.length+' dompet':'belum ada';
   }
 
   const sisaEl=document.getElementById('sum-sisa');
