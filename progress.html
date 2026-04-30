@@ -464,10 +464,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   }
   .p-scroll > .section-divider{display:none}
 
-  /* LEFT col: stat pills, calendar, nara insight */
+  /* LEFT col: stat pills full-width, calendar sticky, nara full-width at bottom */
   .pg-range-row   {grid-column:1/-1;grid-row:1;margin:-1.75rem -1.75rem 0;padding:.5rem 1.75rem;top:53px}
-  .pg-stat-pills  {grid-column:1;grid-row:2;margin-top:.375rem}
-  .pg-left-col    {grid-column:1;grid-row:3;display:flex;flex-direction:column;gap:12px;align-self:start}
+  .pg-stat-pills  {grid-column:1/-1;grid-row:2;margin-top:.375rem}
+  .pg-left-col    {grid-column:1;grid-row:3;align-self:start;position:sticky;top:calc(53px + 46px)}
+  .pg-right-col   {grid-column:2;grid-row:3/5;display:flex;flex-direction:column;gap:12px;min-width:0}
+  .pg-nara-row    {grid-column:1/-1;grid-row:4;display:flex;flex-direction:column;gap:12px}
 
   /* RIGHT col: all charts, habit, finance, diary — scrollable */
   .pg-right-col   {grid-column:2;grid-row:2/5;display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -672,7 +674,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <!-- LEFT COL: kalender + Nara insight -->
+  <!-- LEFT COL: kalender saja -->
   <div class="pg-left-col">
 
   <!-- COMPACT CALENDAR -->
@@ -699,6 +701,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 
+  </div><!-- end pg-left-col -->
+
+  <!-- NARA ROW: full-width di bawah, spans dua kolom di desktop -->
+  <div class="pg-nara-row">
+
   <!-- NARA INSIGHT -->
   <div class="pg-section">
     <div class="pg-section-title">
@@ -719,7 +726,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <!-- GAMIFICATION BADGE -->
   <div id="streak-gamif"></div>
 
-  </div><!-- end pg-left-col -->
+  </div><!-- end pg-nara-row -->
 
   <!-- RIGHT COL: semua chart dan data -->
   <div class="pg-right-col">
