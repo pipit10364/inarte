@@ -261,233 +261,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0}
 .sheet-head{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-l);flex-shrink:0;gap:8px}
 .sheet-title{font-size:13px;font-weight:600;color:var(--text);flex:1}
-.sheet-stat{font-size:12px;color:va  --dusk-p:   #EDEAF6;
-  --r:    20px;
-  --rsm:  14px;
-  --rxs:  10px;
-  --sh:   0 2px 16px rgba(28,24,16,.07), 0 1px 4px rgba(28,24,16,.04);
-  --sh-md:0 6px 28px rgba(28,24,16,.10), 0 2px 8px rgba(28,24,16,.05);
-  --sh-lg:0 12px 48px rgba(28,24,16,.13), 0 4px 12px rgba(28,24,16,.06);
-
-  --nara:#E8A882;--nara-d:#C4724E;--nara-l:#F0C4A8;--nara-p:#FBF0E9;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-
-/* ══ TOPBAR ══ */
-.topbar{position:sticky;top:0;z-index:100;background:rgba(244,239,232,.93);backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid rgba(226,217,204,.5);padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
-.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:var(--moss);letter-spacing:.08em}
-.topbar-logo em{font-style:italic;color:var(--clay)}
-.topbar-r{display:flex;align-items:center;gap:.75rem}
-.topbar-date{font-size:11px;color:var(--text3)}
-.av-btn{width:32px;height:32px;border-radius:50%;background:var(--moss);color:#fff;border:none;cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;display:flex;align-items:center;justify-content:center;transition:transform .2s}
-.av-btn:hover{transform:scale(1.08)}
-
-/* ══ SCROLL ══ */
-.today-scroll{padding:1.125rem 1.125rem 100px;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
-
-/* ══ SECTION DIVIDER ══ */
-.section-divider{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);padding:0 2px;margin-top:4px}
-
-/* ══ GREETING ══ */
-.greeting{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:.875rem 1.125rem .8rem}
-.greeting-time{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);margin-bottom:2px}
-.greeting-name{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:500;color:var(--text);line-height:1.2;margin-bottom:.4rem}
-.greeting-name em{font-style:italic;color:var(--moss)}
-.greeting-nara{display:flex;align-items:flex-start;gap:9px;background:var(--nara-p);border-left:3px solid var(--nara);border-radius:0 var(--rsm) var(--rsm) 0;padding:.65rem .875rem .65rem .75rem;margin-top:.5rem}
-.nara-dot{width:22px;height:22px;border-radius:50%;background:var(--nara);color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(196,114,78,.25)}
-
-/* ══ NARA SURFACE — unified Nara voice ══ */
-.nara-surface{background:var(--nara-p);border-left:3px solid var(--nara);border-radius:0 var(--rsm) var(--rsm) 0;padding:.75rem 1rem .75rem .875rem;display:flex;align-items:flex-start;gap:9px;}
-.nara-av{width:24px;height:24px;border-radius:50%;background:var(--nara);color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;box-shadow:0 2px 6px rgba(196,114,78,.25);}
-.nara-voice{flex:1}
-.nara-voice-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--nara-d);margin-bottom:3px;}
-.nara-voice-txt{font-size:13px;color:var(--text2);line-height:1.75;}
-.nara-voice-txt p{margin-bottom:5px}
-.nara-voice-txt p:last-child{margin-bottom:0}
-[data-theme="dark"] .nara-av{box-shadow:0 2px 6px rgba(0,0,0,.3)}
-
-@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
-.nara-greeting-txt{font-size:13px;color:var(--text2);line-height:1.7}
-
-/* ══ SECTION CARD ══ */
-.section-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.section-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.125rem .75rem;border-bottom:1px solid var(--border-l)}
-.section-title{font-size:11.5px;font-weight:600;color:var(--text2);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
-.s-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.section-badge{font-size:11px;font-weight:600;color:var(--text3);border-radius:20px;padding:2px 0}
-.section-body{padding:.875rem 1.125rem}
-
-/* ══ HABIT LIST ══ */
-.habit-list{list-style:none;display:flex;flex-direction:column;gap:2px}
-.habit-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--rsm);cursor:pointer;user-select:none;transition:background .15s}
-.habit-row:hover{background:var(--bg2)}
-.habit-row.done{background:transparent}
-.habit-check{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .22s cubic-bezier(.34,1.56,.64,1)}
-.habit-row.done .habit-check{background:var(--moss);border-color:var(--moss);transform:scale(1.05)}
-.check-svg{width:10px;height:8px;opacity:0;transition:opacity .15s}
-.habit-row.done .check-svg{opacity:1}
-.habit-text{flex:1;font-size:13px;color:var(--text2);transition:color .15s}
-.habit-row.done .habit-text{color:var(--text4);text-decoration:line-through}
-.habit-streak{font-size:10px;font-weight:700;color:var(--amber);white-space:nowrap}
-.habit-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text4);padding:3px 5px;border-radius:5px;opacity:0;transition:all .15s;flex-shrink:0}
-.habit-row:hover .habit-del{opacity:1}
-.habit-del:hover{color:var(--clay);background:var(--clay-p);opacity:1}
-.habit-edit-inp{flex:1;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text2);background:var(--bg2);border:1.5px solid var(--moss-l);border-radius:6px;padding:2px 7px;outline:none}
-.habit-rename-hint{font-size:10px;color:var(--text4);margin-left:4px;white-space:nowrap}
-
-.habit-progress{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border-l)}
-.habit-prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
-.habit-prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--moss),var(--moss-mid));transition:width .5s cubic-bezier(.4,0,.2,1)}
-.habit-prog-row{display:flex;justify-content:space-between;margin-top:5px}
-.habit-prog-count{font-size:10px;color:var(--text4)}
-.habit-prog-msg{font-size:10px;color:var(--moss);font-style:italic}
-
-.habit-themes{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.625rem}
-.theme-chip{padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s}
-.theme-chip:hover{background:var(--bg2)}
-.theme-chip.active{border-color:var(--moss);background:var(--moss-p);color:var(--moss);font-weight:600}
-
-.habit-suggestions{display:none;background:var(--bg2);border:1px solid var(--border-l);border-radius:var(--rsm);padding:9px 11px;margin-bottom:.625rem;animation:fadeUp .2s ease}
-.habit-suggestions.on{display:block}
-.habit-sug-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:7px}
-.habit-sug-chips{display:flex;flex-wrap:wrap;gap:5px}
-.habit-sug-chip{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
-.habit-sug-chip:hover{border-color:var(--moss-l);background:var(--moss-p);color:var(--moss)}
-
-.habit-add{display:flex;gap:7px;margin-top:.875rem}
-.habit-add-inp{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
-.habit-add-inp:focus{border-color:var(--moss)}
-.habit-add-inp::placeholder{color:var(--text4);font-style:italic}
-.habit-add-btn{padding:8px 14px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
-.habit-add-btn:hover{background:var(--moss-d)}
-
-/* ══ QUICK ROW: 3fr + 2fr ══ */
-.quick-row{display:grid;grid-template-columns:3fr 2fr;gap:8px}
-
-/* Water card */
-.water-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.water-top{padding:.875rem 1rem .75rem;cursor:pointer;display:flex;align-items:center;gap:1rem}
-.water-visual{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
-.bottle{width:28px;height:44px;position:relative;display:flex;flex-direction:column}
-.bottle-neck{width:12px;height:7px;border:2px solid var(--sky-l);border-bottom:none;border-radius:3px 3px 0 0;margin:0 auto;background:var(--surface);position:relative;z-index:2}
-.bottle-body{flex:1;border:2px solid var(--sky-l);border-radius:3px 3px 7px 7px;overflow:hidden;position:relative;background:var(--surface)}
-.bottle-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(46,95,122,.2),rgba(46,95,122,.42));transition:height .5s cubic-bezier(.4,0,.2,1);border-radius:0 0 4px 4px}
-.bottle-shine{position:absolute;top:3px;left:3px;width:3px;height:55%;border-radius:2px;background:rgba(255,255,255,.55)}
-.water-info{flex:1}
-.water-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:4px}
-.water-count-big{font-size:2rem;font-weight:700;color:var(--sky);line-height:1;margin-bottom:2px}
-.water-of{font-size:11px;color:var(--text4)}
-.water-dots{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
-.water-dot{width:9px;height:9px;border-radius:50%;background:var(--border);transition:background .3s,transform .2s cubic-bezier(.34,1.56,.64,1)}
-.water-dot.full{background:var(--sky)}
-.water-dot.just-filled{animation:dotPop .35s cubic-bezier(.34,1.56,.64,1)}
-@keyframes dotPop{0%{transform:scale(1)}50%{transform:scale(1.6)}100%{transform:scale(1)}}
-
-.water-controls{display:none;padding:.5rem 1rem .875rem;border-top:1px solid var(--border-l);align-items:center;gap:1rem}
-.water-controls.on{display:flex;animation:fadeUp .2s ease}
-.wc-hint{font-size:11px;color:var(--text3);flex:1;font-style:italic}
-.wc-btns{display:flex;align-items:center;gap:8px}
-.wc-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);font-size:17px;color:var(--sky);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s cubic-bezier(.34,1.56,.64,1);line-height:1}
-.wc-btn:hover{border-color:var(--sky);background:var(--sky-p);transform:scale(1.12)}
-.wc-num{font-size:17px;font-weight:700;color:var(--sky);min-width:28px;text-align:center}
-
-/* Mood+Cond combined card */
-.mc-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
-
-/* Mood section */
-.mood-section{padding:.75rem .875rem;cursor:pointer;border-bottom:1px solid var(--border-l);transition:background .15s;flex:1}
-.mood-section:hover{background:var(--bg2)}
-.mood-section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:.5rem}
-.mood-display{display:flex;align-items:center;gap:8px}
-.mood-em{font-size:26px;line-height:1;transition:transform .2s cubic-bezier(.34,1.56,.64,1);display:inline-block}
-.mood-right{display:flex;flex-direction:column;gap:2px}
-.mood-lbl{font-size:12px;font-weight:600;color:var(--text2)}
-.mood-sub{font-size:10px;color:var(--text3);line-height:1.5}
-.mood-picker{display:none;padding:.5rem .875rem .75rem;border-bottom:1px solid var(--border-l);flex-wrap:wrap;gap:5px}
-.mood-picker.on{display:flex;animation:fadeUp .18s ease}
-.mood-opt{padding:5px 8px;border-radius:12px;border:1.5px solid var(--border);background:transparent;cursor:pointer;transition:all .15s;text-align:center;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:1px}
-.mood-opt-em{font-size:18px;line-height:1}
-.mood-opt-lbl{font-size:9px;color:var(--text2)}
-.mood-opt:hover{background:var(--moss-p);border-color:var(--moss-l)}
-.mood-opt.sel{background:var(--moss-p);border-color:var(--moss)}
-
-/* Cond section */
-.cond-section{padding:.625rem .875rem .75rem;cursor:pointer;transition:background .15s}
-.cond-section:hover{background:var(--bg2)}
-.cond-section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:.4rem}
-.cond-tags{display:flex;flex-wrap:wrap;gap:4px;min-height:24px;align-items:center}
-.cond-tag{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500;background:var(--rose-p);color:var(--rose);border:1px solid var(--rose-l)}
-.cond-empty{font-size:11px;color:var(--text4);font-style:italic}
-.cond-picker{display:none;padding:.375rem .875rem .625rem;border-top:1px solid var(--border-l);flex-wrap:wrap;gap:5px}
-.cond-picker.on{display:flex;animation:fadeUp .18s ease}
-.cond-opt{padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s}
-.cond-opt.on{border-color:var(--rose);background:var(--rose-p);color:var(--rose)}
-
-/* ══ MENU CARD ══ */
-.menu-card{background:var(--surface);border:1px solid var(--border-l);border-left:3px solid var(--moss);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.menu-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.125rem .75rem;border-bottom:1px solid var(--border-l)}
-.menu-head-left{}
-.menu-head-title{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--moss);margin-bottom:2px}
-.menu-head-sub{font-size:11px;color:var(--text3)}
-.menu-refresh{padding:5px 12px;border-radius:20px;border:1.5px solid var(--moss-l);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--moss);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
-.menu-refresh:hover{background:var(--moss-p)}
-.menu-refresh svg{transition:transform .3s}
-.menu-refresh.loading svg{animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.menu-grid{display:grid;grid-template-columns:repeat(3,1fr)}
-.menu-cell{padding:.875rem .875rem .75rem;border-right:1px solid var(--border-l);cursor:pointer;transition:background .15s}
-.menu-cell:last-child{border-right:none}
-.menu-cell:hover{background:var(--bg2)}
-.menu-cell-time{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text4);margin-bottom:4px}
-.menu-cell-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3}
-.menu-cell-cal{font-size:10px;color:var(--amber);font-weight:600;margin-bottom:3px}
-.menu-cell-why{font-size:10px;color:var(--text3);line-height:1.45}
-.menu-nara{padding:.625rem 1.125rem .875rem;border-top:1px solid var(--border-l);font-size:11.5px;color:var(--text3);font-style:italic;line-height:1.6;display:none}
-.menu-nara.on{display:block}
-
-/* ══ ACTION ROW ══ */
-.action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.action-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);cursor:pointer;overflow:hidden;transition:all .18s cubic-bezier(.34,1.56,.64,1)}
-.action-card:active{transform:scale(.97)}
-.action-card-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem .875rem .625rem;border-bottom:1px solid var(--border-l)}
-.action-card-title{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.03em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
-.action-card-stat{font-size:11px;font-weight:700;color:var(--amber);background:var(--amber-p);padding:2px 8px;border-radius:10px}
-.action-card-body{padding:.625rem .875rem .875rem;min-height:54px}
-.action-item{font-size:11px;color:var(--text2);display:flex;justify-content:space-between;gap:6px;margin-bottom:2px}
-.action-item-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.action-item-cal{color:var(--amber);font-weight:600;white-space:nowrap}
-.action-empty{font-size:11px;color:var(--text4);font-style:italic;line-height:1.55}
-.action-tap{font-size:10px;color:var(--moss);font-weight:500;margin-top:3px}
-
-/* ══ NARA MESSAGE ══ */
-.nara-message{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:1rem 1.125rem;display:none}
-.nara-message.on{display:block;animation:fadeUp .4s ease}
-.nara-msg-head{display:flex;align-items:center;gap:8px;margin-bottom:.5rem}
-.nara-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nara-msg-name{font-size:12px;font-weight:600;color:var(--moss)}
-.nara-msg-body{font-size:13px;color:var(--text2);line-height:1.8}
-.nara-msg-body p{margin-bottom:5px}
-.nara-msg-body p:last-child{margin-bottom:0}
-.nara-dots{display:flex;gap:4px;align-items:center;padding:2px 0}
-.nara-dots span{width:6px;height:6px;border-radius:50%;background:var(--nara-l);animation:bounceDot 1.2s infinite}
-.nara-dots span:nth-child(2){animation-delay:.2s}
-.nara-dots span:nth-child(3){animation-delay:.4s}
-@keyframes bounceDot{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1.2);opacity:1}}
-
-/* ══ SHEETS ══ */
-.sheet-overlay{position:fixed;inset:0;background:rgba(28,24,16,.45);z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(3px)}
-.sheet-overlay.on{opacity:1;pointer-events:auto}
-.bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:24px 24px 0 0;z-index:900;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);max-height:88dvh;display:flex;flex-direction:column;box-shadow:0 -8px 48px rgba(28,24,16,.15)}
-.bottom-sheet.open{transform:translateY(0)}
-@media(min-width:640px){
-  .bottom-sheet{left:50%;right:auto;width:540px;transform:translateX(-50%) translateY(100%);border-radius:24px 24px 0 0}
-  .bottom-sheet.open{transform:translateX(-50%) translateY(0)}
-}
-.sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0}
-.sheet-head{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-l);flex-shrink:0;gap:8px}
-.sheet-title{font-size:13px;font-weight:600;color:var(--text);flex:1}
 .sheet-stat{font-size:12px;color:var(--amber);font-weight:600}
 .sheet-close{background:var(--bg2);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:12px;color:var(--text3);display:flex;align-items:center;justify-content:center}
 .sheet-body{flex:1;overflow-y:auto;padding:14px 16px 32px;-webkit-overflow-scrolling:touch}
@@ -1327,7 +1100,7 @@ body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
 <div class="nara-chat" id="nara-chat">
   <div class="nc-head">
     <div class="nc-av">N</div>
-    <div><div class="nc-name">Nara</div><div class="nc-status">(&#9685;&#9607;&#9685;&#10023;) siap menemani</div></div>
+    <div><div class="nc-name">Nara</div><div class="nc-status">(◕‿◕✿) siap menemani</div></div>
     <button class="nc-close" onclick="toggleNaraChat()">&#x2715;</button>
   </div>
   <div class="nc-msgs" id="nc-msgs"></div>
@@ -1509,7 +1282,7 @@ body.sidebar-collapsed .ds-nav-btn:hover::after{opacity:1}
     </button>
     <div class="pp-feedback-wrap" id="pp-feedback-wrap">
       <div class="pp-feedback-lbl">Ada saran, bug, atau apapun yang mau kamu sampaikan?</div>
-      <textarea class="pp-feedback-area" id="pp-feedback-txt" placeholder="Tulis di sini... semua masukan sangat berarti (◕ᴗ◕✿)" maxlength="1000"></textarea>
+      <textarea class="pp-feedback-area" id="pp-feedback-txt" placeholder="Tulis di sini... semua masukan sangat berarti (◕‿◕✿)" maxlength="1000"></textarea>
       <button class="pp-feedback-send" id="pp-feedback-send" onclick="sendFeedback()">Kirim →</button>
     </div>
   </div>
@@ -1649,7 +1422,7 @@ function _buildNaraGreeting(h){
   // ── PRIORITY 1: Streak milestone (hanya kalau freeze notice tidak tampil) ──
   if(!freezeNoticeShowing&&streak>0&&[3,7,14,21,30,50,100,200,365].includes(streak)){
     const tiers={3:'3 hari beruntun',7:'seminggu penuh',14:'dua minggu',21:'21 hari',30:'sebulan',50:'50 hari',100:'100 hari',200:'200 hari',365:'setahun'};
-    return tiers[streak]+' — ini bukan kebetulan'+n+' (◕ᴗ◕✿)';
+    return tiers[streak]+' — ini bukan kebetulan'+n+' (◕‿◕✿)';
   }
 
   // ── PRIORITY 2: Mood berat kemarin — tanyain kabarnya ──
@@ -1659,25 +1432,25 @@ function _buildNaraGreeting(h){
 
   // ── PRIORITY 3: Konteks hari ini yang sudah ada ──
   if(hasAnyToday){
-    if(waterToday>=getWaterTarget()) return 'Air sudah '+getWaterTarget()+' gelas'+n+'! Tubuhmu pasti senang (◕ᴗ◕✿)';
+    if(waterToday>=getWaterTarget()) return 'Air sudah '+getWaterTarget()+' gelas'+n+'! Tubuhmu pasti senang (◕‿◕✿)';
     if(waterToday>=5&&h>=15) return 'Udah '+waterToday+' gelas air hari ini'+n+'. Tambah sedikit lagi bisa?';
     if(doneHabits.length>=3) return doneHabits.length+' habit selesai'+n+'. Konsistensi kecil itu yang paling berasa (≧▽≦)';
-    if(moodToday==='senang'||moodToday==='semangat') return 'Mood '+moodToday+' hari ini'+n+'! Semoga terjaga sampai malam ya (◕ᴗ◕✿)';
+    if(moodToday==='senang'||moodToday==='semangat') return 'Mood '+moodToday+' hari ini'+n+'! Semoga terjaga sampai malam ya (◕‿◕✿)';
     if(moodToday==='berat'||moodToday==='cemas') return 'Aku lihat mood hari ini cukup berat'+n+'. Mau cerita? Nara di sini.';
-    return 'Sudah mulai mencatat hari ini'+n+' — bagus (ꈍᴗꈍ)';
+    return 'Sudah mulai mencatat hari ini'+n+' — bagus (˘‿˘)';
   }
 
   // ── PRIORITY 4: Referensi data kemarin kalau belum ada hari ini ──
   if(hasYest&&h>=6&&h<20){
     if(sleepYest>0&&sleepYest<6) return 'Tidurmu semalam '+sleepYest+' jam'+n+'. Gimana kondisi sekarang?';
     if(sleepYest>=7) return 'Tidur '+sleepYest+' jam semalam'+n+' — itu modal yang bagus untuk hari ini.';
-    if(waterYest<5) return 'Kemarin minum '+waterYest+' gelas'+n+'. Yuk kejar hari ini (◕ᴗ◕✿)';
+    if(waterYest<5) return 'Kemarin minum '+waterYest+' gelas'+n+'. Yuk kejar hari ini (◕‿◕✿)';
     if(moodYest==='senang'||moodYest==='semangat') return 'Kemarin kamu '+moodYest+n+'. Mudah-mudahan hari ini juga ya!';
   }
 
   // ── PRIORITY 5: Waktu hari sebagai fallback ──
-  if(h<6)  return 'Masih dini hari'+n+'. Istirahat yang cukup ya (ꈍᴗꈍ)';
-  if(h<11) return 'Selamat memulai hari'+n+'. Nara di sini kalau butuh teman (◕ᴗ◕✿)';
+  if(h<6)  return 'Masih dini hari'+n+'. Istirahat yang cukup ya (˘‿˘)';
+  if(h<11) return 'Selamat memulai hari'+n+'. Nara di sini kalau butuh teman (◕‿◕✿)';
   if(h<15) return 'Jangan lupa makan siang'+n+' — tubuhmu perlu energi!';
   if(h<18) return 'Sore sudah'+n+'. Sempat bergerak hari ini?';
   return 'Malam ini'+n+', yuk luangin sedikit waktu untuk dirimu sendiri.';
@@ -1739,7 +1512,7 @@ function buildHabitList(){
   const tmpl=loadHabitTemplate();
   const list=document.getElementById('habit-list');list.innerHTML='';
   if(!tmpl.length){
-    list.innerHTML='<li style="font-size:12px;color:var(--text4);font-style:italic;padding:6px 0">Belum ada kebiasaan. Pilih dari tema di atas atau tulis sendiri (◕ᴗ◕✿)</li>';
+    list.innerHTML='<li style="font-size:12px;color:var(--text4);font-style:italic;padding:6px 0">Belum ada kebiasaan. Pilih dari tema di atas atau tulis sendiri (◕‿◕✿)</li>';
     updateHabitProgress(0,0);return;
   }
   tmpl.forEach(h=>{
@@ -1797,7 +1570,7 @@ function commitRename(id,newText,li){
   if(habit&&newText!==habit.text){
     habit.text=newText;
     saveHabitTemplate(arr);
-    showToast('Nama kebiasaan diperbarui (◕ᴗ◕✿)');
+    showToast('Nama kebiasaan diperbarui (◕‿◕✿)');
   }
   buildHabitList();
 }
@@ -1877,7 +1650,7 @@ function buildWaterVisual(){
   // hint
   const remaining=target-w;
   let hint;
-  if(w===0)hint='Yuk mulai minum! (◕ᴗ◕✿)';
+  if(w===0)hint='Yuk mulai minum! (◕‿◕✿)';
   else if(w===target)hint='Target tercapai! (≧▽≦)';
   else if(remaining===1)hint='Satu lagi untuk genap!';
   else if(w>=Math.floor(target/2))hint=`${remaining} lagi!`;
@@ -1925,9 +1698,9 @@ function selectMood(id,em,lbl,sub){
   // Human feedback — not "tercatat" but actual response
   const feedbacks={
     senang:`😊 ${P.name?P.name+', s':'S'}enang denger kamu lagi baik-baik! Semoga terbawa sampai malam ya~`,
-    netral:`Hari yang biasa pun punya nilainya${P.name?', '+P.name:''}. Tidak harus selalu wow (◕ᴗ◕✿)`,
+    netral:`Hari yang biasa pun punya nilainya${P.name?', '+P.name:''}. Tidak harus selalu wow (◕‿◕✿)`,
     lelah:`Badan lelah itu sinyal${P.name?', '+P.name:''}. Boleh istirahat sejenak — itu bukan malas, itu perlu.`,
-    berat:`Hari yang berat terasa berat${P.name?', '+P.name:''}. Tapi kamu masih di sini, dan itu sudah cukup. Nara di sini ya (ꈍᴗꈍ)`,
+    berat:`Hari yang berat terasa berat${P.name?', '+P.name:''}. Tapi kamu masih di sini, dan itu sudah cukup. Nara di sini ya (˘‿˘)`,
     semangat:`Wah energi hari ini positif banget${P.name?', '+P.name:''}! (≧▽≦) Salurkan ke hal-hal yang kamu suka!`
   };
   showToast(feedbacks[id]||'✨',4000);
@@ -2035,7 +1808,7 @@ Pertimbangkan kondisi secara spesifik. Berikan pilihan yang beragam dari menu se
           grid.appendChild(cell);
         });
         const nara=document.getElementById('menu-nara');
-        nara.textContent='Menu ini Nara pilihkan khusus berdasarkan kondisi & profil kamu hari ini (◕ᴗ◕✿)';
+        nara.textContent='Menu ini Nara pilihkan khusus berdasarkan kondisi & profil kamu hari ini (◕‿◕✿)';
         nara.classList.add('on');
         btn.classList.remove('loading');btn.disabled=false;
         return;
@@ -2163,7 +1936,7 @@ function maybeShowNaraMsg(){
   const txt=document.getElementById('nara-today-txt');
   el.classList.add('on');
   const parts=[];
-  if((D.conditions||[]).includes('haid'))parts.push('Lagi haid ya — wajar kalau badan lebih berat dari biasanya. Perbanyak zat besi dan minum air ya (ꈍᴗꈍ)');
+  if((D.conditions||[]).includes('haid'))parts.push('Lagi haid ya — wajar kalau badan lebih berat dari biasanya. Perbanyak zat besi dan minum air ya (˘‿˘)');
   if(D.mood==='berat')parts.push('Hari yang berat — itu valid banget. Tidak harus produktif di semua hal hari ini. Kamu sudah cukup.');
   else if(D.mood==='semangat')parts.push('Semangat yang kamu bawa hari ini itu energi yang bagus banget. Jaga terus ya!');
   if((D.water||0)>=6)parts.push(`${D.water} gelas air sudah tercatat — hidrasi kamu bagus hari ini! (≧▽≦)`);
@@ -2171,7 +1944,7 @@ function maybeShowNaraMsg(){
   if((D.moves||[]).length>0)parts.push(`Sudah gerak ${D.moves.length} aktivitas — ~${D.totalMoveCal} kkal. Tubuhmu berterima kasih!`);
   const tmpl=loadHabitTemplate();const done=(D.habits||[]).length;
   if(tmpl.length>0&&done===tmpl.length)parts.push(`Semua ${done} kebiasaan hari ini selesai! Konsistensi kamu luar biasa (≧▽≦)`);
-  if(!parts.length)parts.push('Kamu sudah mulai mengisi hari ini — itu sudah jadi langkah yang berarti. Lanjutkan pelan-pelan ya (◕ᴗ◕✿)');
+  if(!parts.length)parts.push('Kamu sudah mulai mengisi hari ini — itu sudah jadi langkah yang berarti. Lanjutkan pelan-pelan ya (◕‿◕✿)');
   txt.innerHTML=parts.slice(0,2).map(p=>`<p>${p}</p>`).join('');
 }
 
@@ -2265,9 +2038,9 @@ function toggleNaraChat(){
       const _welcomeShown=localStorage.getItem('inarte_welcome_shown')===_todayKey;
       if(_welcomeShown){
         // Langsung siap ngobrol, tanpa sapaan ulang
-        _addNaraMsg('Nara di sini '+(_P.name?'buat '+_P.name:'buat kamu')+' (◕ᴗ◕✿) Mau lanjut ngobrol?');
+        _addNaraMsg('Nara di sini '+(_P.name?'buat '+_P.name:'buat kamu')+' (◕‿◕✿) Mau lanjut ngobrol?');
       } else {
-        _addNaraMsg('Hei '+(_P.name||'kamu')+'! Aku Nara (◕ᴗ◕✿)');
+        _addNaraMsg('Hei '+(_P.name||'kamu')+'! Aku Nara (◕‿◕✿)');
         setTimeout(()=>_addNaraMsg('Mau ngobrol soal apa aja ya — makan, olahraga, curhat, atau tanya apapun!'),400);
       }
       _chatInited=true;
@@ -2483,7 +2256,7 @@ function saveProfile(){
     }catch(e){console.warn('Profile sync error:',e);}
   })();
   closeProfile();
-  if(typeof showToast==='function')showToast('Profil tersimpan (◕ᴗ◕✿)');
+  if(typeof showToast==='function')showToast('Profil tersimpan (◕‿◕✿)');
   else alert('Profil tersimpan!');
 }
 // ══ FEEDBACK ══
@@ -2525,7 +2298,7 @@ async function sendFeedback(){
     if(error)throw error;
     document.getElementById('pp-feedback-txt').value='';
     document.getElementById('pp-feedback-wrap').classList.remove('open');
-    if(typeof showToast==='function')showToast('Feedback terkirim! Makasih ya (◕ᴗ◕✿)');
+    if(typeof showToast==='function')showToast('Feedback terkirim! Makasih ya (◕‿◕✿)');
   }catch(e){
     console.warn('Feedback error:',e);
     if(typeof showToast==='function')showToast('Gagal kirim, coba lagi ya.');
@@ -2935,7 +2708,7 @@ const SP_TIERS = [
 const SP_MILESTONES = new Set([1,3,7,14,21,30,50,75,100,150,200,300,365,500,750,1000]);
 
 // Broken badge (0-day streak)
-const SP_BROKEN = {badge:'🥀', label:'Layu', sub:'Streak terputus — tapi itu bukan akhir. Yuk mulai lagi dari sini (ꈍᴗꈍ)', btnText:'Mulai lagi →', broken:true};
+const SP_BROKEN = {badge:'🥀', label:'Layu', sub:'Streak terputus — tapi itu bukan akhir. Yuk mulai lagi dari sini (˘‿˘)', btnText:'Mulai lagi →', broken:true};
 
 function _spGetTier(days) {
   if (days === 0) return SP_BROKEN;
@@ -3058,7 +2831,7 @@ function buildStreakGreeting() {
     const remaining = freeze.max - freeze.used;
     document.getElementById('gf-icon').textContent = '🛡️';
     document.getElementById('gf-title').textContent = 'Hari Istirahat terpakai';
-    document.getElementById('gf-msg').textContent = 'Kemarin kamu istirahat — wajar banget. Streak kamu terjaga. Yuk lanjut hari ini (◕ᴗ◕✿)';
+    document.getElementById('gf-msg').textContent = 'Kemarin kamu istirahat — wajar banget. Streak kamu terjaga. Yuk lanjut hari ini (◕‿◕✿)';
     const dots = document.getElementById('gf-dots'); dots.innerHTML = '';
     for (let i = 0; i < freeze.max; i++) {
       const d = document.createElement('div');
@@ -3070,7 +2843,7 @@ function buildStreakGreeting() {
     // Streak broken
     document.getElementById('gf-icon').textContent = '🥀';
     document.getElementById('gf-title').textContent = 'Streak terputus';
-    document.getElementById('gf-msg').textContent = 'Tidak apa-apa. Yang penting mulai lagi dari hari ini — Nara di sini (ꈍᴗꈍ)';
+    document.getElementById('gf-msg').textContent = 'Tidak apa-apa. Yang penting mulai lagi dari hari ini — Nara di sini (˘‿˘)';
     document.getElementById('gf-dots').innerHTML = '';
     el.classList.add('show');
   }
@@ -3135,7 +2908,7 @@ function _renderStreakPopup(streak, freezeUsed) {
 
   // Title + sub
   const titles = {
-    1:   ['Langkah pertama!', 'Setiap perjalanan panjang dimulai dari satu langkah. Ini milikmu (◕ᴗ◕✿)'],
+    1:   ['Langkah pertama!', 'Setiap perjalanan panjang dimulai dari satu langkah. Ini milikmu (◕‿◕✿)'],
     3:   ['3 hari beruntun!', 'Kamu sudah mulai membangun momentum. Konsistensi kecil itu kuat.'],
     7:   ['Seminggu penuh! 🎉', '7 hari tanpa putus. Ini bukan keberuntungan — ini pilihan yang kamu buat setiap hari.'],
     14:  ['Dua minggu! ✨', 'Dua minggu konsisten. Tubuh dan pikiranmu sudah mulai merasakan bedanya.'],
@@ -3599,9 +3372,9 @@ function buildWeeklyFallback(data,name){
   else if(data.activeDays>=4)
     parts.push(`${data.activeDays} dari 7 hari aktif minggu ini${n} — lebih dari setengah, itu bagus!`);
   else if(data.activeDays>0)
-    parts.push(`${data.activeDays} hari tercatat minggu ini${n} — setiap hari yang diisi itu berarti (◕ᴗ◕✿)`);
+    parts.push(`${data.activeDays} hari tercatat minggu ini${n} — setiap hari yang diisi itu berarti (◕‿◕✿)`);
   else
-    parts.push(`Minggu ini belum banyak tercatat${n} — tidak apa-apa, minggu depan bisa mulai lagi (◕ᴗ◕✿)`);
+    parts.push(`Minggu ini belum banyak tercatat${n} — tidak apa-apa, minggu depan bisa mulai lagi (◕‿◕✿)`);
 
   if(data.avgSleep>0&&parseFloat(data.avgSleep)<6)
     parts.push(`Tidur rata-rata ${data.avgSleep} jam — coba prioritaskan istirahat minggu depan ya.`);
@@ -3609,7 +3382,7 @@ function buildWeeklyFallback(data,name){
     parts.push(`Tidur ${data.avgSleep} jam rata-rata — pola tidurmu bagus!`);
 
   if(data.bestHabit&&(data.bestHabit.id in {}||true))
-    parts.push(`Semangat terus minggu depan! (◕ᴗ◕✿)`);
+    parts.push(`Semangat terus minggu depan! (◕‿◕✿)`);
 
   return parts.slice(0,2).join(' ');
 }
@@ -3664,33 +3437,33 @@ function naraSmartFallback(query, context){
     if(q.match(/^(hei|hai|halo|hi|hello|hey)\b/)){
       const options=[];
       if(mood==='lelah'||mood==='berat')
-        options.push(`Hei${n} (ꈍᴗꈍ) Nara lihat kamu lagi ${mood} hari ini — mau cerita?`);
+        options.push(`Hei${n} (˘‿˘) Nara lihat kamu lagi ${mood} hari ini — mau cerita?`);
       if(mood==='senang'||mood==='semangat')
         options.push(`Hei${n}! Seneng lihat kamu ${mood} hari ini (≧▽≦) Ada yang mau diobrolin?`);
       if(sleepHrs&&sleepHrs<6)
         options.push(`Hei${n}! Tidurmu tadi malam cuma ${sleepHrs.toFixed(1)} jam ya — gimana kondisi sekarang?`);
       if(water===0)
-        options.push(`Hei${n}! Sudah minum air hari ini belum? (◕ᴗ◕✿)`);
+        options.push(`Hei${n}! Sudah minum air hari ini belum? (◕‿◕✿)`);
       if(habitDone===habitTotal&&habitTotal>0)
         options.push(`Hei${n}! Semua habit sudah selesai hari ini — Nara bangga! (≧▽≦)`);
       if(options.length) return pick(options);
-      return `Hei${n}! (◕ᴗ◕✿) Mau ngobrol apa hari ini?`;
+      return `Hei${n}! (◕‿◕✿) Mau ngobrol apa hari ini?`;
     }
 
     // Capek / lelah
     if(q.includes('capek')||q.includes('lelah')||q.includes('exhausted')){
       if(sleepHrs&&sleepHrs<6)
-        return `Wajar banget capek${n} — tidur ${sleepHrs.toFixed(1)} jam itu kurang. Tubuh kamu minta istirahat, dan itu valid banget (ꈍᴗꈍ)`;
+        return `Wajar banget capek${n} — tidur ${sleepHrs.toFixed(1)} jam itu kurang. Tubuh kamu minta istirahat, dan itu valid banget (˘‿˘)`;
       if(energi&&energi<=2)
-        return `Energimu memang lagi rendah hari ini${n}. Tidak harus dipaksakan — istirahat itu produktif juga (ꈍᴗꈍ)`;
-      return `Capek itu wajar${n} — istirahat bukan kelemahan. Sudah minum air? Kadang dehidrasi bikin makin lelah (ꈍᴗꈍ)`;
+        return `Energimu memang lagi rendah hari ini${n}. Tidak harus dipaksakan — istirahat itu produktif juga (˘‿˘)`;
+      return `Capek itu wajar${n} — istirahat bukan kelemahan. Sudah minum air? Kadang dehidrasi bikin makin lelah (˘‿˘)`;
     }
 
     // Sedih / berat
     if(q.includes('sedih')||q.includes('berat')||q.includes('nangis')||q.includes('down')){
       if(adaEmosiNegatif&&emotions.length)
-        return `Nara baca kamu tadi catat "${emotions[0]}" — makasih sudah jujur sama diri sendiri${n}. Mau cerita lebih? (ꈍᴗꈍ)`;
-      return `Makasih sudah mau cerita${n}. Perasaan itu valid banget — tidak perlu buru-buru baik-baik (ꈍᴗꈍ)`;
+        return `Nara baca kamu tadi catat "${emotions[0]}" — makasih sudah jujur sama diri sendiri${n}. Mau cerita lebih? (˘‿˘)`;
+      return `Makasih sudah mau cerita${n}. Perasaan itu valid banget — tidak perlu buru-buru baik-baik (˘‿˘)`;
     }
 
     // Senang / bahagia
@@ -3705,61 +3478,61 @@ function naraSmartFallback(query, context){
       if(water>=waterTarget)
         return `Target air sudah tercapai hari ini${n} — ${water} gelas! Tubuhmu pasti happy (≧▽≦)`;
       if(water===0)
-        return `Belum ada catatan minum air hari ini nih${n}. Yuk mulai dari satu gelas dulu — pelan-pelan (◕ᴗ◕✿)`;
-      return `Udah ${water} dari ${waterTarget} gelas hari ini${n}! ${waterTarget-water} lagi ya (◕ᴗ◕✿)`;
+        return `Belum ada catatan minum air hari ini nih${n}. Yuk mulai dari satu gelas dulu — pelan-pelan (◕‿◕✿)`;
+      return `Udah ${water} dari ${waterTarget} gelas hari ini${n}! ${waterTarget-water} lagi ya (◕‿◕✿)`;
     }
 
     // Tidur / sleep
     if(q.includes('tidur')||q.includes('sleep')||q.includes('istirahat')){
       if(sleepHrs&&sleepHrs>=7)
-        return `Tidurmu kemarin ${sleepHrs.toFixed(1)} jam${n} — sudah cukup! Semoga hari ini lebih berenergi (◕ᴗ◕✿)`;
+        return `Tidurmu kemarin ${sleepHrs.toFixed(1)} jam${n} — sudah cukup! Semoga hari ini lebih berenergi (◕‿◕✿)`;
       if(sleepHrs&&sleepHrs<6)
-        return `Tidurmu baru ${sleepHrs.toFixed(1)} jam kemarin${n}. Kalau bisa, coba tidur lebih awal malam ini — tubuh kamu butuh recharge (ꈍᴗꈍ)`;
-      return `Tidur yang cukup itu salah satu self-care paling underrated${n}. Semoga malam ini lebih nyenyak ya (◕ᴗ◕✿)`;
+        return `Tidurmu baru ${sleepHrs.toFixed(1)} jam kemarin${n}. Kalau bisa, coba tidur lebih awal malam ini — tubuh kamu butuh recharge (˘‿˘)`;
+      return `Tidur yang cukup itu salah satu self-care paling underrated${n}. Semoga malam ini lebih nyenyak ya (◕‿◕✿)`;
     }
 
     // Makan / makanan
     if(q.includes('makan')||q.includes('lapar')||q.includes('menu')){
       const budget=P.budget||'';
       if(budget)
-        return `Cek rekomendasi menu di tab Hari Ini ya${n} — Nara sudah sesuaikan dengan budget kamu (◕ᴗ◕✿)`;
-      return `Cek menu rekomendasi di tab Hari Ini ya${n} (◕ᴗ◕✿) Jangan skip makan!`;
+        return `Cek rekomendasi menu di tab Hari Ini ya${n} — Nara sudah sesuaikan dengan budget kamu (◕‿◕✿)`;
+      return `Cek menu rekomendasi di tab Hari Ini ya${n} (◕‿◕✿) Jangan skip makan!`;
     }
 
     // Olahraga / gerak
     if(q.includes('olahraga')||q.includes('gerak')||q.includes('gym')||q.includes('jalan')){
       if(goals.includes('Lebih aktif bergerak'))
-        return `Ini salah satu goals kamu${n}! Mulai dari yang ringan aja — 10-15 menit jalan kaki sudah bagus banget (◕ᴗ◕✿)`;
-      return `Mulai dari yang kamu suka${n} — 10 menit jalan kaki aja sudah bagus! Konsisten lebih penting dari intensitas (◕ᴗ◕✿)`;
+        return `Ini salah satu goals kamu${n}! Mulai dari yang ringan aja — 10-15 menit jalan kaki sudah bagus banget (◕‿◕✿)`;
+      return `Mulai dari yang kamu suka${n} — 10 menit jalan kaki aja sudah bagus! Konsisten lebih penting dari intensitas (◕‿◕✿)`;
     }
 
     // Finance
     if(q.includes('uang')||q.includes('duit')||q.includes('keuangan')||q.includes('nabung')||q.includes('hemat')){
       if(goals.some(g=>['Keuangan tertata','Mulai menabung','Kurangi pengeluaran','Bebas hutang','Dana darurat'].includes(g)))
-        return `Ini goals keuangan kamu${n}! Catat transaksi dulu di tab Keuangan — dari situ Nara bisa kasih insight yang lebih pas (◕ᴗ◕✿)`;
+        return `Ini goals keuangan kamu${n}! Catat transaksi dulu di tab Keuangan — dari situ Nara bisa kasih insight yang lebih pas (◕‿◕✿)`;
       if(income>0&&sisa>0)
-        return `Keuangan bulan ini surplus${n} — bagus! Sisanya bisa dimasukin ke saving (◕ᴗ◕✿)`;
-      return `Yuk mulai catat di tab Keuangan${n} — tidak harus sempurna, yang penting mulai (◕ᴗ◕✿)`;
+        return `Keuangan bulan ini surplus${n} — bagus! Sisanya bisa dimasukin ke saving (◕‿◕✿)`;
+      return `Yuk mulai catat di tab Keuangan${n} — tidak harus sempurna, yang penting mulai (◕‿◕✿)`;
     }
 
     // Habit
     if(q.includes('habit')||q.includes('kebiasaan')||q.includes('rutinitas')){
       if(habitTotal===0)
-        return `Belum ada habit yang diset${n}. Coba tambah satu hal kecil dulu di tab Hari Ini — konsistensi dimulai dari langkah pertama (◕ᴗ◕✿)`;
+        return `Belum ada habit yang diset${n}. Coba tambah satu hal kecil dulu di tab Hari Ini — konsistensi dimulai dari langkah pertama (◕‿◕✿)`;
       if(habitDone===habitTotal)
         return `Semua ${habitTotal} habit kamu sudah selesai hari ini${n}! Konsistensi kayak gini yang bikin perubahan nyata (≧▽≦)`;
-      return `${habitDone} dari ${habitTotal} habit selesai hari ini${n}. Pelan-pelan aja, yang penting jalan (◕ᴗ◕✿)`;
+      return `${habitDone} dari ${habitTotal} habit selesai hari ini${n}. Pelan-pelan aja, yang penting jalan (◕‿◕✿)`;
     }
 
     // Default — berdasarkan kondisi hari ini
     const defaults=[];
     if(mood&&mood!=='netral')
-      defaults.push(`Nara lihat mood kamu "${mood}" hari ini${n} — mau cerita lebih? (◕ᴗ◕✿)`);
+      defaults.push(`Nara lihat mood kamu "${mood}" hari ini${n} — mau cerita lebih? (◕‿◕✿)`);
     if(water<Math.floor(waterTarget/2)&&water>0)
-      defaults.push(`Jangan lupa minum air ya${n} — baru ${water} gelas nih (◕ᴗ◕✿)`);
+      defaults.push(`Jangan lupa minum air ya${n} — baru ${water} gelas nih (◕‿◕✿)`);
     if(goals.length)
-      defaults.push(`Ingat goals kamu${n}: ${goals[0]}. Pelan-pelan tapi pasti ya (◕ᴗ◕✿)`);
-    defaults.push(`Aku dengerin${n} (◕ᴗ◕✿) Mau cerita apa?`);
+      defaults.push(`Ingat goals kamu${n}: ${goals[0]}. Pelan-pelan tapi pasti ya (◕‿◕✿)`);
+    defaults.push(`Aku dengerin${n} (◕‿◕✿) Mau cerita apa?`);
     return pick(defaults);
   }
 
@@ -3769,11 +3542,11 @@ function naraSmartFallback(query, context){
   if(context==='wellness'){
     const parts=[];
     if(adaEmosiNegatif)
-      parts.push(`Terima kasih sudah mau cerita hari ini${n}. Hari yang berat itu valid — tidak harus kuat terus (ꈍᴗꈍ)`);
+      parts.push(`Terima kasih sudah mau cerita hari ini${n}. Hari yang berat itu valid — tidak harus kuat terus (˘‿˘)`);
     else if(adaEmosiPositif)
-      parts.push(`Senang banget lihat kamu baik-baik${n}! (◕ᴗ◕✿)`);
+      parts.push(`Senang banget lihat kamu baik-baik${n}! (◕‿◕✿)`);
     else
-      parts.push(`Terima kasih sudah check in dengan dirimu sendiri${n} — itu bukan hal kecil (◕ᴗ◕✿)`);
+      parts.push(`Terima kasih sudah check in dengan dirimu sendiri${n} — itu bukan hal kecil (◕‿◕✿)`);
     if(sleepHrs&&sleepHrs<6)
       parts.push(`Tidur ${sleepHrs.toFixed(1)} jam tadi malam — coba istirahat lebih awal malam ini ya.`);
     else if(sleepHrs&&sleepHrs>=7)
@@ -3781,10 +3554,10 @@ function naraSmartFallback(query, context){
     if(W.journalText||W.storyText)
       parts.push(`Catatan harianmu sudah Nara baca. Terima kasih sudah mau jujur.`);
     if(W.hopeText)
-      parts.push(`Harapanmu untuk besok sudah Nara catat. Semoga terwujud ya (ꈍᴗꈍ)`);
+      parts.push(`Harapanmu untuk besok sudah Nara catat. Semoga terwujud ya (˘‿˘)`);
     if(goals.some(g=>g==='Tidur lebih baik')&&sleepHrs&&sleepHrs<7)
       parts.push(`Ingat goals tidurmu${n} — pelan-pelan membaik itu bagus.`);
-    if(parts.length<2) parts.push(`Istirahat yang cukup ya. Sampai besok! (◕ᴗ◕✿)`);
+    if(parts.length<2) parts.push(`Istirahat yang cukup ya. Sampai besok! (◕‿◕✿)`);
     return parts.slice(0,2).join(' ');
   }
 
@@ -3793,12 +3566,12 @@ function naraSmartFallback(query, context){
   // ════════════════════════════════
   if(context==='finance'){
     if(income===0)
-      return `Belum ada catatan pemasukan bulan ini${n}. Yuk mulai catat dari yang paling mudah dulu (◕ᴗ◕✿)`;
+      return `Belum ada catatan pemasukan bulan ini${n}. Yuk mulai catat dari yang paling mudah dulu (◕‿◕✿)`;
     if(sisa<0)
-      return `Pengeluaran bulan ini melebihi pemasukan${n}. Tidak apa-apa — dengan mencatat ini kamu sudah selangkah lebih sadar (ꈍᴗꈍ)`;
+      return `Pengeluaran bulan ini melebihi pemasukan${n}. Tidak apa-apa — dengan mencatat ini kamu sudah selangkah lebih sadar (˘‿˘)`;
     if(sisa>0)
-      return `Bulan ini masih surplus${n}! Sisa ${sisa.toLocaleString('id')} bisa dipertimbangkan buat saving (◕ᴗ◕✿)`;
-    return `Pemasukan dan pengeluaran bulan ini seimbang${n}. Yuk cek detail di bawah (◕ᴗ◕✿)`;
+      return `Bulan ini masih surplus${n}! Sisa ${sisa.toLocaleString('id')} bisa dipertimbangkan buat saving (◕‿◕✿)`;
+    return `Pemasukan dan pengeluaran bulan ini seimbang${n}. Yuk cek detail di bawah (◕‿◕✿)`;
   }
 
   // ════════════════════════════════
@@ -3809,7 +3582,7 @@ function naraSmartFallback(query, context){
     const totalDays=Object.keys(logs).length;
     const parts=[];
     if(totalDays===0)
-      return `Perjalananmu baru dimulai${n} — setiap hari yang kamu catat adalah bukti bahwa kamu peduli pada dirimu sendiri (◕ᴗ◕✿)`;
+      return `Perjalananmu baru dimulai${n} — setiap hari yang kamu catat adalah bukti bahwa kamu peduli pada dirimu sendiri (◕‿◕✿)`;
     if(totalDays>=30)
       parts.push(`Sudah ${totalDays} hari kamu check in${n} — konsistensi kayak gini yang bikin perubahan nyata.`);
     else
@@ -3817,11 +3590,11 @@ function naraSmartFallback(query, context){
     if(goals.length)
       parts.push(`Goals kamu: ${goals.slice(0,2).join(' dan ')}. Perjalanannya terlihat di sini.`);
     else
-      parts.push(`Terus lanjutkan ya — sedikit demi sedikit (◕ᴗ◕✿)`);
+      parts.push(`Terus lanjutkan ya — sedikit demi sedikit (◕‿◕✿)`);
     return parts.join(' ');
   }
 
-  return `Aku dengerin${n} (◕ᴗ◕✿) Mau cerita apa?`;
+  return `Aku dengerin${n} (◕‿◕✿) Mau cerita apa?`;
 }
 
 
