@@ -20,9 +20,9 @@ function toggleNaraChat(){
       const _welcomeShown=localStorage.getItem('inarte_welcome_shown')===_todayKey;
       if(_welcomeShown){
         // Langsung siap ngobrol, tanpa sapaan ulang
-        _addNaraMsg('Nara di sini '+(_P.name?'buat '+_P.name:'buat kamu')+' (◕ᴗ◕✿) Mau lanjut ngobrol?');
+        _addNaraMsg('Nara di sini '+(_P.name?'buat '+_P.name:'buat kamu')+' (◕‿◕✿) Mau lanjut ngobrol?');
       } else {
-        _addNaraMsg('Hei '+(_P.name||'kamu')+'! Aku Nara (◕ᴗ◕✿)');
+        _addNaraMsg('Hei '+(_P.name||'kamu')+'! Aku Nara (◕‿◕✿)');
         setTimeout(()=>_addNaraMsg('Mau ngobrol soal apa aja ya — makan, olahraga, curhat, atau tanya apapun!'),400);
       }
       _chatInited=true;
@@ -140,7 +140,7 @@ async function sendNara(){
     window.naraUpdateMenu(_menuTrigger).then(ok => {
       if (ok) {
         setTimeout(() => {
-          _addNaraMsg('Menu di halaman sudah Nara update ya! Tap langsung untuk catat (◕ᴗ◕✿)', 'nara');
+          _addNaraMsg('Menu di halaman sudah Nara update ya! Tap langsung untuk catat (◕‿◕✿)', 'nara');
         }, 1200);
       }
     });
@@ -334,7 +334,7 @@ function saveProfile(){
     }catch(e){console.warn('Profile sync error:',e);}
   })();
   closeProfile();
-  if(typeof showToast==='function')showToast('Profil tersimpan (◕ᴗ◕✿)');
+  if(typeof showToast==='function')showToast('Profil tersimpan (◕‿◕✿)');
   else alert('Profil tersimpan!');
 }
 // ══ FEEDBACK ══
@@ -376,7 +376,7 @@ async function sendFeedback(){
     if(error)throw error;
     document.getElementById('pp-feedback-txt').value='';
     document.getElementById('pp-feedback-wrap').classList.remove('open');
-    if(typeof showToast==='function')showToast('Feedback terkirim! Makasih ya (◕ᴗ◕✿)');
+    if(typeof showToast==='function')showToast('Feedback terkirim! Makasih ya (◕‿◕✿)');
   }catch(e){
     console.warn('Feedback error:',e);
     if(typeof showToast==='function')showToast('Gagal kirim, coba lagi ya.');
@@ -847,13 +847,13 @@ function buildWeeklyFallback(data,name){
   const parts=[];
 
   if(data.activeDays>=6)
-    parts.push(`Minggu ini kamu aktif ${data.activeDays} dari 7 hari${n} — konsistensi yang luar biasa! (≧▽≦)`);
+    parts.push(`Minggu ini kamu aktif ${data.activeDays} dari 7 hari${n} — konsistensi yang luar biasa! (≧◡≦)`);
   else if(data.activeDays>=4)
     parts.push(`${data.activeDays} dari 7 hari aktif minggu ini${n} — lebih dari setengah, itu bagus!`);
   else if(data.activeDays>0)
-    parts.push(`${data.activeDays} hari tercatat minggu ini${n} — setiap hari yang diisi itu berarti (◕ᴗ◕✿)`);
+    parts.push(`${data.activeDays} hari tercatat minggu ini${n} — setiap hari yang diisi itu berarti (◕‿◕✿)`);
   else
-    parts.push(`Minggu ini belum banyak tercatat${n} — tidak apa-apa, minggu depan bisa mulai lagi (◕ᴗ◕✿)`);
+    parts.push(`Minggu ini belum banyak tercatat${n} — tidak apa-apa, minggu depan bisa mulai lagi (◕‿◕✿)`);
 
   if(data.avgSleep>0&&parseFloat(data.avgSleep)<6)
     parts.push(`Tidur rata-rata ${data.avgSleep} jam — coba prioritaskan istirahat minggu depan ya.`);
@@ -861,7 +861,7 @@ function buildWeeklyFallback(data,name){
     parts.push(`Tidur ${data.avgSleep} jam rata-rata — pola tidurmu bagus!`);
 
   if(data.bestHabit&&(data.bestHabit.id in {}||true))
-    parts.push(`Semangat terus minggu depan! (◕ᴗ◕✿)`);
+    parts.push(`Semangat terus minggu depan! (◕‿◕✿)`);
 
   return parts.slice(0,2).join(' ');
 }
@@ -916,102 +916,102 @@ function naraSmartFallback(query, context){
     if(q.match(/^(hei|hai|halo|hi|hello|hey)\b/)){
       const options=[];
       if(mood==='lelah'||mood==='berat')
-        options.push(`Hei${n} (ꈍᴗꈍ) Nara lihat kamu lagi ${mood} hari ini — mau cerita?`);
+        options.push(`Hei${n} (˘‿˘) Nara lihat kamu lagi ${mood} hari ini — mau cerita?`);
       if(mood==='senang'||mood==='semangat')
-        options.push(`Hei${n}! Seneng lihat kamu ${mood} hari ini (≧▽≦) Ada yang mau diobrolin?`);
+        options.push(`Hei${n}! Seneng lihat kamu ${mood} hari ini (≧◡≦) Ada yang mau diobrolin?`);
       if(sleepHrs&&sleepHrs<6)
         options.push(`Hei${n}! Tidurmu tadi malam cuma ${sleepHrs.toFixed(1)} jam ya — gimana kondisi sekarang?`);
       if(water===0)
-        options.push(`Hei${n}! Sudah minum air hari ini belum? (◕ᴗ◕✿)`);
+        options.push(`Hei${n}! Sudah minum air hari ini belum? (◕‿◕✿)`);
       if(habitDone===habitTotal&&habitTotal>0)
-        options.push(`Hei${n}! Semua habit sudah selesai hari ini — Nara bangga! (≧▽≦)`);
+        options.push(`Hei${n}! Semua habit sudah selesai hari ini — Nara bangga! (≧◡≦)`);
       if(options.length) return pick(options);
-      return `Hei${n}! (◕ᴗ◕✿) Mau ngobrol apa hari ini?`;
+      return `Hei${n}! (◕‿◕✿) Mau ngobrol apa hari ini?`;
     }
 
     // Capek / lelah
     if(q.includes('capek')||q.includes('lelah')||q.includes('exhausted')){
       if(sleepHrs&&sleepHrs<6)
-        return `Wajar banget capek${n} — tidur ${sleepHrs.toFixed(1)} jam itu kurang. Tubuh kamu minta istirahat, dan itu valid banget (ꈍᴗꈍ)`;
+        return `Wajar banget capek${n} — tidur ${sleepHrs.toFixed(1)} jam itu kurang. Tubuh kamu minta istirahat, dan itu valid banget (˘‿˘)`;
       if(energi&&energi<=2)
-        return `Energimu memang lagi rendah hari ini${n}. Tidak harus dipaksakan — istirahat itu produktif juga (ꈍᴗꈍ)`;
-      return `Capek itu wajar${n} — istirahat bukan kelemahan. Sudah minum air? Kadang dehidrasi bikin makin lelah (ꈍᴗꈍ)`;
+        return `Energimu memang lagi rendah hari ini${n}. Tidak harus dipaksakan — istirahat itu produktif juga (˘‿˘)`;
+      return `Capek itu wajar${n} — istirahat bukan kelemahan. Sudah minum air? Kadang dehidrasi bikin makin lelah (˘‿˘)`;
     }
 
     // Sedih / berat
     if(q.includes('sedih')||q.includes('berat')||q.includes('nangis')||q.includes('down')){
       if(adaEmosiNegatif&&emotions.length)
-        return `Nara baca kamu tadi catat "${emotions[0]}" — makasih sudah jujur sama diri sendiri${n}. Mau cerita lebih? (ꈍᴗꈍ)`;
-      return `Makasih sudah mau cerita${n}. Perasaan itu valid banget — tidak perlu buru-buru baik-baik (ꈍᴗꈍ)`;
+        return `Nara baca kamu tadi catat "${emotions[0]}" — makasih sudah jujur sama diri sendiri${n}. Mau cerita lebih? (˘‿˘)`;
+      return `Makasih sudah mau cerita${n}. Perasaan itu valid banget — tidak perlu buru-buru baik-baik (˘‿˘)`;
     }
 
     // Senang / bahagia
     if(q.includes('senang')||q.includes('bahagia')||q.includes('happy')||q.includes('alhamdulillah')){
       if(adaEmosiPositif)
-        return `Wah${n} ikut seneng banget! Kamu juga catat "${emotions.find(e=>emosiPositif.includes(e))}" tadi — bagus banget (≧▽≦)`;
-      return `Wah ikut seneng${n}! Semoga terus terjaga ya (≧▽≦)`;
+        return `Wah${n} ikut seneng banget! Kamu juga catat "${emotions.find(e=>emosiPositif.includes(e))}" tadi — bagus banget (≧◡≦)`;
+      return `Wah ikut seneng${n}! Semoga terus terjaga ya (≧◡≦)`;
     }
 
     // Air / minum
     if(q.includes('minum')||q.includes('air')||q.includes('water')){
       if(water>=waterTarget)
-        return `Target air sudah tercapai hari ini${n} — ${water} gelas! Tubuhmu pasti happy (≧▽≦)`;
+        return `Target air sudah tercapai hari ini${n} — ${water} gelas! Tubuhmu pasti happy (≧◡≦)`;
       if(water===0)
-        return `Belum ada catatan minum air hari ini nih${n}. Yuk mulai dari satu gelas dulu — pelan-pelan (◕ᴗ◕✿)`;
-      return `Udah ${water} dari ${waterTarget} gelas hari ini${n}! ${waterTarget-water} lagi ya (◕ᴗ◕✿)`;
+        return `Belum ada catatan minum air hari ini nih${n}. Yuk mulai dari satu gelas dulu — pelan-pelan (◕‿◕✿)`;
+      return `Udah ${water} dari ${waterTarget} gelas hari ini${n}! ${waterTarget-water} lagi ya (◕‿◕✿)`;
     }
 
     // Tidur / sleep
     if(q.includes('tidur')||q.includes('sleep')||q.includes('istirahat')){
       if(sleepHrs&&sleepHrs>=7)
-        return `Tidurmu kemarin ${sleepHrs.toFixed(1)} jam${n} — sudah cukup! Semoga hari ini lebih berenergi (◕ᴗ◕✿)`;
+        return `Tidurmu kemarin ${sleepHrs.toFixed(1)} jam${n} — sudah cukup! Semoga hari ini lebih berenergi (◕‿◕✿)`;
       if(sleepHrs&&sleepHrs<6)
-        return `Tidurmu baru ${sleepHrs.toFixed(1)} jam kemarin${n}. Kalau bisa, coba tidur lebih awal malam ini — tubuh kamu butuh recharge (ꈍᴗꈍ)`;
-      return `Tidur yang cukup itu salah satu self-care paling underrated${n}. Semoga malam ini lebih nyenyak ya (◕ᴗ◕✿)`;
+        return `Tidurmu baru ${sleepHrs.toFixed(1)} jam kemarin${n}. Kalau bisa, coba tidur lebih awal malam ini — tubuh kamu butuh recharge (˘‿˘)`;
+      return `Tidur yang cukup itu salah satu self-care paling underrated${n}. Semoga malam ini lebih nyenyak ya (◕‿◕✿)`;
     }
 
     // Makan / makanan
     if(q.includes('makan')||q.includes('lapar')||q.includes('menu')){
       const budget=P.budget||'';
       if(budget)
-        return `Cek rekomendasi menu di tab Hari Ini ya${n} — Nara sudah sesuaikan dengan budget kamu (◕ᴗ◕✿)`;
-      return `Cek menu rekomendasi di tab Hari Ini ya${n} (◕ᴗ◕✿) Jangan skip makan!`;
+        return `Cek rekomendasi menu di tab Hari Ini ya${n} — Nara sudah sesuaikan dengan budget kamu (◕‿◕✿)`;
+      return `Cek menu rekomendasi di tab Hari Ini ya${n} (◕‿◕✿) Jangan skip makan!`;
     }
 
     // Olahraga / gerak
     if(q.includes('olahraga')||q.includes('gerak')||q.includes('gym')||q.includes('jalan')){
       if(goals.includes('Lebih aktif bergerak'))
-        return `Ini salah satu goals kamu${n}! Mulai dari yang ringan aja — 10-15 menit jalan kaki sudah bagus banget (◕ᴗ◕✿)`;
-      return `Mulai dari yang kamu suka${n} — 10 menit jalan kaki aja sudah bagus! Konsisten lebih penting dari intensitas (◕ᴗ◕✿)`;
+        return `Ini salah satu goals kamu${n}! Mulai dari yang ringan aja — 10-15 menit jalan kaki sudah bagus banget (◕‿◕✿)`;
+      return `Mulai dari yang kamu suka${n} — 10 menit jalan kaki aja sudah bagus! Konsisten lebih penting dari intensitas (◕‿◕✿)`;
     }
 
     // Finance
     if(q.includes('uang')||q.includes('duit')||q.includes('keuangan')||q.includes('nabung')||q.includes('hemat')){
       if(goals.some(g=>['Keuangan tertata','Mulai menabung','Kurangi pengeluaran','Bebas hutang','Dana darurat'].includes(g)))
-        return `Ini goals keuangan kamu${n}! Catat transaksi dulu di tab Keuangan — dari situ Nara bisa kasih insight yang lebih pas (◕ᴗ◕✿)`;
+        return `Ini goals keuangan kamu${n}! Catat transaksi dulu di tab Keuangan — dari situ Nara bisa kasih insight yang lebih pas (◕‿◕✿)`;
       if(income>0&&sisa>0)
-        return `Keuangan bulan ini surplus${n} — bagus! Sisanya bisa dimasukin ke saving (◕ᴗ◕✿)`;
-      return `Yuk mulai catat di tab Keuangan${n} — tidak harus sempurna, yang penting mulai (◕ᴗ◕✿)`;
+        return `Keuangan bulan ini surplus${n} — bagus! Sisanya bisa dimasukin ke saving (◕‿◕✿)`;
+      return `Yuk mulai catat di tab Keuangan${n} — tidak harus sempurna, yang penting mulai (◕‿◕✿)`;
     }
 
     // Habit
     if(q.includes('habit')||q.includes('kebiasaan')||q.includes('rutinitas')){
       if(habitTotal===0)
-        return `Belum ada habit yang diset${n}. Coba tambah satu hal kecil dulu di tab Hari Ini — konsistensi dimulai dari langkah pertama (◕ᴗ◕✿)`;
+        return `Belum ada habit yang diset${n}. Coba tambah satu hal kecil dulu di tab Hari Ini — konsistensi dimulai dari langkah pertama (◕‿◕✿)`;
       if(habitDone===habitTotal)
-        return `Semua ${habitTotal} habit kamu sudah selesai hari ini${n}! Konsistensi kayak gini yang bikin perubahan nyata (≧▽≦)`;
-      return `${habitDone} dari ${habitTotal} habit selesai hari ini${n}. Pelan-pelan aja, yang penting jalan (◕ᴗ◕✿)`;
+        return `Semua ${habitTotal} habit kamu sudah selesai hari ini${n}! Konsistensi kayak gini yang bikin perubahan nyata (≧◡≦)`;
+      return `${habitDone} dari ${habitTotal} habit selesai hari ini${n}. Pelan-pelan aja, yang penting jalan (◕‿◕✿)`;
     }
 
     // Default — berdasarkan kondisi hari ini
     const defaults=[];
     if(mood&&mood!=='netral')
-      defaults.push(`Nara lihat mood kamu "${mood}" hari ini${n} — mau cerita lebih? (◕ᴗ◕✿)`);
+      defaults.push(`Nara lihat mood kamu "${mood}" hari ini${n} — mau cerita lebih? (◕‿◕✿)`);
     if(water<Math.floor(waterTarget/2)&&water>0)
-      defaults.push(`Jangan lupa minum air ya${n} — baru ${water} gelas nih (◕ᴗ◕✿)`);
+      defaults.push(`Jangan lupa minum air ya${n} — baru ${water} gelas nih (◕‿◕✿)`);
     if(goals.length)
-      defaults.push(`Ingat goals kamu${n}: ${goals[0]}. Pelan-pelan tapi pasti ya (◕ᴗ◕✿)`);
-    defaults.push(`Aku dengerin${n} (◕ᴗ◕✿) Mau cerita apa?`);
+      defaults.push(`Ingat goals kamu${n}: ${goals[0]}. Pelan-pelan tapi pasti ya (◕‿◕✿)`);
+    defaults.push(`Aku dengerin${n} (◕‿◕✿) Mau cerita apa?`);
     return pick(defaults);
   }
 
@@ -1021,11 +1021,11 @@ function naraSmartFallback(query, context){
   if(context==='wellness'){
     const parts=[];
     if(adaEmosiNegatif)
-      parts.push(`Terima kasih sudah mau cerita hari ini${n}. Hari yang berat itu valid — tidak harus kuat terus (ꈍᴗꈍ)`);
+      parts.push(`Terima kasih sudah mau cerita hari ini${n}. Hari yang berat itu valid — tidak harus kuat terus (˘‿˘)`);
     else if(adaEmosiPositif)
-      parts.push(`Senang banget lihat kamu baik-baik${n}! (◕ᴗ◕✿)`);
+      parts.push(`Senang banget lihat kamu baik-baik${n}! (◕‿◕✿)`);
     else
-      parts.push(`Terima kasih sudah check in dengan dirimu sendiri${n} — itu bukan hal kecil (◕ᴗ◕✿)`);
+      parts.push(`Terima kasih sudah check in dengan dirimu sendiri${n} — itu bukan hal kecil (◕‿◕✿)`);
     if(sleepHrs&&sleepHrs<6)
       parts.push(`Tidur ${sleepHrs.toFixed(1)} jam tadi malam — coba istirahat lebih awal malam ini ya.`);
     else if(sleepHrs&&sleepHrs>=7)
@@ -1033,10 +1033,10 @@ function naraSmartFallback(query, context){
     if(W.journalText||W.storyText)
       parts.push(`Catatan harianmu sudah Nara baca. Terima kasih sudah mau jujur.`);
     if(W.hopeText)
-      parts.push(`Harapanmu untuk besok sudah Nara catat. Semoga terwujud ya (ꈍᴗꈍ)`);
+      parts.push(`Harapanmu untuk besok sudah Nara catat. Semoga terwujud ya (˘‿˘)`);
     if(goals.some(g=>g==='Tidur lebih baik')&&sleepHrs&&sleepHrs<7)
       parts.push(`Ingat goals tidurmu${n} — pelan-pelan membaik itu bagus.`);
-    if(parts.length<2) parts.push(`Istirahat yang cukup ya. Sampai besok! (◕ᴗ◕✿)`);
+    if(parts.length<2) parts.push(`Istirahat yang cukup ya. Sampai besok! (◕‿◕✿)`);
     return parts.slice(0,2).join(' ');
   }
 
@@ -1045,12 +1045,12 @@ function naraSmartFallback(query, context){
   // ════════════════════════════════
   if(context==='finance'){
     if(income===0)
-      return `Belum ada catatan pemasukan bulan ini${n}. Yuk mulai catat dari yang paling mudah dulu (◕ᴗ◕✿)`;
+      return `Belum ada catatan pemasukan bulan ini${n}. Yuk mulai catat dari yang paling mudah dulu (◕‿◕✿)`;
     if(sisa<0)
-      return `Pengeluaran bulan ini melebihi pemasukan${n}. Tidak apa-apa — dengan mencatat ini kamu sudah selangkah lebih sadar (ꈍᴗꈍ)`;
+      return `Pengeluaran bulan ini melebihi pemasukan${n}. Tidak apa-apa — dengan mencatat ini kamu sudah selangkah lebih sadar (˘‿˘)`;
     if(sisa>0)
-      return `Bulan ini masih surplus${n}! Sisa ${sisa.toLocaleString('id')} bisa dipertimbangkan buat saving (◕ᴗ◕✿)`;
-    return `Pemasukan dan pengeluaran bulan ini seimbang${n}. Yuk cek detail di bawah (◕ᴗ◕✿)`;
+      return `Bulan ini masih surplus${n}! Sisa ${sisa.toLocaleString('id')} bisa dipertimbangkan buat saving (◕‿◕✿)`;
+    return `Pemasukan dan pengeluaran bulan ini seimbang${n}. Yuk cek detail di bawah (◕‿◕✿)`;
   }
 
   // ════════════════════════════════
@@ -1061,7 +1061,7 @@ function naraSmartFallback(query, context){
     const totalDays=Object.keys(logs).length;
     const parts=[];
     if(totalDays===0)
-      return `Perjalananmu baru dimulai${n} — setiap hari yang kamu catat adalah bukti bahwa kamu peduli pada dirimu sendiri (◕ᴗ◕✿)`;
+      return `Perjalananmu baru dimulai${n} — setiap hari yang kamu catat adalah bukti bahwa kamu peduli pada dirimu sendiri (◕‿◕✿)`;
     if(totalDays>=30)
       parts.push(`Sudah ${totalDays} hari kamu check in${n} — konsistensi kayak gini yang bikin perubahan nyata.`);
     else
@@ -1069,11 +1069,11 @@ function naraSmartFallback(query, context){
     if(goals.length)
       parts.push(`Goals kamu: ${goals.slice(0,2).join(' dan ')}. Perjalanannya terlihat di sini.`);
     else
-      parts.push(`Terus lanjutkan ya — sedikit demi sedikit (◕ᴗ◕✿)`);
+      parts.push(`Terus lanjutkan ya — sedikit demi sedikit (◕‿◕✿)`);
     return parts.join(' ');
   }
 
-  return `Aku dengerin${n} (◕ᴗ◕✿) Mau cerita apa?`;
+  return `Aku dengerin${n} (◕‿◕✿) Mau cerita apa?`;
 }
 
 
