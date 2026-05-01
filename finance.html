@@ -85,7 +85,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .saving-item{padding:.625rem 1rem;border-bottom:1px solid var(--border-l);transition:background .12s}
 .saving-item:last-child{border-bottom:none}
 .saving-item:hover{background:var(--bg2)}
-.saving-item-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.saving-item-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;width:100%}
 .saving-emoji{font-size:15px;flex-shrink:0;line-height:1}
 .saving-name{font-size:13px;font-weight:500;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .saving-bal{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:500;color:var(--sky);white-space:nowrap;flex-shrink:0}
@@ -567,8 +567,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .online-banner.show{display:flex}
 
 .summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-top:1px solid var(--border-l);margin-top:.75rem;gap:12px}
-.summary-saving-row .summary-lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:0}
+.summary-saving-row .summary-lbl{font-size:11px;letter-spacing:.02em;text-transform:uppercase;color:var(--text3);margin-bottom:0;white-space:nowrap}
 .summary-saving-row .summary-num{font-size:1.25rem}
+
+.saving-item-info{flex:1;min-width:0;overflow:hidden}
+.saving-item-name{font-size:13px;font-weight:600;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.saving-item-bal{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--moss);line-height:1.1}
+.saving-item-pct{font-size:11px;font-weight:600;color:var(--text3);flex-shrink:0;margin-left:auto;align-self:flex-start}
 </style>
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
@@ -1734,6 +1739,13 @@ function openSheet(id){
     const el=document.getElementById('sheet-'+id);
     if(el) el.classList.add('open');
   });
+}
+function closeSheet(id){
+  const el=document.getElementById('sheet-'+id);
+  if(el) el.classList.remove('open');
+  // hide overlay kalau tidak ada sheet lain yang terbuka
+  const anyOpen=document.querySelectorAll('.bottom-sheet.open').length;
+  if(!anyOpen) document.getElementById('sheet-overlay').classList.remove('on');
 }
 function openCurrencySheet(){
   document.getElementById('sheet-overlay').classList.add('on');
