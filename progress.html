@@ -1322,7 +1322,7 @@ function buildStreakCard(){
     if(_isDayActive(k)) last30.push(water);
   });
   const avgW=last30.length?(last30.reduce((a,b)=>a+b,0)/last30.length).toFixed(1):'—';
-  document.getElementById('avg-water').textContent=avgW;
+  const _aw=document.getElementById('avg-water'); if(_aw) _aw.textContent=avgW;
 
   // active-days tidak ada di HTML — skip (data ini tidak ditampilkan di stat pills)
 
