@@ -1836,9 +1836,76 @@ function formatFinNum(n){
 function buildBadgeAndChallenge(){
   const badgeWrap=document.getElementById('badge-wrap');
   const challengeWrap=document.getElementById('challenge-wrap');
-  // Placeholder — akan diisi di Step 3
-  if(badgeWrap) badgeWrap.innerHTML='<div style="font-size:11px;color:var(--text4);font-style:italic">Terus catat untuk dapatkan badge!</div>';
-  if(challengeWrap) challengeWrap.innerHTML='<div style="font-size:11px;color:var(--text4);font-style:italic">Nara sedang menyiapkan tantangan untukmu...</div>';
+
+  // ── BADGE: gunakan renderStreakBadge yang sudah ada ──
+  if(badgeWrap){
+    const streak=calcOverallStreak();
+    renderStreakBadge(streak,'badge-wrap');
+  }
+
+  // ── CHALLENGE: analisis data lalu kasih tantangan spesifik ──
+  if(challengeWrap){
+    const logs=[];
+    const now=new Date();
+    for(let i=0;i<30;i++){
+      const d=new Date(now); d.setDate(d.getDate()-i);
+      const k=d.toISOString().split('T')[0];
+      const entry=ld('inarte_log_'+k);
+      if(entry) logs.push(entry);
+    }
+
+    // Analisis pola
+    const sleepLogs=logs.filter(l=>l.sleep?.bedtime);
+    const avgBed=sleepLogs.length ? sleepLogs.reduce((s,l)=>{
+      const t=l.sleep.bedtime.split(':');
+      return s+(parseInt(t[0])*60+parseInt(t[1]));
+    },0)/sleepLogs.length : null;
+
+    const waterLogs=logs.filter(l=>l.water?.glasses!=null);
+    const avgWater=waterLogs.length ? waterLogs.reduce((s,l)=>s+l.water.glasses,0)/waterLogs.length : null;
+    const waterTarget=parseInt(ld('inarte_water_target')||8);
+
+    const habitLogs=logs.filter(l=>l.habits&&Object.keys(l.habits).length>0);
+    const habitRate=habitLogs.length/30;
+
+    // Pilih tantangan paling relevan
+    let challenge={icon:'🌱',title:'',desc:''};
+
+    if(avgBed!==null && (avgBed>1380||avgBed<60)){ // tidur setelah 23:00 atau sebelum 01:00
+      challenge={
+        icon:'🌙',
+        title:'Tantangan Tidur Lebih Awal',
+        desc:`Tidur rata-rata kamu agak larut. Coba tidur 30 menit lebih awal minggu ini — mulai dari hari ini!`
+      };
+    } else if(avgWater!==null && avgWater<waterTarget*0.7){
+      challenge={
+        icon:'💧',
+        title:'Tantangan Minum Cukup',
+        desc:`Rata-rata ${avgWater.toFixed(1)} gelas per hari — kurang dari target ${waterTarget} gelas. Coba pasang reminder setiap 2 jam!`
+      };
+    } else if(habitRate<0.5){
+      challenge={
+        icon:'✅',
+        title:'Tantangan 7 Hari Beruntun',
+        desc:`Konsistensi habit kamu masih bisa ditingkatkan. Coba selesaikan semua habit 7 hari tanpa putus mulai sekarang!`
+      };
+    } else {
+      challenge={
+        icon:'⭐',
+        title:'Pertahankan Ritme Ini!',
+        desc:`Kamu sudah berjalan dengan baik. Tantangan minggu ini: catat perasaanmu setiap hari — sekecil apapun itu.`
+      };
+    }
+
+    challengeWrap.innerHTML=`
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:.25rem 0">
+        <span style="font-size:1.5rem;flex-shrink:0">${challenge.icon}</span>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--text1);margin-bottom:4px">${challenge.title}</div>
+          <div style="font-size:11px;color:var(--text3);line-height:1.5">${challenge.desc}</div>
+        </div>
+      </div>`;
+  }
 }
 
 // ══ DIARY FULLSCREEN ══
