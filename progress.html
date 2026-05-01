@@ -193,7 +193,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .water-week-lbl{font-size:9px;color:var(--text4);text-align:center;margin-top:3px}
 
 /* ══ FINANCE SUMMARY ══ */
-.fin-month-bars{display:flex;gap:6px;align-items:flex-end;height:72px;margin-bottom:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.fin-month-bars{display:flex;gap:4px;align-items:flex-end;height:120px;margin-bottom:4px}
+.fin-week-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.fin-week-bars{flex:1;width:100%;display:flex;align-items:flex-end;gap:2px}
+.fin-bar-in,.fin-bar-out{flex:1;border-radius:3px 3px 0 0;transition:height .5s ease;min-height:2px}
+.fin-bar-in{background:var(--moss-l)}
+.fin-bar-out{background:var(--clay-l)}
+.fin-week-lbl{font-size:8px;color:var(--text4);text-align:center}
+.fin-surplus-row{display:flex;justify-content:space-between;margin-bottom:.75rem}
+.fin-surplus-item{text-align:center;flex:1}
+.fin-surplus-num{font-size:11px;font-weight:600}
+.fin-surplus-num.surplus{color:var(--moss)}
+.fin-surplus-num.deficit{color:var(--rose)}
+.fin-surplus-lbl{font-size:8px;color:var(--text4)}
+.fin-divider{height:1px;background:var(--border-l);margin:.75rem 0}
+.fin-saving-title{font-size:10px;font-weight:600;color:var(--text3);margin-bottom:.5rem;display:flex;justify-content:space-between}
+.fin-saving-chart{height:60px;width:100%;position:relative}
+.fin-saving-chart svg{width:100%;height:100%;overflow:visible}
 .fin-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
 .fin-bar-track{flex:1;width:100%;background:var(--border-l);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;min-height:48px;position:relative}
 .fin-bar-income{width:100%;background:var(--moss-l);border-radius:3px;transition:height .5s ease}
@@ -772,7 +788,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--clay-l)"></div>Pengeluaran</div>
     </div>
     <div class="fin-month-bars" id="fin-bars"></div>
-    <div id="fin-labels"></div>
+    <div class="fin-surplus-row" id="fin-surplus-row"></div>
+    <div class="fin-divider"></div>
+    <div class="fin-saving-title">
+      <span>Tabungan berjalan</span>
+      <span id="fin-saving-total" style="color:var(--moss);font-weight:700"></span>
+    </div>
+    <div class="fin-saving-chart"><svg id="fin-saving-svg" viewBox="0 0 200 60" preserveAspectRatio="none"></svg></div>
   </div>
 
   <!-- GAMIFICATION BADGE -->
@@ -1682,52 +1704,141 @@ function buildWaterChart(){
 // ══ FINANCE CHART ══
 function buildFinanceChart(){
   const barsEl=document.getElementById('fin-bars');
-  const lblsEl=document.getElementById('fin-labels');
-  barsEl.innerHTML='';lblsEl.innerHTML='';
+  const surplusEl=document.getElementById('fin-surplus-row');
+  const savingTotalEl=document.getElementById('fin-saving-total');
+  const savingSvg=document.getElementById('fin-saving-svg');
+  if(!barsEl) return;
+  barsEl.innerHTML=''; if(surplusEl) surplusEl.innerHTML='';
 
+  // Get current month data
   const now=new Date();
-  const months=[];
-  for(let i=2;i>=0;i--){
-    let y=now.getFullYear(),m=now.getMonth()-i;
-    if(m<0){m+=12;y--;}
-    months.push({y,m,lbl:MONTHS_SHORT[m]});
+  const y=now.getFullYear(), m=now.getMonth();
+  const data=ld(`inarte_fin_${y}_${m+1}`)||{tx:[],fixed:[]};
+  const txs=data.tx||[];
+  const fixed=data.fixed||[];
+
+  const totalIncome=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const totalFixed=fixed.reduce((s,f)=>s+f.amount,0);
+  const totalExpense=txs.filter(t=>t.type==='daily').reduce((s,t)=>s+t.amount,0)+totalFixed;
+
+  const hasData=totalIncome>0||totalExpense>0;
+  if(!hasData){
+    barsEl.innerHTML='<div class="fin-empty">Belum ada data keuangan.</div>';
+    // show fallback
+    const fb=document.getElementById('finance-fallback');
+    if(fb){fb.style.display='flex'; buildBadgeAndChallenge();}
+    return;
   }
 
-  const allData=months.map(({y,m})=>{
-    const data=ld(`inarte_fin_${y}_${m+1}`)||{tx:[],fixed:[]};
-    const income=(data.tx||[]).filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
-    const daily=(data.tx||[]).filter(t=>t.type==='daily').reduce((s,t)=>s+t.amount,0);
-    const fixed=(data.fixed||[]).reduce((s,f)=>s+f.amount,0);
-    return {income,expense:daily+fixed,lbl:months[months.indexOf(months.find(mm=>mm.y===y&&mm.m===m))].lbl};
+  // hide fallback, show finance card divider+saving
+  const fb=document.getElementById('finance-fallback'); if(fb) fb.style.display='none';
+
+  // Split into 4 weeks
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const weeks=[
+    {lbl:'Mg 1',days:[1,7]},
+    {lbl:'Mg 2',days:[8,14]},
+    {lbl:'Mg 3',days:[15,21]},
+    {lbl:'Mg 4',days:[22,daysInMonth]}
+  ];
+
+  // Group tx by week
+  const weekData=weeks.map(({lbl,days})=>{
+    const [start,end]=days;
+    const weekTx=txs.filter(t=>{
+      const d=new Date(t.date||t.ts||0).getDate();
+      return d>=start && d<=end;
+    });
+    const income=weekTx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+    // distribute fixed expenses evenly across weeks
+    const expense=weekTx.filter(t=>t.type==='daily').reduce((s,t)=>s+t.amount,0)+(totalFixed/4);
+    return {lbl,income,expense};
   });
 
-  const hasData=allData.some(d=>d.income>0||d.expense>0);
-  if(!hasData){barsEl.innerHTML='<div class="fin-empty">Belum ada data keuangan.</div>';return;}
+  const maxVal=Math.max(...weekData.flatMap(d=>[d.income,d.expense]),1);
 
-  const maxVal=Math.max(...allData.flatMap(d=>[d.income,d.expense]),1);
-
-  allData.forEach((d,i)=>{
-    const inPct=Math.round(d.income/maxVal*100);
-    const outPct=Math.round(d.expense/maxVal*100);
-    const sisa=d.income-d.expense;
-    const wrap=document.createElement('div');wrap.className='fin-bar-wrap';
-    wrap.innerHTML=`
-      <div class="fin-bar-track">
-        ${d.income>0?`<div class="fin-bar-income" style="height:${inPct}%;min-height:3px"></div>`:''}
-        ${d.expense>0?`<div class="fin-bar-expense" style="height:${outPct}%;min-height:3px"></div>`:''}
+  // Render grouped bars
+  weekData.forEach(({lbl,income,expense})=>{
+    const inPct=Math.round(income/maxVal*100);
+    const outPct=Math.round(expense/maxVal*100);
+    const group=document.createElement('div');
+    group.className='fin-week-group';
+    group.innerHTML=`
+      <div class="fin-week-bars">
+        <div class="fin-bar-in" style="height:${Math.max(inPct,2)}%"></div>
+        <div class="fin-bar-out" style="height:${Math.max(outPct,2)}%"></div>
       </div>
-      <div class="fin-bar-sisa ${sisa>0?'surplus':sisa<0?'deficit':''}">${sisa>0?'+':sisa<0?'−':''}${formatFinNum(Math.abs(sisa))}</div>
-      <div class="fin-bar-lbl">${d.lbl}</div>`;
-    barsEl.appendChild(wrap);
+      <div class="fin-week-lbl">${lbl}</div>`;
+    barsEl.appendChild(group);
   });
 
-  document.getElementById('finance-preview').textContent=`3 bulan`;
+  // Surplus row per week
+  if(surplusEl){
+    weekData.forEach(({lbl,income,expense})=>{
+      const sisa=income-expense;
+      const item=document.createElement('div');
+      item.className='fin-surplus-item';
+      item.innerHTML=`
+        <div class="fin-surplus-num ${sisa>0?'surplus':sisa<0?'deficit':''}">
+          ${sisa>0?'+':sisa<0?'−':''}${formatFinNum(Math.abs(sisa))}
+        </div>
+        <div class="fin-surplus-lbl">${lbl}</div>`;
+      surplusEl.appendChild(item);
+    });
+  }
+
+  // Saving area chart — akumulatif dari bulan-bulan sebelumnya
+  if(savingSvg){
+    const savingPoints=[];
+    let running=0;
+    // collect last 6 months saving
+    for(let i=5;i>=0;i--){
+      let my=y, mm=m-i;
+      if(mm<0){mm+=12;my--;}
+      const mData=ld(`inarte_fin_${my}_${mm+1}`)||{tx:[],fixed:[]};
+      const mIncome=(mData.tx||[]).filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+      const mExpense=(mData.tx||[]).filter(t=>t.type==='daily').reduce((s,t)=>s+t.amount,0)+
+                     (mData.fixed||[]).reduce((s,f)=>s+f.amount,0);
+      running+=mIncome-mExpense;
+      savingPoints.push(Math.max(running,0));
+    }
+    const maxSaving=Math.max(...savingPoints,1);
+    if(savingTotalEl) savingTotalEl.textContent='+'+formatFinNum(Math.max(running,0));
+
+    // Build SVG path
+    const pts=savingPoints.map((v,i)=>{
+      const x=i*(200/5);
+      const y2=60-Math.round(v/maxSaving*55);
+      return `${x},${y2}`;
+    });
+    const areaPath=`M${pts.join('L')}L200,60L0,60Z`;
+    const linePath=`M${pts.join('L')}`;
+    savingSvg.innerHTML=`
+      <defs>
+        <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--moss)" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="var(--moss)" stop-opacity=".03"/>
+        </linearGradient>
+      </defs>
+      <path d="${areaPath}" fill="url(#sg)"/>
+      <path d="${linePath}" fill="none" stroke="var(--moss)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }
+
+  const _fp=document.getElementById('finance-preview'); if(_fp) _fp.textContent='bulan ini';
 }
 
 function formatFinNum(n){
   if(n>=1000000) return (n/1000000).toFixed(1)+'jt';
   if(n>=1000) return (n/1000).toFixed(0)+'rb';
   return n.toString();
+}
+
+function buildBadgeAndChallenge(){
+  const badgeWrap=document.getElementById('badge-wrap');
+  const challengeWrap=document.getElementById('challenge-wrap');
+  // Placeholder — akan diisi di Step 3
+  if(badgeWrap) badgeWrap.innerHTML='<div style="font-size:11px;color:var(--text4);font-style:italic">Terus catat untuk dapatkan badge!</div>';
+  if(challengeWrap) challengeWrap.innerHTML='<div style="font-size:11px;color:var(--text4);font-style:italic">Nara sedang menyiapkan tantangan untukmu...</div>';
 }
 
 // ══ DIARY FULLSCREEN ══
