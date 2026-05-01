@@ -1723,14 +1723,16 @@ function buildFinanceChart(){
 
   const hasData=totalIncome>0||totalExpense>0;
   if(!hasData){
-    barsEl.innerHTML='<div class="fin-empty">Belum ada data keuangan.</div>';
-    // show fallback
+    barsEl.innerHTML='';
+    // hide finance card entirely, show fallback
+    const fc=document.getElementById('finance-card'); if(fc) fc.style.display='none';
+    const gamif=document.getElementById('streak-gamif'); if(gamif) gamif.style.display='none';
     const fb=document.getElementById('finance-fallback');
     if(fb){fb.style.display='flex'; buildBadgeAndChallenge();}
     return;
   }
-
-  // hide fallback, show finance card divider+saving
+  // has data — show finance card, hide fallback
+  const fc=document.getElementById('finance-card'); if(fc) fc.style.display='';
   const fb=document.getElementById('finance-fallback'); if(fb) fb.style.display='none';
 
   // Split into 4 weeks
@@ -2357,20 +2359,19 @@ function renderStreakBadge(streak, containerId){
   const next = getNextMilestone(streak);
   const milestoneHTML = STREAK_MILESTONES.map(m => {
     const unlocked = streak >= m.days;
-    const cur = streak >= m.days && (!getNextMilestone(streak) || getNextMilestone(streak).days > m.days);
-    return `<span class="streak-milestone \${unlocked ? 'unlocked' : ''} \${cur && streak >= m.days && (STREAK_MILESTONES.indexOf(m) === STREAK_MILESTONES.filter(x => streak >= x.days).length - 1) ? 'current' : ''}" title="\${m.days} hari">\${m.badge} \${m.days}h</span>`;
+    const isCur = unlocked && STREAK_MILESTONES.filter(x=>streak>=x.days).slice(-1)[0]===m;
+    return '<span class="streak-milestone '+(unlocked?'unlocked':'')+' '+(isCur?'current':'')+'" title="'+m.days+' hari">'+m.badge+' '+m.days+'h</span>';
   }).join('');
-  el.innerHTML = `
-    <div class="streak-badge-display">
-      <span class="streak-badge-icon">\${badge.badge}</span>
-      <div class="streak-badge-info">
-        <div class="streak-badge-title">\${streak} hari — \${badge.title}</div>
-        <div class="streak-badge-sub">\${streak === 0 ? 'Mulai hari ini!' : 'Kamu sudah konsisten sejauh ini.'}</div>
-        \${next ? '<div class="streak-badge-next">→ ' + next.badge + ' ' + next.title + ' dalam ' + (next.days - streak) + ' hari lagi</div>' : '<div class="streak-badge-next">🎉 Semua milestone tercapai!</div>'}
-      </div>
-    </div>
-    <div class="streak-milestones">\${milestoneHTML}</div>
-  `;
+  el.innerHTML =
+    '<div class="streak-badge-display">' +
+      '<span class="streak-badge-icon">'+badge.badge+'</span>' +
+      '<div class="streak-badge-info">' +
+        '<div class="streak-badge-title">'+streak+' hari — '+badge.title+'</div>' +
+        '<div class="streak-badge-sub">'+(streak===0?'Mulai hari ini!':'Kamu sudah konsisten sejauh ini.')+'</div>' +
+        (next ? '<div class="streak-badge-next">→ '+next.badge+' '+next.title+' dalam '+(next.days-streak)+' hari lagi</div>' : '<div class="streak-badge-next">🎉 Semua milestone tercapai!</div>') +
+      '</div>' +
+    '</div>' +
+    '<div class="streak-milestones">'+milestoneHTML+'</div>';
 }
 
 function updateDesktopStreakWidget(streak){
