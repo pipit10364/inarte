@@ -686,7 +686,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <!-- LEFT COL: Kalender + Habit + Catatan -->
+  <!-- LEFT COL: Kalender + Catatan -->
   <div class="pg-col-left">
 
   <div class="cal-card">
@@ -712,16 +712,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 
-  <!-- HABIT CONSISTENCY -->
-  <div class="pg-section pg-stretch">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Konsistensi habit <span id="habit-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
-    </div>
-    <div id="habit-cons-wrap"></div>
-  </div>
-
-  <!-- CATATAN HARIAN -->
   <button class="diary-open-btn" onclick="openDiary()">
     <svg class="si" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
     Lihat catatan harian
@@ -729,10 +719,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   </div><!-- end pg-col-left -->
 
-  <!-- MID COL: Tidur+Mood (pair atas) + Air (stretch bawah) -->
+  <!-- MID COL: Tidur+Mood (pair) + Habit + Air -->
   <div class="pg-col-mid">
 
-  <!-- TIDUR + MOOD pair -->
   <div class="pg-pair">
     <div class="pg-section">
       <div class="pg-section-title">
@@ -751,8 +740,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <!-- AIR MINUM — stretch ngikutin kiri -->
-  <div class="pg-section pg-stretch">
+  <div class="pg-section">
+    <div class="pg-section-title">
+      <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Konsistensi habit <span id="habit-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
+    </div>
+    <div id="habit-cons-wrap"></div>
+  </div>
+
+  <div class="pg-section">
     <div class="pg-section-title">
       <svg viewBox="0 0 24 24"><path d="M12 2C6 9 4 13 4 16a8 8 0 0016 0c0-3-2-7-8-14z"/></svg>
       Air minum <span id="water-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
