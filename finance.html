@@ -566,7 +566,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .online-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
 .online-banner.show{display:flex}
 
-.summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:.625rem 0;border-top:1px solid var(--border-l);margin-top:.5rem}
+.summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-top:1px solid var(--border-l);margin-top:.75rem;gap:12px}
 .summary-saving-row .summary-lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:0}
 .summary-saving-row .summary-num{font-size:1.25rem}
 </style>
@@ -1215,7 +1215,7 @@ function openWalletAddSheet(){
     row.appendChild(b);
   });
   row.querySelector('.sv-emoji-btn')?.classList.add('sel');
-  openSheet('sv-add');
+  openSheet('saving-add');
 }
 
 function submitWalletAdd(){
@@ -1236,7 +1236,7 @@ function submitWalletAdd(){
   saveWallets(wallets);
   renderWalletList();
   renderSummary(loadData(viewY,viewM), viewY, viewM);
-  closeSheet('sv-add');
+  closeSheet('saving-add');
   showToast('Dompet saving ditambahkan (◕‿◕✿)');
 }
 
@@ -1251,7 +1251,7 @@ function openWalletTxSheet(id, type){
   document.getElementById('sv-tx-tarik').classList.toggle('sel',type==='tarik');
   document.getElementById('sv-tx-amt').value='';
   document.getElementById('sv-tx-note').value='';
-  openSheet('sv-tx');
+  openSheet('saving-tx');
 }
 
 function selectWalletTx(type){
@@ -1284,7 +1284,7 @@ function submitWalletTx(){
   saveWallets(wallets);
   renderWalletList();
   renderSummary(loadData(viewY,viewM), viewY, viewM);
-  closeSheet('sv-tx');
+  closeSheet('saving-tx');
   showToast(_walletTxType==='setor'?`Rp${fmt(amt)} disetor (◕‿◕✿)`:`Rp${fmt(amt)} ditarik`);
 }
 
@@ -1298,8 +1298,8 @@ function deleteWallet(id){
 }
 
 function closeWalletSheet(){
-  closeSheet('sv-add');
-  closeSheet('sv-tx');
+  closeSheet('saving-add');
+  closeSheet('saving-tx');
 }
 
 // Alias untuk backward compat dengan onclick HTML
@@ -1819,7 +1819,22 @@ async function sendNara(){
   typing.innerHTML='<span style="display:flex;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s infinite;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s .2s infinite;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s .4s infinite;display:inline-block"></span></span>';
   msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
   const dd=JSON.parse(localStorage.getItem('inarte_day_'+_TODAY)||'{}');
-  const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+', '+(_P.home||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' Hari ini: air '+(dd.water||0)+'/8, mood '+(dd.mood||'-')+'. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia natural, sesekali kaomoji. Max 3 kalimat kecuali diminta lebih.';
+  // Build financial context for Nara
+  const _finData = loadData(viewY, viewM);
+  const _finTx = _finData.tx||[];
+  const _finFixed = _finData.fixed||[];
+  const _income = _finTx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const _expense = _finTx.filter(t=>t.type!=='income').reduce((s,t)=>s+t.amount,0);
+  const _fixedTotal = _finFixed.reduce((s,f)=>s+f.amount,0);
+  const _sisa = _income - _expense - _fixedTotal;
+  const _savingTotal = getTotalSaving();
+  const _wallets = loadWallets();
+  const _monthName = new Date(viewY, viewM).toLocaleDateString('id-ID',{month:'long',year:'numeric'});
+  const _finCtx = `Keuangan user ${_monthName}: pemasukan Rp${_income.toLocaleString('id-ID')}, pengeluaran Rp${(_expense+_fixedTotal).toLocaleString('id-ID')}, sisa Rp${_sisa.toLocaleString('id-ID')}${_sisa>=0?' (surplus)':', (defisit)'}. Total saving: Rp${_savingTotal.toLocaleString('id-ID')} (${_wallets.length} dompet). User sedang di tab Keuangan.`;
+
+  const sys = `Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${_P.name||'teman'}${_P.age?', '+_P.age+' tahun':''}${_P.goals&&_P.goals.length?'. Goals: '+_P.goals.join(', '):''}.
+${_finCtx}
+PRINSIP: Kalau user nanya soal keuangan, jawab berdasarkan data di atas — spesifik dan personal. Kalau user curhat, dengerin dulu. Bahasa Indonesia natural, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.`
   let reply;
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
