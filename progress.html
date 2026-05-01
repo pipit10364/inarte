@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>INARTE — Progres</title>
+<title>INARTE — Keuangan</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
 <style>
 :root {
@@ -35,115 +35,234 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .av-btn:hover{transform:scale(1.08)}
 
 /* ══ SCROLL ══ */
-.p-scroll{padding:1.125rem 1.125rem 100px;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
-/* mobile col order */
-.pg-col-left,.pg-col-mid,.pg-col-right,.pg-nara-row{display:flex;flex-direction:column;gap:8px}
-.pg-col-mid{order:1}.pg-col-left{order:2}.pg-col-right{order:3}.pg-nara-row{order:4}
-/* mobile: pg-pair stacks vertically */
-@media(max-width:1023px){.pg-pair{display:flex;flex-direction:column;gap:8px}.pg-stretch{flex:none}}
+.f-scroll{padding:1.125rem 1.125rem 100px;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
 
 /* ══ PAGE HEADER ══ */
-.page-header{padding:.25rem 2px .125rem}
-.page-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--text);line-height:1.2;margin-bottom:3px}
+.page-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--text);line-height:1.2}
 .page-title em{font-style:italic;color:var(--moss)}
-.page-sub{font-size:11px;color:var(--text3);line-height:1.5}
-.section-divider{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text4);padding:0 2px;margin-top:4px}
+.currency-badge{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:11px;color:var(--text2);font-weight:600;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.currency-badge:hover{border-color:var(--moss-l);color:var(--moss)}
 
-/* ══ STREAK CARD ══ */
-.streak-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:1rem 1.125rem;display:flex;align-items:center;gap:1rem}
-.streak-main{display:flex;align-items:baseline;gap:6px}
-.streak-num{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:500;color:var(--moss);line-height:1}
-.streak-unit{font-size:13px;color:var(--text3);font-weight:500}
-.streak-lbl{font-size:11px;color:var(--text4);margin-top:2px}
-.streak-divider{width:1px;height:40px;background:var(--border-l);flex-shrink:0}
-.streak-stats{display:flex;gap:1.25rem;flex:1}
-.streak-stat{}
-.streak-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--text);line-height:1;margin-bottom:2px}
-.streak-stat-lbl{font-size:10px;color:var(--text4)}
-.streak-nara{margin-top:.75rem}
+/* ══ MONTH NAV ══ */
+.month-nav{display:flex;align-items:center;justify-content:space-between}
+.month-nav-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:15px;color:var(--text3);display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1}
+.month-nav-btn:hover{border-color:var(--moss-l);color:var(--moss)}
+.month-nav-lbl{font-size:13px;font-weight:600;color:var(--text2)}
 
-/* ══ COMPACT CALENDAR ══ */
-.cal-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:.875rem 1rem}
-.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.625rem}
-.cal-month-lbl{font-size:12px;font-weight:600;color:var(--text2)}
-.cal-nav{display:flex;gap:4px}
-.cal-nav-btn{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:12px;color:var(--text3);display:flex;align-items:center;justify-content:center;transition:all .12s;line-height:1}
-.cal-nav-btn:hover{border-color:var(--moss-l);color:var(--moss)}
-.cal-legend{display:flex;gap:8px;margin-bottom:.5rem;flex-wrap:wrap}
-.cal-legend-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text4)}
-.cal-legend-dot{width:7px;height:7px;border-radius:2px}
-/* Day labels */
-.cal-day-labels{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:3px}
-.cal-day-lbl{text-align:center;font-size:9px;font-weight:600;color:var(--text4);padding:2px 0}
-/* Calendar grid */
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-cell{aspect-ratio:1;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--text4);cursor:pointer;transition:all .15s;position:relative;background:transparent}
-.cal-cell:hover{background:var(--bg2)}
-.cal-cell.today{color:var(--moss);font-weight:700;border:1.5px solid var(--moss-l)}
-.cal-cell.empty{pointer-events:none}
-.cal-cell.logged-full{background:var(--moss);color:#fff}
-.cal-cell.logged-full:hover{background:var(--moss-d)}
-.cal-cell.logged-partial{background:var(--moss-l);color:var(--moss-d)}
-.cal-cell.logged-partial:hover{background:var(--moss-l)}
-.cal-cell.today.logged-full{border-color:var(--moss-d)}
+/* ══ SUMMARY CARD ══ */
+.summary-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.summary-top{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border-l)}
+.summary-half{padding:.75rem .875rem}
+.summary-half:not(:last-child){border-right:1px solid var(--border-l)}
+.summary-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:3px}
+.summary-num{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;line-height:1.1}
+.summary-num.income{color:var(--moss)}
+.summary-num.expense{color:var(--clay)}
+.summary-num.saving{color:var(--sky)}
+.summary-sub{font-size:10px;color:var(--text4);margin-top:2px}
+.summary-bottom{padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between}
+.summary-sisa-lbl{font-size:11px;color:var(--text3)}
+.summary-sisa-right{display:flex;align-items:center;gap:7px}
+.summary-sisa-num{font-size:1.1rem;font-weight:700;font-family:'Cormorant Garamond',serif}
+.summary-sisa-num.surplus{color:var(--moss)}
+.summary-sisa-num.deficit{color:var(--rose)}
+.summary-sisa-num.zero{color:var(--text4)}
+.sisa-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.sisa-badge.surplus{background:var(--moss-p);color:var(--moss)}
+.sisa-badge.deficit{background:var(--rose-p);color:var(--rose)}
+.nara-insight{padding:.75rem 1rem;border-top:1px solid var(--border-l)}
+.nara-av-sm{display:none}
+.nara-insight-txt{font-size:13px;color:var(--text2);line-height:1.75}
 
-/* ══ RANGE SELECTOR ══ */
-.range-bar{display:flex;gap:6px;align-items:center;background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);padding:.5rem .75rem;box-shadow:var(--sh);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;justify-content:flex-start}
-.range-btn{padding:5px 13px;border-radius:20px;border:1.5px solid transparent;background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--text3);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
-.range-btn.active{background:var(--moss);color:#fff;border-color:var(--moss);font-weight:600}
-.range-btn:hover:not(.active){background:var(--moss-p);color:var(--moss)}
-.range-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-right:2px}
-/* ══ RANGE ROW — sticky sub-header ══ */
-.pg-range-row{position:sticky;top:53px;z-index:90;margin:-1.125rem -1.125rem 0;padding:.5rem 1.25rem;background:rgba(244,239,232,.95);backdrop-filter:blur(16px) saturate(1.5);border-bottom:1px solid rgba(226,217,204,.5)}
-.pg-range-row .range-bar{background:transparent;border:none;box-shadow:none;padding:0;overflow:visible;-webkit-overflow-scrolling:unset;scrollbar-width:unset}
-[data-theme="dark"] .pg-range-row{background:rgba(26,24,20,.97);border-bottom-color:rgba(58,52,44,.6)}
-@media(max-width:1023px){.range-lbl{display:none}}
+/* ══ SAVING ══ */
+.saving-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.saving-head{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;border-bottom:1px solid var(--border-l)}
+.saving-title{font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:7px}
+.saving-total-lbl{font-size:11px;color:var(--text4)}
+.saving-total-num{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:500;color:var(--sky)}
+.saving-list{display:flex;flex-direction:column;gap:0;padding:.5rem 0}
+.saving-item{padding:.625rem 1rem;border-bottom:1px solid var(--border-l);transition:background .12s}
+.saving-item:last-child{border-bottom:none}
+.saving-item:hover{background:var(--bg2)}
+.saving-item-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.saving-emoji{font-size:15px;flex-shrink:0;line-height:1}
+.saving-name{font-size:13px;font-weight:500;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.saving-bal{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:500;color:var(--sky);white-space:nowrap;flex-shrink:0}
+.saving-item-mid{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.saving-prog-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.saving-prog-fill{height:100%;background:var(--sky);border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.saving-prog-pct{font-size:10px;color:var(--sky);font-weight:600;white-space:nowrap;min-width:32px;text-align:right}
+.saving-target-lbl{font-size:10px;color:var(--text4)}
+.saving-eta{font-size:10px;color:var(--text3);margin-top:2px}
+.saving-item-btns{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.saving-btn{padding:4px 11px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s}
+.saving-btn.setor{color:var(--sky);border-color:var(--sky-l)}
+.saving-btn.setor:hover{background:var(--sky-p)}
+.saving-btn.tarik{color:var(--text3)}
+.saving-btn.tarik:hover{color:var(--rose);border-color:var(--rose-l);background:var(--rose-p)}
+.saving-btn.del{color:var(--text4);margin-left:auto}
+.saving-btn.del:hover{color:var(--rose);border-color:var(--rose-l)}
+.saving-empty{font-size:11px;color:var(--text4);font-style:italic;padding:.875rem 1rem}
+.saving-add-btn{width:100%;padding:.625rem 1rem;background:transparent;border:none;border-top:1px solid var(--border-l);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--sky);cursor:pointer;text-align:left;transition:background .12s;display:flex;align-items:center;gap:6px}
+.saving-add-btn:hover{background:var(--sky-p)}
 
-/* ══ STAT PILLS ══ */
-.stat-pills{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.stat-pill{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--rsm);padding:.625rem .75rem;box-shadow:var(--sh);text-align:center}
-.stat-pill-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;line-height:1;margin-bottom:2px}
-.stat-pill-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text4)}
-.stat-pill-sub{font-size:9px;color:var(--text4);margin-top:1px}
+/* Saving sheet form */
+.sv-field{margin-bottom:.875rem}
+.sv-lbl{font-size:11px;font-weight:500;color:var(--text3);margin-bottom:4px}
+.sv-inp{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.sv-inp:focus{border-color:var(--sky)}
+.sv-inp::placeholder{color:var(--text4);font-style:italic}
+.sv-emoji-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.sv-emoji-btn{width:36px;height:36px;border-radius:var(--rxs);border:1.5px solid var(--border);background:transparent;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.sv-emoji-btn.sel{border-color:var(--sky);background:var(--sky-p)}
+.sv-submit-btn{width:100%;padding:11px;background:var(--sky);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;margin-top:.5rem}
+.sv-submit-btn:hover{background:var(--sky-d,#1e4a60)}
+.sv-type-row{display:flex;gap:8px;margin-bottom:.875rem}
+.sv-type-btn{flex:1;padding:8px;border-radius:var(--rsm);border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .12s;color:var(--text3)}
+.sv-type-btn.sel{border-color:var(--sky);background:var(--sky-p);color:var(--sky);font-weight:700}
 
-/* ══ OPEN SECTION CARDS ══ */
-.pg-section{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:.875rem 1rem;overflow:hidden}
-.pg-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:.75rem;display:flex;align-items:center;gap:7px}
-.pg-section-title svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+/* ══ DIAGRAM ══ */
+.diagram-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);padding:.875rem 1rem}
+.diagram-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.diagram-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4)}
+.diagram-total{font-size:11px;font-weight:600;color:var(--clay)}
+.diagram-empty{font-size:11px;color:var(--text4);font-style:italic}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bar-row:last-child{margin-bottom:0}
+.bar-cat{font-size:11px;color:var(--text2);width:88px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.bar-amt{font-size:10px;font-weight:600;color:var(--text3);min-width:56px;text-align:right;white-space:nowrap}
+.bar-pct{font-size:9px;color:var(--text4);min-width:26px;text-align:right}
 
-/* ══ WATER MONTHLY ══ */
-.water-month-row{display:flex;align-items:center;gap:10px;margin-bottom:.5rem}
-.water-month-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.water-month-fill{height:100%;background:var(--sky);border-radius:4px;transition:width .5s ease}
-.water-month-stat{font-size:11px;font-weight:600;color:var(--sky);min-width:52px;text-align:right}
-.water-month-sub{display:flex;justify-content:space-between;font-size:10px;color:var(--text4);margin-top:4px}
+/* ══ EXPAND SECTIONS ══ */
+.type-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:.875rem}
+.type-btn{padding:8px 4px;border-radius:var(--rxs);border:1.5px solid var(--border);background:var(--bg);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--text3);cursor:pointer;text-align:center;transition:all .15s;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.type-btn:hover{background:var(--bg2)}
+.type-btn.sel-income{border-color:var(--moss);background:var(--moss-p);color:var(--moss);font-weight:700}
+.type-btn.sel-daily{border-color:var(--clay);background:var(--clay-p);color:var(--clay);font-weight:700}
+.type-btn.sel-monthly{border-color:var(--sky);background:var(--sky-p);color:var(--sky);font-weight:700}
+.type-btn.sel-yearly{border-color:var(--dusk);background:var(--dusk-p);color:var(--dusk);font-weight:700}
 
-/* ══ MOOD MONTHLY ══ */
-.mood-month-grid{display:flex;gap:5px;align-items:flex-end;height:72px;margin-bottom:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
-.mood-month-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:36px}
-.mood-month-bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height .5s ease}
-.mood-month-em{font-size:13px;line-height:1}
-.mood-month-cnt{font-size:9px;color:var(--text4)}
+/* Amount row */
+.amount-row{display:flex;align-items:center;gap:8px;margin-bottom:.75rem}
+.amount-prefix{font-size:14px;font-weight:600;color:var(--text3);flex-shrink:0;min-width:24px}
+.amount-inp{flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;text-align:right}
+.amount-inp:focus{border-color:var(--moss)}
+.amount-inp::placeholder{color:var(--text4)}
 
-/* ══ REMOVE OLD EXPAND ══ */
+/* Name + date row */
+.name-date-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.75rem}
+.name-inp{flex:1;min-width:120px;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.name-inp:focus{border-color:var(--moss)}
+.name-inp::placeholder{color:var(--text4);font-style:italic}
+.date-inp{width:120px;flex-shrink:0;min-width:0;padding:9px 10px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.date-inp:focus{border-color:var(--moss)}
+
+/* Category chips */
+.cat-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.875rem;padding-top:2px}
+.cat-btn{padding:6px 11px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text3);cursor:pointer;transition:all .12s;white-space:nowrap}
+.cat-btn.sel{font-weight:600}
+
+/* Submit */
+.submit-row{display:flex;justify-content:flex-end}
+.submit-btn{padding:9px 22px;background:var(--moss);color:#fff;border:none;border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+.submit-btn:hover{background:var(--moss-d)}
+
+/* ══ EXPAND SECTIONS ══ */
 .expand-section{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.expand-toggle{display:none}
-.expand-body{display:block;padding:.875rem 1rem 1rem}
-.expand-body.has-pad-top{padding-top:.875rem}
+.expand-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;background:transparent;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:left;transition:background .15s}
+.expand-toggle:hover{background:var(--bg2)}
+.expand-toggle-left{display:flex;align-items:center;gap:8px}
+.expand-title{font-size:12px;font-weight:600;color:var(--text2)}
+.expand-preview{font-size:11px;color:var(--text4);margin-left:4px}
+.expand-chevron{width:16px;height:16px;stroke:var(--text4);fill:none;stroke-width:1.75;stroke-linecap:round;transition:transform .25s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
+.expand-section.open .expand-chevron{transform:rotate(180deg)}
+.expand-body{display:none;border-top:1px solid var(--border-l);padding:.875rem 1rem 1rem;animation:fadeUp .2s ease}
+.expand-section.open .expand-body{display:block}
 
+/* Transaction list */
+.tx-date-group{margin-bottom:.875rem}
+.tx-date-group:last-child{margin-bottom:0}
+.tx-date-lbl{font-size:10px;font-weight:600;color:var(--text4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.tx-list{list-style:none;display:flex;flex-direction:column;gap:1px}
+.tx-item{display:flex;align-items:center;gap:8px;padding:7px 6px;border-radius:var(--rxs);transition:background .12s}
+.tx-item:hover{background:var(--bg2)}
+.tx-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tx-info{flex:1;min-width:0}
+.tx-name{font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tx-cat-lbl{font-size:10px;color:var(--text4)}
+.tx-amt{font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.tx-amt.in{color:var(--moss)}
+.tx-amt.out{color:var(--clay)}
+.tx-del{background:none;border:none;cursor:pointer;font-size:10px;color:var(--text4);padding:3px 5px;border-radius:4px;opacity:0;transition:all .12s;flex-shrink:0}
+.tx-item:hover .tx-del{opacity:1}
+.tx-del:hover{color:var(--rose);opacity:1}
+.list-empty{font-size:11px;color:var(--text4);font-style:italic;padding:3px 0}
 
+/* Fixed list */
+.fixed-type-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text4);margin-bottom:6px;margin-top:.75rem}
+.fixed-type-lbl:first-child{margin-top:0}
+.fixed-list{list-style:none;display:flex;flex-direction:column;gap:1px;margin-bottom:4px}
+.fixed-item{display:flex;align-items:center;gap:8px;padding:7px 6px;border-radius:var(--rxs);transition:background .12s}
+.fixed-item:hover{background:var(--bg2)}
+.fixed-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.fixed-info{flex:1;min-width:0}
+.fixed-name{font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fixed-cat-lbl{font-size:10px;color:var(--text4)}
+.fixed-amt-wrap{text-align:right;flex-shrink:0}
+.fixed-amt{font-size:12px;font-weight:700;color:var(--clay)}
+.fixed-eq{font-size:9px;color:var(--text4);margin-top:1px}
+.fixed-del{background:none;border:none;cursor:pointer;font-size:10px;color:var(--text4);padding:3px 5px;border-radius:4px;opacity:0;transition:all .12s;flex-shrink:0}
+.fixed-item:hover .fixed-del{opacity:1}
+.fixed-del:hover{color:var(--rose);opacity:1}
 
-/* ══ NARA PATTERN INSIGHT ══ */
-.nara-pattern-head{display:none}
-.nara-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nara-pattern-name{font-size:12px;font-weight:600;color:var(--moss)}
-.nara-pattern-body{font-size:13px;color:var(--text2);line-height:1.85}
-.nara-pattern-body p{margin-bottom:6px}
-.nara-pattern-body p:last-child{margin-bottom:0}
-.nara-dots{display:flex;gap:4px;align-items:center;padding:2px 0}
-.nara-dots span{width:6px;height:6px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s infinite}
-.nara-dots span:nth-child(2){animation-delay:.2s}
-.nara-dots span:nth-child(3){animation-delay:.4s}
+/* Fixed yearly reminder */
+.fixed-reminder{background:var(--amber-p);border:1px solid var(--amber-l);border-radius:var(--rxs);padding:8px 10px;margin-top:.625rem;font-size:11px;color:var(--amber);line-height:1.55;display:none}
+.fixed-reminder.on{display:block}
+
+/* ══ CURRENCY SHEET ══ */
+.sheet-overlay{position:fixed;inset:0;background:rgba(28,24,16,.45);z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(3px)}
+.sheet-overlay.on{opacity:1;pointer-events:auto}
+.bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:24px 24px 0 0;z-index:900;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);max-height:88dvh;display:flex;flex-direction:column;box-shadow:0 -8px 48px rgba(28,24,16,.15)}
+.bottom-sheet.open{transform:translateY(0)}
+@media(min-width:640px){
+  .bottom-sheet{left:50%;right:auto;width:540px;transform:translateX(-50%) translateY(100%)}
+  .bottom-sheet.open{transform:translateX(-50%) translateY(0)}
+}
+.sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.sheet-head{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-l);flex-shrink:0;gap:8px}
+.sheet-title{font-size:13px;font-weight:600;color:var(--text);flex:1}
+.sheet-close{background:var(--bg2);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:12px;color:var(--text3);display:flex;align-items:center;justify-content:center}
+.sheet-body{flex:1;overflow-y:auto;padding:14px 16px 32px}
+.currency-search{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;margin-bottom:10px}
+.currency-search:focus{border-color:var(--moss)}
+.currency-list{display:flex;flex-direction:column;gap:1px}
+.currency-item{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:var(--rxs);cursor:pointer;transition:background .12s}
+.currency-item:hover{background:var(--bg2)}
+.currency-item.active{background:var(--moss-p)}
+.cur-code{font-size:13px;font-weight:700;color:var(--text);min-width:42px}
+.cur-name{font-size:12px;color:var(--text3);flex:1}
+.cur-sym{font-size:12px;color:var(--text4);min-width:18px;text-align:right}
+.currency-item.active .cur-code{color:var(--moss)}
+
+/* ══ BOTTOM NAV ══ */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(253,250,246,.97);backdrop-filter:blur(20px) saturate(1.5);border-top:1px solid rgba(226,217,204,.5);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 20px rgba(28,24,16,.06)}
+.bnav-btn{flex:1;padding:10px 8px 8px;background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bnav-svg{width:20px;height:20px;stroke:var(--text4);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s}
+.bnav-lbl{font-size:10px;font-weight:500;color:var(--text4);font-family:'DM Sans',sans-serif;transition:color .15s}
+.bnav-btn.active .bnav-svg{stroke:var(--moss)}
+.bnav-btn.active .bnav-lbl{color:var(--moss);font-weight:600}
+
+.nara-float{position:fixed;bottom:82px;right:16px;z-index:99}
+.nara-fab{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--nara),var(--nara-d));color:#fff;border:none;cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(196,114,78,.35);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.nara-fab:hover{transform:scale(1.1)}
+
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border-l);border-radius:20px;padding:9px 18px;font-size:12px;color:var(--text2);box-shadow:var(--sh-md);white-space:normal;word-break:keep-all;z-index:1000;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:80vw;text-align:center;line-height:1.4}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.si{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 
 /* ══ NARA SURFACE — unified Nara voice ══ */
 .nara-surface{background:var(--nara-p);border-left:3px solid var(--nara);border-radius:0 var(--rsm) var(--rsm) 0;padding:.75rem 1rem .75rem .875rem;display:flex;align-items:flex-start;gap:9px;}
@@ -155,131 +274,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .nara-voice-txt p:last-child{margin-bottom:0}
 [data-theme="dark"] .nara-av{box-shadow:0 2px 6px rgba(0,0,0,.3)}
 
-@keyframes bounceDot{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1.2);opacity:1}}
-
-/* ══ HABIT CONSISTENCY ══ */
-.habit-cons-list{display:flex;flex-direction:column;gap:8px}
-.habit-cons-row{display:flex;align-items:center;gap:8px}
-.habit-cons-name{font-size:12px;color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.habit-cons-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
-.habit-cons-fill{height:100%;border-radius:3px;background:var(--moss);transition:width .5s ease}
-.habit-cons-pct{font-size:11px;font-weight:600;color:var(--text3);min-width:32px;text-align:right}
-.habit-cons-streak{font-size:10px;color:var(--amber);font-weight:600;min-width:42px;text-align:right;white-space:nowrap}
-.habit-cons-empty{font-size:12px;color:var(--text4);font-style:italic}
-
-/* ══ MOOD CHART ══ */
-.mood-bars{display:flex;gap:6px;align-items:flex-end;height:64px;margin-bottom:8px}
-.mood-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
-.mood-bar{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:height .5s ease}
-.mood-bar-em{font-size:14px;line-height:1}
-.mood-bar-count{font-size:9px;color:var(--text4)}
-.mood-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.mood-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text3)}
-.mood-legend-dot{width:8px;height:8px;border-radius:2px}
-
-/* ══ SLEEP ENERGY ══ */
-.sleep-energy-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.se-card{background:var(--bg2);border-radius:var(--rsm);padding:.75rem}
-.se-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text4);margin-bottom:4px}
-.se-num{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;line-height:1;margin-bottom:2px}
-.se-sub{font-size:10px;color:var(--text4)}
-.se-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:6px}
-.se-bar-fill{height:100%;border-radius:2px;transition:width .5s ease}
-
-/* ══ WATER CONSISTENCY ══ */
-.water-week-chart{display:flex;gap:4px;align-items:flex-end;height:48px;margin-bottom:6px}
-.water-week-bar{flex:1;border-radius:3px 3px 0 0;min-height:3px;background:var(--sky-l);transition:height .4s ease}
-.water-week-bar.full{background:var(--sky)}
-.water-week-lbl{font-size:9px;color:var(--text4);text-align:center;margin-top:3px}
-
-/* ══ FINANCE SUMMARY ══ */
-.fin-month-bars{display:flex;gap:6px;align-items:flex-end;height:72px;margin-bottom:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.fin-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
-.fin-bar-track{flex:1;width:100%;background:var(--border-l);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;min-height:48px;position:relative}
-.fin-bar-income{width:100%;background:var(--moss-l);border-radius:3px;transition:height .5s ease}
-.fin-bar-expense{width:100%;background:var(--clay-l);border-radius:3px;transition:height .5s ease}
-.fin-bar-lbl{font-size:9px;color:var(--text3)}
-.fin-bar-sisa{font-size:9px;font-weight:600}
-.fin-bar-sisa.surplus{color:var(--moss)}
-.fin-bar-sisa.deficit{color:var(--rose)}
-.fin-legend{display:flex;gap:12px;margin-bottom:.625rem}
-.fin-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text3)}
-.fin-legend-dot{width:8px;height:8px;border-radius:2px}
-.fin-empty{font-size:11px;color:var(--text4);font-style:italic}
-.weekly-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:.875rem}
-.weekly-stat{text-align:center;padding:.5rem;background:var(--bg2);border-radius:var(--rsm)}
-.weekly-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;line-height:1;margin-bottom:2px}
-.weekly-stat-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text4)}
-.weekly-nara{margin-top:.75rem;padding:.75rem;background:var(--moss-p);border-radius:var(--rsm);font-size:13px;color:var(--text2);line-height:1.7;border-left:3px solid var(--moss-l)}
-.weekly-habit-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.weekly-habit-name{font-size:12px;color:var(--text2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.weekly-habit-track{width:80px;height:5px;background:var(--border);border-radius:3px;flex-shrink:0;overflow:hidden}
-.weekly-habit-fill{height:100%;background:var(--moss);border-radius:3px}
-.weekly-habit-cnt{font-size:10px;color:var(--text3);min-width:28px;text-align:right}
-
-/* ══ DIARY FULLSCREEN ══ */
-.diary-fullscreen{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)}
-.diary-fullscreen.open{display:flex;transform:translateY(0)}
-.diary-fs-topbar{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;border-bottom:1px solid var(--border-l);background:rgba(244,239,232,.93);backdrop-filter:blur(16px);flex-shrink:0}
-.diary-fs-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--text)}
-.diary-fs-title em{font-style:italic;color:var(--moss)}
-.diary-fs-close{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all .15s}
-.diary-fs-close:hover{background:var(--bg2)}
-.diary-fs-body{flex:1;overflow-y:auto;display:flex;-webkit-overflow-scrolling:touch}
-
-/* Calendar in diary */
-.diary-cal-pane{width:100%;flex-shrink:0;padding:1.25rem;display:flex;flex-direction:column;gap:.875rem;max-width:680px;margin:0 auto}
-.diary-cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem}
-.diary-cal-nav-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;color:var(--text3);display:flex;align-items:center;justify-content:center;transition:all .12s;line-height:1}
-.diary-cal-nav-btn:hover{border-color:var(--moss-l);color:var(--moss)}
-.diary-cal-month{font-size:14px;font-weight:600;color:var(--text2)}
-.diary-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.diary-day-lbl{text-align:center;font-size:10px;font-weight:600;color:var(--text4);padding:3px 0}
-.diary-cal-cell{aspect-ratio:1;border-radius:var(--rxs);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;position:relative;background:transparent;border:none;font-family:'DM Sans',sans-serif;gap:2px}
-.diary-cal-cell:hover{background:var(--bg2)}
-.diary-cal-cell.today{border:1.5px solid var(--moss-l)}
-.diary-cal-cell.empty{pointer-events:none}
-.diary-cal-cell.has-entry{background:var(--moss-p)}
-.diary-cal-cell.has-entry:hover{background:var(--moss-l)}
-.diary-cal-cell.selected{background:var(--moss) !important;border-color:var(--moss) !important}
-.diary-cell-date{font-size:12px;font-weight:500;color:var(--text2)}
-.diary-cal-cell.has-entry .diary-cell-date{color:var(--moss-d);font-weight:600}
-.diary-cal-cell.selected .diary-cell-date{color:#fff}
-.diary-cell-mood{font-size:10px;line-height:1}
-.diary-cal-cell.today .diary-cell-date{color:var(--moss);font-weight:700}
-
-/* Entry detail pane */
-.diary-entry-pane{padding:1.25rem;max-width:680px;width:100%;margin:0 auto}
-.diary-entry-date{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--text);margin-bottom:.875rem;display:flex;align-items:center;gap:8px}
-.diary-entry-back{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text3);cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:4px}
-.diary-entry-back:hover{background:var(--bg2)}
-.diary-section{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border-l)}
-.diary-section:last-child{border-bottom:none;margin-bottom:0}
-.diary-section-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text4);margin-bottom:5px}
-.diary-section-val{font-size:13px;color:var(--text2);line-height:1.75}
-.diary-emotion-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
-.diary-emotion-tag{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;background:var(--dusk-p);color:var(--dusk);border:1px solid var(--dusk-l)}
-.diary-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
-.diary-photo{aspect-ratio:1;border-radius:var(--rxs);overflow:hidden;background:var(--bg2)}
-.diary-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.diary-empty-entry{text-align:center;padding:2rem;color:var(--text4);font-size:13px;font-style:italic}
-
-/* ══ BOTTOM NAV ══ */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(253,250,246,.97);backdrop-filter:blur(20px) saturate(1.5);border-top:1px solid rgba(226,217,204,.5);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 20px rgba(28,24,16,.06)}
-.bnav-btn{flex:1;padding:10px 8px 8px;background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
-.bnav-svg{width:20px;height:20px;stroke:var(--text4);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s}
-.bnav-lbl{font-size:10px;font-weight:500;color:var(--text4);font-family:'DM Sans',sans-serif;transition:color .15s}
-.bnav-btn.active .bnav-svg{stroke:var(--moss)}
-.bnav-btn.active .bnav-lbl{color:var(--moss);font-weight:600}
-.nara-float{position:fixed;bottom:82px;right:16px;z-index:99}
-.nara-fab{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--nara),var(--nara-d));color:#fff;border:none;cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(196,114,78,.35);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
-.nara-fab:hover{transform:scale(1.1)}
-.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border-l);border-radius:20px;padding:9px 18px;font-size:12px;color:var(--text2);box-shadow:var(--sh-md);white-space:normal;word-break:keep-all;z-index:1000;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:80vw;text-align:center;line-height:1.4}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-.si{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@media(min-width:640px){.p-scroll{padding:1.5rem 1.5rem 100px;gap:12px}.pg-range-row{margin:-1.5rem -1.5rem 0;padding:.5rem 1.5rem}}
+@media(min-width:640px){.f-scroll{padding:1.5rem 1.5rem 100px;gap:12px}}
 
 /* ══ SHARED: NARA CHAT ══ */
 .nara-float{position:fixed;bottom:82px;right:16px;z-index:99}
@@ -455,45 +451,44 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .bnav{display:none}
   .desktop-sidebar{display:flex!important;flex-direction:column;border-right:1px solid var(--border-l);padding:1.25rem 1rem;background:var(--surface);position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;overflow-x:hidden;transition:padding .25s}
 
-  /* ── Progress: 2-column reflow ── */
-  .p-scroll{
-  }
-  .p-scroll > .section-divider{display:none}
-
-  /* ── 3-column grid ── */
-  .p-scroll{
+  /* ── Finance: 60/40 layout ── */
+  .f-scroll{
     display:grid;
-    grid-template-columns:30fr 40fr 30fr;
-    grid-template-rows:auto auto 1fr;
-    column-gap:14px;
+    grid-template-columns:3fr 2fr;
+    grid-template-rows:auto;
+    align-items:start;
+    column-gap:16px;
     row-gap:12px;
     padding:1.75rem 1.75rem 2.5rem;
     max-width:none;
     width:100%;
     box-sizing:border-box;
-    align-items:start;
   }
+  .f-scroll > .section-divider{display:none}
 
-  .pg-range-row  {grid-column:1/-1;grid-row:1;margin:-1.75rem -1.75rem 0;padding:.5rem 1.75rem;top:53px}
-  .pg-stat-pills {grid-column:1/-1;grid-row:2;margin-top:.25rem}
-  .pg-col-left   {grid-column:1;grid-row:3;display:flex;flex-direction:column;gap:12px;align-self:start}
-  .pg-col-mid    {grid-column:2;grid-row:3;display:flex;flex-direction:column;gap:12px;min-width:0}
-  .pg-col-right  {grid-column:3;grid-row:3;display:flex;flex-direction:column;gap:12px;min-width:0}
-  .pg-nara-row   {display:none}
+  /* Left col: header, month nav, summary, saving, diagram, tx list */
+  .page-header    {grid-column:1;grid-row:1}
+  .month-nav      {grid-column:1;grid-row:2}
+  .summary-card   {grid-column:1;grid-row:3}
+  .saving-card    {grid-column:1;grid-row:4}
+  .diagram-card   {grid-column:1;grid-row:5}
+  .fin-left-tx    {grid-column:1;grid-row:6}
 
-  /* stretch: card fills remaining height in its column */
-  .pg-stretch{flex:1}
+  /* Right col: sticky, spans all rows */
+  .fin-right-col  {grid-column:2;grid-row:1/7;display:flex;flex-direction:column;gap:12px;position:sticky;top:1.75rem;align-self:start;max-height:calc(100vh - 90px);overflow-y:auto}
 
-  /* paired cards side-by-side */
-  .pg-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0}
-  .pg-pair > .pg-section{min-width:0}
+  /* On desktop: form always visible — no accordion toggle */
+  .fin-right-col .expand-toggle{display:none}
+  .fin-right-col .expand-body{display:block!important;padding-top:0}
+  .fin-right-col .expand-section{border-radius:var(--r);border:1px solid var(--border-l);background:var(--surface);overflow:visible;padding:.875rem}
 
-  /* hide old col classes */
-  .pg-left-col,.pg-right-col{display:contents}
+  /* Diagram bigger on desktop */
+  .diagram-card{padding:1.25rem}
 
-  /* On desktop all sections are always visible */
-  .expand-toggle{display:none!important}
-  .expand-body{display:block!important;padding-top:.5rem}
+  /* Transaksi list always visible on left */
+  .fin-left-tx .expand-toggle{display:none}
+  .fin-left-tx .expand-body{display:block!important;padding-top:0;max-height:none}
+  .fin-left-tx{border-radius:var(--r);border:1px solid var(--border-l);background:var(--surface);padding:.875rem}
 
   /* Sidebar collapse */
   body.sidebar-collapsed{--sidebar-w:64px}
@@ -518,7 +513,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .nara-chat{bottom:90px;right:24px;width:360px}
 }
 @media(min-width:1440px){
-  .p-scroll{padding:2rem 2.5rem 3rem;column-gap:18px}
+  .f-scroll{padding:2rem 2.5rem 3rem;column-gap:20px}
 }
 @media(max-width:1023px){
   .desktop-sidebar{display:none!important}
@@ -546,6 +541,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ds-toggle:hover{color:var(--moss)}
 .ds-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
 .ds-nav-lbl{white-space:nowrap;overflow:hidden}
+.fin-right-header{display:none}
+@media(min-width:1024px){
+  .fin-right-header{display:flex;align-items:center;padding:.25rem .25rem .5rem}
+  .fin-right-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;font-style:italic;color:var(--moss)}
+}
 
 /* ══ TIPS HARIAN ══ */
 .tips-card{background:linear-gradient(135deg,var(--moss-p),var(--bg));border:1px solid var(--moss-l);border-radius:var(--r);padding:.875rem 1.125rem;position:relative;overflow:hidden;cursor:pointer}
@@ -559,19 +559,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .tips-text{font-size:12.5px;color:var(--text2);line-height:1.75}
 .tips-tag{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--moss);opacity:.6;margin-top:.375rem;display:inline-block}
 
-/* ══ GAMIFICATION STREAK BADGES ══ */
-.streak-badge-display{display:flex;align-items:center;gap:.875rem;padding:.875rem 1rem;background:var(--bg2);border-radius:var(--rsm);margin-bottom:.875rem}
-.streak-badge-icon{font-size:2.4rem;line-height:1;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
-.streak-badge-icon:hover{transform:scale(1.15)}
-.streak-badge-info{}
-.streak-badge-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:1px}
-.streak-badge-sub{font-size:11px;color:var(--text3);line-height:1.5}
-.streak-badge-next{font-size:10px;color:var(--amber);font-weight:500;margin-top:2px}
-.streak-milestones{display:flex;gap:6px;flex-wrap:wrap;margin-top:.625rem}
-.streak-milestone{padding:4px 10px;border-radius:12px;font-size:11px;font-weight:500;border:1.5px solid var(--border);color:var(--text4);background:transparent}
-.streak-milestone.unlocked{border-color:var(--amber-l);color:var(--amber);background:var(--amber-p)}
-.streak-milestone.current{border-color:var(--moss);color:var(--moss);background:var(--moss-p);font-weight:700}
-
 .offline-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:#7A3E50;color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
 .offline-banner.show{display:flex}
 .offline-banner svg{width:13px;height:13px;min-width:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
@@ -579,25 +566,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .online-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
 .online-banner.show{display:flex}
 
-/* Catatan Harian button — visible card style */
-.diary-open-btn{
-  display:flex;align-items:center;gap:10px;
-  width:100%;padding:1rem 1.125rem;
-  background:var(--surface);
-  border:1.5px solid var(--border);
-  border-radius:16px;
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
-  color:var(--text2);cursor:pointer;
-  transition:all .15s;box-shadow:var(--sh-sm);
-  margin-top:4px;
-}
-.diary-open-btn:hover,.diary-open-btn:active{
-  background:var(--surface-2);border-color:var(--moss-l);color:var(--moss);
-}
-.diary-open-btn .si{
-  width:16px;height:16px;stroke:currentColor;fill:none;
-  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;
-}
+.summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-top:1px solid var(--border-l);margin-top:.75rem;gap:12px}
+.summary-saving-row .summary-lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:0}
+.summary-saving-row .summary-num{font-size:1.25rem}
 </style>
 <script>
 (function(){const t=localStorage.getItem('inarte_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
@@ -605,7 +576,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="sync.js"></script>
 </head>
-<body data-page="progress">
+<body data-page="finance">
 
 <div class="topbar">
   <div class="topbar-logo">IN<em>arte</em></div>
@@ -659,172 +630,223 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </aside>
 
-<div class="p-scroll">
+<div class="f-scroll">
 
-  <!-- RANGE SELECTOR — spans full width on mobile, left col on desktop -->
-  <div class="pg-range-row">
-    <div class="range-bar">
-      <span class="range-lbl">Tampilkan</span>
-      <button class="range-btn active" id="range-30" onclick="setRange(30)">30 hari</button>
-      <button class="range-btn" id="range-90" onclick="setRange(90)">3 bulan</button>
-      <button class="range-btn" id="range-180" onclick="setRange(180)">6 bulan</button>
-      <button class="range-btn" id="range-0" onclick="setRange(0)">Semua</button>
-    </div>
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="page-title">Catatan <em>keuangan</em></div>
+    <button class="currency-badge" onclick="openCurrencySheet()" id="currency-badge">
+      <svg class="si" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M9 9h4.5a1.5 1.5 0 010 3H9a1.5 1.5 0 000 3H15"/></svg>
+      <span id="cur-lbl">IDR</span>
+    </button>
   </div>
 
-  <!-- STAT PILLS -->
-  <div class="pg-stat-pills stat-pills">
-    <div class="stat-pill">
-      <div class="stat-pill-num" id="streak-num" style="color:var(--moss)">0</div>
-      <div class="stat-pill-lbl">Streak</div>
-      <div class="stat-pill-sub" id="streak-nara">hari beruntun</div>
-    </div>
-    <div class="stat-pill">
-      <div class="stat-pill-num" id="total-days" style="color:var(--dusk)">0</div>
-      <div class="stat-pill-lbl">Total hari</div>
-      <div class="stat-pill-sub">tercatat</div>
-    </div>
+  <!-- MONTH NAV -->
+  <div class="month-nav">
+    <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
+    <span class="month-nav-lbl" id="month-lbl"></span>
+    <button class="month-nav-btn" onclick="changeMonth(1)">›</button>
   </div>
 
-  <!-- LEFT COL: Kalender + Catatan -->
-  <div class="pg-col-left">
-
-  <div class="cal-card">
-    <div class="cal-header">
-      <span class="cal-month-lbl" id="cal-month-lbl"></span>
-      <div style="display:flex;align-items:center;gap:8px">
-        <div class="cal-legend">
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--moss)"></div>Lengkap</div>
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--moss-l)"></div>Sebagian</div>
-        </div>
-        <div class="cal-nav">
-          <button class="cal-nav-btn" onclick="calChangeMonth(-1)">‹</button>
-          <button class="cal-nav-btn" onclick="calChangeMonth(1)">›</button>
-        </div>
+  <!-- SUMMARY -->
+  <div class="summary-card">
+    <div class="summary-top">
+      <div class="summary-half">
+        <div class="summary-lbl">Pemasukan</div>
+        <div class="summary-num income" id="sum-in">—</div>
+        <div class="summary-sub" id="sum-in-sub">belum ada</div>
+      </div>
+      <div class="summary-half">
+        <div class="summary-lbl">Pengeluaran</div>
+        <div class="summary-num expense" id="sum-out">—</div>
+        <div class="summary-sub" id="sum-out-sub">belum ada</div>
       </div>
     </div>
-    <div class="cal-day-labels">
-      <div class="cal-day-lbl">Min</div><div class="cal-day-lbl">Sen</div>
-      <div class="cal-day-lbl">Sel</div><div class="cal-day-lbl">Rab</div>
-      <div class="cal-day-lbl">Kam</div><div class="cal-day-lbl">Jum</div>
-      <div class="cal-day-lbl">Sab</div>
-    </div>
-    <div class="cal-grid" id="cal-grid"></div>
-  </div>
-
-  <button class="diary-open-btn" onclick="openDiary()">
-    <svg class="si" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    Lihat catatan harian
-  </button>
-
-  </div><!-- end pg-col-left -->
-
-  <!-- MID COL: Tidur+Mood (pair) + Habit + Air -->
-  <div class="pg-col-mid">
-
-  <div class="pg-pair">
-    <div class="pg-section">
-      <div class="pg-section-title">
-        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        Tidur & Energi
+    <div class="summary-saving-row">
+      <div class="summary-lbl">Disimpan bulan ini</div>
+      <div style="display:flex;align-items:baseline;gap:8px">
+        <div class="summary-num saving" id="sum-save">—</div>
+        <div class="summary-sub" id="sum-save-sub" style="margin-top:0"></div>
       </div>
-      <div class="sleep-energy-row" id="sleep-energy-row"></div>
     </div>
-    <div class="pg-section">
-      <div class="pg-section-title">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-        Mood <span id="mood-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
+    <div class="summary-bottom">
+      <span class="summary-sisa-lbl">Sisa bulan ini</span>
+      <div class="summary-sisa-right">
+        <span class="summary-sisa-num zero" id="sum-sisa">—</span>
+        <span class="sisa-badge" id="sisa-badge" style="display:none"></span>
       </div>
-      <div class="mood-month-grid" id="mood-bars"></div>
-      <div class="mood-legend" id="mood-legend"></div>
     </div>
+    <div class="nara-insight"><div class="nara-surface"><div class="nara-av">N</div><div class="nara-voice"><div class="nara-voice-lbl">Nara</div><div class="nara-voice-txt" id="nara-insight">Mulai catat pemasukan dan pengeluaranmu di bawah.</div></div></div></div>
   </div>
 
-  <div class="pg-section">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Konsistensi habit <span id="habit-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
-    </div>
-    <div id="habit-cons-wrap"></div>
-  </div>
-
-  <div class="pg-section">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6 9 4 13 4 16a8 8 0 0016 0c0-3-2-7-8-14z"/></svg>
-      Air minum <span id="water-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px"></span>
-    </div>
-    <div id="water-chart-wrap"></div>
-  </div>
-
-  </div><!-- end pg-col-mid -->
-
-  <!-- RIGHT COL: Finance + Nara -->
-  <div class="pg-col-right">
-
-  <!-- KEUANGAN -->
-  <div class="pg-section" id="finance-card">
-    <div class="pg-section-title">
-      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-      Keuangan <span id="finance-preview" style="font-weight:400;color:var(--text4);text-transform:none;letter-spacing:0;font-size:10px;margin-left:4px">bulan ini</span>
-    </div>
-    <div class="fin-legend">
-      <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--moss-l)"></div>Pemasukan</div>
-      <div class="fin-legend-item"><div class="fin-legend-dot" style="background:var(--clay-l)"></div>Pengeluaran</div>
-    </div>
-    <div class="fin-month-bars" id="fin-bars"></div>
-    <div id="fin-labels"></div>
-  </div>
-
-  <!-- GAMIFICATION BADGE -->
-  <div id="streak-gamif"></div>
-
-  <!-- BADGE + CHALLENGE fallback -->
-  <div id="finance-fallback" style="display:none;flex-direction:column;gap:12px">
-    <div class="pg-section">
-      <div class="pg-section-title">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-        Pencapaianmu
+  <!-- SAVING CARD -->
+  <div class="saving-card" id="saving-card">
+    <div class="saving-head">
+      <span class="saving-title">
+        <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        Tabungan & Saving
+      </span>
+      <div style="text-align:right">
+        <div class="saving-total-lbl">Total tersimpan</div>
+        <div class="saving-total-num" id="saving-total-num">—</div>
       </div>
-      <div id="badge-wrap"></div>
     </div>
-    <div class="pg-section">
-      <div class="pg-section-title">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Tantangan dari Nara
-      </div>
-      <div id="challenge-wrap"></div>
-    </div>
+    <div id="saving-list-wrap"></div>
+    <button class="saving-add-btn" onclick="openWalletAddSheet()">
+      <svg class="si" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Tambah kategori saving
+    </button>
   </div>
 
-  <!-- NARA INSIGHT — di bawah finance -->
-  <div class="pg-section pg-stretch">
-    <div class="pg-section-title">
-      <div style="width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-d));color:#fff;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">N</div>
-      Pola yang Nara lihat
+  <!-- DIAGRAM -->
+  <div class="diagram-card">
+    <div class="diagram-head">
+      <span class="diagram-title">Pengeluaran per kategori</span>
+      <span class="diagram-total" id="diagram-total"></span>
     </div>
-    <div class="nara-surface">
-      <div class="nara-av">N</div>
-      <div class="nara-voice">
-        <div class="nara-voice-lbl">Nara</div>
-        <div class="nara-voice-txt" id="nara-pattern-body">
-          <div class="nara-dots"><span></span><span></span><span></span></div>
-        </div>
+    <div id="diagram-bars"><div class="diagram-empty">Belum ada pengeluaran.</div></div>
+  </div>
+
+  <!-- TRANSAKSI LIST — left col on desktop -->
+  <div class="fin-left-tx expand-section" id="ex-tx">
+    <button class="expand-toggle" onclick="toggleExpand('tx')">
+      <div class="expand-toggle-left">
+        <svg class="si" style="color:var(--moss)" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="expand-title">Transaksi bulan ini</span>
+        <span class="expand-preview" id="tx-preview">0 transaksi</span>
+      </div>
+      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="expand-body"><div id="tx-wrap"><div class="list-empty">Belum ada transaksi.</div></div></div>
+  </div>
+
+  <!-- RIGHT COL: form + pengeluaran tetap -->
+  <div class="fin-right-col">
+  <div class="fin-right-header">
+    <span class="fin-right-title">Catat Sekarang</span>
+  </div>
+  <!-- INPUT EXPAND -->
+  <div class="expand-section" id="ex-input">
+    <button class="expand-toggle" onclick="toggleExpand('input')">
+      <div class="expand-toggle-left">
+        <svg class="si" style="color:var(--moss)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span class="expand-title">Catat transaksi</span>
+        <span class="expand-preview" style="color:var(--moss)">Tap untuk tambah</span>
+      </div>
+      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="expand-body">
+      <!-- Type -->
+      <div class="type-row">
+        <button class="type-btn sel-income" id="tbtn-income" onclick="selectType('income')">↑ Masuk</button>
+        <button class="type-btn" id="tbtn-daily" onclick="selectType('daily')">↓ Harian</button>
+        <button class="type-btn" id="tbtn-monthly" onclick="selectType('monthly')">Tetap/bln</button>
+        <button class="type-btn" id="tbtn-yearly" onclick="selectType('yearly')">Tetap/thn</button>
+      </div>
+      <!-- Amount -->
+      <div class="amount-row">
+        <span class="amount-prefix" id="amount-prefix">Rp</span>
+        <input class="amount-inp" id="amount-inp" type="number" min="0" placeholder="0" inputmode="decimal"/>
+      </div>
+      <!-- Name + Date -->
+      <div class="name-date-row">
+        <input class="name-inp" id="name-inp" type="text" placeholder="Keterangan..." maxlength="60" onkeydown="if(event.key==='Enter')submitTx()"/>
+        <input class="date-inp" id="date-inp" type="date"/>
+      </div>
+      <!-- Category -->
+      <div id="cat-section">
+        <div class="cat-row" id="cat-chips"></div>
+      </div>
+      <!-- Submit -->
+      <div class="submit-row">
+        <button class="submit-btn" onclick="submitTx()">Simpan</button>
       </div>
     </div>
   </div>
 
-  </div><!-- end pg-col-right -->
+  <!-- PENGELUARAN TETAP EXPAND -->
+  <div class="expand-section" id="ex-fixed">
+    <button class="expand-toggle" onclick="toggleExpand('fixed')">
+      <div class="expand-toggle-left">
+        <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="expand-title">Pengeluaran tetap</span>
+        <span class="expand-preview" id="fixed-preview">Bulanan & tahunan</span>
+      </div>
+      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="expand-body">
+      <div id="fixed-wrap"><div class="list-empty">Belum ada pengeluaran tetap.</div></div>
+      <div class="fixed-reminder" id="fixed-reminder"></div>
+    </div>
+  </div>
+
+  </div><!-- end fin-right-col -->
 
 </div>
 
-<!-- DIARY FULLSCREEN -->
-<div class="diary-fullscreen" id="diary-fs">
-  <div class="diary-fs-topbar">
-    <div class="diary-fs-title">Catatan <em>harian</em></div>
-    <button class="diary-fs-close" onclick="closeDiary()">✕</button>
+<!-- SAVING ADD SHEET -->
+<div class="bottom-sheet" id="sheet-saving-add">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-title">Tambah kategori saving</span>
+    <button class="sheet-close" onclick="closeWalletSheet()">✕</button>
   </div>
-  <div class="diary-fs-body" id="diary-fs-body">
-    <!-- built by JS -->
+  <div class="sheet-body">
+    <div class="sv-field">
+      <div class="sv-lbl">Nama tujuan</div>
+      <input class="sv-inp" id="sv-name" placeholder="mis. Tabungan Haji, Dana Darurat..." maxlength="40"/>
+    </div>
+    <div class="sv-field">
+      <div class="sv-lbl">Ikon</div>
+      <div class="sv-emoji-row" id="sv-emoji-row"></div>
+    </div>
+    <div class="sv-field">
+      <div class="sv-lbl">Saldo awal (opsional)</div>
+      <input class="sv-inp" id="sv-initial" type="number" min="0" placeholder="0" inputmode="decimal"/>
+    </div>
+    <div class="sv-field">
+      <div class="sv-lbl">Target (opsional — kosongkan jika belum ada target)</div>
+      <input class="sv-inp" id="sv-target" type="number" min="0" placeholder="mis. 50000000" inputmode="decimal"/>
+    </div>
+    <button class="sv-submit-btn" onclick="submitWalletAdd()">Tambah kategori</button>
+  </div>
+</div>
+
+<!-- SAVING SETOR/TARIK SHEET -->
+<div class="bottom-sheet" id="sheet-saving-tx">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-title" id="sv-tx-title">Setor / Tarik</span>
+    <button class="sheet-close" onclick="closeWalletSheet()">✕</button>
+  </div>
+  <div class="sheet-body">
+    <div class="sv-type-row">
+      <button class="sv-type-btn sel" id="sv-tx-setor" onclick="selectWalletTx('setor')">+ Setor</button>
+      <button class="sv-type-btn" id="sv-tx-tarik" onclick="selectWalletTx('tarik')">− Tarik</button>
+    </div>
+    <div class="sv-field">
+      <div class="sv-lbl">Nominal</div>
+      <input class="sv-inp" id="sv-tx-amt" type="number" min="0" placeholder="0" inputmode="decimal"/>
+    </div>
+    <div class="sv-field">
+      <div class="sv-lbl">Catatan (opsional)</div>
+      <input class="sv-inp" id="sv-tx-note" placeholder="mis. transfer bulan ini..." maxlength="60"/>
+    </div>
+    <button class="sv-submit-btn" onclick="submitWalletTx()">Simpan</button>
+  </div>
+</div>
+
+<!-- CURRENCY SHEET -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeCurrencySheet();closeWalletSheet()"></div>
+<div class="bottom-sheet" id="sheet-currency">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <span class="sheet-title">Pilih mata uang</span>
+    <button class="sheet-close" onclick="closeCurrencySheet()">✕</button>
+  </div>
+  <div class="sheet-body">
+    <input class="currency-search" id="currency-search" placeholder="Cari nama atau kode mata uang..." oninput="filterCur()"/>
+    <div class="currency-list" id="currency-list"></div>
   </div>
 </div>
 
@@ -1017,20 +1039,335 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <div class="toast" id="toast"></div>
 
 <script>
+// ══ CURRENCIES ══
+const CURRENCIES=[
+  {code:'IDR',name:'Indonesian Rupiah',sym:'Rp'},{code:'MYR',name:'Malaysian Ringgit',sym:'RM'},
+  {code:'SGD',name:'Singapore Dollar',sym:'S$'},{code:'THB',name:'Thai Baht',sym:'฿'},
+  {code:'PHP',name:'Philippine Peso',sym:'₱'},{code:'VND',name:'Vietnamese Dong',sym:'₫'},
+  {code:'MMK',name:'Myanmar Kyat',sym:'K'},{code:'BDT',name:'Bangladeshi Taka',sym:'৳'},
+  {code:'KHR',name:'Cambodian Riel',sym:'៛'},{code:'LAK',name:'Lao Kip',sym:'₭'},
+  {code:'BND',name:'Brunei Dollar',sym:'B$'},{code:'PKR',name:'Pakistani Rupee',sym:'₨'},
+  {code:'INR',name:'Indian Rupee',sym:'₹'},{code:'LKR',name:'Sri Lankan Rupee',sym:'Rs'},
+  {code:'NPR',name:'Nepalese Rupee',sym:'रू'},{code:'MVR',name:'Maldivian Rufiyaa',sym:'Rf'},
+  {code:'SAR',name:'Saudi Riyal',sym:'SR'},{code:'AED',name:'UAE Dirham',sym:'AED'},
+  {code:'QAR',name:'Qatari Riyal',sym:'QR'},{code:'KWD',name:'Kuwaiti Dinar',sym:'KD'},
+  {code:'BHD',name:'Bahraini Dinar',sym:'BD'},{code:'OMR',name:'Omani Rial',sym:'RO'},
+  {code:'JOD',name:'Jordanian Dinar',sym:'JD'},{code:'EGP',name:'Egyptian Pound',sym:'E£'},
+  {code:'TRY',name:'Turkish Lira',sym:'₺'},{code:'JPY',name:'Japanese Yen',sym:'¥'},
+  {code:'KRW',name:'South Korean Won',sym:'₩'},{code:'CNY',name:'Chinese Yuan',sym:'¥'},
+  {code:'HKD',name:'Hong Kong Dollar',sym:'HK$'},{code:'TWD',name:'Taiwan Dollar',sym:'NT$'},
+  {code:'MNT',name:'Mongolian Tögrög',sym:'₮'},{code:'USD',name:'US Dollar',sym:'$'},
+  {code:'EUR',name:'Euro',sym:'€'},{code:'GBP',name:'British Pound',sym:'£'},
+  {code:'AUD',name:'Australian Dollar',sym:'A$'},{code:'CAD',name:'Canadian Dollar',sym:'C$'},
+  {code:'CHF',name:'Swiss Franc',sym:'Fr'},{code:'NZD',name:'New Zealand Dollar',sym:'NZ$'},
+  {code:'SEK',name:'Swedish Krona',sym:'kr'},{code:'NOK',name:'Norwegian Krone',sym:'kr'},
+  {code:'DKK',name:'Danish Krone',sym:'kr'},{code:'PLN',name:'Polish Zloty',sym:'zł'},
+  {code:'BRL',name:'Brazilian Real',sym:'R$'},{code:'MXN',name:'Mexican Peso',sym:'$'},
+  {code:'ARS',name:'Argentine Peso',sym:'$'},{code:'ZAR',name:'South African Rand',sym:'R'},
+  {code:'NGN',name:'Nigerian Naira',sym:'₦'},{code:'KES',name:'Kenyan Shilling',sym:'KSh'},
+  {code:'GHS',name:'Ghanaian Cedi',sym:'₵'},{code:'ETB',name:'Ethiopian Birr',sym:'Br'},
+  {code:'KZT',name:'Kazakhstani Tenge',sym:'₸'},{code:'UZS',name:'Uzbekistani Som',sym:'сум'},
+  {code:'GEL',name:'Georgian Lari',sym:'₾'},{code:'AMD',name:'Armenian Dram',sym:'֏'},
+  {code:'AZN',name:'Azerbaijani Manat',sym:'₼'},
+];
+
+// ══ CATEGORIES ══
+const CATS=[
+  {id:'makan',label:'Makan',color:'#5A8A68'},
+  {id:'transport',label:'Transport',color:'#2E5F7A'},
+  {id:'belanja',label:'Belanja',color:'#9B6E2A'},
+  {id:'tagihan',label:'Tagihan',color:'#7A3E50'},
+  {id:'pendidikan',label:'Pendidikan',color:'#4C4272'},
+  {id:'produktivitas',label:'Produktivitas',color:'#3D6147'},
+  {id:'hiburan',label:'Hiburan',color:'#7D3E2C'},
+  {id:'kesehatan',label:'Kesehatan',color:'#2A6B5A'},
+  {id:'tabungan',label:'Tabungan & Investasi',color:'#5A6B2A'},
+  {id:'lainnya',label:'Lainnya',color:'#8A7F72'},
+];
+
 // ══ STATE ══
-const TODAY = new Date().toISOString().split('T')[0];
-let P = JSON.parse(localStorage.getItem('inarte_profile')||'{"name":"","age":null}');
-let calY = new Date().getFullYear(), calM = new Date().getMonth();
-let diaryCalY = new Date().getFullYear(), diaryCalM = new Date().getMonth();
-let diaryView = 'cal'; // 'cal' or 'entry'
-let selectedDiaryDate = null;
+let P=JSON.parse(localStorage.getItem('inarte_profile')||'{"name":""}');
+let curCode=localStorage.getItem('inarte_currency')||'IDR';
+let viewY=new Date().getFullYear(),viewM=new Date().getMonth();
+let selType='income',selCat='makan';
 
 // sv/ld: delegate ke InarteSync (didefinisikan di sync.js)
 function sv(k,v){ InarteSync.sv(k,v); }
 function ld(k){ return InarteSync.ld(k); }
+function getCur(){return CURRENCIES.find(c=>c.code===curCode)||CURRENCIES[0]}
+function getKey(y,m){return `inarte_fin_${y}_${m+1}`}
 
-const MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+// ══ WALLET / DOMPET ══
+const WALLET_KEY='inarte_wallets';
+const WALLET_EMOJIS=['💵','🏦','🕌','🏠','📚','🏥','✈️','💍','🚗','👶','💼','🎓','🌱','💎','🛡️','🎯'];
+
+let _walletEditId=null;
+let _walletTxType='setor';
+
+function loadWallets(){ return ld(WALLET_KEY)||[]; }
+function saveWallets(arr){ sv(WALLET_KEY, arr); }
+
+function getWallet(id){ return loadWallets().find(w=>w.id===id)||null; }
+
+// Hitung saldo wallet dari initialBalance + semua tx history
+function calcWalletBalance(w){
+  const hist = w.history||[];
+  const setor = hist.filter(h=>h.type==='setor').reduce((s,h)=>s+h.amt,0);
+  const tarik = hist.filter(h=>h.type==='tarik').reduce((s,h)=>s+h.amt,0);
+  return (w.initialBalance||0) + setor - tarik;
+}
+
+function getTotalSaving(){
+  return loadWallets().reduce((s,w)=> s + calcWalletBalance(w), 0);
+}
+
+// Hitung total setor ke wallet bulan ini (untuk cashflow)
+function getWalletSelorBulanIni(y, m){
+  const wallets = loadWallets();
+  const targetMonth = `${y}-${String(m+1).padStart(2,'0')}`;
+  return wallets.reduce((total, w)=>{
+    const hist = w.history||[];
+    const setor = hist
+      .filter(h=>h.type==='setor' && h.at && h.at.startsWith(targetMonth))
+      .reduce((s,h)=>s+h.amt, 0);
+    const tarik = hist
+      .filter(h=>h.type==='tarik' && h.at && h.at.startsWith(targetMonth))
+      .reduce((s,h)=>s+h.amt, 0);
+    return total + (setor - tarik);
+  }, 0);
+}
+
+// ══ RENDER WALLET LIST ══
+function renderWalletList(){
+  const wallets = loadWallets();
+  const wrap = document.getElementById('saving-list-wrap');
+  const totalEl = document.getElementById('saving-total-num');
+  if(!wrap) return;
+
+  const total = wallets.reduce((s,w)=>s+calcWalletBalance(w), 0);
+  if(totalEl) totalEl.textContent = total>0 ? fmt(total) : '—';
+
+  if(!wallets.length){
+    wrap.innerHTML=`<div class="saving-empty">Belum ada dompet saving. Tambahkan di bawah (◕‿◕✿)</div>`;
+    return;
+  }
+
+  const list = document.createElement('div'); list.className='saving-list';
+  wallets.forEach(w=>{
+    const bal = calcWalletBalance(w);
+    const hasTarget = w.target>0;
+    const pct = hasTarget ? Math.min(Math.round(bal/w.target*100),100) : 0;
+
+    // ETA
+    let etaTxt='';
+    if(hasTarget && bal<w.target){
+      const remain = w.target - bal;
+      const hist = w.history||[];
+      const now = new Date();
+      const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+      const avgSetor = hist.length>=2
+        ? hist.filter(h=>h.type==='setor').reduce((s,h)=>s+h.amt,0) / Math.max(1, new Set(hist.filter(h=>h.type==='setor').map(h=>h.at?.slice(0,7))).size)
+        : 0;
+      if(avgSetor>0){
+        const months = Math.ceil(remain/avgSetor);
+        etaTxt = months<=1 ? 'hampir tercapai!' : `~${months} bulan lagi`;
+      }
+    }
+
+    const item = document.createElement('div'); item.className='saving-item';
+    item.innerHTML=`
+      <div class="saving-item-top">
+        <span class="saving-emoji">${w.emoji||'💰'}</span>
+        <div class="saving-item-info">
+          <div class="saving-item-name">${w.name}</div>
+          <div class="saving-item-bal">${fmt(bal)}</div>
+        </div>
+        ${hasTarget?`<div class="saving-item-pct">${pct}%</div>`:''}
+      </div>
+      ${hasTarget?`
+        <div class="saving-progress-wrap">
+          <div class="saving-progress-bar" style="width:${pct}%"></div>
+        </div>
+        <div class="saving-target-lbl">dari target ${fmt(w.target)}</div>
+        ${etaTxt?`<div class="saving-eta">${etaTxt}</div>`:''}
+      `:''}
+      <div class="saving-item-btns">
+        <button class="saving-btn setor" onclick="openWalletTxSheet('${w.id}','setor')">+ Setor</button>
+        <button class="saving-btn tarik" onclick="openWalletTxSheet('${w.id}','tarik')">− Tarik</button>
+        <button class="saving-btn del" onclick="deleteWallet('${w.id}')">Hapus</button>
+      </div>`;
+    list.appendChild(item);
+  });
+  wrap.innerHTML=''; wrap.appendChild(list);
+}
+
+// ══ WALLET SHEET — ADD ══
+function openWalletAddSheet(){
+  document.getElementById('sv-name').value='';
+  document.getElementById('sv-initial').value='';
+  document.getElementById('sv-target').value='';
+  // build emoji picker
+  const row = document.getElementById('sv-emoji-row');
+  row.innerHTML='';
+  WALLET_EMOJIS.forEach(e=>{
+    const b=document.createElement('button');b.className='sv-emoji-btn';b.textContent=e;
+    b.onclick=()=>{row.querySelectorAll('.sv-emoji-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
+    row.appendChild(b);
+  });
+  row.querySelector('.sv-emoji-btn')?.classList.add('sel');
+  openSheet('saving-add');
+}
+
+function submitWalletAdd(){
+  const name=document.getElementById('sv-name').value.trim();
+  const initial=parseFloat(document.getElementById('sv-initial').value)||0;
+  const target=parseFloat(document.getElementById('sv-target').value)||0;
+  const emoji=document.querySelector('#sv-emoji-row .sv-emoji-btn.sel')?.textContent||'💰';
+  if(!name){showToast('Nama dompet tidak boleh kosong');return;}
+  const wallets=loadWallets();
+  wallets.push({
+    id:'w'+Date.now(),
+    name, emoji,
+    initialBalance: initial,
+    target: target||0,
+    history:[], // {type:'setor'|'tarik', amt, note, at}
+    createdAt: new Date().toISOString()
+  });
+  saveWallets(wallets);
+  renderWalletList();
+  renderSummary(loadData(viewY,viewM), viewY, viewM);
+  closeSheet('saving-add');
+  showToast('Dompet saving ditambahkan (◕‿◕✿)');
+}
+
+// ══ WALLET SHEET — SETOR / TARIK ══
+function openWalletTxSheet(id, type){
+  _walletEditId=id;
+  _walletTxType=type;
+  const w=getWallet(id);
+  if(!w) return;
+  document.getElementById('sv-tx-title').textContent=`${type==='setor'?'Setor ke':'Tarik dari'} ${w.name}`;
+  document.getElementById('sv-tx-setor').classList.toggle('sel',type==='setor');
+  document.getElementById('sv-tx-tarik').classList.toggle('sel',type==='tarik');
+  document.getElementById('sv-tx-amt').value='';
+  document.getElementById('sv-tx-note').value='';
+  openSheet('saving-tx');
+}
+
+function selectWalletTx(type){
+  _walletTxType=type;
+  document.getElementById('sv-tx-setor').classList.toggle('sel',type==='setor');
+  document.getElementById('sv-tx-tarik').classList.toggle('sel',type==='tarik');
+  const w=getWallet(_walletEditId);
+  if(w) document.getElementById('sv-tx-title').textContent=`${type==='setor'?'Setor ke':'Tarik dari'} ${w.name}`;
+}
+
+function submitWalletTx(){
+  const amt=parseFloat(document.getElementById('sv-tx-amt').value)||0;
+  const note=document.getElementById('sv-tx-note').value.trim();
+  if(!amt||amt<=0){showToast('Masukkan jumlah yang valid');return;}
+  const wallets=loadWallets();
+  const idx=wallets.findIndex(w=>w.id===_walletEditId);
+  if(idx===-1) return;
+  // Cek saldo kalau tarik
+  const curBal=calcWalletBalance(wallets[idx]);
+  if(_walletTxType==='tarik'&&amt>curBal){
+    showToast('Saldo tidak cukup untuk ditarik');return;
+  }
+  wallets[idx].history=wallets[idx].history||[];
+  wallets[idx].history.push({
+    type:_walletTxType,
+    amt,
+    note: note||(_walletTxType==='setor'?'Setor':'Tarik'),
+    at: new Date().toISOString().slice(0,10) // YYYY-MM-DD — timezone safe
+  });
+  saveWallets(wallets);
+  renderWalletList();
+  renderSummary(loadData(viewY,viewM), viewY, viewM);
+  closeSheet('saving-tx');
+  showToast(_walletTxType==='setor'?`Rp${fmt(amt)} disetor (◕‿◕✿)`:`Rp${fmt(amt)} ditarik`);
+}
+
+function deleteWallet(id){
+  if(!confirm('Hapus dompet saving ini? Data riwayat akan hilang.')) return;
+  const wallets=loadWallets().filter(w=>w.id!==id);
+  saveWallets(wallets);
+  renderWalletList();
+  renderSummary(loadData(viewY,viewM), viewY, viewM);
+  showToast('Dompet dihapus');
+}
+
+function closeWalletSheet(){
+  closeSheet('saving-add');
+  closeSheet('saving-tx');
+}
+
+// Alias untuk backward compat dengan onclick HTML
+function openSavingAddSheet_wrap(){ openWalletAddSheet(); }
+
+function loadData(y,m){return ld(getKey(y,m))||{tx:[],fixed:[]}}
+function saveData(y,m,d){
+  sv(getKey(y,m),d);
+  if(typeof InarteSync!=='undefined'&&InarteSync.ready)InarteSync.pushFinance(y,m);
+}
+// ══ OFFLINE FALLBACK ══
+(function initOfflineDetection(){
+  function showOffline(){
+    const b=document.getElementById("offline-banner");
+    const ob=document.getElementById("online-banner");
+    if(b)b.classList.add("show");
+    if(ob)ob.classList.remove("show");
+  }
+  function showOnline(){
+    const b=document.getElementById("offline-banner");
+    const ob=document.getElementById("online-banner");
+    if(b)b.classList.remove("show");
+    if(ob){
+      ob.classList.add("show");
+      setTimeout(()=>ob.classList.remove("show"),3000);
+    }
+    if(typeof InarteSync!=="undefined"&&InarteSync.ready){
+      const today=new Date().toISOString().split("T")[0];
+      try{InarteSync.pushDaily&&InarteSync.pushDaily(today);}catch(e){}
+      try{InarteSync.pushWellness&&InarteSync.pushWellness(today);}catch(e){}
+    }
+  }
+  // Tunggu DOMContentLoaded dulu baru cek — hindari false positive saat load awal
+  window.addEventListener("DOMContentLoaded",()=>{
+    // Delay 1.5 detik sebelum cek — browser kadang butuh waktu confirm status online
+    setTimeout(()=>{
+      if(!navigator.onLine) showOffline();
+    }, 1500);
+  });
+  window.addEventListener("online", showOnline);
+  window.addEventListener("offline", showOffline);
+  window.addEventListener("inarte-sync-failed", showOffline);
+})();
+
+// ══ UNIFIED STREAK HELPERS ══
+function _isDayActive(dateStr){
+  const logs=JSON.parse(localStorage.getItem('inarte_logs')||'{}');
+  if(logs[dateStr]?.logged) return true;
+  const day=JSON.parse(localStorage.getItem('inarte_day_'+dateStr)||'null');
+  if(day&&(day.water>0||day.mood||(day.meals&&day.meals.length>0)||(day.habits&&day.habits.length>0)||(day.moves&&day.moves.length>0))) return true;
+  const w=JSON.parse(localStorage.getItem('inarte_wellness_'+dateStr)||'null');
+  if(w&&(w.sleepHrs||w.emotions?.length||w.journalText)) return true;
+  return false;
+}
+function markDayActive(date,source,extraData){
+  const logs=JSON.parse(localStorage.getItem('inarte_logs')||'{}');
+  const existing=logs[date]||{};
+  logs[date]=Object.assign({},existing,{logged:true,lastSource:source,updatedAt:Date.now()},extraData||{});
+  localStorage.setItem('inarte_logs',JSON.stringify(logs));
+}
+
+function fmt(n){
+  const c=getCur();const abs=Math.round(Math.abs(n));
+  const str=curCode==='IDR'||curCode==='VND'||curCode==='KRW'||curCode==='JPY'||curCode==='HUF'||curCode==='MMK'
+    ?abs.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')
+    :abs.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  return `${c.sym}${str}`;
+}
 
 // ══ BOOT ══
 function toggleSidebar(){
@@ -1042,66 +1379,7 @@ function toggleSidebar(){
     document.body.classList.add('sidebar-collapsed');
 })();
 
-// ══ RANGE STATE ══
-let currentRange = 30;
-
-function setRange(days){
-  currentRange = days;
-  document.querySelectorAll('.range-btn').forEach(b=>b.classList.remove('active'));
-  const id = 'range-'+(days===0?'0':days);
-  const btn=document.getElementById(id);
-  if(btn)btn.classList.add('active');
-  buildStreakCard();
-  buildMoodChart();
-  buildSleepEnergy();
-  buildWaterChart();
-  buildHabitConsistency();
-  buildNaraPattern();
-  buildFinanceChart();
-}
-
-function getRangeDays(){
-  if(currentRange===0){
-    const logs=ld('inarte_logs')||{};
-    const keys=Object.keys(logs).sort();
-    if(!keys.length) return 90;
-    const first=new Date(keys[0]);
-    const diff=Math.ceil((new Date()-first)/(1000*60*60*24));
-    return Math.max(diff,1);
-  }
-  return currentRange;
-}
-
-function getRangeDates(){
-  const days=getRangeDays();
-  const dates=[];
-  const d=new Date();
-  for(let i=0;i<days;i++){
-    dates.push(d.toISOString().split('T')[0]);
-    d.setDate(d.getDate()-1);
-  }
-  return dates;
-}
-
-// Render semua chart & card progress
-function _buildAllCharts() {
-  buildTopbar();
-  buildStreakCard();
-  buildCalendar();
-  buildHabitConsistency();
-  buildMoodChart();
-  buildSleepEnergy();
-  buildWaterChart();
-  buildFinanceChart();
-  buildWeeklyReviewCard();
-}
-
-window.addEventListener('DOMContentLoaded', async () => {
-  // 1. Render dari localStorage dulu — tampil secepatnya
-  _buildAllCharts();
-  buildNaraPattern(); // async, jalan paralel
-
-  // 2. Init Supabase sync di background
+window.addEventListener('DOMContentLoaded', async ()=>{
   if(typeof InarteSync!=='undefined'){
     try{
       const _sbTmp=supabase.createClient(
@@ -1110,739 +1388,390 @@ window.addEventListener('DOMContentLoaded', async () => {
       );
       const {data:{session}}=await _sbTmp.auth.getSession();
       if(session?.user) await InarteSync.init(_sbTmp, session.user.id);
-      // InarteSync.init akan trigger 'inarte-sync-ready' setelah pull selesai
-      // → chart akan di-render ulang dengan data terbaru dari Supabase
     }catch(e){ console.warn('Sync init failed:', e); }
   }
+  buildTopbar();buildMonthNav();buildCatChips();updateCurrencyUI();
+  document.getElementById('date-inp').value=new Date().toISOString().split('T')[0];
+  // Default type = income selected
+  selectType('income');
+  renderAll();
+  filterCur();
 });
 
 function buildTopbar(){
   const days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const d=new Date();
-  document.getElementById('tb-date').textContent=`${days[d.getDay()]}, ${d.getDate()} ${MONTHS_SHORT[d.getMonth()]}`;
+  document.getElementById('tb-date').textContent=`${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
   document.getElementById('av-btn').textContent=(P.name||'P').charAt(0).toUpperCase();
 }
-
-// ══ STREAK ══
-// ══ WEEKLY REVIEW CARD ══
-function getWeekKey(){
-  const d=new Date();
-  const jan1=new Date(d.getFullYear(),0,1);
-  const week=Math.ceil(((d-jan1)/86400000+jan1.getDay()+1)/7);
-  return `${d.getFullYear()}-W${String(week).padStart(2,'0')}`;
+function buildMonthNav(){
+  const months=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  document.getElementById('month-lbl').textContent=`${months[viewM]} ${viewY}`;
+}
+function changeMonth(d){
+  viewM+=d;
+  if(viewM>11){viewM=0;viewY++;}
+  if(viewM<0){viewM=11;viewY--;}
+  buildMonthNav();renderAll();
+}
+function updateCurrencyUI(){
+  document.getElementById('cur-lbl').textContent=curCode;
+  document.getElementById('amount-prefix').textContent=getCur().sym;
 }
 
-async function buildWeeklyReviewCard(){
-  const card=document.getElementById('weekly-review-card');
-  const body=document.getElementById('weekly-review-body');
-  const rangeEl=document.getElementById('weekly-review-range');
-  if(!card||!body) return;
+// ══ TYPE SELECT ══
+function selectType(type){
+  selType=type;
+  ['income','daily','monthly','yearly'].forEach(t=>{
+    const btn=document.getElementById('tbtn-'+t);
+    btn.className='type-btn'+(t===type?' sel-'+t:'');
+  });
+  // Hide category for income
+  document.getElementById('cat-section').style.display=type==='income'?'none':'block';
+}
 
-  // Kumpulkan data 7 hari terakhir
-  const logs=ld('inarte_logs')||{};
-  const dates=[];
-  const d=new Date();
-  for(let i=6;i>=0;i--){
-    const dd=new Date(d);dd.setDate(d.getDate()-i);
-    dates.push(dd.toISOString().split('T')[0]);
+// ══ CATEGORY CHIPS ══
+function buildCatChips(){
+  const wrap=document.getElementById('cat-chips');wrap.innerHTML='';
+  CATS.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='cat-btn'+(c.id===selCat?' sel':'');
+    btn.textContent=c.label;
+    if(c.id===selCat){btn.style.borderColor=c.color;btn.style.color=c.color;btn.style.background=c.color+'18';}
+    btn.onclick=()=>{selCat=c.id;buildCatChips()};
+    wrap.appendChild(btn);
+  });
+}
+
+// ══ SUBMIT ══
+function submitTx(){
+  const amt=parseFloat(document.getElementById('amount-inp').value);
+  const name=document.getElementById('name-inp').value.trim();
+  const date=document.getElementById('date-inp').value;
+  if(!amt||amt<=0){showToast('Isi nominal dulu ya');return}
+  if(!name){showToast('Isi keterangan dulu ya');return}
+  if(!date){showToast('Pilih tanggal dulu ya');return}
+
+  const txDate=new Date(date);
+  const ty=txDate.getFullYear(),tm=txDate.getMonth();
+  const data=loadData(ty,tm);
+
+  if(selType==='monthly'||selType==='yearly'){
+    if(!data.fixed)data.fixed=[];
+    data.fixed.push({id:'f_'+Date.now(),name,amount:amt,type:selType,cat:selCat,addedAt:Date.now()});
+    showToast('Pengeluaran tetap ditambahkan!');
+  } else {
+    if(!data.tx)data.tx=[];
+    data.tx.push({id:'t_'+Date.now(),name,amount:amt,type:selType,cat:selType==='income'?'income':selCat,date,addedAt:Date.now()});
+    showToast(selType==='income'?'Pemasukan tercatat! (◕‿◕✿)':'Pengeluaran tercatat!');
+  }
+  saveData(ty,tm,data);
+  // Mark tanggal transaksi sebagai hari aktif di streak tracker
+  markDayActive(date,'finance',{hasTx:true});
+
+  // Reset
+  document.getElementById('amount-inp').value='';
+  document.getElementById('name-inp').value='';
+  // Close input section after save
+  const inputExpand = document.getElementById('ex-input');
+  if(inputExpand) inputExpand.classList.remove('open');
+
+  if(ty===viewY&&tm===viewM)renderAll();
+}
+
+// ══ RENDER ALL ══
+function renderAll(){
+  const data=loadData(viewY,viewM);
+  renderSummary(data);
+  renderWalletList();
+  renderDiagram(data);
+  renderTxList(data);
+  renderFixedList(data);
+  renderNaraInsight(data);
+}
+
+// ══ SUMMARY ══
+function renderSummary(data, y, m){
+  // default ke bulan yang sedang dilihat
+  y = y !== undefined ? y : viewY;
+  m = m !== undefined ? m : viewM;
+  const tx=data.tx||[];
+  const fixed=data.fixed||[];
+
+  const income=tx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const daily=tx.filter(t=>t.type==='daily').reduce((s,t)=>s+t.amount,0);
+  const monthlyFixed=fixed.filter(f=>f.type==='monthly').reduce((s,f)=>s+f.amount,0);
+  const yearlyFixed=fixed.filter(f=>f.type==='yearly').reduce((s,f)=>s+f.amount,0);
+  const totalOut=daily+monthlyFixed+yearlyFixed;
+  const totalSaving=getTotalSaving();
+
+  // Hitung total net setor ke wallet bulan ini (timezone-safe: pakai YYYY-MM-DD langsung)
+  const savingsBulanIni = getWalletSelorBulanIni(y, m);
+
+  // Sisa = pemasukan - pengeluaran - saving yang dialokasikan bulan ini
+  const sisa=income-totalOut-savingsBulanIni;
+
+  const inEl=document.getElementById('sum-in');
+  const outEl=document.getElementById('sum-out');
+  const saveEl=document.getElementById('sum-save');
+  inEl.textContent=income>0?fmt(income):'—';
+  inEl.className='summary-num income'+(income===0?' zero':'');
+  document.getElementById('sum-in-sub').textContent=`${tx.filter(t=>t.type==='income').length} pemasukan`;
+  outEl.textContent=totalOut>0?fmt(totalOut):'—';
+  outEl.className='summary-num expense'+(totalOut===0?' zero':'');
+  document.getElementById('sum-out-sub').textContent=`${tx.filter(t=>t.type==='daily').length} harian + ${fixed.length} tetap`;
+  saveEl.textContent=totalSaving>0?fmt(totalSaving):'—';
+  saveEl.className='summary-num saving'+(totalSaving===0?' zero':'');
+  const wallets=loadWallets();
+  const saveSubEl=document.getElementById('sum-save-sub');
+  if(saveSubEl){
+    if(savingsBulanIni>0) saveSubEl.textContent=`+${fmt(savingsBulanIni)} bulan ini`;
+    else saveSubEl.textContent=wallets.length>0?wallets.length+' dompet':'belum ada';
   }
 
-  // Format range label: "20–26 Apr"
-  const fmt2=(ds)=>{const d=new Date(ds);return `${d.getDate()} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][d.getMonth()]}`;};
-  rangeEl.textContent=`${fmt2(dates[0])} – ${fmt2(dates[6])}`;
+  const sisaEl=document.getElementById('sum-sisa');
+  const badge=document.getElementById('sisa-badge');
+  if(income===0&&totalOut===0&&savingsBulanIni===0){
+    sisaEl.textContent='—';sisaEl.className='summary-sisa-num zero';badge.style.display='none';
+  } else if(sisa>0){
+    sisaEl.textContent=fmt(sisa);sisaEl.className='summary-sisa-num surplus';
+    badge.style.display='inline-block';badge.className='sisa-badge surplus';badge.textContent='Surplus';
+  } else if(sisa<0){
+    sisaEl.textContent='−'+fmt(Math.abs(sisa));sisaEl.className='summary-sisa-num deficit';
+    badge.style.display='inline-block';badge.className='sisa-badge deficit';badge.textContent='Defisit';
+  } else {
+    sisaEl.textContent=fmt(0);sisaEl.className='summary-sisa-num zero';badge.style.display='none';
+  }
+}
 
-  let activeDays=0,totalWater=0,waterDays=0,totalSleep=0,sleepDays=0;
-  const moods={};
-  const template=JSON.parse(localStorage.getItem('inarte_habits_template')||'[]');
-  const habitCounts={};
-  const waterTarget=typeof getWaterTarget==='function'?getWaterTarget():8;
+// ══ DIAGRAM ══
+function renderDiagram(data){
+  const tx=(data.tx||[]).filter(t=>t.type==='daily');
+  const fixed=data.fixed||[];
+  const barsEl=document.getElementById('diagram-bars');
+  const totalEl=document.getElementById('diagram-total');
 
-  dates.forEach(k=>{
-    if(_isDayActive(k)) activeDays++;
-    const day=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
-    const w=JSON.parse(localStorage.getItem('inarte_wellness_'+k)||'null');
-    const log=logs[k]||{};
-    const water=log.water??day?.water??0;
-    if(water>0){totalWater+=water;waterDays++;}
-    const sleep=w?.sleepHrs||0;
-    if(sleep>0){totalSleep+=sleep;sleepDays++;}
-    const mood=log.mood||day?.mood;
-    if(mood) moods[mood]=(moods[mood]||0)+1;
-    const habitLog=ld(`inarte_habitlog_${k}`)||{};
-    template.forEach(h=>{if(habitLog[h.id])habitCounts[h.id]=(habitCounts[h.id]||0)+1;});
+  const totals={};
+  tx.forEach(t=>{totals[t.cat]=(totals[t.cat]||0)+t.amount});
+  fixed.forEach(f=>{totals[f.cat]=(totals[f.cat]||0)+f.amount});
+
+  const entries=Object.entries(totals).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  const grandTotal=entries.reduce((s,[,v])=>s+v,0);
+
+  if(!entries.length){barsEl.innerHTML='<div class="diagram-empty">Belum ada pengeluaran.</div>';totalEl.textContent='';return}
+
+  totalEl.textContent=fmt(grandTotal)+' total';
+  barsEl.innerHTML='';
+  const max=entries[0][1];
+  entries.forEach(([catId,amt])=>{
+    const cat=CATS.find(c=>c.id===catId)||{label:catId,color:'#8A7F72'};
+    const pct=Math.round(amt/max*100);
+    const pctOfTotal=Math.round(amt/grandTotal*100);
+    const row=document.createElement('div');row.className='bar-row';
+    row.innerHTML=`
+      <span class="bar-cat">${cat.label}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${cat.color}88;"></div></div>
+      <span class="bar-amt">${fmt(amt)}</span>
+      <span class="bar-pct">${pctOfTotal}%</span>`;
+    barsEl.appendChild(row);
   });
+}
 
-  const avgWater=waterDays?(totalWater/waterDays).toFixed(1):'—';
-  const avgSleep=sleepDays?(totalSleep/sleepDays).toFixed(1):'—';
-  const topMood=Object.entries(moods).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
-  const moodMap={senang:'😊',netral:'😐',lelah:'😮‍💨',berat:'😔',semangat:'🔥'};
+// ══ TX LIST ══
+function renderTxList(data){
+  const tx=(data.tx||[]);
+  const wrap=document.getElementById('tx-wrap');
+  document.getElementById('tx-preview').textContent=`${tx.length} transaksi`;
 
-  // Render stats
-  body.innerHTML=`
-    <div class="weekly-stat-row">
-      <div class="weekly-stat">
-        <div class="weekly-stat-num" style="color:var(--moss)">${activeDays}<span style="font-size:.9rem">/7</span></div>
-        <div class="weekly-stat-lbl">Hari aktif</div>
-      </div>
-      <div class="weekly-stat">
-        <div class="weekly-stat-num" style="color:var(--sky)">${avgWater}</div>
-        <div class="weekly-stat-lbl">Avg air</div>
-      </div>
-      <div class="weekly-stat">
-        <div class="weekly-stat-num" style="color:var(--dusk)">${avgSleep}</div>
-        <div class="weekly-stat-lbl">Avg tidur</div>
-      </div>
-    </div>
-    ${topMood?`<div style="font-size:12px;color:var(--text3);margin-bottom:.75rem">Mood dominan: ${moodMap[topMood]||''} ${topMood}</div>`:''}
-    ${template.length?`
-    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text4);margin-bottom:6px">Habit</div>
-    ${template.slice(0,4).map(h=>{
-      const cnt=habitCounts[h.id]||0;
-      const pct=Math.round(cnt/7*100);
-      return `<div class="weekly-habit-row">
-        <span class="weekly-habit-name">${h.text}</span>
-        <div class="weekly-habit-track"><div class="weekly-habit-fill" style="width:${pct}%"></div></div>
-        <span class="weekly-habit-cnt">${cnt}/7</span>
-      </div>`;
-    }).join('')}`:''}
-    <div class="weekly-nara" id="weekly-nara-txt">
-      <div class="nara-dots"><span></span><span></span><span></span></div>
-    </div>`;
+  if(!tx.length){wrap.innerHTML='<div class="list-empty">Belum ada transaksi bulan ini.</div>';return}
 
-  card.style.display='block';
+  const groups={};
+  tx.forEach(t=>{(groups[t.date]=groups[t.date]||[]).push(t)});
+  const dates=Object.keys(groups).sort().reverse();
 
-  // Generate Nara insight untuk weekly review
-  const P=JSON.parse(localStorage.getItem('inarte_profile')||'{}');
-
-  // Mood breakdown detail
-  const moodVal={senang:2,semangat:2,netral:0,lelah:-1,berat:-2,cemas:-2};
-  const moodBreakdown=Object.entries(moods).map(([m,c])=>`${m}(${c}x)`).join(', ')||'belum dicatat';
-  const weekScore=dates.reduce((s,k)=>{const d=ld('inarte_day_'+k);const m=logs[k]?.mood||d?.mood||'netral';return s+(moodVal[m]||0);},0);
-  const weekMoodSentiment=weekScore>=4?'positif':weekScore>=-2?'netral-campuran':'berat';
-
-  const habitSummary=template.map(h=>{
-    const cnt=habitCounts[h.id]||0;
-    return `"${h.text}" ${cnt}/7`;
-  }).join(', ')||'tidak ada';
-
-  const now2=new Date();
-  const finKey2=`inarte_fin_${now2.getFullYear()}_${now2.getMonth()+1}`;
-  const fin2=ld(finKey2)||{tx:[]};
-  const weekExpense=(fin2.tx||[])
-    .filter(t=>t.type!=='income'&&dates.includes(t.date))
-    .reduce((s,t)=>s+t.amount,0);
-
-  const weekCtx=[
-    `Periode: ${rangeEl.textContent}`,
-    `Hari aktif: ${activeDays}/7`,
-    `Minum air: rata-rata ${avgWater}/${waterTarget} gelas/hari`,
-    avgSleep!=='—'?`Tidur: rata-rata ${avgSleep} jam/malam`:'',
-    `Mood: ${moodBreakdown} (sentimen keseluruhan: ${weekMoodSentiment})`,
-    template.length?`Habit minggu ini: ${habitSummary}`:'',
-    weekExpense?`Pengeluaran minggu ini: Rp${weekExpense.toLocaleString('id-ID')}`:'',
-    P.goals?.length?`Goals user: ${P.goals.join(', ')}`:'',
-  ].filter(Boolean).join('\n');
-
-  const sys=`Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${P.name||'teman'}${P.age?', usia '+P.age+' tahun':''}.${P.goals?.length?' Goals: '+P.goals.join(', ')+'.':''}
-Tulis ringkasan minggu yang personal — 2-3 kalimat.
-- Sebutkan 1 hal positif spesifik dari data (boleh sebut angkanya)
-- Sebutkan 1 hal yang bisa ditingkatkan minggu depan, dengan nada ringan
-- Kalau sentimen minggu "berat", validasi dulu sebelum kasih semangat
-Bahasa Indonesia santai. Satu kaomoji di akhir.`;
-
-  try{
-    const r=await fetch('/api/chat',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'gemini-2.5-flash',max_tokens:200,system:sys,
-        messages:[{role:'user',content:weekCtx}]}),
-      signal:AbortSignal.timeout(12000)
+  wrap.innerHTML='';
+  const MONTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  dates.forEach(ds=>{
+    const d=new Date(ds);
+    const grp=document.createElement('div');grp.className='tx-date-group';
+    grp.innerHTML=`<div class="tx-date-lbl">${d.getDate()} ${MONTHS[d.getMonth()]}</div>`;
+    const ul=document.createElement('ul');ul.className='tx-list';
+    groups[ds].forEach(t=>{
+      const isIn=t.type==='income';
+      const cat=CATS.find(c=>c.id===t.cat);
+      const li=document.createElement('li');li.className='tx-item';
+      li.innerHTML=`
+        <div class="tx-dot" style="background:${isIn?'var(--moss)':(cat?.color||'var(--text4)')}"></div>
+        <div class="tx-info">
+          <div class="tx-name">${t.name}</div>
+          <div class="tx-cat-lbl">${isIn?'Pemasukan':(cat?.label||t.cat)}</div>
+        </div>
+        <span class="tx-amt ${isIn?'in':'out'}">${isIn?'+':'−'}${fmt(t.amount)}</span>
+        <button class="tx-del" onclick="deleteTx('${t.id}')">✕</button>`;
+      ul.appendChild(li);
     });
-    if(r.ok){
-      const data=await r.json();
-      const txt=data.content?.[0]?.text?.trim()||'';
-      if(txt){document.getElementById('weekly-nara-txt').textContent=txt;return;}
-    }
-  }catch(e){
-    console.warn('[INARTE] weekly review AI error:', e);
-  }
-
-  // Fallback
-  const naraEl=document.getElementById('weekly-nara-txt');
-  if(activeDays>=5) naraEl.textContent=`${activeDays} hari aktif minggu ini${P.name?' '+P.name:''}! Konsistensi kayak gini yang bikin perubahan nyata. Semangat terus minggu depan (◕‿◕✿)`;
-  else if(activeDays>0) naraEl.textContent=`${activeDays} hari tercatat minggu ini${P.name?' '+P.name:''}. Setiap langkah kecil itu berarti — minggu depan bisa lebih (◕‿◕✿)`;
-  else naraEl.textContent=`Belum banyak tercatat minggu ini${P.name?' '+P.name:''} — tidak apa-apa, minggu depan bisa mulai lagi dari hari pertama (◕‿◕✿)`;
-}
-
-
-function _isDayActive(dateStr){
-  const logs=JSON.parse(localStorage.getItem('inarte_logs')||'{}');
-  if(logs[dateStr]?.logged) return true;
-  const day=JSON.parse(localStorage.getItem('inarte_day_'+dateStr)||'null');
-  if(day&&(day.water>0||day.mood||(day.meals&&day.meals.length>0)||(day.habits&&day.habits.length>0)||(day.moves&&day.moves.length>0))) return true;
-  const w=JSON.parse(localStorage.getItem('inarte_wellness_'+dateStr)||'null');
-  if(w&&(w.sleepHrs||w.emotions?.length||w.journalText)) return true;
-  return false;
-}
-
-function buildStreakCard(){
-  const logs = ld('inarte_logs')||{};
-  // Total hari aktif = gabungan dari semua sumber (logs + inarte_day_* + inarte_wellness_*)
-  // Kumpulkan semua key yang pernah ada di localStorage
-  const allActiveKeys = new Set();
-  Object.keys(logs).forEach(k=>{ if(logs[k].logged) allActiveKeys.add(k); });
-  // Scan inarte_day_* keys
-  for(let i=0;i<localStorage.length;i++){
-    const key=localStorage.key(i);
-    if(key&&key.startsWith('inarte_day_')){
-      const dateStr=key.replace('inarte_day_','');
-      if(_isDayActive(dateStr)) allActiveKeys.add(dateStr);
-    }
-    if(key&&key.startsWith('inarte_wellness_')){
-      const dateStr=key.replace('inarte_wellness_','');
-      if(_isDayActive(dateStr)) allActiveKeys.add(dateStr);
-    }
-  }
-
-  // Streak — pakai _isDayActive (unified)
-  let streak=0; const dd=new Date();
-  while(streak<365){
-    const k=dd.toISOString().split('T')[0];
-    if(_isDayActive(k)){streak++;dd.setDate(dd.getDate()-1);}else break;
-  }
-  const _sn=document.getElementById('streak-num'); if(_sn) _sn.textContent=streak;
-  const _td=document.getElementById('total-days'); if(_td) _td.textContent=allActiveKeys.size;
-
-  // Avg water — dari range yang dipilih
-  const dates=getRangeDates();
-  const last30=[]; 
-  dates.forEach(k=>{
-    const waterFromLog=logs[k]?.water;
-    const dayData=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
-    const water=waterFromLog??dayData?.water??0;
-    if(_isDayActive(k)) last30.push(water);
+    grp.appendChild(ul);wrap.appendChild(grp);
   });
-  const avgW=last30.length?(last30.reduce((a,b)=>a+b,0)/last30.length).toFixed(1):'—';
-  const _aw=document.getElementById('avg-water'); if(_aw) _aw.textContent=avgW;
-
-  // active-days tidak ada di HTML — skip (data ini tidak ditampilkan di stat pills)
-
-  // Nara streak message
-  const naraEl=document.getElementById('streak-nara');
-  if(!naraEl) return;
-  if(streak===0) naraEl.textContent='Mulai hari ini (◕‿◕✿)';
-  else if(streak===1) naraEl.textContent='Hari pertama! Lanjutkan!';
-  else if(streak<7) naraEl.textContent=`${streak} hari beruntun. Bagus!`;
-  else if(streak<30) naraEl.textContent=`${streak} hari! Konsistensimu luar biasa.`;
-  else naraEl.textContent=`${streak} hari beruntun. Nara bangga (≧◡≦)`;
 }
 
-// ══ CALENDAR ══
-function buildCalendar(){
-  const months=MONTHS;
-  document.getElementById('cal-month-lbl').textContent=`${months[calM]} ${calY}`;
-  const logs=ld('inarte_logs')||{};
-  const grid=document.getElementById('cal-grid');
-  grid.innerHTML='';
+// ══ FIXED LIST ══
+function renderFixedList(data){
+  const fixed=data.fixed||[];
+  const wrap=document.getElementById('fixed-wrap');
+  const preview=document.getElementById('fixed-preview');
+  const reminder=document.getElementById('fixed-reminder');
 
-  const firstDay=new Date(calY,calM,1).getDay();
-  const daysInMonth=new Date(calY,calM+1,0).getDate();
+  const monthly=fixed.filter(f=>f.type==='monthly');
+  const yearly=fixed.filter(f=>f.type==='yearly');
+  const totalMonthly=monthly.reduce((s,f)=>s+f.amount,0);
+  const totalYearly=yearly.reduce((s,f)=>s+f.amount,0);
 
-  // Empty cells
-  for(let i=0;i<firstDay;i++){
-    const cell=document.createElement('div');cell.className='cal-cell empty';grid.appendChild(cell);
+  if(fixed.length>0){
+    preview.textContent=monthly.length>0&&yearly.length>0
+      ?`${fmt(totalMonthly)}/bln + ${yearly.length} tahunan`
+      :monthly.length>0?`${fmt(totalMonthly)}/bln`:`${yearly.length} pengeluaran tahunan`;
+  } else {
+    preview.textContent='Bulanan & tahunan';
   }
 
-  for(let d=1;d<=daysInMonth;d++){
-    const ds=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const log=logs[ds];
-    const isToday=ds===TODAY;
-    const cell=document.createElement('button');
-    let cls='cal-cell';
-    if(isToday) cls+=' today';
-    if(_isDayActive(ds)){
-      // Full = water>=6 AND habits done AND mood
-      const score=(log?.water>=6?1:0)+(log?.mood?1:0)+(log?.meals>0?1:0);
-      cls+=score>=2?' logged-full':' logged-partial';
-    }
-    cell.className=cls;
-    cell.textContent=d;
-    cell.title=log?.logged?`Air: ${log.water||0}, Mood: ${log.mood||'-'}`:'';
-    cell.onclick=()=>openDiaryOnDate(ds);
-    grid.appendChild(cell);
+  if(!fixed.length){wrap.innerHTML='<div class="list-empty">Belum ada pengeluaran tetap.</div>';reminder.classList.remove('on');return}
+
+  wrap.innerHTML='';
+
+  const renderGroup=(items,label)=>{
+    if(!items.length)return;
+    const lbl=document.createElement('div');lbl.className='fixed-type-lbl';lbl.textContent=label;
+    wrap.appendChild(lbl);
+    const ul=document.createElement('ul');ul.className='fixed-list';
+    items.forEach(f=>{
+      const cat=CATS.find(c=>c.id===f.cat);
+      const isYearly=f.type==='yearly';
+      const li=document.createElement('li');li.className='fixed-item';
+      li.innerHTML=`
+        <div class="fixed-dot" style="background:${cat?.color||'var(--text4)'}"></div>
+        <div class="fixed-info">
+          <div class="fixed-name">${f.name}</div>
+          <div class="fixed-cat-lbl">${cat?.label||f.cat}</div>
+        </div>
+        <div class="fixed-amt-wrap">
+          <div class="fixed-amt">${fmt(f.amount)}${isYearly?'/thn':'/bln'}</div>
+          ${isYearly?`<div class="fixed-eq">≈ ${fmt(Math.round(f.amount/12))}/bln</div>`:''}
+        </div>
+        <button class="fixed-del" onclick="deleteFixed('${f.id}')">✕</button>`;
+      ul.appendChild(li);
+    });
+    wrap.appendChild(ul);
+  };
+
+  renderGroup(monthly,'Bulanan');
+  renderGroup(yearly,'Tahunan');
+
+  // Reminder for yearly: show note that it's recorded in the month it was added
+  if(yearly.length>0){
+    reminder.textContent=`Pengeluaran tahunan dicatat penuh di bulan ini. Angka ≈/bln hanya sebagai referensi.`;
+    reminder.classList.add('on');
+  } else {
+    reminder.classList.remove('on');
   }
 }
 
-function calChangeMonth(delta){
-  calM+=delta;
-  if(calM>11){calM=0;calY++;}
-  if(calM<0){calM=11;calY--;}
-  buildCalendar();
+// ══ NARA INSIGHT ══
+function renderNaraInsight(data){
+  const el=document.getElementById('nara-insight');
+  const tx=data.tx||[];
+  const fixed=data.fixed||[];
+  const income=tx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const daily=tx.filter(t=>t.type==='daily').reduce((s,t)=>s+t.amount,0);
+  const fixedAmt=fixed.reduce((s,f)=>s+f.amount,0);
+  const totalOut=daily+fixedAmt;
+  const sisa=income-totalOut;
+
+  if(!income&&!totalOut){el.textContent='Mulai catat pemasukan dan pengeluaranmu di atas.';return}
+
+  // Top category
+  const catTotals={};
+  tx.filter(t=>t.type==='daily').forEach(t=>{catTotals[t.cat]=(catTotals[t.cat]||0)+t.amount});
+  fixed.forEach(f=>{catTotals[f.cat]=(catTotals[f.cat]||0)+f.amount});
+  const topEntry=Object.entries(catTotals).sort((a,b)=>b[1]-a[1])[0];
+  const topCat=topEntry?CATS.find(c=>c.id===topEntry[0]):null;
+  const topPct=income>0&&topEntry?Math.round(topEntry[1]/income*100):0;
+  const sisaPct=income>0?Math.round(sisa/income*100):0;
+
+  // Check saving allocation
+  const hasSaving=catTotals['tabungan']>0;
+  const savingPct=income>0&&hasSaving?Math.round(catTotals['tabungan']/income*100):0;
+
+  let msg='';
+  if(!income&&totalOut>0){msg='Pengeluaran sudah tercatat. Jangan lupa catat pemasukanmu juga ya!';}
+  else if(sisa<0){msg=`Pengeluaran melebihi pemasukan ${fmt(Math.abs(sisa))}.${topCat?` Terbesar di ${topCat.label}.`:''}`;}
+  else if(hasSaving&&savingPct>=10){msg=`${savingPct}% dari pemasukan dialokasikan untuk tabungan/investasi. Bagus banget! (◕‿◕✿)`;}
+  else if(sisaPct>=30){msg=`Masih sisa ${sisaPct}% dari pemasukan bulan ini. Pertimbangkan untuk dialokasikan ke tabungan.`;}
+  else if(sisaPct>0){msg=`Sisa ${sisaPct}% dari pemasukan.${topCat?` Pengeluaran terbesar di ${topCat.label} (${topPct}%).`:''}`;}
+  else{msg=`Data bulan ini sudah tercatat.${topCat?` Pengeluaran terbesar di ${topCat.label}.`:''}`;}
+  el.textContent=msg;
+}
+
+// ══ DELETE ══
+function deleteTx(id){
+  const data=loadData(viewY,viewM);
+  data.tx=data.tx.filter(t=>t.id!==id);
+  saveData(viewY,viewM,data);renderAll();showToast('Transaksi dihapus');
+}
+function deleteFixed(id){
+  const data=loadData(viewY,viewM);
+  data.fixed=data.fixed.filter(f=>f.id!==id);
+  saveData(viewY,viewM,data);renderAll();showToast('Pengeluaran tetap dihapus');
 }
 
 // ══ EXPAND ══
-function toggleExpand(id){
-  document.getElementById('ex-'+id).classList.toggle('open');
-}
+function toggleExpand(id){document.getElementById('ex-'+id).classList.toggle('open')}
 
-// ══ NARA PATTERN ══
-async function buildNaraPattern(){
-  const el=document.getElementById('nara-pattern-body');
-  const logs=ld('inarte_logs')||{};
-  const dates=getRangeDates();
-  const keys=dates.filter(k=>_isDayActive(k));
-
-  if(keys.length<3){
-    el.innerHTML='<p>Isi terus ya! Setelah beberapa hari, Nara akan punya gambaran yang lebih utuh (◕‿◕✿)</p>';
-    return;
-  }
-
-  // Loading state
-  el.innerHTML='<div class="nara-dots"><span></span><span></span><span></span></div>';
-
-  const rangeLabel=currentRange===0?'semua waktu':getRangeDays()+' hari terakhir';
-  const consistency=Math.round(keys.length/getRangeDays()*100);
-
-  // ── Mood analysis ──
-  const moods=keys.map(k=>{const d=ld('inarte_day_'+k);return logs[k]?.mood||d?.mood;}).filter(Boolean);
-  const moodFreq={};moods.forEach(m=>{moodFreq[m]=(moodFreq[m]||0)+1;});
-  const moodSorted=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1]);
-  const topMood=moodSorted[0]?.[0]||'';
-  const moodVariance=moodSorted.length; // berapa banyak jenis mood berbeda
-  // Tren mood: bandingkan separuh awal vs separuh akhir range
-  const half=Math.floor(keys.length/2);
-  const moodVal={senang:2,semangat:2,netral:0,lelah:-1,berat:-2,cemas:-2};
-  const firstHalfScore=keys.slice(0,half).reduce((s,k)=>{const d=ld('inarte_day_'+k);const m=logs[k]?.mood||d?.mood||'netral';return s+(moodVal[m]||0);},0);
-  const secondHalfScore=keys.slice(half).reduce((s,k)=>{const d=ld('inarte_day_'+k);const m=logs[k]?.mood||d?.mood||'netral';return s+(moodVal[m]||0);},0);
-  const moodTrend=secondHalfScore>firstHalfScore?'membaik':secondHalfScore<firstHalfScore?'menurun':'stabil';
-
-  // ── Water analysis ──
-  const waterTarget=typeof getWaterTarget==='function'?getWaterTarget():8;
-  const waterVals=keys.map(k=>{const d=ld('inarte_day_'+k);return logs[k]?.water||d?.water||0;});
-  const avgW=(waterVals.reduce((s,v)=>s+v,0)/waterVals.length).toFixed(1);
-  const waterGoodDays=waterVals.filter(v=>v>=waterTarget).length;
-
-  // ── Habit analysis ──
-  const habitTemplate=ld('inarte_habits_template')||[];
-  const habitData=habitTemplate.map(h=>{
-    const doneDays=keys.filter(k=>{const log=ld('inarte_habitlog_'+k)||{};return log[h.id];}).length;
-    return{text:h.text,pct:Math.round(doneDays/keys.length*100),doneDays};
-  }).sort((a,b)=>b.pct-a.pct);
-  const topHabit=habitData[0];
-  const weakHabit=habitData[habitData.length-1];
-  const perfectHabits=habitData.filter(h=>h.pct===100).length;
-
-  // ── Sleep analysis (dari wellness) ──
-  const sleepVals=keys.map(k=>{const w=ld('inarte_wellness_'+k);return w?.sleepHrs||null;}).filter(v=>v!==null);
-  const avgSleep=sleepVals.length?(sleepVals.reduce((s,v)=>s+v,0)/sleepVals.length).toFixed(1):null;
-
-  // ── Meal & calorie trend ──
-  const calVals=keys.map(k=>{const d=ld('inarte_day_'+k);return d?.totalCal||0;}).filter(v=>v>0);
-  const avgCal=calVals.length?Math.round(calVals.reduce((s,v)=>s+v,0)/calVals.length):null;
-  const daysWithMeal=keys.filter(k=>{const d=ld('inarte_day_'+k);return d?.meals?.length>0;}).length;
-
-  // ── Finance ringkasan ──
-  const now=new Date();
-  const finKey=`inarte_fin_${now.getFullYear()}_${now.getMonth()+1}`;
-  const fin=ld(finKey)||{tx:[],fixed:[]};
-  const income=(fin.tx||[]).filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
-  const expense=(fin.tx||[]).filter(t=>t.type!=='income').reduce((s,t)=>s+t.amount,0);
-
-  // ── Day-of-week pattern ──
-  const dowScores={0:0,1:0,2:0,3:0,4:0,5:0,6:0};
-  const dowCount={0:0,1:0,2:0,3:0,4:0,5:0,6:0};
-  keys.forEach(k=>{
-    const dow=new Date(k).getDay();
-    const d=ld('inarte_day_'+k);
-    const m=logs[k]?.mood||d?.mood||'netral';
-    dowScores[dow]+=(moodVal[m]||0);
-    dowCount[dow]++;
-  });
-  const dowAvg=Object.keys(dowScores).map(d=>({day:parseInt(d),avg:dowCount[d]?dowScores[d]/dowCount[d]:null})).filter(d=>d.avg!==null);
-  const bestDow=dowAvg.sort((a,b)=>b.avg-a.avg)[0];
-  const dowNames=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  const bestDayName=bestDow?dowNames[bestDow.day]:null;
-
-  // ── Build rich context for Nara ──
-  const ctxLines=[
-    `Periode: ${rangeLabel} (${keys.length} hari aktif dari ${getRangeDays()} hari, konsistensi ${consistency}%)`,
-    `Mood: dominan "${topMood||'beragam'}", tren ${moodTrend}, variasi ${moodVariance} jenis mood berbeda`,
-    `Minum air: rata-rata ${avgW}/${waterTarget} gelas/hari, ${waterGoodDays}/${keys.length} hari memenuhi target`,
-    habitData.length?`Habit (${habitData.length} kebiasaan): terkuat "${topHabit?.text}" ${topHabit?.pct}%, terlemah "${weakHabit?.text}" ${weakHabit?.pct}%, ${perfectHabits} habit dengan konsistensi 100%`:'Belum ada habit tercatat',
-    avgSleep?`Tidur: rata-rata ${avgSleep} jam/malam`:'Data tidur belum lengkap',
-    avgCal?`Makan: dicatat ${daysWithMeal}/${keys.length} hari, rata-rata ${avgCal} kkal/hari`:'',
-    income||expense?`Keuangan bulan ini: pemasukan ${income?'Rp'+income.toLocaleString('id-ID'):'belum dicatat'}, pengeluaran ${expense?'Rp'+expense.toLocaleString('id-ID'):'belum dicatat'}`:'',
-    bestDayName?`Hari terbaik berdasarkan mood: ${bestDayName}`:'',
-    P.goals?.length?`Goals user: ${P.goals.join(', ')}`:'',
-  ].filter(Boolean).join('\n');
-
-  const sys=`Kamu adalah Nara, companion wellness yang hangat dan perhatian (vibes teman dekat, bukan coach).
-Nama user: ${P.name||'teman'}${P.age?', usia '+P.age+' tahun':''}.${P.goals?.length?'\nGoals: '+P.goals.join(', ')+'.':''}
-
-TUGAS: Tulis insight personal 3-4 kalimat berdasarkan data wellness user berikut.
-PRINSIP:
-- Spesifik dan personal — sebutkan angka/fakta aktual dari data, bukan generik
-- Fokus pada 1-2 pola paling menarik (bisa positif atau area yang bisa ditingkatkan)
-- Kalau ada tren negatif, sampaikan dengan empati bukan menghakimi
-- Akhiri dengan satu kalimat dorongan kecil yang relevan dengan data
-- Bahasa Indonesia santai, boleh satu kaomoji di akhir
-- BUKAN bullet points, BUKAN list, BUKAN template motivasi generik`;
-
-  let reply;
-  try{
-    const r=await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'gemini-2.0-flash',
-        max_tokens:400,
-        system:sys,
-        messages:[{role:'user',content:ctxLines}]
-      }),
-      signal:AbortSignal.timeout(14000)
-    });
-    if(r.ok){
-      const data=await r.json();
-      reply=data.content?.[0]?.text?.trim();
-    }
-  }catch(e){
-    console.warn('[INARTE] buildNaraPattern fetch error:', e);
-  }
-
-  if(!reply){
-    reply=naraSmartFallback('','progress');
-  }
-
-  // Render — pisahkan paragraf kalau ada newline ganda
-  const paragraphs=reply.split(/\n{2,}/).map(s=>s.trim()).filter(Boolean);
-  el.innerHTML=paragraphs.map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
-}
-
-// ══ HABIT CONSISTENCY ══
-function buildHabitConsistency(){
-  const template=JSON.parse(localStorage.getItem('inarte_habits_template')||'[]');
-  const wrap=document.getElementById('habit-cons-wrap');
-  if(!template.length){
-    wrap.innerHTML='<div class="habit-cons-empty">Belum ada habit yang dicatat.</div>';
-    return;
-  }
-  const dates=getRangeDates();
-  const daysInRange=dates.length;
-  const counts={};
-  dates.forEach(ds=>{
-    const log=ld(`inarte_habitlog_${ds}`)||{};
-    template.forEach(h=>{if(log[h.id])counts[h.id]=(counts[h.id]||0)+1;});
-  });
-  const sorted=[...template].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0));
-  const done=template.filter(h=>(counts[h.id]||0)===daysInRange).length;
-  const days=getRangeDays();
-  const lbl=currentRange===0?'semua waktu':days+' hari';
-  document.getElementById('habit-preview').textContent=`${done}/${template.length} perfect · ${lbl}`;
-  wrap.innerHTML='';
-  const list=document.createElement('div');list.className='habit-cons-list';
-  sorted.forEach(h=>{
-    const cnt=counts[h.id]||0;
-    const pct=Math.round(cnt/daysInRange*100);
-    const streak=calcHabitStreak(h.id);
-    const row=document.createElement('div');row.className='habit-cons-row';
-    row.innerHTML=`
-      <span class="habit-cons-name">${h.text}</span>
-      <div class="habit-cons-track"><div class="habit-cons-fill" style="width:${pct}%"></div></div>
-      <span class="habit-cons-pct">${pct}%</span>
-      ${streak>1?`<span class="habit-cons-streak">🔥${streak}</span>`:'<span class="habit-cons-streak"></span>'}`;
-    list.appendChild(row);
-  });
-  wrap.appendChild(list);
-}
-
-function calcHabitStreak(id){
-  let s=0;const d=new Date();
-  while(s<90){
-    const k=`inarte_habitlog_${d.toISOString().split('T')[0]}`;
-    const l=ld(k)||{};
-    if(l[id]){s++;d.setDate(d.getDate()-1);}else break;
-  }
-  return s;
-}
-
-// ══ MOOD CHART ══
-function buildMoodChart(){
-  const logs=ld('inarte_logs')||{};
-  const moodDef={
-    senang:{em:'😊',label:'Senang',color:'#5A8A68'},
-    netral:{em:'😐',label:'Biasa',color:'#8A7F72'},
-    lelah:{em:'😮‍💨',label:'Lelah',color:'#9B6E2A'},
-    berat:{em:'😔',label:'Berat',color:'#7A3E50'},
-    semangat:{em:'🔥',label:'Semangat',color:'#3D6147'},
-  };
-  const counts={senang:0,netral:0,lelah:0,berat:0,semangat:0};
-  const dates=getRangeDates();
-  dates.forEach(k=>{
-    const day=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
-    const m=logs[k]?.mood||day?.mood;
-    if(m&&counts[m]!==undefined)counts[m]++;
-  });
-  const total=Object.values(counts).reduce((a,b)=>a+b,0);
-  const maxV=Math.max(...Object.values(counts),1);
-  const days=getRangeDays();
-  const lbl=currentRange===0?'semua waktu':days+' hari terakhir';
-  document.getElementById('mood-preview').textContent=`${total} hari · ${lbl}`;
-
-  const barsEl=document.getElementById('mood-bars');
-  const legendEl=document.getElementById('mood-legend');
-  barsEl.innerHTML='';legendEl.innerHTML='';
-
-  Object.entries(moodDef).forEach(([id,def])=>{
-    const cnt=counts[id];
-    const pct=maxV>0?Math.round(cnt/maxV*100):0;
-    const col=document.createElement('div');col.className='mood-month-col';
-    col.innerHTML=`
-      <div class="mood-month-bar" style="height:${Math.max(pct*0.68,4)}px;background:${def.color}55"></div>
-      <div class="mood-month-em">${def.em}</div>
-      <div class="mood-month-cnt">${cnt>0?cnt:''}</div>`;
-    barsEl.appendChild(col);
-    if(cnt>0){
-      const li=document.createElement('div');li.className='mood-legend-item';
-      li.innerHTML=`<div class="mood-legend-dot" style="background:${def.color}66"></div>${def.label}: ${cnt} hari`;
-      legendEl.appendChild(li);
-    }
+// ══ CURRENCY ══
+function openSheet(id){
+  document.getElementById('sheet-overlay').classList.add('on');
+  requestAnimationFrame(()=>{
+    const el=document.getElementById('sheet-'+id);
+    if(el) el.classList.add('open');
   });
 }
-
-// ══ SLEEP & ENERGY ══
-function buildSleepEnergy(){
-  const wrap=document.getElementById('sleep-energy-row');
-  const dates=getRangeDates();
-  const sleepVals=[],fisikVals=[],mentalVals=[];
-  dates.forEach(k=>{
-    const w=ld('inarte_wellness_'+k);
-    if(w?.sleepHrs) sleepVals.push(w.sleepHrs);
-    if(w?.energyFisik) fisikVals.push(w.energyFisik);
-    if(w?.energyMental) mentalVals.push(w.energyMental);
+function openCurrencySheet(){
+  document.getElementById('sheet-overlay').classList.add('on');
+  requestAnimationFrame(()=>document.getElementById('sheet-currency').classList.add('open'));
+  setTimeout(()=>document.getElementById('currency-search').focus(),300);
+}
+function closeCurrencySheet(){
+  document.getElementById('sheet-currency').classList.remove('open');
+  document.getElementById('sheet-overlay').classList.remove('on');
+}
+function filterCur(){
+  const q=(document.getElementById('currency-search')?.value||'').toLowerCase();
+  const list=document.getElementById('currency-list');
+  const filtered=q?CURRENCIES.filter(c=>c.code.toLowerCase().includes(q)||c.name.toLowerCase().includes(q)):CURRENCIES;
+  list.innerHTML='';
+  filtered.forEach(c=>{
+    const item=document.createElement('div');
+    item.className='currency-item'+(c.code===curCode?' active':'');
+    item.innerHTML=`<span class="cur-code">${c.code}</span><span class="cur-name">${c.name}</span><span class="cur-sym">${c.sym}</span>`;
+    item.onclick=()=>{
+      if(c.code===curCode){closeCurrencySheet();return;}
+      const hasData=Object.keys(localStorage).some(k=>k.startsWith('inarte_fin_'));
+      if(hasData){
+        const confirm=window.confirm(
+          `Ganti ke ${c.code} (${c.sym})?\n\n` +
+          `⚠️ Catatan penting:\n` +
+          `Angka yang sudah tercatat tidak akan dikonversi otomatis — hanya simbolnya yang berubah.\n\n` +
+          `Disarankan ganti mata uang sebelum mulai mencatat, atau hapus data lama terlebih dahulu.\n\n` +
+          `Lanjutkan?`
+        );
+        if(!confirm) return;
+      }
+      curCode=c.code;localStorage.setItem('inarte_currency',c.code);
+      updateCurrencyUI();filterCur();renderAll();
+      closeCurrencySheet();showToast(`Mata uang: ${c.code} ${c.sym}`);
+    };
+    list.appendChild(item);
   });
-  const avgSleep=sleepVals.length?(sleepVals.reduce((a,b)=>a+b,0)/sleepVals.length).toFixed(1):null;
-  const avgFisik=fisikVals.length?(fisikVals.reduce((a,b)=>a+b,0)/fisikVals.length).toFixed(1):null;
-  const avgMental=mentalVals.length?(mentalVals.reduce((a,b)=>a+b,0)/mentalVals.length).toFixed(1):null;
-  wrap.innerHTML=`
-    <div class="se-card">
-      <div class="se-lbl">Rata-rata tidur</div>
-      <div class="se-num" style="color:var(--dusk)">${avgSleep||'—'}</div>
-      <div class="se-sub">${avgSleep?'jam per malam':'belum ada data'}</div>
-      ${avgSleep?`<div class="se-bar"><div class="se-bar-fill" style="width:${Math.min(parseFloat(avgSleep)/10*100,100)}%;background:${parseFloat(avgSleep)>=7?'var(--moss)':parseFloat(avgSleep)>=5?'var(--amber)':'var(--rose)'}"></div></div>`:''}
-    </div>
-    <div class="se-card">
-      <div class="se-lbl">Rata-rata energi</div>
-      <div style="display:flex;gap:10px;margin-top:2px">
-        <div><div class="se-num" style="color:var(--moss)">${avgFisik||'—'}</div><div class="se-sub">fisik /5</div></div>
-        <div><div class="se-num" style="color:var(--dusk)">${avgMental||'—'}</div><div class="se-sub">mental /5</div></div>
-      </div>
-      ${avgFisik?`<div class="se-bar" style="margin-top:6px"><div class="se-bar-fill" style="width:${parseFloat(avgFisik)/5*100}%;background:var(--moss)"></div></div>`:''}
-    </div>`;
-}
-
-// ══ WATER CHART ══
-function buildWaterChart(){
-  const logs=ld('inarte_logs')||{};
-  const dates=getRangeDates();
-  const waterTarget=typeof getWaterTarget==='function'?getWaterTarget():8;
-  const waters=dates.map(k=>{
-    const day=JSON.parse(localStorage.getItem('inarte_day_'+k)||'null');
-    return logs[k]?.water??day?.water??0;
-  });
-  const activeDays=waters.filter(w=>w>0).length;
-  const avg=activeDays?(waters.reduce((a,b)=>a+b,0)/activeDays).toFixed(1):0;
-  const metTarget=waters.filter(w=>w>=waterTarget).length;
-  const days=getRangeDays();
-  const lbl=currentRange===0?'semua waktu':days+' hari';
-  document.getElementById('water-preview').textContent=`avg ${avg} gelas · ${metTarget} hari capai target`;
-
-  const wrap=document.getElementById('water-chart-wrap');
-  wrap.innerHTML='';
-
-  // Avg progress bar
-  const avgPct=Math.min(parseFloat(avg)/waterTarget*100,100);
-  const div=document.createElement('div');
-  div.innerHTML=`
-    <div class="water-month-row">
-      <span style="font-size:11px;color:var(--text3);min-width:72px">Rata-rata</span>
-      <div class="water-month-track"><div class="water-month-fill" style="width:${avgPct}%"></div></div>
-      <span class="water-month-stat">${avg} <span style="font-weight:400;color:var(--text4)">/ ${waterTarget}</span></span>
-    </div>
-    <div class="water-month-row">
-      <span style="font-size:11px;color:var(--text3);min-width:72px">Capai target</span>
-      <div class="water-month-track"><div class="water-month-fill" style="width:${dates.length?metTarget/dates.length*100:0}%;background:var(--moss)"></div></div>
-      <span class="water-month-stat" style="color:var(--moss)">${metTarget} <span style="font-weight:400;color:var(--text4)">hari</span></span>
-    </div>
-    <div class="water-month-sub">
-      <span>${activeDays} hari ada catatan</span>
-      <span>${lbl}</span>
-    </div>`;
-  wrap.appendChild(div);
-}
-
-// ══ FINANCE CHART ══
-function buildFinanceChart(){
-  const barsEl=document.getElementById('fin-bars');
-  const lblsEl=document.getElementById('fin-labels');
-  barsEl.innerHTML='';lblsEl.innerHTML='';
-
-  const now=new Date();
-  const months=[];
-  for(let i=2;i>=0;i--){
-    let y=now.getFullYear(),m=now.getMonth()-i;
-    if(m<0){m+=12;y--;}
-    months.push({y,m,lbl:MONTHS_SHORT[m]});
-  }
-
-  const allData=months.map(({y,m})=>{
-    const data=ld(`inarte_fin_${y}_${m+1}`)||{tx:[],fixed:[]};
-    const income=(data.tx||[]).filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
-    const daily=(data.tx||[]).filter(t=>t.type==='daily').reduce((s,t)=>s+t.amount,0);
-    const fixed=(data.fixed||[]).reduce((s,f)=>s+f.amount,0);
-    return {income,expense:daily+fixed,lbl:months[months.indexOf(months.find(mm=>mm.y===y&&mm.m===m))].lbl};
-  });
-
-  const hasData=allData.some(d=>d.income>0||d.expense>0);
-  if(!hasData){barsEl.innerHTML='<div class="fin-empty">Belum ada data keuangan.</div>';return;}
-
-  const maxVal=Math.max(...allData.flatMap(d=>[d.income,d.expense]),1);
-
-  allData.forEach((d,i)=>{
-    const inPct=Math.round(d.income/maxVal*100);
-    const outPct=Math.round(d.expense/maxVal*100);
-    const sisa=d.income-d.expense;
-    const wrap=document.createElement('div');wrap.className='fin-bar-wrap';
-    wrap.innerHTML=`
-      <div class="fin-bar-track">
-        ${d.income>0?`<div class="fin-bar-income" style="height:${inPct}%;min-height:3px"></div>`:''}
-        ${d.expense>0?`<div class="fin-bar-expense" style="height:${outPct}%;min-height:3px"></div>`:''}
-      </div>
-      <div class="fin-bar-sisa ${sisa>0?'surplus':sisa<0?'deficit':''}">${sisa>0?'+':sisa<0?'−':''}${formatFinNum(Math.abs(sisa))}</div>
-      <div class="fin-bar-lbl">${d.lbl}</div>`;
-    barsEl.appendChild(wrap);
-  });
-
-  document.getElementById('finance-preview').textContent=`3 bulan`;
-}
-
-function formatFinNum(n){
-  if(n>=1000000) return (n/1000000).toFixed(1)+'jt';
-  if(n>=1000) return (n/1000).toFixed(0)+'rb';
-  return n.toString();
-}
-
-// ══ DIARY FULLSCREEN ══
-function openDiary(){
-  const fs=document.getElementById('diary-fs');
-  fs.style.display='flex';
-  requestAnimationFrame(()=>{fs.style.transform='translateY(0)';fs.style.transition='transform .35s cubic-bezier(.32,.72,0,1)'});
-  renderDiaryCal();
-}
-function openDiaryOnDate(dateStr){
-  openDiary();
-  setTimeout(()=>openDiaryEntry(dateStr),100);
-}
-function closeDiary(){
-  const fs=document.getElementById('diary-fs');
-  fs.style.transform='translateY(100%)';
-  setTimeout(()=>{fs.style.display='none';},350);
-}
-
-function renderDiaryCal(){
-  const body=document.getElementById('diary-fs-body');
-  const logs=ld('inarte_logs')||{};
-  const moodEm={senang:'😊',netral:'😐',lelah:'😮‍💨',berat:'😔',semangat:'🔥'};
-
-  const firstDay=new Date(diaryCalY,diaryCalM,1).getDay();
-  const dim=new Date(diaryCalY,diaryCalM+1,0).getDate();
-
-  let calHTML=`
-    <div class="diary-cal-pane">
-      <div class="diary-cal-nav">
-        <button class="diary-cal-nav-btn" onclick="diaryCalChange(-1)">‹</button>
-        <span class="diary-cal-month">${MONTHS[diaryCalM]} ${diaryCalY}</span>
-        <button class="diary-cal-nav-btn" onclick="diaryCalChange(1)">›</button>
-      </div>
-      <div style="font-size:11px;color:var(--text3);font-style:italic">Tap tanggal untuk baca catatan hari itu.</div>
-      <div class="diary-cal-grid">
-        ${['Min','Sen','Sel','Rab','Kam','Jum','Sab'].map(d=>`<div class="diary-day-lbl">${d}</div>`).join('')}
-        ${Array(firstDay).fill('<div class="diary-cal-cell empty"></div>').join('')}`;
-
-  for(let d=1;d<=dim;d++){
-    const ds=`${diaryCalY}-${String(diaryCalM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const log=logs[ds];
-    const w=ld('inarte_wellness_'+ds);
-    const isToday=ds===TODAY;
-    const hasEntry=log?.logged;
-    const mood=log?.mood;
-    const isSelected=ds===selectedDiaryDate;
-    let cls='diary-cal-cell';
-    if(isToday)cls+=' today';
-    if(hasEntry)cls+=' has-entry';
-    if(isSelected)cls+=' selected';
-    calHTML+=`<button class="${cls}" onclick="openDiaryEntry('${ds}')">
-      <span class="diary-cell-date">${d}</span>
-      ${mood?`<span class="diary-cell-mood">${moodEm[mood]||''}</span>`:''}
-    </button>`;
-  }
-  calHTML+=`</div></div>`;
-  body.innerHTML=calHTML;
-}
-
-function diaryCalChange(delta){
-  diaryCalM+=delta;
-  if(diaryCalM>11){diaryCalM=0;diaryCalY++;}
-  if(diaryCalM<0){diaryCalM=11;diaryCalY--;}
-  renderDiaryCal();
-}
-
-function openDiaryEntry(dateStr){
-  selectedDiaryDate=dateStr;
-  const log=ld('inarte_logs')||{};
-  const dayLog=log[dateStr];
-  const w=ld('inarte_wellness_'+dateStr);
-  const body=document.getElementById('diary-fs-body');
-  const d=new Date(dateStr);
-  const dateLbl=`${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-  const moodEm={senang:'😊 Senang',netral:'😐 Biasa',lelah:'😮‍💨 Lelah',berat:'😔 Berat',semangat:'🔥 Semangat'};
-
-  let html=`<div class="diary-entry-pane">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:.875rem">
-      <button class="diary-entry-back" onclick="renderDiaryCal()">← Kalender</button>
-      <span style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--text)">${dateLbl}</span>
-    </div>`;
-
-  if(!dayLog?.logged && !w){
-    html+=`<div class="diary-empty-entry">Tidak ada catatan untuk tanggal ini.</div>`;
-  } else {
-    if(dayLog?.mood){
-      html+=`<div class="diary-section"><div class="diary-section-lbl">Mood</div><div class="diary-section-val">${moodEm[dayLog.mood]||dayLog.mood}</div></div>`;
-    }
-    html+=`<div class="diary-section"><div class="diary-section-lbl">Aktivitas</div><div class="diary-section-val">💧 ${dayLog?.water||0}/8 gelas &nbsp;·&nbsp; 🍽 ${dayLog?.meals||0} makanan &nbsp;·&nbsp; 🏃 ${dayLog?.move||0} aktivitas</div></div>`;
-    if(w?.emotions?.length){
-      html+=`<div class="diary-section"><div class="diary-section-lbl">Emosi</div>
-        <div class="diary-emotion-tags">${w.emotions.map(e=>`<span class="diary-emotion-tag">${e}</span>`).join('')}</div></div>`;
-    }
-    if(w?.sleepHrs){
-      const hrs=parseFloat(w.sleepHrs).toFixed(1);
-      html+=`<div class="diary-section"><div class="diary-section-lbl">Tidur</div><div class="diary-section-val">🌙 ${w.sleepStart||''} → ${w.sleepEnd||''} &nbsp;(${hrs} jam)</div></div>`;
-    }
-    if(w?.journalText){
-      html+=`<div class="diary-section"><div class="diary-section-lbl">Cerita</div><div class="diary-section-val">${w.journalText}</div></div>`;
-    }
-    if(w?.photos?.length){
-      html+=`<div class="diary-section"><div class="diary-section-lbl">Foto</div>
-        <div class="diary-photos">${w.photos.map(src=>`<div class="diary-photo"><img src="${src}" loading="lazy"/></div>`).join('')}</div></div>`;
-    }
-    if(w?.gratText){
-      html+=`<div class="diary-section"><div class="diary-section-lbl">Hal baik hari itu</div><div class="diary-section-val">✨ ${w.gratText}</div></div>`;
-    }
-    if(w?.hopeText){
-      html+=`<div class="diary-section"><div class="diary-section-lbl">Harapan untuk besok</div><div class="diary-section-val">🌱 ${w.hopeText}</div></div>`;
-    }
-  }
-
-  html+=`</div>`;
-  body.innerHTML=html;
 }
 
 function showToast(msg,d=2600){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),d)}
@@ -1865,10 +1794,10 @@ function toggleNaraChat(){
       const _todayKey=new Date().toISOString().split('T')[0];
       const _welcomeShown=localStorage.getItem('inarte_welcome_shown')===_todayKey;
       if(_welcomeShown){
-        _addNaraMsg('Nara di sini'+(_P.name?' buat '+_P.name:'')+' (◕‿◕✿) Mau ngobrolin progresmu?');
+        _addNaraMsg('Nara di sini'+(_P.name?' buat '+_P.name:'')+' (◕‿◕✿) Mau ngobrolin keuangan atau yang lain?');
       } else {
         _addNaraMsg('Hei '+(_P.name||'kamu')+'! Aku Nara (◕‿◕✿)');
-        setTimeout(()=>_addNaraMsg('Mau ngobrolin perjalananmu, atau ada yang mau diceritain?'),400);
+        setTimeout(()=>_addNaraMsg('Mau ngobrolin keuangan, nabung, atau apapun — cerita aja!'),400);
       }
       _chatInited=true;
     }
@@ -1887,23 +1816,25 @@ async function sendNara(){
   _chatHistory.push({role:'user',content:txt});
   const msgs=document.getElementById('nc-msgs');
   const typing=document.createElement('div');typing.className='nc-msg nara';
-  typing.innerHTML='<span style="display:flex;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:var(--nara-l);animation:bounceDot 1.2s infinite;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--nara-l);animation:bounceDot 1.2s .2s infinite;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--nara-l);animation:bounceDot 1.2s .4s infinite;display:inline-block"></span></span>';
+  typing.innerHTML='<span style="display:flex;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s infinite;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s .2s infinite;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--moss-l);animation:bounceDot 1.2s .4s infinite;display:inline-block"></span></span>';
   msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
   const dd=JSON.parse(localStorage.getItem('inarte_day_'+_TODAY)||'{}');
-  const _habitLog=JSON.parse(localStorage.getItem('inarte_habitlog_'+_TODAY)||'{}');
-  const _habitTemplate=JSON.parse(localStorage.getItem('inarte_habits_template')||'[]');
-  const _doneHabits=_habitTemplate.filter(h=>_habitLog[h.id]).map(h=>h.name||h.text||'');
-  const _journalToday=JSON.parse(localStorage.getItem('inarte_journal_'+_TODAY)||'{}');
-  const _journalSnippet=[_journalToday.cerita,_journalToday.syukur,_journalToday.harapan].filter(Boolean).join(' / ').slice(0,120);
-  const _ctxToday=[
-    'Air: '+(dd.water||0)+'/8 gelas',
-    'Mood: '+(dd.mood||'belum dicatat'),
-    'Tidur: '+(dd.sleep?dd.sleep+' jam':'belum dicatat'),
-    'Energi fisik: '+(dd.energyFisik||'-')+'/5, mental: '+(dd.energyMental||'-')+'/5',
-    _doneHabits.length?'Habit selesai: '+_doneHabits.join(', '):'Belum ada habit yang selesai',
-    _journalSnippet?'Jurnal hari ini: "'+_journalSnippet+'"':'Belum ada jurnal hari ini',
-  ].join('. ');
-  const sys='Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: '+(_P.name||'teman')+', '+(_P.age||'?')+' tahun, '+(_P.act||'')+'.'+(_P.goals&&_P.goals.length?' Goals: '+_P.goals.join(', ')+'.':'')+' DATA HARI INI ('+_TODAY+'): '+_ctxToday+'. PRINSIP: Baca konteks dulu. Kalau user curhat bukan soal kesehatan, jadilah pendengar dulu. Kalau relevan, boleh singgung data tapi natural, bukan laporan. Prioritaskan topik yang relevan dengan goals user. Bahasa Indonesia santai, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.';
+  // Build financial context for Nara
+  const _finData = loadData(viewY, viewM);
+  const _finTx = _finData.tx||[];
+  const _finFixed = _finData.fixed||[];
+  const _income = _finTx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const _expense = _finTx.filter(t=>t.type!=='income').reduce((s,t)=>s+t.amount,0);
+  const _fixedTotal = _finFixed.reduce((s,f)=>s+f.amount,0);
+  const _sisa = _income - _expense - _fixedTotal;
+  const _savingTotal = getTotalSaving();
+  const _wallets = loadWallets();
+  const _monthName = new Date(viewY, viewM).toLocaleDateString('id-ID',{month:'long',year:'numeric'});
+  const _finCtx = `Keuangan user ${_monthName}: pemasukan Rp${_income.toLocaleString('id-ID')}, pengeluaran Rp${(_expense+_fixedTotal).toLocaleString('id-ID')}, sisa Rp${_sisa.toLocaleString('id-ID')}${_sisa>=0?' (surplus)':', (defisit)'}. Total saving: Rp${_savingTotal.toLocaleString('id-ID')} (${_wallets.length} dompet). User sedang di tab Keuangan.`;
+
+  const sys = `Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${_P.name||'teman'}${_P.age?', '+_P.age+' tahun':''}${_P.goals&&_P.goals.length?'. Goals: '+_P.goals.join(', '):''}.
+${_finCtx}
+PRINSIP: Kalau user nanya soal keuangan, jawab berdasarkan data di atas — spesifik dan personal. Kalau user curhat, dengerin dulu. Bahasa Indonesia natural, sesekali kaomoji. Max 3-4 kalimat kecuali diminta lebih.`
   let reply;
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -2085,7 +2016,7 @@ window.addEventListener('DOMContentLoaded',setActiveNav);
 <script>
 // ══ DESKTOP SIDEBAR ACTIVE ══
 (function(){
-  const cur = 'progress';
+  const cur = 'finance';
   const btn = document.getElementById('ds-' + cur);
   if(btn) btn.classList.add('active');
 })();
@@ -2122,92 +2053,24 @@ window.addEventListener('DOMContentLoaded', function(){
   _updateDarkUI(isDark);
 });
 
-// ══ STREAK GAMIFICATION ══
-const STREAK_MILESTONES = [
-  {days:3,   badge:'🌱', title:'Tunas',        color:'#5A8A68'},
-  {days:7,   badge:'🌿', title:'Tumbuh',       color:'#5A8A68'},
-  {days:14,  badge:'🌳', title:'Berakar',      color:'#3D6147'},
-  {days:21,  badge:'✨', title:'Bersinar',     color:'#9B6E2A'},
-  {days:30,  badge:'🔥', title:'Membara',      color:'#C47A60'},
-  {days:50,  badge:'⚡', title:'Bertenaga',    color:'#9B6E2A'},
-  {days:75,  badge:'🌊', title:'Mengalir',     color:'#2E5F7A'},
-  {days:100, badge:'💎', title:'Permata',      color:'#7D3E2C'},
-  {days:150, badge:'🏆', title:'Juara',        color:'#9B6E2A'},
-  {days:200, badge:'🌟', title:'Bintang',      color:'#9B6E2A'},
-  {days:365, badge:'👑', title:'Mahkota',      color:'#7D3E2C'},
-];
-
-function getStreakBadge(days){
-  let cur = {days:0, badge:'🌱', title:'Mulai', color:'#B4CEBC'};
-  for(const m of STREAK_MILESTONES){
-    if(days >= m.days) cur = m;
-    else break;
-  }
-  return cur;
-}
-
-function getNextMilestone(days){
-  for(const m of STREAK_MILESTONES){
-    if(days < m.days) return m;
-  }
-  return null;
-}
-
-function calcOverallStreak(){
-  // Pakai kalkulasi terpusat dari today-streak.js kalau tersedia
-  // supaya angka streak konsisten di semua halaman (termasuk freeze logic)
-  if (typeof window.inarteCalcStreak === 'function') {
-    return window.inarteCalcStreak().streak;
-  }
-  // Fallback lokal — skip hari ini kalau belum diisi, tidak langsung break
-  let s = 0;
-  const today = new Date().toISOString().split('T')[0];
-  const d = new Date();
-  while(s < 400){
-    const k = d.toISOString().split('T')[0];
-    if(k === today){ d.setDate(d.getDate()-1); continue; }
-    if(_isDayActive(k)){ s++; d.setDate(d.getDate()-1); }
-    else break;
-  }
-  return s;
-}
-
-function renderStreakBadge(streak, containerId){
-  const el = document.getElementById(containerId);
-  if(!el) return;
-  const badge = getStreakBadge(streak);
-  const next = getNextMilestone(streak);
-  const milestoneHTML = STREAK_MILESTONES.map(m => {
-    const unlocked = streak >= m.days;
-    const cur = streak >= m.days && (!getNextMilestone(streak) || getNextMilestone(streak).days > m.days);
-    return `<span class="streak-milestone \${unlocked ? 'unlocked' : ''} \${cur && streak >= m.days && (STREAK_MILESTONES.indexOf(m) === STREAK_MILESTONES.filter(x => streak >= x.days).length - 1) ? 'current' : ''}" title="\${m.days} hari">\${m.badge} \${m.days}h</span>`;
-  }).join('');
-  el.innerHTML = `
-    <div class="streak-badge-display">
-      <span class="streak-badge-icon">\${badge.badge}</span>
-      <div class="streak-badge-info">
-        <div class="streak-badge-title">\${streak} hari — \${badge.title}</div>
-        <div class="streak-badge-sub">\${streak === 0 ? 'Mulai hari ini!' : 'Kamu sudah konsisten sejauh ini.'}</div>
-        \${next ? '<div class="streak-badge-next">→ ' + next.badge + ' ' + next.title + ' dalam ' + (next.days - streak) + ' hari lagi</div>' : '<div class="streak-badge-next">🎉 Semua milestone tercapai!</div>'}
-      </div>
-    </div>
-    <div class="streak-milestones">\${milestoneHTML}</div>
-  `;
-}
-
-function updateDesktopStreakWidget(streak){
-  const badge = getStreakBadge(streak);
-  const badgeEl = document.getElementById('ds-streak-badge');
-  const numEl = document.getElementById('ds-streak-num');
-  if(badgeEl) badgeEl.textContent = badge.badge;
-  if(numEl) numEl.textContent = streak;
-}
-
 </script>
 
 <script>
+window.addEventListener('DOMContentLoaded', function(){
+  // Calc streak for sidebar widget
+  function _calcStrk(){let s=0,d=new Date();while(s<400){const k=d.toISOString().split('T')[0];if(_isDayActive(k)){s++;d.setDate(d.getDate()-1);}else break;}return s;}
+  const streak=_calcStrk();
+  const BADGES=[{d:0,b:'🌱'},{d:3,b:'🌿'},{d:7,b:'🌳'},{d:14,b:'✨'},{d:21,b:'🔥'},{d:30,b:'⚡'},{d:50,b:'💎'},{d:100,b:'🏆'},{d:200,b:'👑'}];
+  let badge='🌱';for(const m of BADGES){if(streak>=m.d)badge=m.b;}
+  const bi=document.getElementById('ds-streak-badge');const ni=document.getElementById('ds-streak-num');
+  if(bi)bi.textContent=badge;if(ni)ni.textContent=streak;
+});
+</script>
+
+
+<script>
 // ══════════════════════════════════════════════
-// INARTE NARA CONTEXT SYSTEM — progress.html
+// INARTE NARA CONTEXT SYSTEM — finance.html
 // ══════════════════════════════════════════════
 
 const NARA_CTX_KEY = 'inarte_nara_context';
@@ -2221,40 +2084,6 @@ function naraCtxSet(patch) {
   const updated = { ...current, ...patch, updatedAt: new Date().toISOString() };
   localStorage.setItem(NARA_CTX_KEY, JSON.stringify(updated));
 }
-
-// ══ OFFLINE FALLBACK ══
-(function initOfflineDetection(){
-  function showOffline(){
-    const b=document.getElementById("offline-banner");
-    const ob=document.getElementById("online-banner");
-    if(b)b.classList.add("show");
-    if(ob)ob.classList.remove("show");
-  }
-  function showOnline(){
-    const b=document.getElementById("offline-banner");
-    const ob=document.getElementById("online-banner");
-    if(b)b.classList.remove("show");
-    if(ob){
-      ob.classList.add("show");
-      setTimeout(()=>ob.classList.remove("show"),3000);
-    }
-    if(typeof InarteSync!=="undefined"&&InarteSync.ready){
-      const today=new Date().toISOString().split("T")[0];
-      try{InarteSync.pushDaily&&InarteSync.pushDaily(today);}catch(e){}
-      try{InarteSync.pushWellness&&InarteSync.pushWellness(today);}catch(e){}
-    }
-  }
-  // Tunggu DOMContentLoaded dulu baru cek — hindari false positive saat load awal
-  window.addEventListener("DOMContentLoaded",()=>{
-    // Delay 1.5 detik sebelum cek — browser kadang butuh waktu confirm status online
-    setTimeout(()=>{
-      if(!navigator.onLine) showOffline();
-    }, 1500);
-  });
-  window.addEventListener("online", showOnline);
-  window.addEventListener("offline", showOffline);
-  window.addEventListener("inarte-sync-failed", showOffline);
-})();
 
 // ══ NARA SMART FALLBACK ══
 // Dipanggil saat API gagal — generate respons personal dari data lokal
@@ -2473,7 +2302,7 @@ function naraCtxBuildInjection() {
   const goals = profile.goals || [];
   const parts = [];
   if (goals.length) {
-    parts.push(`[Goals user: ${goals.join(', ')} — prioritaskan insight yang relevan dengan goals ini]`);
+    parts.push(`[Goals user: ${goals.join(', ')} — prioritaskan insight yang relevan dengan goals keuangan]`);
   }
   if (ctx.todaySummary) {
     const t = ctx.todaySummary;
@@ -2481,12 +2310,13 @@ function naraCtxBuildInjection() {
   }
   if (ctx.wellnessSummary) {
     const w = ctx.wellnessSummary;
-    parts.push(`[Wellness: tidur ${w.sleep||'-'} jam, energi fisik ${w.energyFisik||'-'}/5 mental ${w.energyMental||'-'}/5, emosi "${w.emotions||'-'}"]`);
+    parts.push(`[Wellness: tidur ${w.sleep||'-'} jam, energi fisik ${w.energyFisik||'-'}/5 mental ${w.energyMental||'-'}/5]`);
   }
   if (ctx.financeSummary) {
     const f = ctx.financeSummary;
     const sisa = (f.income||0) - (f.expense||0);
-    parts.push(`[Keuangan: pemasukan ${(f.income||0).toLocaleString('id')}, pengeluaran ${(f.expense||0).toLocaleString('id')}, ${sisa>=0?'surplus':'defisit'} ${Math.abs(sisa).toLocaleString('id')}]`);
+    const sisaStr = sisa >= 0 ? `surplus ${sisa.toLocaleString('id')}` : `defisit ${Math.abs(sisa).toLocaleString('id')}`;
+    parts.push(`[Keuangan bulan ini: pemasukan ${(f.income||0).toLocaleString('id')}, pengeluaran ${(f.expense||0).toLocaleString('id')}, ${sisaStr}]`);
   }
   if (ctx.lastChatSummary) {
     parts.push(`[Obrolan terakhir: "${ctx.lastChatSummary}"]`);
@@ -2498,7 +2328,35 @@ function naraCtxSaveChat(userMsg) {
   naraCtxSet({ lastChatSummary: userMsg.slice(0, 120), lastChatDate: new Date().toISOString().split('T')[0] });
 }
 
+// Hitung total income & expense bulan ini dari localStorage
+function naraCtxRefreshFinance() {
+  const now = new Date();
+  const key = `inarte_fin_${now.getFullYear()}_${now.getMonth()+1}`;
+  const data = JSON.parse(localStorage.getItem(key) || '{}');
+  const txList = data.tx || [];
+  const fixedList = data.fixed || [];
+
+  let income = 0, expense = 0;
+  txList.forEach(t => {
+    if (t.type === 'income') income += t.amount || 0;
+    else expense += t.amount || 0;
+  });
+  fixedList.forEach(f => {
+    if (f.type === 'monthly' || f.type === 'yearly') expense += f.amount || 0;
+  });
+
+  naraCtxSet({ financeSummary: { month: `${now.getFullYear()}-${now.getMonth()+1}`, income, expense } });
+}
+
 window.addEventListener('DOMContentLoaded', function() {
+  naraCtxRefreshFinance();
+
+  // Patch submitTx
+  const _stx = window.submitTx;
+  if (typeof _stx === 'function') {
+    window.submitTx = function() { _stx.apply(this, arguments); setTimeout(naraCtxRefreshFinance, 150); };
+  }
+
   // Inject context ke semua /api/chat calls
   const origFetch = window.fetch;
   window.fetch = async function(url, options, ...rest) {
@@ -2532,8 +2390,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 <script>
 // ══════════════════════════════════════════════
-// NARA WELCOME OVERLAY — progress.html
-// Tone: reflektif, apresiasi perjalanan user
+// NARA WELCOME OVERLAY — finance.html
 // ══════════════════════════════════════════════
 
 (async function initNaraWelcome() {
@@ -2558,33 +2415,28 @@ window.addEventListener('DOMContentLoaded', function() {
   overlay.classList.add('show');
   localStorage.setItem(WELCOME_KEY, TODAY);
 
-  // Hitung streak dari logs untuk konteks sapaan
-  const logs = JSON.parse(localStorage.getItem('inarte_logs') || '{}');
-  const totalDays = Object.keys(logs).length;
-  let streak = 0;
-  const d = new Date();
-  while (streak < 400) {
-    const k = 'inarte_day_' + d.toISOString().split('T')[0];
-    const day = JSON.parse(localStorage.getItem(k) || 'null');
-    const ok = day && (day.water > 0 || day.mood || (day.meals && day.meals.length) || (day.habits && day.habits.length));
-    if (ok) { streak++; d.setDate(d.getDate() - 1); } else break;
-  }
-
+  const ctx = naraCtxGet();
   const ctxInjection = naraCtxBuildInjection();
 
+  // Cek kondisi keuangan untuk tone sapaan
+  const fin = ctx.financeSummary;
+  const hasTx = fin && (fin.income > 0 || fin.expense > 0);
+  const isDefisit = fin && ((fin.income||0) - (fin.expense||0)) < 0;
+
   const sys = `Kamu adalah Nara, companion wellness yang hangat di INARTE. Nama user: ${name || 'teman'}.
-User sedang membuka halaman Progres — tempat melihat perjalanan dan pencapaian mereka.
-Waktu: ${waktu}. Streak saat ini: ${streak} hari. Total hari tercatat: ${totalDays}.
-${goals.length ? 'Goals user: '+goals.join(', ')+' — sesuaikan apresiasi dengan goals ini.' : ''}
-Tone sapaan: apresiasi perjalanan, hangat, tidak berlebihan. Fokus pada usaha, bukan angka.
-${streak === 0 ? 'Belum ada streak — ajak mulai dengan ringan dan tanpa tekanan.' : streak >= 7 ? `Streak ${streak} hari itu pencapaian nyata — apresiasi dengan tulus.` : `Streak ${streak} hari — acknowledge usaha kecil yang konsisten.`}
+User sedang membuka halaman Keuangan.
+Waktu: ${waktu}.
+${goals.length ? 'Goals user: '+goals.join(', ')+' — sesuaikan insight dengan goals keuangan ini.' : ''}
+${hasTx
+  ? `User sudah punya data keuangan bulan ini. ${isDefisit ? 'Pengeluaran melebihi pemasukan — sampaikan dengan empati, bukan menghakimi.' : 'Keuangan bulan ini positif — acknowledge dengan hangat.'}`
+  : 'User belum ada transaksi bulan ini. Ajak dengan ringan untuk mulai catat.'}
 ${ctxInjection}
 PENTING: Balas HANYA JSON:
-{"message":"[2-3 kalimat hangat tentang progres/perjalanan, bahasa Indonesia santai]","quickReplies":["[opsi 1]","[opsi 2]","[opsi 3]"]}
-Quick replies yang pas: lihat pola, ngobrol soal progres, atau cerita ke Nara.
+{"message":"[2-3 kalimat hangat, bahasa Indonesia santai, tentang keuangan tapi tidak menggurui]","quickReplies":["[opsi 1]","[opsi 2]","[opsi 3]"]}
+Quick replies yang pas: tentang kondisi keuangan, mau catat transaksi, atau tanya ke Nara.
 JANGAN tambahkan teks apapun di luar JSON.`;
 
-  const prompt = `User membuka halaman progres. Streak: ${streak} hari, total ${totalDays} hari tercatat. Waktu: ${waktu}.`;
+  const prompt = `User membuka halaman keuangan. Waktu: ${waktu}. Kondisi: ${hasTx ? (isDefisit ? 'defisit bulan ini' : 'surplus bulan ini') : 'belum ada data'}.`;
 
   try {
     const r = await fetch('/api/chat', {
@@ -2607,10 +2459,8 @@ JANGAN tambahkan teks apapun di luar JSON.`;
   } catch(e) {}
 
   // Fallback — pakai naraSmartFallback
-  const fbMsg = naraSmartFallback('', 'progress');
-  const fbReplies = streak === 0
-    ? ['Oke, mulai sekarang!', 'Tanya dulu', 'Lihat-lihat dulu']
-    : ['Makasih Nara!', 'Mau lihat pola', 'Mau cerita'];
+  const fbMsg = naraSmartFallback('', 'finance');
+  const fbReplies = ['Aman sih', 'Agak boncos', 'Mau catat transaksi'];
   _renderWelcomeMsg(fbMsg, fbReplies);
 })();
 
@@ -2656,11 +2506,7 @@ function dismissWelcome() {
 </script>
 
 <script>
-window.addEventListener('inarte-sync-ready', ()=>{
-  // Data dari Supabase sudah masuk localStorage — render ulang semua chart
-  _buildAllCharts();
-  buildNaraPattern(); // refresh insight Nara juga
-});
+window.addEventListener('inarte-sync-ready', ()=>{ if(typeof renderAll==='function') renderAll(); });
 </script>
 </body>
 </html>
