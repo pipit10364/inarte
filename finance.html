@@ -51,7 +51,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .month-nav-lbl{font-size:13px;font-weight:600;color:var(--text2)}
 
 /* ══ SUMMARY CARD ══ */
-.summary-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.summary-card{background:var(--surface);border:1px solid var(--border-l);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;padding-bottom:.25rem}
 .summary-top{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border-l)}
 .summary-half{padding:.75rem .875rem;flex:0 0 50%;box-sizing:border-box}
 .summary-half:not(:last-child){border-right:1px solid var(--border-l)}
@@ -471,13 +471,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .page-header    {grid-column:1/-1;grid-row:1}
   .month-nav      {grid-column:1/-1;grid-row:2}
   .summary-card   {grid-column:1/-1;grid-row:3}
+  /* Kiri: tx + fixed natural height, berdekatan */
   .fin-left-tx    {grid-column:1;grid-row:4;align-self:start}
   .fin-left-fixed {grid-column:1;grid-row:5;align-self:start}
+  /* Kanan: form atas, saving + diagram bawah */
+  .fin-right-col  {grid-column:2;grid-row:4;display:flex;flex-direction:column;gap:12px;align-self:start}
   .saving-card    {grid-column:2;grid-row:5}
   .diagram-card   {grid-column:2;grid-row:6}
-
-  /* Right col: form only (saving+diagram handled separately) */
-  .fin-right-col  {grid-column:2;grid-row:4;display:flex;flex-direction:column;gap:12px;align-self:start}
 
   /* On desktop: form always visible — no accordion toggle */
   .fin-right-col .expand-toggle{display:none}
@@ -571,8 +571,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .online-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
 .online-banner.show{display:flex}
 
-.summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:.875rem 0;border-top:1px solid var(--border-l);margin-top:.875rem;gap:12px}
-.summary-saving-row .summary-lbl{font-size:11px;letter-spacing:.02em;text-transform:uppercase;color:var(--text3);margin-bottom:0;white-space:nowrap}
+.summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 0 .5rem;border-top:1px solid var(--border-l);margin-top:1rem;gap:12px}
+.summary-saving-row .summary-lbl{font-size:11px;letter-spacing:.02em;text-transform:uppercase;color:var(--text3);margin-bottom:2px;white-space:nowrap}
 .summary-saving-row .summary-num{font-size:1.25rem}
 
 .saving-item-info{flex:1;min-width:0;overflow:hidden}
@@ -856,11 +856,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <div class="sv-field">
       <div class="sv-lbl">Saldo awal (opsional)</div>
-      <input class="sv-inp" id="sv-initial" type="number" min="0" placeholder="0" inputmode="decimal"/>
+      <input class="sv-inp" id="sv-initial" type="text" inputmode="numeric" placeholder="0" autocomplete="off" oninput="formatAmountInput(this)"/>
     </div>
     <div class="sv-field">
       <div class="sv-lbl">Target (opsional — kosongkan jika belum ada target)</div>
-      <input class="sv-inp" id="sv-target" type="number" min="0" placeholder="mis. 50000000" inputmode="decimal"/>
+      <input class="sv-inp" id="sv-target" type="text" inputmode="numeric" placeholder="mis. 50.000.000" autocomplete="off" oninput="formatAmountInput(this)"/>
     </div>
     <button class="sv-submit-btn" onclick="submitWalletAdd()">Tambah kategori</button>
   </div>
@@ -880,7 +880,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <div class="sv-field">
       <div class="sv-lbl">Nominal</div>
-      <input class="sv-inp" id="sv-tx-amt" type="number" min="0" placeholder="0" inputmode="decimal"/>
+      <input class="sv-inp" id="sv-tx-amt" type="text" inputmode="numeric" placeholder="0" autocomplete="off" oninput="formatAmountInput(this)"/>
     </div>
     <div class="sv-field">
       <div class="sv-lbl">Catatan (opsional)</div>
@@ -1300,8 +1300,10 @@ function openWalletAddSheet(){
 
 function submitWalletAdd(){
   const name=document.getElementById('sv-name').value.trim();
-  const initial=parseFloat(document.getElementById('sv-initial').value)||0;
-  const target=parseFloat(document.getElementById('sv-target').value)||0;
+  const _svInitRaw=document.getElementById('sv-initial').value.replace(/[^0-9]/g,'');
+  const initial=parseFloat(_svInitRaw)||0;
+  const _svTgtRaw=document.getElementById('sv-target').value.replace(/[^0-9]/g,'');
+  const target=parseFloat(_svTgtRaw)||0;
   const iconId=document.querySelector('#sv-emoji-row .sv-emoji-btn.sel')?.dataset.iconId||'savings';
   if(!name){showToast('Nama dompet tidak boleh kosong');return;}
   const wallets=loadWallets();
@@ -1343,7 +1345,8 @@ function selectWalletTx(type){
 }
 
 function submitWalletTx(){
-  const amt=parseFloat(document.getElementById('sv-tx-amt').value)||0;
+  const _svTxRaw=document.getElementById('sv-tx-amt').value.replace(/[^0-9]/g,'');
+  const amt=parseFloat(_svTxRaw)||0;
   const note=document.getElementById('sv-tx-note').value.trim();
   if(!amt||amt<=0){showToast('Masukkan jumlah yang valid');return;}
   const wallets=loadWallets();
@@ -1538,14 +1541,16 @@ function getDecimalSep(){
 }
 
 function formatAmountInput(el){
-  const sep = getThousandSep();
-  // Strip semua non-digit kecuali decimal separator
-  let raw = el.value.replace(/[^0-9]/g, '');
-  if(!raw){el.value='';return;}
-  // Format dengan thousand separator
-  el.value = parseInt(raw, 10).toLocaleString(
-    getThousandSep()==='.' ? 'id-ID' : 'en-US'
-  );
+  const raw = el.value.replace(/[^0-9]/g, '');
+  if(!raw){ el.value=''; return; }
+  // Simpan cursor position
+  const cursorFromEnd = el.value.length - el.selectionEnd;
+  const locale = getThousandSep()==='.' ? 'id-ID' : 'en-US';
+  const formatted = parseInt(raw, 10).toLocaleString(locale);
+  el.value = formatted;
+  // Restore cursor position dari kanan
+  const newPos = Math.max(0, formatted.length - cursorFromEnd);
+  el.setSelectionRange(newPos, newPos);
 }
 
 function parseAmountInput(){
