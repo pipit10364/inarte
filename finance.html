@@ -472,11 +472,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .page-header    {grid-column:1/-1;grid-row:1}
   .month-nav      {grid-column:1/-1;grid-row:2}
   .summary-card   {grid-column:1/-1;grid-row:3}
-  /* Kiri: tx + fixed natural height, berdekatan */
+  /* Kiri: tx di row 4, fixed di row 5 */
   .fin-left-tx    {grid-column:1;grid-row:4;align-self:start}
   .fin-left-fixed {grid-column:1;grid-row:5;align-self:start}
-  /* Kanan: form atas, saving + diagram bawah — semua di dalam fin-right-col */
-  .fin-right-col  {grid-column:2;grid-row:4 / span 2;display:flex;flex-direction:column;gap:12px;align-self:start}
+  /* Kanan: fin-right-col span 2 rows, flex column */
+  .fin-right-col  {grid-column:2;grid-row:4 / span 2;display:flex;flex-direction:column;gap:12px;align-self:stretch}
 
   /* On desktop: form always visible — no accordion toggle */
   .fin-right-col .expand-toggle{display:none}
@@ -493,8 +493,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .fin-left-fixed .expand-toggle{display:none}
   .fin-left-fixed .expand-body{display:block!important;padding-top:0;max-height:none}
   .fin-left-fixed{border-radius:var(--r);border:1px solid var(--border-l);background:var(--surface);padding:.875rem}
-
-  /* Sidebar collapse */
   body.sidebar-collapsed{--sidebar-w:64px}
   body.sidebar-collapsed .desktop-sidebar{padding:.875rem .625rem;align-items:center}
   body.sidebar-collapsed .ds-logo{display:none}
@@ -570,7 +568,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .online-banner{display:none;align-items:center;gap:8px;padding:8px 16px;background:var(--moss);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:9999;width:auto;max-width:min(480px,calc(100vw - 32px));border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.18);box-sizing:border-box;white-space:nowrap}
 .online-banner.show{display:flex}
 
-.summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 0 .5rem;border-top:1px solid var(--border-l);margin-top:1rem;gap:12px}
+.summary-saving-row{display:flex;justify-content:space-between;align-items:center;padding:1rem .875rem .75rem;border-top:1px solid var(--border-l);margin-top:.75rem;gap:12px}
 .summary-saving-row .summary-lbl{font-size:11px;letter-spacing:.02em;text-transform:uppercase;color:var(--text3);margin-bottom:2px;white-space:nowrap}
 .summary-saving-row .summary-num{font-size:1.25rem}
 
@@ -732,7 +730,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="nara-insight"><div class="nara-surface"><div class="nara-av">N</div><div class="nara-voice"><div class="nara-voice-lbl">Nara</div><div class="nara-voice-txt" id="nara-insight">Mulai catat pemasukan dan pengeluaranmu di bawah.</div></div></div></div>
   </div>
 
-  <!-- TRANSAKSI LIST — left col on desktop -->
+  <!-- TRANSAKSI LIST — kiri desktop -->
   <div class="fin-left-tx expand-section" id="ex-tx">
     <button class="expand-toggle" onclick="toggleExpand('tx')">
       <div class="expand-toggle-left">
@@ -819,7 +817,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   </div><!-- end fin-right-col -->
 
-  <!-- PENGELUARAN TETAP — left col on desktop (below transaksi) -->
+  <!-- PENGELUARAN TETAP -->
   <div class="fin-left-fixed expand-section" id="ex-fixed">
     <button class="expand-toggle" onclick="toggleExpand('fixed')">
       <div class="expand-toggle-left">
@@ -834,6 +832,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="fixed-reminder" id="fixed-reminder"></div>
     </div>
   </div>
+
+  </div><!-- end fin-left-fixed -->
 
 </div>
 
