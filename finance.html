@@ -474,10 +474,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   /* Kiri: tx + fixed natural height, berdekatan */
   .fin-left-tx    {grid-column:1;grid-row:4;align-self:start}
   .fin-left-fixed {grid-column:1;grid-row:5;align-self:start}
-  /* Kanan: form atas, saving + diagram bawah */
-  .fin-right-col  {grid-column:2;grid-row:4;display:flex;flex-direction:column;gap:12px;align-self:start}
-  .saving-card    {grid-column:2;grid-row:5}
-  .diagram-card   {grid-column:2;grid-row:6}
+  /* Kanan: form atas, saving + diagram bawah — semua di dalam fin-right-col */
+  .fin-right-col  {grid-column:2;grid-row:4 / span 2;display:flex;flex-direction:column;gap:12px;align-self:start}
 
   /* On desktop: form always visible — no accordion toggle */
   .fin-right-col .expand-toggle{display:none}
@@ -733,34 +731,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="nara-insight"><div class="nara-surface"><div class="nara-av">N</div><div class="nara-voice"><div class="nara-voice-lbl">Nara</div><div class="nara-voice-txt" id="nara-insight">Mulai catat pemasukan dan pengeluaranmu di bawah.</div></div></div></div>
   </div>
 
-  <!-- SAVING CARD -->
-  <div class="saving-card" id="saving-card">
-    <div class="saving-head">
-      <span class="saving-title">
-        <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-        Tabungan & Saving
-      </span>
-      <div style="text-align:right">
-        <div class="saving-total-lbl">Total tersimpan</div>
-        <div class="saving-total-num" id="saving-total-num">—</div>
-      </div>
-    </div>
-    <div id="saving-list-wrap"></div>
-    <button class="saving-add-btn" onclick="openWalletAddSheet()">
-      <svg class="si" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      Tambah kategori saving
-    </button>
-  </div>
-
-  <!-- DIAGRAM -->
-  <div class="diagram-card">
-    <div class="diagram-head">
-      <span class="diagram-title">Pengeluaran per kategori</span>
-      <span class="diagram-total" id="diagram-total"></span>
-    </div>
-    <div id="diagram-bars"><div class="diagram-empty">Belum ada pengeluaran.</div></div>
-  </div>
-
   <!-- TRANSAKSI LIST — left col on desktop -->
   <div class="fin-left-tx expand-section" id="ex-tx">
     <button class="expand-toggle" onclick="toggleExpand('tx')">
@@ -816,6 +786,34 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <button class="submit-btn" onclick="submitTx()">Simpan</button>
       </div>
     </div>
+  </div>
+
+  <!-- SAVING CARD — kanan bawah form -->
+  <div class="saving-card" id="saving-card">
+    <div class="saving-head">
+      <span class="saving-title">
+        <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        Tabungan & Saving
+      </span>
+      <div style="text-align:right">
+        <div class="saving-total-lbl">Total tersimpan</div>
+        <div class="saving-total-num" id="saving-total-num">—</div>
+      </div>
+    </div>
+    <div id="saving-list-wrap"></div>
+    <button class="saving-add-btn" onclick="openWalletAddSheet()">
+      <svg class="si" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Tambah kategori saving
+    </button>
+  </div>
+
+  <!-- DIAGRAM — kanan paling bawah -->
+  <div class="diagram-card">
+    <div class="diagram-head">
+      <span class="diagram-title">Pengeluaran per kategori</span>
+      <span class="diagram-total" id="diagram-total"></span>
+    </div>
+    <div id="diagram-bars"><div class="diagram-empty">Belum ada pengeluaran.</div></div>
   </div>
 
   </div><!-- end fin-right-col -->
