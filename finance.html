@@ -472,11 +472,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   .page-header    {grid-column:1/-1;grid-row:1}
   .month-nav      {grid-column:1/-1;grid-row:2}
   .summary-card   {grid-column:1/-1;grid-row:3}
-  /* Kiri: tx di row 4, fixed di row 5 */
-  .fin-left-tx    {grid-column:1;grid-row:4;align-self:start}
-  .fin-left-fixed {grid-column:1;grid-row:5;align-self:start}
-  /* Kanan: fin-right-col span 2 rows, flex column */
-  .fin-right-col  {grid-column:2;grid-row:4 / span 2;display:flex;flex-direction:column;gap:12px;align-self:stretch}
+  /* Kiri: fin-left-col wraps tx+fixed, kanan: fin-right-col */
+  .fin-left-col   {grid-column:1;grid-row:4;display:flex;flex-direction:column;gap:12px;align-self:start}
+  .fin-right-col  {grid-column:2;grid-row:4;display:flex;flex-direction:column;gap:12px;align-self:start}
 
   /* On desktop: form always visible — no accordion toggle */
   .fin-right-col .expand-toggle{display:none}
@@ -486,13 +484,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   /* Diagram bigger on desktop */
   .diagram-card{padding:1.25rem}
 
-  /* Transaksi list always visible on left */
+  /* Transaksi list + pengeluaran tetap always visible on left */
   .fin-left-tx .expand-toggle{display:none}
   .fin-left-tx .expand-body{display:block!important;padding-top:0;max-height:none}
   .fin-left-tx{border-radius:var(--r);border:1px solid var(--border-l);background:var(--surface);padding:.875rem}
   .fin-left-fixed .expand-toggle{display:none}
   .fin-left-fixed .expand-body{display:block!important;padding-top:0;max-height:none}
   .fin-left-fixed{border-radius:var(--r);border:1px solid var(--border-l);background:var(--surface);padding:.875rem}
+  /* form always visible on right */
+
+  /* Sidebar collapse */
   body.sidebar-collapsed{--sidebar-w:64px}
   body.sidebar-collapsed .desktop-sidebar{padding:.875rem .625rem;align-items:center}
   body.sidebar-collapsed .ds-logo{display:none}
@@ -730,7 +731,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="nara-insight"><div class="nara-surface"><div class="nara-av">N</div><div class="nara-voice"><div class="nara-voice-lbl">Nara</div><div class="nara-voice-txt" id="nara-insight">Mulai catat pemasukan dan pengeluaranmu di bawah.</div></div></div></div>
   </div>
 
-  <!-- TRANSAKSI LIST — kiri desktop -->
+  <!-- KIRI: transaksi + pengeluaran tetap -->
+  <div class="fin-left-col">
+
   <div class="fin-left-tx expand-section" id="ex-tx">
     <button class="expand-toggle" onclick="toggleExpand('tx')">
       <div class="expand-toggle-left">
@@ -743,7 +746,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="expand-body"><div id="tx-wrap"><div class="list-empty">Belum ada transaksi.</div></div></div>
   </div>
 
-  <!-- RIGHT COL: form + pengeluaran tetap -->
+  <div class="fin-left-fixed expand-section" id="ex-fixed">
+    <button class="expand-toggle" onclick="toggleExpand('fixed')">
+      <div class="expand-toggle-left">
+        <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="expand-title">Pengeluaran tetap</span>
+        <span class="expand-preview" id="fixed-preview">Bulanan & tahunan</span>
+      </div>
+      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="expand-body">
+      <div id="fixed-wrap"><div class="list-empty">Belum ada pengeluaran tetap.</div></div>
+      <div class="fixed-reminder" id="fixed-reminder"></div>
+    </div>
+  </div>
+
+  </div><!-- end fin-left-col -->
+
+  <!-- KANAN: form + saving + diagram -->
   <div class="fin-right-col">
   <div class="fin-right-header">
     <span class="fin-right-title">Catat Sekarang</span>
@@ -759,35 +779,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <div class="expand-body">
-      <!-- Type -->
       <div class="type-row">
         <button class="type-btn sel-income" id="tbtn-income" onclick="selectType('income')">↑ Masuk</button>
         <button class="type-btn" id="tbtn-daily" onclick="selectType('daily')">↓ Harian</button>
         <button class="type-btn" id="tbtn-monthly" onclick="selectType('monthly')">Tetap/bln</button>
         <button class="type-btn" id="tbtn-yearly" onclick="selectType('yearly')">Tetap/thn</button>
       </div>
-      <!-- Amount -->
       <div class="amount-row">
         <span class="amount-prefix" id="amount-prefix">Rp</span>
         <input class="amount-inp" id="amount-inp" type="text" inputmode="numeric" placeholder="0" autocomplete="off" oninput="formatAmountInput(this)"/>
       </div>
-      <!-- Name + Date -->
       <div class="name-date-row">
         <input class="name-inp" id="name-inp" type="text" placeholder="Keterangan..." maxlength="60" onkeydown="if(event.key==='Enter')submitTx()"/>
         <input class="date-inp" id="date-inp" type="date"/>
       </div>
-      <!-- Category -->
       <div id="cat-section">
         <div class="cat-row" id="cat-chips"></div>
       </div>
-      <!-- Submit -->
       <div class="submit-row">
         <button class="submit-btn" onclick="submitTx()">Simpan</button>
       </div>
     </div>
   </div>
 
-  <!-- SAVING CARD — kanan bawah form -->
+  <!-- SAVING -->
   <div class="saving-card" id="saving-card">
     <div class="saving-head">
       <span class="saving-title">
@@ -806,7 +821,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </button>
   </div>
 
-  <!-- DIAGRAM — kanan paling bawah -->
+  <!-- DIAGRAM -->
   <div class="diagram-card">
     <div class="diagram-head">
       <span class="diagram-title">Pengeluaran per kategori</span>
@@ -816,24 +831,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 
   </div><!-- end fin-right-col -->
-
-  <!-- PENGELUARAN TETAP -->
-  <div class="fin-left-fixed expand-section" id="ex-fixed">
-    <button class="expand-toggle" onclick="toggleExpand('fixed')">
-      <div class="expand-toggle-left">
-        <svg class="si" style="color:var(--sky)" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span class="expand-title">Pengeluaran tetap</span>
-        <span class="expand-preview" id="fixed-preview">Bulanan & tahunan</span>
-      </div>
-      <svg class="expand-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="expand-body">
-      <div id="fixed-wrap"><div class="list-empty">Belum ada pengeluaran tetap.</div></div>
-      <div class="fixed-reminder" id="fixed-reminder"></div>
-    </div>
-  </div>
-
-  </div><!-- end fin-left-fixed -->
 
 </div>
 
